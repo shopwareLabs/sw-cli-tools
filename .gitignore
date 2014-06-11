@@ -2,8 +2,10 @@ assets/
 config.cfg
 licenses.txt
 *config.yaml
+vendor/
 composer.lock
 composer.phar
 php_errors.log
 .idea
 sw.phar
+
