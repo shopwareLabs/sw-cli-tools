@@ -4,6 +4,11 @@ error_reporting(-1);
 ini_set('display_errors', true);
 set_include_path(dirname(__DIR__));
 
+if (!file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
+    echo "vendor/autoload.php not found. Please run `composer install` first\n";
+    exit(1);
+}
+
 $loader = require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $application = new ShopwareCli\Application();
