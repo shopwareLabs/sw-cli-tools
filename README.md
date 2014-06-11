@@ -98,4 +98,6 @@ If you changed some of these directories via XDG environment variables, those di
 The configuration of the script is done in ~/.config/sw-cli-tools/config.yaml. If the file does not exist on your system, it is created after the first usage of the script.
 
 # Building sw.phar
-For building the release packages (sw.phar) box is used. It's recommended to uninstall dev-dependencies in order to keep the phar small.
+For building the release packages (sw.phar) [box](https://github.com/kherge/php-box) is used:
+
+    box build
