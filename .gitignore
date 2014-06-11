@@ -1,0 +1,8 @@
+assets/
+config.cfg
+licenses.txt
+*config.yaml
+composer.lock
+composer.phar
+php_errors.log
+.idea

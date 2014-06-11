@@ -1,0 +1,21 @@
+{
+    "require": {
+        "php": ">=5.3.2",
+        "ext-curl": "*",
+        "symfony/console": "~2.5",
+        "symfony/yaml": "~2.5",
+        "symfony/process": "~2.5",
+        "symfony/dependency-injection": "~2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable",
+        "kherge/box": "~2.4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "ShopwareCli\\": "src/",
+            "Plugin\\": "plugins/"
+        }
+    },
+    "bin": ["bin/sw"]
+}

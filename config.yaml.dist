@@ -1,0 +1,105 @@
+repositories:
+  ## Github API
+#  ShopwareGithub:
+#    ## General repo configuration
+#    config:
+#      ## API username
+#      username: GITHUB_USER
+#      ## API password
+#      password: GITHUB_PASSWORD
+#      ## API endpoint
+#      endpoint: https://api.github.com
+#    ## This defines the repos that are used with the ShopwareGithub repo type
+#    repositories:
+#      ## A user defined name for a repo
+#      private:
+#        ## How long should this be cached?
+#        cache: 86400
+#        ## URL which returns the branches of the repo
+#        url: orgs/ShopwareAG/repos
+#        ## Plugins of this repo will be shown in this color within the repo listing
+#        color: red
+
+
+  ## Bitbucket API
+#  BitBucket:
+#    config:
+#      username: BITBUCKET_USER
+#      password: BITBUCKET_PASSWORD
+#      endpoint: https://bitbucket.org/api/2.0
+#    repositories:
+#      all:
+#        cache: 86400
+#        url: repositories/BITBUCKET_REPO?pagelen=100
+#        color: white
+
+
+
+  ## Stash API
+#  Stash:
+#    config:
+#      username: STASH_USER
+#      password: STASH_PASSWORD
+#      endpoint: http://stash.shopware.in/stash/rest/api/1.0
+#    repositories:
+    ## You can also use your stash user space as repo. Public
+    ## repos will be shown in the plugin list
+#      stash.user:
+#        cache: 86400
+#        url: users/s.user/repos?limit=100
+#      myrepo:
+#       cache: 86400
+#       url: projects/MYREPO/repos?limit=100
+#       color: blue
+
+  ## If you want to maintain a manual collection of repositories, you can use SimpleList
+  ## Even here you can use colors and repos / collections of plugins
+  SimpleList:
+    repositories:
+      example1:
+        color: yellow
+        plugins:
+          Core_Sys11SuperCache:
+            ssh: git@github.com:ShopwareAG/SW4-Premium-Sys11SuperCache.git
+            http: https://github.com/ShopwareAG/SW4-Premium-Sys11SuperCache.git
+
+general:
+  # Allows you do determine how the plugin repositories should be sorted
+  # Allowed values are:
+  #   module          Sort by module and then by name
+  #   name            Sort by name
+  #   repository      Sort by repository - and then by name
+  sortBy: repository
+
+  # Do you want to use colors in your listing?
+  enableRepositoryColors: true
+
+ShopwareInstallConfig:
+  ShopConfig:
+    host: localhost
+
+  DatabaseConfig:
+    host: localhost
+    user: root
+    pass: root
+
+  ## Here you can specify a list of repositories to checkout.
+  # You can specify the destination path with the "destination" field
+  #
+  # Warning: The "core" repository is always required - it is the main
+  # shopware repo to checkout. If you want to, you can replace the ssh/http
+  # urls with urls to your own repository.
+  Repos:
+    core:
+      destination: /
+      ssh: git@github.com:ShopwareAG/shopware-4.git
+      http: https://github.com/ShopwareAG/shopware-4.git
+
+    ##
+    # Here you could add own plugins and other stuff you want to include in any
+    # installation you set up
+    # e.g.
+    # my-plugin:
+    #   destination: /engine/Shopware/Plugins/Local/Core/SwagMyPlugin
+    #    ssh: git@github.com:ShopwareAG/swag-my-plugin.git
+    #    http: https://github.com/ShopwareAG/swag-my-plugin.git

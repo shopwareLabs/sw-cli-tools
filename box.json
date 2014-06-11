@@ -1,0 +1,20 @@
+{
+    "alias": "sw.phar",
+    "chmod": "0755",
+    "directories": ["src"],
+    "files": [
+        "README.md",
+        "config.yaml.dist"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["tests"],
+            "in": ["vendor", "src", "plugins/ShopwareInstall"]
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/sw",
+    "output": "sw.phar",
+    "stub": true
+}

@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+error_reporting(-1);
+ini_set('display_errors', true);
+set_include_path(dirname(__DIR__));
+
+$loader = require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+$application = new ShopwareCli\Application();
+$application->setup($loader);
+$application->run();
