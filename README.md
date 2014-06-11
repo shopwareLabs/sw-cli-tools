@@ -1,16 +1,20 @@
-# Shopware 4 QA-CLI Tools
+# Shopware 4 CLI Tools
 
 # Installation
 
-## On Server ###
-    aptitude update && aptitude install openjdk-7-jre-headless ant git curl php5-curl
-    mkdir -p ~/bin && git clone ssh://git@stash.shopware.in:7999/TOOL/qa-cli-tools.git ~/bin/qa-cli-tools && cd ~/bin/qa-cli-tools/ && ./install.sh
+Generally we recommend to use the sw.phar release files, you can download them to e.g. ~/bin/sw and add this directory to the $PATH of your local user.
 
-The installer will add ~/bin to the users $PATH and install a ready only ssh key.
+If you want to use the development version of sw-cli-tools, you should checkout the repository and run `composer install` to download all dependencies
 
-## General requirements
+## Requirements ###
+On your system at least the following packages needs to be available.
+
+ * openjdk-7-jre-headless
+ * ant
+ * git
+ * curl
+ * php5-curl
  * If you want to use coloring you should enable php.posix in your php.ini
- * In order to upload plugins, you need to have the php extension enabled (pecl install -f ssh2)
 
 ## Available commands
 * sw cache:clear
