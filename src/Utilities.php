@@ -18,6 +18,14 @@ class Utilities
         return is_readable($path . '/shopware.php');
     }
 
+    /**
+     * Ask for a valid shopware path until the user enters it
+     *
+     * @param null $shopwarePath
+     * @param $output
+     * @param DialogHelper $dialog
+     * @return mixed|null|string
+     */
     function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
     {
         if (!$shopwarePath) {
@@ -32,6 +40,13 @@ class Utilities
 
     }
 
+    /**
+     * Shopware path validator - can be used in askAndValidate methods
+     *
+     * @param $shopwarePath
+     * @return string
+     * @throws \RuntimeException
+     */
     public function validateShopwarePath($shopwarePath)
     {
         $shopwarePathReal = realpath($shopwarePath);

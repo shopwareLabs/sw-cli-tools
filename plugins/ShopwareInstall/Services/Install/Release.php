@@ -65,6 +65,8 @@ class Release
     }
 
     /**
+     * Generate the VCS mapping for phpstorm
+     *
      * @param $installDir
      */
     private function generateVcsMapping($installDir)
@@ -75,6 +77,8 @@ class Release
     }
 
     /**
+     * Write shopware's config.php
+     *
      * @param $installDir
      * @param $database
      */
@@ -90,6 +94,8 @@ class Release
     }
 
     /**
+     * Write the build.properties file
+     *
      * @param $installDir
      * @param $basePath
      * @param $database
@@ -107,6 +113,17 @@ class Release
         );
     }
 
+    /**
+     * Setup the database
+     *
+     * @param $username
+     * @param $password
+     * @param $name
+     * @param $mail
+     * @param $language
+     * @param $installDir
+     * @param $database
+     */
     private function setupDatabase($username, $password, $name, $mail, $language, $installDir, $database)
     {
         $this->database->setup(

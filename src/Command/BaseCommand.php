@@ -32,6 +32,13 @@ abstract class BaseCommand extends Command implements ContainerAwareInterface
         $this->container = $container;
     }
 
+    /**
+     * Will register the 'writeln' method of the output interface as WrappedOutputWriter to the DI.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void
+     */
     public function run(InputInterface $input, OutputInterface $output)
     {
         $this->container->set('output_writer', new WrappedOutputWriter(array($output, 'writeln')));

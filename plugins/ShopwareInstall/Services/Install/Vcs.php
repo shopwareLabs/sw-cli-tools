@@ -56,6 +56,15 @@ class Vcs
         $this->demoData = $demodata;
     }
 
+    /**
+     * Runs the steps needed to setup shopware
+     *
+     * @param $branch
+     * @param $installDir
+     * @param $basePath
+     * @param $database
+     * @param null $httpUser
+     */
     public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null)
     {
         $this->checkoutRepos($branch, $installDir, $httpUser);
@@ -75,6 +84,8 @@ class Vcs
     }
 
     /**
+     * Enforce a configured core repository
+     *
      * @return mixed
      * @throws \RuntimeException
      */
@@ -88,6 +99,8 @@ class Vcs
     }
 
     /**
+     * Checkout a given branch from a given repo
+     *
      * @param $branch
      * @param $installDir
      * @param $httpUser
@@ -101,6 +114,8 @@ class Vcs
     }
 
     /**
+     * Checkout all user defined repositories (except: core)
+     *
      * @param $branch
      * @param $installDir
      * @param $httpUser
@@ -120,6 +135,8 @@ class Vcs
     }
 
     /**
+     * Create VCS mapping for phpstorm
+     *
      * @param $installDir
      */
     private function generateVcsMapping($installDir)
@@ -130,6 +147,8 @@ class Vcs
     }
 
     /**
+     * Create config.php with the configured database credentials
+     *
      * @param $installDir
      * @param $database
      */
@@ -145,6 +164,8 @@ class Vcs
     }
 
     /**
+     * Write the build properties file
+     *
      * @param $installDir
      * @param $basePath
      * @param $database
@@ -162,6 +183,12 @@ class Vcs
         );
     }
 
+    /**
+     * Run the database setup tool
+     *
+     * @param $installDir
+     * @param $database
+     */
     private function setupDatabase($installDir, $database)
     {
         $this->database->setup(
