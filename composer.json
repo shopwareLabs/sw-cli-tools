@@ -8,8 +8,7 @@
         "symfony/dependency-injection": "~2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable",
-        "kherge/box": "~2.4.4"
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
         "psr-4": {
