@@ -4,13 +4,22 @@
     "directories": ["src"],
     "files": [
         "README.md",
-        "config.yaml.dist"
+        "config.yaml.dist",
+        "vendor/autoload.php"
     ],
     "finder": [
         {
             "name": "*.php",
             "exclude": ["tests"],
-            "in": ["vendor", "src", "plugins/ShopwareInstall"]
+            "in": [
+                "vendor/composer",
+                "vendor/symfony/console",
+                "vendor/symfony/dependency-injection",
+                "vendor/symfony/process",
+                "vendor/symfony/yaml",
+                "src",
+                "plugins"
+            ]
         }
     ],
     "git-version": "package_version",
