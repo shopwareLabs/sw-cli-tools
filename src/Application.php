@@ -29,7 +29,7 @@ class Application extends \Symfony\Component\Console\Application
 
     public function setup(ClassLoader $loader)
     {
-        $this->container = DependencyInjection::getContainer();
+        $this->container = DependencyInjection::createContainer();
 
         $this->registerAutoLoader($loader);
 

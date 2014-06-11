@@ -70,8 +70,7 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
 
-        $container = DependencyInjection::getContainer();
-        $pluginManager = $container->get('manager_factory')->factory($useHttp);
+        $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
 
         /** @var DialogHelper $dialog */
         $dialog = $this->getHelperSet()->get('dialog');

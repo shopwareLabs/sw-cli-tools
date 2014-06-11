@@ -69,8 +69,7 @@ class ZipCommand extends BaseCommand
 
         $this->container->get('utilities')->cls();
 
-        $container = DependencyInjection::getContainer();
-        $pluginManager = $container->get('manager_factory')->factory($useHttp);
+        $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
 
         $pluginSelector = new PluginInputVerificator($input, $output, $dialog, $this->container->get('config'), $small);
 
