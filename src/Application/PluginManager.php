@@ -43,10 +43,10 @@ class PluginManager
             $folders = scandir($pluginDir);
 
             foreach ($folders as $folder) {
-                if ($folder == '.' || $folder == '..') {
+                // skip files and dot-folders
+                if (!is_dir($pluginDir . '/' . $folder) ||strpos($folder, '.') === 0) {
                     continue;
                 }
-
                 if (!file_exists("{$pluginDir}/{$folder}/Bootstrap.php")) {
                     throw new \RuntimeException("Could not find Bootstrap.php in {$pluginDir}/{$folder}");
                 }
