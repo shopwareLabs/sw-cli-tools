@@ -19,6 +19,11 @@ class Application extends \Symfony\Component\Console\Application
 {
     protected $container;
 
+    public function __construct()
+    {
+        parent::__construct('sw-cli-tools', '@package_version@');
+    }
+
     /**
      * Add the plugin path from the plugin XDG dir to the loader
      */
