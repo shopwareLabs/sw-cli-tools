@@ -37,13 +37,11 @@ class ReleaseDownloader
      */
     public function downloadRelease($release, $installDir)
     {
-
         if ($release == 'latest') {
             $zipLocation = $this->downloadFromUpdateApi($release);
         } else {
             $zipLocation = $this->downloadFromUrl($release);
         }
-
 
         if (!is_dir($installDir)) {
             mkdir($installDir);
@@ -65,7 +63,7 @@ class ReleaseDownloader
         if (empty($content)) {
             throw new \RuntimeException("Could not get latest install package");
         }
-        
+
         $version = $content['version'];
         $url = $content['uri'];
         $size = $content['size'];
@@ -84,7 +82,6 @@ class ReleaseDownloader
             throw new \RuntimeException("Hash missmatch");
         }
         copy($target, $cacheFilePath);
-
 
         return $cacheFilePath;
     }
@@ -114,15 +111,21 @@ class ReleaseDownloader
     }
 
     /**
-     * Download a file from $url top $file
+     * Download a file from $url to $file
      *
-     * @param $url
-     * @param $file
+     * @param string $url
+     * @param string $file
+     * @throws \RuntimeException
      */
     private function download($url, $file)
     {
-        $readHandle = fopen($url, "rb");
-        $writeHandle = fopen($file, "wb");
+        if (false === $readHandle = fopen($url, "rb")) {
+            throw new \RuntimeException(sprintf("Could not open URL '%s'.", $url));
+        }
+
+        if (false === $writeHandle = fopen($file, "wb")) {
+            throw new \RuntimeException(sprintf("Could not write file: %s.", $file));
+        }
 
         $length = $this->getContentLengthFromStream($readHandle);
 
@@ -177,6 +180,7 @@ class ReleaseDownloader
         if ($release == 'latest') {
             return self::DOWNLOAD_URL_LATEST;
         }
+
         return sprintf(self::DOWNLOAD_URL_TEMPLATE, $release);
     }
 
@@ -191,6 +195,7 @@ class ReleaseDownloader
                 list($header, $size) = explode(':', $field);
             }
         }
+
         return $size;
     }
 
