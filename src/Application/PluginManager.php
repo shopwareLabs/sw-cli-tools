@@ -45,27 +45,32 @@ class PluginManager
      */
     protected function readPlugins()
     {
+        // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/plugins and 'plugins' in the sw-cli-tools main directory / phar
         foreach ($this->pluginDirs as $pluginDir) {
-            $vendorFolders = scandir($pluginDir);
+            // iterate all vendor folders
+            foreach (scandir($pluginDir) as $vendorFolder) {
+                $vendorPath = $pluginDir . '/' . $vendorFolder;
 
-            foreach ($vendorFolders as $vendorFolder) {
                 // skip files and dot-folders
-                if (!is_dir($pluginDir . '/' . $vendorFolder) ||strpos($vendorFolder, '.') === 0) {
+                if (!is_dir($vendorPath) ||strpos($vendorFolder, '.') === 0) {
                     continue;
                 }
 
-                $this->registerPluginNamespace("{$pluginDir}/{$vendorFolder}/", "{$vendorFolder}\\");
+                $this->registerPluginNamespace($vendorPath, "{$vendorFolder}\\");
 
-                $pluginFolders = scandir($pluginDir . '/' . $vendorFolder);
-                foreach ($pluginFolders as $pluginFolder) {
+                // iterate all plugin folders
+                foreach (scandir($vendorPath) as $pluginFolder) {
+                    $pluginPath = $vendorPath . '/' . $pluginFolder;
+
                     // skip files and dot-folders
-                    if (!is_dir($pluginDir . '/' . $vendorFolder . '/' . $pluginFolder) ||strpos($pluginFolder, '.') === 0) {
+                    if (!is_dir($pluginPath) ||strpos($pluginFolder, '.') === 0) {
                         continue;
                     }
 
-                    if (!file_exists("{$pluginDir}/{$vendorFolder}/{$pluginFolder}/Bootstrap.php")) {
-                        throw new \RuntimeException("Could not find Bootstrap.php in {$pluginDir}/{$vendorFolder}/{$pluginFolder}");
+                    if (!file_exists("{$pluginPath}/Bootstrap.php")) {
+                        throw new \RuntimeException("Could not find Bootstrap.php in {$pluginPath}");
                     }
+
                     $className = "{$vendorFolder}\\{$pluginFolder}\\Bootstrap";
                     $pluginInstance = $this->bootstrapPlugin($className);
                     $this->setPlugin("{$vendorFolder}\\{$pluginFolder}", $pluginInstance);
