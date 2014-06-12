@@ -1,20 +1,20 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services\Install;
+namespace ShopwareCli\Plugin\ShopwareInstall\Services\Install;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Config;
 
-use Plugin\ShopwareInstall\Services\ReleaseDownloader;
-use Plugin\ShopwareInstall\Services\VcsGenerator;
-use Plugin\ShopwareInstall\Services\ConfigWriter;
-use Plugin\ShopwareInstall\Services\Database;
-use Plugin\ShopwareInstall\Services\Demodata;
+use ShopwareCli\Plugin\ShopwareInstall\Services\ReleaseDownloader;
+use ShopwareCli\Plugin\ShopwareInstall\Services\VcsGenerator;
+use ShopwareCli\Plugin\ShopwareInstall\Services\ConfigWriter;
+use ShopwareCli\Plugin\ShopwareInstall\Services\Database;
+use ShopwareCli\Plugin\ShopwareInstall\Services\Demodata;
 /**
  * This install service will run all steps needed to setup shopware in the correct order
  *
  * Class Release
- * @package Plugin\ShopwareInstall\Services\Install
+ * @package ShopwareCli\Plugin\ShopwareInstall\Services\Install
  */
 class Release
 {

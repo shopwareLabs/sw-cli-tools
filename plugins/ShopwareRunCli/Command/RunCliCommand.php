@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\ShopwareRunCli\Command;
+namespace ShopwareCli\Plugin\ShopwareRunCli\Command;
 
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Command\Command;

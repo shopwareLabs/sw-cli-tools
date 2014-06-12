@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\ShopwareInstall\Command;
+namespace ShopwareCli\Plugin\ShopwareInstall\Command;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
@@ -63,7 +63,7 @@ EOF
         Logger::setLogLevel(Logger::LEVEL_INFO);
         Logger::setOutputWriter($this->container->get('output_writer'));
 
-        /** @var \Plugin\ShopwareInstall\Services\Install\Vcs $installService */
+        /** @var \ShopwareCli\Plugin\ShopwareInstall\Services\Install\Vcs $installService */
         $installService = $this->container->get('shopware_vcs_install_service');
 
         $installService->installShopware(

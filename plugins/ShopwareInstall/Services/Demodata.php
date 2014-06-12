@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace ShopwareCli\Plugin\ShopwareInstall\Services;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Services\PathProvider\PathProvider;
@@ -10,7 +10,7 @@ use ShopwareCli\Utilities;
  * Handles demodata and licenes
  *
  * Class Demodata
- * @package Plugin\ShopwareInstall\Services
+ * @package ShopwareCli\Plugin\ShopwareInstall\Services
  */
 class Demodata
 {
