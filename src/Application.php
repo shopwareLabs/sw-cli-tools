@@ -4,6 +4,9 @@ namespace ShopwareCli;
 
 use Composer\Autoload\ClassLoader;
 use ShopwareCli\Application\DependencyInjection;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Main application of the cli tools
@@ -13,29 +16,46 @@ use ShopwareCli\Application\DependencyInjection;
  */
 class Application extends \Symfony\Component\Console\Application
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
-    public function __construct()
+    /**
+     * @var \Composer\Autoload\ClassLoader
+     */
+    private $loader;
+
+    /**
+     * @param ClassLoader $loader
+     */
+    public function __construct(ClassLoader $loader)
     {
+        $this->loader = $loader;
+
         parent::__construct('sw-cli-tools', '@package_version@');
     }
 
     /**
-     * Add the plugin path from the plugin XDG dir to the loader
+     * {@inheritdoc}
+     */
+    public function doRun(InputInterface $input, OutputInterface $output)
+    {
+        $this->container = DependencyInjection::createContainer();
+
+        $this->registerAutoLoader($this->loader);
+        $this->container->get('plugin_manager')->init();
+
+        $this->addCommands($this->container->get('command_manager')->getCommands());
+
+        return parent::doRun($input, $output);
+    }
+
+    /**
+     * Add the plugin path to the loader
      */
     private function registerAutoLoader(ClassLoader $loader)
     {
         $loader->addPsr4("Plugin\\", $this->container->get('path_provider')->getPluginPath());
-    }
-
-    public function setup(ClassLoader $loader)
-    {
-        $this->container = DependencyInjection::createContainer();
-
-        $this->registerAutoLoader($loader);
-
-        $this->container->get('plugin_manager')->init();
-
-        $this->addCommands($this->container->get('command_manager')->getCommands());
     }
 }
