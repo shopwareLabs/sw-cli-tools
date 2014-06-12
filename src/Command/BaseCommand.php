@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * The BaseCommand takes care of the container and also sets the outputwriter
+ * The BaseCommand takes care of the container
  *
  * Class BaseCommand
  * @package ShopwareCli\Command
@@ -30,19 +30,5 @@ abstract class BaseCommand extends Command implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    /**
-     * Will register the 'writeln' method of the output interface as WrappedOutputWriter to the DI.
-     *
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return int|void
-     */
-    public function run(InputInterface $input, OutputInterface $output)
-    {
-        $this->container->set('output_writer', new WrappedOutputWriter(array($output, 'writeln')));
-
-        parent::run($input, $output);
     }
 }

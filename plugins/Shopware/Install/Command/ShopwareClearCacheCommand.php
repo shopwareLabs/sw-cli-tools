@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\ShopwareInstall\Command;
+namespace Shopware\Install\Command;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;

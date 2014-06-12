@@ -15,6 +15,10 @@ class DependencyInjection
     {
         $container = new ContainerBuilder();
 
+
+        $container->setDefinition('output_writer', new Definition())->setSynthetic(true);
+        $container->setDefinition('autoloader', new Definition())->setSynthetic(true);
+
         $container->register('utilities', 'ShopwareCli\Utilities');
 
         $container->register('xdg', 'ShopwareCli\Services\PathProvider\DirectoryGateway\Xdg');
@@ -24,8 +28,6 @@ class DependencyInjection
 
         $container->register('path_provider', 'ShopwareCli\Services\PathProvider\PathProvider')
             ->addArgument(new Reference('directory_gateway'));
-
-        $container->setDefinition('output_writer', new Definition())->setSynthetic(true);
 
         $container->register('install_service', 'ShopwareCli\Services\Install')
             ->addArgument(new Reference('checkout_service'))
@@ -54,6 +56,7 @@ class DependencyInjection
 
         $container->register('plugin_manager', 'ShopwareCli\Application\PluginManager')
             ->addArgument(array($container->get('path_provider')->getPluginPath(), $container->get('path_provider')->getCliToolPath() . '/plugins'))
+            ->addArgument(new Reference('autoloader'))
             ->addArgument(new Reference('service_container'));
 
         $container->register('logger', 'ShopwareCli\Application\Logger')

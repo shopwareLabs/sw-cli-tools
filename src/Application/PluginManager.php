@@ -1,6 +1,7 @@
 <?php
 
 namespace ShopwareCli\Application;
+use Composer\Autoload\ClassLoader;
 
 /**
  * Implements a simple plugin system.
@@ -20,11 +21,16 @@ class PluginManager
 {
     protected $plugins;
     protected $pluginDirs;
+    /**
+     * @var \Composer\Autoload\ClassLoader
+     */
+    private $autoLoader;
 
-    public function __construct($pluginDirs, $container)
+    public function __construct($pluginDirs, ClassLoader $autoLoader, $container)
     {
         $this->pluginDirs = array_unique($pluginDirs);
         $this->container = $container;
+        $this->autoLoader = $autoLoader;
     }
 
     public function init()
@@ -39,22 +45,44 @@ class PluginManager
      */
     protected function readPlugins()
     {
+        // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/plugins and 'plugins' in the sw-cli-tools main directory / phar
         foreach ($this->pluginDirs as $pluginDir) {
-            $folders = scandir($pluginDir);
+            // iterate all vendor folders
+            foreach (scandir($pluginDir) as $vendorFolder) {
+                $vendorPath = $pluginDir . '/' . $vendorFolder;
 
-            foreach ($folders as $folder) {
                 // skip files and dot-folders
-                if (!is_dir($pluginDir . '/' . $folder) ||strpos($folder, '.') === 0) {
+                if (!is_dir($vendorPath) ||strpos($vendorFolder, '.') === 0) {
                     continue;
                 }
-                if (!file_exists("{$pluginDir}/{$folder}/Bootstrap.php")) {
-                    throw new \RuntimeException("Could not find Bootstrap.php in {$pluginDir}/{$folder}");
-                }
 
-                $className = "Plugin\\{$folder}\\Bootstrap";
-                $this->setPlugin($folder, $this->bootstrapPlugin($className));
+                $this->registerPluginNamespace($vendorPath, "{$vendorFolder}\\");
+
+                // iterate all plugin folders
+                foreach (scandir($vendorPath) as $pluginFolder) {
+                    $pluginPath = $vendorPath . '/' . $pluginFolder;
+
+                    // skip files and dot-folders
+                    if (!is_dir($pluginPath) ||strpos($pluginFolder, '.') === 0) {
+                        continue;
+                    }
+
+                    if (!file_exists("{$pluginPath}/Bootstrap.php")) {
+                        throw new \RuntimeException("Could not find Bootstrap.php in {$pluginPath}");
+                    }
+
+                    $className = "{$vendorFolder}\\{$pluginFolder}\\Bootstrap";
+                    $pluginInstance = $this->bootstrapPlugin($className);
+                    $this->setPlugin("{$vendorFolder}\\{$pluginFolder}", $pluginInstance);
+                }
             }
         }
+    }
+
+    private function registerPluginNamespace($path, $namespace)
+    {
+        $namespace = rtrim($namespace, '\\') . '\\';
+        $this->autoLoader->addPsr4($namespace, $path);
     }
 
     /**

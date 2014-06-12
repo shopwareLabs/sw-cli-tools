@@ -12,8 +12,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ShopwareCli\\": "src/",
-            "Plugin\\": "plugins/"
+            "ShopwareCli\\": "src/"
         }
     },
     "bin": ["bin/sw"]

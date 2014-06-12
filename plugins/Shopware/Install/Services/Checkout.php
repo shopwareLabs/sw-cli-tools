@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace Shopware\Install\Services;
 
 use ShopwareCli\Utilities;
 use ShopwareCli\Application\Logger;
@@ -9,7 +9,7 @@ use ShopwareCli\Application\Logger;
  * The checkout service will checkout a given repo with a given branch to a given destination
  *
  * Class Checkout
- * @package Plugin\ShopwareInstall\Services
+ * @package Shopware\Install\Services
  */
 class Checkout
 {
