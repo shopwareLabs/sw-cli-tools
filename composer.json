@@ -1,4 +1,6 @@
 {
+    "name": "shopware-ag/cli-tools",
+    "type": "application",
     "license": "MIT",
     "require": {
         "php": ">=5.3.2",
@@ -16,5 +18,10 @@
             "ShopwareCli\\": "src/"
         }
     },
-    "bin": ["bin/sw"]
+    "bin": ["bin/sw"],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
