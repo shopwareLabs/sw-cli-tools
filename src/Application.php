@@ -56,6 +56,9 @@ class Application extends \Symfony\Component\Console\Application
      */
     private function registerAutoLoader(ClassLoader $loader)
     {
-        $loader->addPsr4("Plugin\\", $this->container->get('path_provider')->getPluginPath());
+        $loader->addPsr4(
+            __NAMESPACE__ . "\\Plugin\\",
+            $this->container->get('path_provider')->getPluginPath()
+        );
     }
 }

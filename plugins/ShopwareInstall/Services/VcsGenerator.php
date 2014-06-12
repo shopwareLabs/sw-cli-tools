@@ -1,13 +1,13 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace ShopwareCli\Plugin\ShopwareInstall\Services;
 use ShopwareCli\Application\Logger;
 
 /**
  * creates the phpstorm vcs mapping file
  *
  * Class VcsGenerator
- * @package Plugin\ShopwareInstall\Services
+ * @package ShopwareCli\Plugin\ShopwareInstall\Services
  */
 class VcsGenerator
 {

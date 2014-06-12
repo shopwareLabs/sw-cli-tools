@@ -40,19 +40,20 @@ class PluginManager
     protected function readPlugins()
     {
         foreach ($this->pluginDirs as $pluginDir) {
-            $folders = scandir($pluginDir);
-
-            foreach ($folders as $folder) {
-                // skip files and dot-folders
-                if (!is_dir($pluginDir . '/' . $folder) ||strpos($folder, '.') === 0) {
+            /** @var $folder \DirectoryIterator */
+            foreach (new \DirectoryIterator($pluginDir) as $folder) {
+                if ($folder->isDot() || !$folder->isDir()) {
                     continue;
                 }
-                if (!file_exists("{$pluginDir}/{$folder}/Bootstrap.php")) {
-                    throw new \RuntimeException("Could not find Bootstrap.php in {$pluginDir}/{$folder}");
+
+                if (!file_exists($folder->getPathname().'/Bootstrap.php')) {
+                    throw new \RuntimeException(sprintf("Could not find Bootstrap.php in %s", $folder->getPathname()));
                 }
 
-                $className = "Plugin\\{$folder}\\Bootstrap";
-                $this->setPlugin($folder, $this->bootstrapPlugin($className));
+                $pluginName = $folder->getBasename();
+                $className = sprintf("ShopwareCli\\Plugin\\%s\\Bootstrap", $pluginName);
+
+                $this->setPlugin($pluginName, $this->bootstrapPlugin($className));
             }
         }
     }
@@ -121,5 +122,4 @@ class PluginManager
     {
         $this->plugins[$name] = $class;
     }
-
 }

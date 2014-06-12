@@ -1,8 +1,8 @@
 <?php
 
-namespace Plugin\ShopwareRunCli;
+namespace ShopwareCli\Plugin\ShopwareRunCli;
 
-use Plugin\ShopwareRunCli\Command\RunCliCommand;
+use ShopwareCli\Plugin\ShopwareRunCli\Command\RunCliCommand;
 use ShopwareCli\Application\ConsoleAwarePlugin;
 use ShopwareCli\Application\ContainerAwarePlugin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
