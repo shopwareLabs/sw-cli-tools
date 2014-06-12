@@ -3,8 +3,11 @@
 namespace ShopwareCli\Command\Helpers;
 
 use ShopwareCli\Config;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * Will trigger the PluginColumnRenderer until an valid answer was made. Will then return the corresponding plugin/answer
@@ -20,18 +23,19 @@ class PluginInputVerificator
     /** @var  PluginColumnRenderer */
     protected $outputRenderer;
 
-    protected $dialog;
-
     protected $small;
+    /**
+     * @var QuestionHelper
+     */
+    private $questionHelper;
 
-    public function __construct(InputInterface $input, OutputInterface $output, $dialog, $config, $small = false)
+    public function __construct(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper, $config, $small = false)
     {
-        $this->inputInterface = $input;
+        $this->inputInterface  = $input;
         $this->outputInterface = $output;
-        $this->dialog = $dialog;
+        $this->questionHelper  = $questionHelper;
 
         $this->small = $small;
-
         $this->outputRenderer = new PluginColumnRenderer($input, $output, $config, $small);
     }
 
@@ -41,9 +45,14 @@ class PluginInputVerificator
             system('clear');
             $this->outputRenderer->show($plugins);
 
-            $response = $this->dialog->ask(
-                $this->outputInterface,
+            $question = new Question(
                 $this->formatQuestion(count($plugins), $allowedAnswers)
+            );
+
+            $response = $this->questionHelper->ask(
+                $this->inputInterface,
+                $this->outputInterface,
+                $question
             );
 
             if (isset($plugins[$response - 1])) {
@@ -51,7 +60,8 @@ class PluginInputVerificator
             } elseif (in_array($response, $allowedAnswers)) {
                 return $response;
             } else {
-                $this->dialog->ask($this->outputInterface, '<error>Invalid answer, hit enter to continue</error>');
+                $question = new Question('<error>Invalid answer, hit enter to continue</error>');
+                $this->questionHelper->ask($this->inputInterface, $this->outputInterface, $question);
             }
         }
     }

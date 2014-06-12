@@ -7,6 +7,7 @@ use ShopwareCli\Command\Helpers\PluginOperationManager;
 use ShopwareCli\Command\Helpers\PluginInputVerificator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,11 +63,14 @@ class ZipCommand extends BaseCommand
         /** @var DialogHelper $dialog */
         $dialog = $this->getHelperSet()->get('dialog');
 
+        /** @var $questionHelper QuestionHelper */
+        $questionHelper = $this->getHelperSet()->get('question');
+
         $this->container->get('utilities')->cls();
 
         $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
 
-        $pluginSelector = new PluginInputVerificator($input, $output, $dialog, $this->container->get('config'), $small);
+        $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
 
         $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
 
