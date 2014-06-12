@@ -3,6 +3,7 @@
     "chmod": "0755",
     "directories": ["src"],
     "files": [
+        "LICENSE",
         "README.md",
         "config.yaml.dist",
         "vendor/autoload.php"
