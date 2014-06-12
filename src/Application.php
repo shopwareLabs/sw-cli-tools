@@ -16,6 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Application extends \Symfony\Component\Console\Application
 {
+    const NAME = 'sw-cli-tools';
+    const VERSION = '@package_version@';
+
     /**
      * @var ContainerInterface
      */
@@ -33,7 +36,7 @@ class Application extends \Symfony\Component\Console\Application
     {
         $this->loader = $loader;
 
-        parent::__construct('sw-cli-tools', '@package_version@');
+        parent::__construct(static::NAME, static::VERSION);
     }
 
     /**
