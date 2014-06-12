@@ -5,16 +5,12 @@ namespace ShopwareCli\Command;
 use ShopwareCli\Application\DependencyInjection;
 use ShopwareCli\Command\Helpers\PluginOperationManager;
 use ShopwareCli\Command\Helpers\PluginInputVerificator;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ZipCommand extends BaseCommand
 {
@@ -66,7 +62,6 @@ class ZipCommand extends BaseCommand
         /** @var DialogHelper $dialog */
         $dialog = $this->getHelperSet()->get('dialog');
 
-
         $this->container->get('utilities')->cls();
 
         $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
@@ -79,6 +74,7 @@ class ZipCommand extends BaseCommand
 
         if (!empty($names)) {
             $interactionManager->searchAndOperate($names, array($this, 'doZip'), $params);
+
             return;
         }
 

@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Plugin\Repositories;
 
-use ShopwareCli\Plugin\Factory;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Plugin\BaseRepository;
 

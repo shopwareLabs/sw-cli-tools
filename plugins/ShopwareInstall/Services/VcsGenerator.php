@@ -22,8 +22,6 @@ EOF;
 
     protected $templateVcsMappingDirectory = '<mapping directory="$PROJECT_DIR$%s" vcs="Git" />';
 
-
-
     public function createVcsMapping($installDir, $paths)
     {
         Logger::info("<info>Generating VCS mapping</info>");

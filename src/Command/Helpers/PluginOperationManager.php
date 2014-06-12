@@ -76,6 +76,7 @@ class PluginOperationManager
                 foreach ($plugins as $plugin) {
                     $callback($plugin, $params);
                 }
+
                 return;
             }
         }

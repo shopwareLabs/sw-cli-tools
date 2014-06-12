@@ -4,10 +4,6 @@ namespace ShopwareCli;
 
 use Composer\Autoload\ClassLoader;
 use ShopwareCli\Application\DependencyInjection;
-use ShopwareCli\Services\PathProvider\PathProvider;
-use ShopwareCli\Application\PluginManager;
-use ShopwareCli\Command;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Main application of the cli tools

@@ -3,7 +3,6 @@
 namespace ShopwareCli\Plugin\Repositories;
 
 use ShopwareCli\Plugin\BaseRepository;
-use ShopwareCli\Plugin\Factory;
 use ShopwareCli\Struct\Plugin;
 
 /**
@@ -43,7 +42,7 @@ class ShopwareGithub extends BaseRepository
 
         return $plugins;
     }
-    
+
     public function getPlugins()
     {
         echo "Reading Shopware repo {$this->name}\n";
@@ -60,12 +59,11 @@ class ShopwareGithub extends BaseRepository
             // Map repo name
             $repo['name'] = $this->mapping[$repo['name']];
             $cloneUrl = $this->useHttp ? $repo['clone_url'] : $repo['ssh_url'];
-            
+
             $plugins[] = $this->createPlugin($cloneUrl, $repo['name']);
         }
 
         return $plugins;
     }
-
 
 }

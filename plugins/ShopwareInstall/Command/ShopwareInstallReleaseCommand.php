@@ -3,14 +3,10 @@ namespace Plugin\ShopwareInstall\Command;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
 {
@@ -186,7 +182,7 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
+     * @param  InputInterface    $input
      * @throws \RuntimeException
      */
     protected function validateInput(InputInterface $input)

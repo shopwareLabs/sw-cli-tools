@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Services\PathProvider\DirectoryGateway;
 
-
 class XdgGateway implements DirectoryGatewayInterface
 {
     /**

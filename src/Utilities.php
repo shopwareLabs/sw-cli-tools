@@ -21,12 +21,12 @@ class Utilities
     /**
      * Ask for a valid shopware path until the user enters it
      *
-     * @param null $shopwarePath
+     * @param  null              $shopwarePath
      * @param $output
-     * @param DialogHelper $dialog
+     * @param  DialogHelper      $dialog
      * @return mixed|null|string
      */
-    function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
+    public function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -54,6 +54,7 @@ class Utilities
         if (!$this->isShopwareInstallation($shopwarePathReal)) {
             throw new \RuntimeException("{$shopwarePathReal} is not a valid shopware path");
         }
+
         return $shopwarePathReal;
     }
 
@@ -63,11 +64,11 @@ class Utilities
      * so keeping "exec" for the time being
      *
      * @param $cmd
-     * @param bool $mayFail
+     * @param  bool              $mayFail
      * @return string
      * @throws \RuntimeException
      */
-    function executeCommand($cmd, $mayFail=false)
+    public function executeCommand($cmd, $mayFail=false)
     {
         $output = array();
         $returnCode = 0;
@@ -83,7 +84,7 @@ class Utilities
     /**
      * Clears the screen in the terminal
      */
-    function cls()
+    public function cls()
     {
         system('clear');
     }
@@ -93,7 +94,7 @@ class Utilities
      *
      * @param $path
      */
-    function changeDir($path)
+    public function changeDir($path)
     {
         if (!chdir($path)) {
             echo "Could not cd into $path";

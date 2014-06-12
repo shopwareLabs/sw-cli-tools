@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Plugin\Repositories;
 
-use ShopwareCli\Plugin\Factory;
 use ShopwareCli\Plugin\BaseRepository;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,7 +15,6 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
     {
         $this->container = $container;
     }
-
 
     public function getPluginByName($name)
     {
@@ -45,6 +43,7 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
                     $plugins[] = $this->createPlugin($cloneUrl, $name);
                 }
         }
+
         return $plugins;
     }
 

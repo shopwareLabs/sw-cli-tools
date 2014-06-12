@@ -35,7 +35,6 @@ db.password = %s
 
 EOF;
 
-
     public function writeConfigPhp($installDir, $user, $password, $name, $host, $port=3306)
     {
         Logger::info("<info>Writing config.php</info>");

@@ -113,8 +113,8 @@ class ReleaseDownloader
     /**
      * Download a file from $url to $file
      *
-     * @param string $url
-     * @param string $file
+     * @param  string            $url
+     * @param  string            $file
      * @throws \RuntimeException
      */
     private function download($url, $file)

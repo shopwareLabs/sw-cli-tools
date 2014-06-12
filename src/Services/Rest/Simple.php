@@ -24,9 +24,8 @@ class Simple implements RestInterface
           )
         );
 
-
         $parameters = http_build_query($parameters, '', "&");
-        
+
         $parameters = empty($parameters) ? '' : '?' . $parameters;
 
         $context = stream_context_create($opts);

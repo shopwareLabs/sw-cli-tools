@@ -24,7 +24,7 @@ class Install
         $this->writer = $writer;
     }
 
-    function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master')
+    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master')
     {
         $pluginName = $plugin->name;
 
@@ -40,7 +40,7 @@ class Install
         return;
     }
 
-    function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
+    public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . "/" . $plugin->name;

@@ -68,7 +68,6 @@ class Config implements \ArrayAccess
         return $this->configArray['repositories'];
     }
 
-
     public function offsetExists($offset)
     {
         return isset($this->configArray[$offset]);
@@ -88,6 +87,5 @@ class Config implements \ArrayAccess
     {
         unset($this->configArray[$offset]);
     }
-
 
 }

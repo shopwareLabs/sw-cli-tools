@@ -5,16 +5,12 @@ namespace ShopwareCli\Command;
 use ShopwareCli\Application\DependencyInjection;
 use ShopwareCli\Command\Helpers\PluginOperationManager;
 use ShopwareCli\Command\Helpers\PluginInputVerificator;
-use ShopwareCli\OutputWriter\OutputWriterInterface;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class InstallCommand extends BaseCommand
 {
@@ -91,6 +87,7 @@ class InstallCommand extends BaseCommand
             $params['output'] = $output;
             $params['branch'] = $branch;
             $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
+
             return;
         }
 
@@ -108,16 +105,17 @@ class InstallCommand extends BaseCommand
 
     }
 
-
     protected function getShopwarePath()
     {
         $this->container->get('utilities')->changeDir($this->shopwarePath);
+
         return $this->shopwarePath;
     }
 
     protected function askActivatePluginQuestion(DialogHelper $dialog, $output)
     {
         $activate = $dialog->askConfirmation($output, '<question>Activate plugins after checkout?</question> <comment>[Y/n]</comment> ', true);
+
         return $activate;
     }
 

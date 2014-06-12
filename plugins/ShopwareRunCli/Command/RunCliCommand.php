@@ -54,7 +54,7 @@ EOF
 
     }
 
-    function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
+    public function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -64,11 +64,10 @@ EOF
             if ($this->container->get('utilities')->isShopwareInstallation($shopwarePath)) {
                 return $shopwarePath;
             }
-        } while(($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
+        } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
 
         return $dialog->askAndValidate($output, "Path to your Shopware installation: ", array($this->container->get('utilities'), 'validateShopwarePath'));
 
     }
-
 
 }

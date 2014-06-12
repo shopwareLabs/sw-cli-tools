@@ -2,13 +2,10 @@
 
 namespace Plugin\ShopwareRunCli;
 
-
 use Plugin\ShopwareRunCli\Command\RunCliCommand;
 use ShopwareCli\Application\ConsoleAwarePlugin;
 use ShopwareCli\Application\ContainerAwarePlugin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-
 
 class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
 {
@@ -18,7 +15,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
     {
         $this->container = $container;
     }
-
 
     /**
      * Return an array with instances of your console commands here

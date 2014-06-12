@@ -28,11 +28,13 @@ class Zip
         $this->utilities = $utilities;
     }
 
-    function zip(Plugin $plugin, $path, $zipTo, $branch) {
+    public function zip(Plugin $plugin, $path, $zipTo, $branch)
+    {
         $this->checkout->checkout($plugin, $path, $branch);
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
         $this->utilities->executeCommand("zip -r $outputFile {$plugin->module} -x *.git*");
+
         return $outputFile;
     }
 }

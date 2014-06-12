@@ -29,6 +29,7 @@ class File implements CacheInterface
     {
         if ($this->exists($key)) {
             $content = file_get_contents($this->path . $key);
+
             return $content ?: false;
         }
 
@@ -49,6 +50,7 @@ class File implements CacheInterface
         }
 
         $validTime = @$this->info[$key]['valid'];
+
         return time() - filectime($file) < $validTime;
 
     }
@@ -86,6 +88,7 @@ class File implements CacheInterface
         } else {
             $content = json_decode($content, true);
         }
+
         return $content;
     }
 

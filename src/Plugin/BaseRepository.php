@@ -31,12 +31,12 @@ abstract class BaseRepository implements RepositoryInterface
     {
         $type = array_slice(explode('\\', get_class($this)), -1);
         $type = $type[0];
+
         return PluginFactory::getPlugin($name, $url, $this->name, $type);
     }
 
     abstract public function getPluginByName($name);
 
     abstract public function getPlugins();
-
 
 }

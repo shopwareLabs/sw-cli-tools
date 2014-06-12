@@ -39,7 +39,7 @@ class Logger
         }
     }
 
-    public  static function debug($message)
+    public static function debug($message)
     {
         if (self::$logLevel >= self::LEVEL_DEBUG) {
             self::printMessage($message);

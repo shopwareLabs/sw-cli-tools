@@ -11,7 +11,6 @@ use Plugin\ShopwareInstall\Services\ConfigWriter;
 use Plugin\ShopwareInstall\Services\Database;
 use Plugin\ShopwareInstall\Services\Demodata;
 
-
 /**
  * This install service will run all steps needed to setup shopware in the correct order
  *
@@ -77,7 +76,6 @@ class Vcs
         Logger::info("<info>Install completed</info>");
     }
 
-
     private function getDestinationPath($installDir, $destination)
     {
         return $installDir . $destination;
@@ -95,6 +93,7 @@ class Vcs
         if (!$core['destination'] || !$core['ssh'] || !$core['http']) {
             throw new  \RuntimeException('You need to have a repo "core" defined in the config.yaml of this plugin');
         }
+
         return $core;
     }
 

@@ -3,9 +3,7 @@
 namespace ShopwareCli\Command\Helpers;
 
 use ShopwareCli\Config;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -48,7 +46,6 @@ class PluginInputVerificator
                 $this->formatQuestion(count($plugins), $allowedAnswers)
             );
 
-
             if (isset($plugins[$response - 1])) {
                 return $plugins[$response - 1];
             } elseif (in_array($response, $allowedAnswers)) {
@@ -73,6 +70,7 @@ class PluginInputVerificator
                     return sprintf('"<comment>%s</comment>"', $option);
                 }, $allowedAnswers
             );
+
             return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
         }
     }

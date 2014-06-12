@@ -3,15 +3,11 @@ namespace Plugin\ShopwareInstall\Command;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ShopwareClearCacheCommand extends BaseCommand
 {
@@ -62,12 +58,13 @@ EOF
         if (!$this->container->get('utilities')->isShopwareInstallation($path)) {
             throw new \RuntimeException("'$path' is not a valid shopware path");
         }
+
         return rtrim($path, '/');
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return mixed
      */
     private function checkPath(InputInterface $input, OutputInterface $output)

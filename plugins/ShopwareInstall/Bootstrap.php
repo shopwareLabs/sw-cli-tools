@@ -29,7 +29,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
         $this->populateContainer();
     }
 
-
     /**
      * Return an array with instances of your console commands here
      *
@@ -55,7 +54,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('logger'))
             ->addArgument($this->container->get('path_provider')->getCachePath());
 
-
         $this->container->register('shopware-install.vcs_generator', 'Plugin\ShopwareInstall\Services\VcsGenerator');
         $this->container->register('shopware-install.config_writer', 'Plugin\ShopwareInstall\Services\ConfigWriter');
         $this->container->register('shopware-install.database', 'Plugin\ShopwareInstall\Services\Database')
@@ -65,7 +63,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('utilities'))
             ->addArgument($this->container->get('path_provider'));
 
-
         $this->container->register('shopware_vcs_install_service', 'Plugin\ShopwareInstall\Services\Install\Vcs')
             ->addArgument(new Reference('shopware_checkout_service'))
             ->addArgument(new Reference('config'))
@@ -73,7 +70,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('shopware-install.config_writer'))
             ->addArgument(new Reference('shopware-install.database'))
             ->addArgument(new Reference('shopware-install.demodata'));
-
 
         $this->container->register('shopware_release_install_service', 'Plugin\ShopwareInstall\Services\Install\Release')
             ->addArgument(new Reference('shopware_release_download_service'))

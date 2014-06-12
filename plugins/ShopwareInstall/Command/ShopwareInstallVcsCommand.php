@@ -3,14 +3,10 @@ namespace Plugin\ShopwareInstall\Command;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand
 {
@@ -102,7 +98,6 @@ EOF
 
         $suggestion = $installDir ?: $suggestion;
 
-
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
             $databaseName = $dialog->ask($output, "Please provide the database name you want to use <{$suggestion}>: ");
@@ -143,6 +138,7 @@ EOF
         if (is_dir($path)) {
             throw new \RuntimeException("Path '{$path}'' is not empty");
         }
+
         return $path;
     }
 }

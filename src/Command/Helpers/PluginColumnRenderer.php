@@ -4,9 +4,7 @@ namespace ShopwareCli\Command\Helpers;
 
 use ShopwareCli\Config;
 use ShopwareCli\Struct\Plugin;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -63,7 +61,6 @@ class PluginColumnRenderer
             $plugin1 = $currentPlugins[0];
             $plugin2 = $currentPlugins[1];
             $plugin3 = isset($currentPlugins[2]) ? $currentPlugins[2] : null;
-
 
             if ($plugin1 && $plugin2 && $plugin3) {
                 $this->outputInterface->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2, $plugin3)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), $offset * 2 + $count, $this->formatPlugin($plugin3)));
@@ -139,6 +136,7 @@ class PluginColumnRenderer
             $baseMask = str_replace('#COL_START#', "<fg={$color}>", $baseMask);
             $baseMask = str_replace('#COL_END#', "</fg={$color}>", $baseMask);
         }
+
         return $baseMask;
     }
 
@@ -146,7 +144,6 @@ class PluginColumnRenderer
     {
         return $this->formatModuleName($plugin) . '/' . $plugin->name;
     }
-
 
     private function formatModuleName(Plugin $plugin)
     {
@@ -171,8 +168,8 @@ class PluginColumnRenderer
         }
 
         $color = $repos[$plugin->repoType]['repositories'][$plugin->repository]['color'];
+
         return $color;
     }
-
 
 }

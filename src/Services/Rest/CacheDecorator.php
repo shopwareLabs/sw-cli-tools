@@ -49,6 +49,7 @@ class CacheDecorator implements RestInterface
                 $content = json_decode($content, true);
             }
         }
+
         return $content;
     }
 

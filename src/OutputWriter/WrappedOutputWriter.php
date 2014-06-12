@@ -22,5 +22,4 @@ class WrappedOutputWriter implements OutputWriterInterface
         call_user_func($this->wrapped, array($text));
     }
 
-
 }

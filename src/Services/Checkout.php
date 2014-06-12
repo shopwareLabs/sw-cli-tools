@@ -27,7 +27,8 @@ class Checkout
         $this->writer = $writer;
     }
 
-    function checkout(Plugin $plugin, $path, $branch=null) {
+    public function checkout(Plugin $plugin, $path, $branch=null)
+    {
         $cloneUrl = $plugin->cloneUrl;
         $pluginName = $plugin->name;
         $destPath = $plugin->module . "/" . $plugin->name;
@@ -42,6 +43,7 @@ class Checkout
             $output = $this->utilities->executeCommand("git log HEAD..origin/master --oneline");
             if (trim($output) === '') {
                 $this->writer->write("Plugin '$pluginName' ist Up to date");
+
                 return;
             }
 
@@ -54,9 +56,10 @@ class Checkout
                 $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
             }
             $this->writer->write("Plugin '$pluginName' successfully updated.\n");
+
             return;
         }
-        
+
         $output = $this->utilities->executeCommand("git clone $cloneUrl $absPath");
         if ($branch) {
             $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");

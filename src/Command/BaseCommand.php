@@ -35,8 +35,8 @@ abstract class BaseCommand extends Command implements ContainerAwareInterface
     /**
      * Will register the 'writeln' method of the output interface as WrappedOutputWriter to the DI.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return int|void
      */
     public function run(InputInterface $input, OutputInterface $output)

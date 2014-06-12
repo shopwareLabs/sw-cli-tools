@@ -37,6 +37,7 @@ class Database
         if (!$this->connection) {
             throw new \RuntimeException("Connection was not created");
         }
+
         return $this->connection;
     }
 

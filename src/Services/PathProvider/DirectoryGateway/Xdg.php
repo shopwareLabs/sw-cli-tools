@@ -29,12 +29,14 @@ class Xdg
     public function getConfigDirs()
     {
         $configDirs = getenv('XDG_CONFIG_DIRS') ?  explode(':', getenv('XDG_CONFIG_DIRS')) : array('/etc/xdg');
+
         return array_merge(array($this->getHomeConfigDir()), $configDirs);
     }
 
     public function getDataDirs()
     {
         $dataDirs = getenv('XDG_DATA_DIRS') ?  explode(':', getenv('XDG_DATA_DIRS')) : array('/usr/local/share', '/usr/share');
+
         return array_merge(array($this->getHomeDataDir()), $dataDirs);
     }
 

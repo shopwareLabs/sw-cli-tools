@@ -2,14 +2,10 @@
 
 namespace ShopwareCli\Command;
 
-use ShopwareCli\Plugin\Factory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CacheGetCommand extends BaseCommand
 {
@@ -26,15 +22,15 @@ class CacheGetCommand extends BaseCommand
             );
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $keys = $input->getArgument('keys');
 
         if (empty($keys)) {
-            foreach($this->container->get('cache')->getKeys() as $key) {
+            foreach ($this->container->get('cache')->getKeys() as $key) {
                 $output->writeln($key);
             }
+
             return;
         }
 
@@ -44,6 +40,5 @@ class CacheGetCommand extends BaseCommand
         }
 
     }
-
 
 }

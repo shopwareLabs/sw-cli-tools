@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ShopwareCli\Services\PathProvider;
 
 use ShopwareCli\Services\PathProvider\DirectoryGateway\DirectoryGatewayInterface;
@@ -16,7 +15,6 @@ class PathProvider
     {
         $this->directoryGateway = $directoryGateway;
     }
-
 
     /**
      * @return mixed
@@ -45,8 +43,5 @@ class PathProvider
     {
         return $this->directoryGateway->getConfigDir();
     }
-
-
-
 
 }
