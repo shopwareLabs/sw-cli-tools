@@ -1,22 +1,32 @@
 <?php
+use ShopwareCli\Services\PathProvider\DirectoryGateway\CliToolGateway;
+use ShopwareCli\Services\PathProvider\DirectoryGateway\Xdg;
+use ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway;
 
 class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
 {
     public function testCliToolGateway()
     {
-        $gateway = new \ShopwareCli\Services\PathProvider\DirectoryGateway\CliToolGateway();
+        $gateway = new CliToolGateway('/some/dir/');
 
-        $this->assertStringMatchesFormat('%Aplugins', $gateway->getPluginDir());
-        $this->assertStringMatchesFormat('%Acache', $gateway->getCacheDir());
-        $this->assertStringMatchesFormat('%Aassets', $gateway->getAssetsDir());
+        $this->assertEquals('/some/dir/plugins', $gateway->getPluginDir());
+        $this->assertEquals('/some/dir/assets', $gateway->getAssetsDir());
+        $this->assertEquals('/some/dir/cache', $gateway->getCacheDir());
+        $this->assertEquals('/some/dir', $gateway->getConfigDir());
     }
 
     public function testXdgGateway()
     {
-        $gateway = new \ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway(new \ShopwareCli\Services\PathProvider\DirectoryGateway\Xdg());
+        putenv('HOME=/tmp/');
+        putenv('XDG_DATA_HOME=/tmp/xdg-data');
+        putenv('XDG_CONFIG_HOME=/tmp/xdg-config');
+        putenv('XDG_CACHE_HOME=/tmp/xdg-cache');
 
-        $this->assertStringMatchesFormat('%Aplugins', $gateway->getPluginDir());
-        $this->assertStringMatchesFormat('%A.cache/sw-cli-tools', $gateway->getCacheDir());
-        $this->assertStringMatchesFormat('%Aassets', $gateway->getAssetsDir());
+        $gateway = new XdgGateway(new Xdg());
+
+        $this->assertEquals('/tmp/xdg-config/sw-cli-tools/plugins', $gateway->getPluginDir());
+        $this->assertEquals('/tmp/xdg-data/sw-cli-tools/assets', $gateway->getAssetsDir());
+        $this->assertEquals('/tmp/xdg-cache/sw-cli-tools', $gateway->getCacheDir());
+        $this->assertEquals('/tmp/xdg-config/sw-cli-tools', $gateway->getConfigDir());
     }
 }
