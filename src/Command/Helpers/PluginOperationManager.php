@@ -9,7 +9,7 @@ use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Handles operations on plugins. You can either search for a single plugin, force the use to select one if multiple
+ * Handles operations on plugins. You can either search for a single plugin, force the user to select one if multiple
  * plugins where found and then operate on that plugin (searchAndOperate) or run the plugin prompt until the user
  * selects 'all' or 'exit' (operationLoop).
  *
@@ -34,6 +34,14 @@ class PluginOperationManager
         $this->utilities = $utilities;
     }
 
+    /**
+     * Search the pluginManager by $name and operate on the matching plugin. If multiple plugins are found
+     * the users is asked for a selection. If no plugin was found, a corresponding message is printed
+     *
+     * @param $names
+     * @param $callback
+     * @param $params
+     */
     public function searchAndOperate($names, $callback, $params)
     {
         foreach ($names as $name) {
@@ -58,6 +66,12 @@ class PluginOperationManager
 
     }
 
+    /**
+     * Show the plugin list to the user, until "all" or "exit" was entered
+     *
+     * @param $callback
+     * @param $params
+     */
     public function operationLoop($callback, $params)
     {
         $plugins = $this->pluginManager->getPlugins();

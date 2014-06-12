@@ -13,6 +13,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Zip a plugin
+ *
+ * Class ZipCommand
+ * @package ShopwareCli\Command
+ */
 class ZipCommand extends BaseCommand
 {
     protected $utilities;

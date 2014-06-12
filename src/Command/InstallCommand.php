@@ -12,6 +12,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Install a plugin
+ *
+ * Class InstallCommand
+ * @package ShopwareCli\Command
+ */
 class InstallCommand extends BaseCommand
 {
     /**

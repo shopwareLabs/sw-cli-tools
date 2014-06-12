@@ -6,6 +6,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Clear the *internal* cache of the CLI tools (used for e.g. plugin repos)
+ *
+ * Class CacheCommand
+ * @package ShopwareCli\Command
+ */
 class CacheCommand extends BaseCommand
 {
     protected $utilities;

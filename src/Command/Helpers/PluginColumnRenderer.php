@@ -29,6 +29,11 @@ class PluginColumnRenderer
         $this->config = $config;
     }
 
+    /**
+     * Show $allPlugins formatted in columns
+     *
+     * @param $allPlugins
+     */
     public function show($allPlugins)
     {
         $count = 1;
@@ -80,6 +85,11 @@ class PluginColumnRenderer
         }
     }
 
+    /**
+     * Print a little legend with the repository color keys
+     *
+     * @param $plugins
+     */
     private function printLegend($plugins)
     {
         if (!$this->config['general']['enableRepositoryColors']) {
@@ -101,6 +111,12 @@ class PluginColumnRenderer
         $this->outputInterface->writeln('Legend: ' . implode(', ', $output) . "\n");
     }
 
+    /**
+     * Returns a sprintf mask for the passed plugins
+     *
+     * @param $plugins
+     * @return string
+     */
     private function generateMaskForPlugins($plugins)
     {
         if ($this->small) {
@@ -125,6 +141,13 @@ class PluginColumnRenderer
 
     }
 
+    /**
+     * Modifies the baseMask for a plugin by setting the repository colors
+     *
+     * @param $plugin
+     * @param $baseMask
+     * @return mixed
+     */
     private function getMaskForPlugin($plugin, $baseMask)
     {
         $color = $this->getColorForPlugin($plugin);
@@ -145,6 +168,12 @@ class PluginColumnRenderer
         return $this->formatModuleName($plugin) . '/' . $plugin->name;
     }
 
+    /**
+     * Format the module name - in "small" mode, only the first char is shown (F/B/C)
+     *
+     * @param Plugin $plugin
+     * @return mixed
+     */
     private function formatModuleName(Plugin $plugin)
     {
         if ($this->small) {
@@ -155,6 +184,8 @@ class PluginColumnRenderer
     }
 
     /**
+     * Get the configured color for the given plugin's repository
+     *
      * @param $plugin
      * @return mixed
      */

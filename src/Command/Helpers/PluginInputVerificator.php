@@ -39,6 +39,14 @@ class PluginInputVerificator
         $this->outputRenderer = new PluginColumnRenderer($input, $output, $config, $small);
     }
 
+    /**
+     * Ask the user to select one of the given plugins or enter one of $allowedAnswers
+     * Will loop until a valid choice was made
+     *
+     * @param $plugins
+     * @param array $allowedAnswers
+     * @return string
+     */
     public function selectPlugin($plugins, $allowedAnswers = array('all'))
     {
         while (true) {
@@ -66,6 +74,13 @@ class PluginInputVerificator
         }
     }
 
+    /**
+     * Format the question for the user
+     *
+     * @param $count
+     * @param $allowedAnswers
+     * @return string
+     */
     private function formatQuestion($count, $allowedAnswers)
     {
         $template = "\n<question>Which plugin(s) do you want to install?</question> Type <comment>1-{$count}</comment> %s ";

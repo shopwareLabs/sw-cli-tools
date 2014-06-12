@@ -7,6 +7,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Read the internal CLI cache. Used for e.g. plugin repos
+ *
+ * Class CacheGetCommand
+ * @package ShopwareCli\Command
+ */
 class CacheGetCommand extends BaseCommand
 {
     protected $utilities;
