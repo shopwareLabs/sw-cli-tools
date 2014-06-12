@@ -2,14 +2,15 @@
 
 namespace ShopwareCli\Plugin\Repositories;
 
-use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Plugin\BaseRepository;
 
 class BitBucket extends BaseRepository
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getPluginByName($name)
     {
-        /** @var Plugin $plugin */
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
             if (stripos($plugin->name, $name) === false) {
@@ -20,6 +21,9 @@ class BitBucket extends BaseRepository
         return $plugins;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPlugins()
     {
         echo "Reading BitBucket repo {$this->name}\n";

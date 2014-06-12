@@ -3,7 +3,6 @@
 namespace ShopwareCli\Plugin\Repositories;
 
 use ShopwareCli\Plugin\BaseRepository;
-use ShopwareCli\Struct\Plugin;
 
 /**
  * This currently only supports a finite list of shopware plugins on github, as currently the
@@ -30,9 +29,11 @@ class ShopwareGithub extends BaseRepository
         'FactFinder' => 'Frontend_OmecoFactFinder',
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPluginByName($name)
     {
-        /** @var Plugin $plugin */
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
             if (stripos($plugin->name, $name) === false) {
@@ -43,6 +44,9 @@ class ShopwareGithub extends BaseRepository
         return $plugins;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPlugins()
     {
         echo "Reading Shopware repo {$this->name}\n";
@@ -65,5 +69,4 @@ class ShopwareGithub extends BaseRepository
 
         return $plugins;
     }
-
 }

@@ -27,6 +27,11 @@ abstract class BaseRepository implements RepositoryInterface
         $this->color = $color;
     }
 
+    /**
+     * @param string $url
+     * @param string $name
+     * @return \ShopwareCli\Struct\Plugin
+     */
     public function createPlugin($url, $name)
     {
         $type = array_slice(explode('\\', get_class($this)), -1);
@@ -34,9 +39,4 @@ abstract class BaseRepository implements RepositoryInterface
 
         return PluginFactory::getPlugin($name, $url, $this->name, $type);
     }
-
-    abstract public function getPluginByName($name);
-
-    abstract public function getPlugins();
-
 }

@@ -16,9 +16,11 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPluginByName($name)
     {
-        /** @var Plugin $plugin */
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
             if (stripos($plugin->name, $name) === false) {
@@ -29,6 +31,9 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
         return $plugins;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPlugins()
     {
         $config = $this->container->get('config');
@@ -38,13 +43,12 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
 
         $plugins = array();
         foreach ($config['repositories']['SimpleList']['repositories'] as $repositoryName => $repository) {
-                foreach ($repository['plugins'] as $name => $cloneUrls) {
-                    $cloneUrl = $this->useHttp ? $cloneUrls['http'] : $cloneUrls['ssh'];
-                    $plugins[] = $this->createPlugin($cloneUrl, $name);
-                }
+            foreach ($repository['plugins'] as $name => $cloneUrls) {
+                $cloneUrl = $this->useHttp ? $cloneUrls['http'] : $cloneUrls['ssh'];
+                $plugins[] = $this->createPlugin($cloneUrl, $name);
+            }
         }
 
         return $plugins;
     }
-
 }
