@@ -36,11 +36,10 @@ class BitBucket extends BaseRepository
             foreach ($repo['links']['clone'] as $cloneUrl) {
                 $cloneUrls[$cloneUrl['name']] = $cloneUrl['href'];
             }
-            $cloneUrl = $this->useHttp ? $cloneUrls['https'] : $cloneUrls['ssh'];
 
-            $cloneUrl = str_replace("shopwareAG@", "", $cloneUrl);
+            $cloneUrls['https'] = str_replace("shopwareAG@", "", $cloneUrls['https']);
 
-            $plugins[] = $this->createPlugin($cloneUrl, $repo['name']);
+            $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['https'], $repo['name']);
         }
 
         return $plugins;

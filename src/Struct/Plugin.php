@@ -14,7 +14,9 @@ class Plugin extends Struct
 {
     public $name;
 
-    public $cloneUrl;
+    public $cloneUrlHttp;
+
+    public $cloneUrlSsh;
 
     public $module;
 

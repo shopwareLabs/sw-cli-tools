@@ -6,59 +6,23 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
- * Class RepositoryFactory
+ * Class PluginProvider
  * @package ShopwareCli\Plugin
  */
-class RepositoryFactory
+class PluginProvider
 {
 
     /** @var \Symfony\Component\DependencyInjection\Container  */
     protected $container;
 
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
     protected $repos = array();
     protected $sortBy;
 
-    public function factory($useHttp)
+    public function __construct(Container $container)
     {
-        $config = $this->container->get('config');
-        $this->sortBy = $config['general']['sortBy'];
+        $this->container = $container;
 
-        foreach ($config->getRepositories() as $type => $data) {
-            $className = 'ShopwareCli\\Plugin\\Repositories\\' . $type;
-
-            $options = array();
-            if (isset($data['config'])) {
-                $options = array(
-                    'base_url' => $data['config']['endpoint'],
-                    'username' => $data['config']['username'],
-                    'password' => $data['config']['password']
-                );
-            }
-
-            foreach ($data['repositories'] as $name => $repoConfig) {
-                $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
-
-                $repo = new $className(
-                    isset($repoConfig['url']) ? $repoConfig['url'] : '',
-                    $useHttp,
-                    $name,
-                    $this->container->get('rest_service_factory')->factory($options, $cacheTime)
-                );
-                $this->repos[] = $repo;
-
-                if ($repo instanceof ContainerAwareInterface) {
-                    $repo->setContainer($this->container);
-                }
-            }
-
-        }
-
-        return $this;
+        $this->initRepositories();
     }
 
     protected function sortPlugins($plugins)
@@ -106,5 +70,40 @@ class RepositoryFactory
         }
 
         return $this->sortPlugins($result);
+    }
+
+    private function initRepositories()
+    {
+        $config = $this->container->get('config');
+        $this->sortBy = $config['general']['sortBy'];
+
+        foreach ($config->getRepositories() as $type => $data) {
+            $className = 'ShopwareCli\\Plugin\\Repositories\\' . $type;
+
+            $options = array();
+            if (isset($data['config'])) {
+                $options = array(
+                    'base_url' => $data['config']['endpoint'],
+                    'username' => $data['config']['username'],
+                    'password' => $data['config']['password']
+                );
+            }
+
+            foreach ($data['repositories'] as $name => $repoConfig) {
+                $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
+
+                $repo = new $className(
+                    isset($repoConfig['url']) ? $repoConfig['url'] : '',
+                    $name,
+                    $this->container->get('rest_service_factory')->factory($options, $cacheTime)
+                );
+                $this->repos[] = $repo;
+
+                if ($repo instanceof ContainerAwareInterface) {
+                    $repo->setContainer($this->container);
+                }
+            }
+
+        }
     }
 }

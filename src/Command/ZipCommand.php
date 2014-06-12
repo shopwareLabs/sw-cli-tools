@@ -74,13 +74,13 @@ class ZipCommand extends BaseCommand
 
         $this->container->get('utilities')->cls();
 
-        $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
+        $pluginManager = $this->container->get('plugin_provider');
 
         $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
 
         $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
 
-        $params = array('output' => $output, 'branch' => $branch);
+        $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
 
         if (!empty($names)) {
             $interactionManager->searchAndOperate($names, array($this, 'doZip'), $params);
@@ -94,7 +94,7 @@ class ZipCommand extends BaseCommand
 
     public function doZip($plugin, $params)
     {
-        $this->container->get('zip_service')->zip($plugin, $this->getTempDir(), $this->getZipDir(), $params['branch']);
+        $this->container->get('zip_service')->zip($plugin, $this->getTempDir(), $this->getZipDir(), $params['branch'], $params['useHttp']);
     }
 
     protected function getTempDir()

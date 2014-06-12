@@ -8,6 +8,8 @@ use ShopwareCli\Plugin\BaseRepository;
  * This currently only supports a finite list of shopware plugins on github, as currently the
  * repository names on github are not compliant with the shopwareCli tools
  *
+ * This could also be replaces with a SimpleList having all the following repositories in the config.yaml
+ *
  * Class ShopwareGithub
  * @package ShopwareCli\Plugin\Repositories
  */
@@ -62,9 +64,8 @@ class ShopwareGithub extends BaseRepository
 
             // Map repo name
             $repo['name'] = $this->mapping[$repo['name']];
-            $cloneUrl = $this->useHttp ? $repo['clone_url'] : $repo['ssh_url'];
 
-            $plugins[] = $this->createPlugin($cloneUrl, $repo['name']);
+            $plugins[] = $this->createPlugin($repo['ssh_url'], $repo['clone_url'], $repo['name']);
         }
 
         return $plugins;

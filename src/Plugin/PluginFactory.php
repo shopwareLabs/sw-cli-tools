@@ -16,18 +16,20 @@ class PluginFactory
      * Input is a name like Frontend_SwagBusinessEssentials
      *
      * @param $name
-     * @param $cloneUrl
+     * @param $sshUrl
+     * @param $httpUrl
      * @param $repoName
      * @param $repoType
      * @return Plugin
      */
-    public static function getPlugin($name, $cloneUrl, $repoName, $repoType = null)
+    public static function getPlugin($name, $sshUrl, $httpUrl, $repoName, $repoType = null)
     {
         $plugin = new Plugin();
 
         self::setPluginModuleFromName($name, $plugin);
 
-        $plugin->cloneUrl = $cloneUrl;
+        $plugin->cloneUrlSsh = $sshUrl;
+        $plugin->cloneUrlHttp = $httpUrl;
         $plugin->repository = $repoName;
         $plugin->repoType = $repoType;
 

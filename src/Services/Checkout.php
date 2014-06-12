@@ -27,9 +27,13 @@ class Checkout
         $this->writer = $writer;
     }
 
-    public function checkout(Plugin $plugin, $path, $branch=null)
+    public function checkout(Plugin $plugin, $path, $branch=null, $useHttp=false)
     {
-        $cloneUrl = $plugin->cloneUrl;
+        if ($useHttp) {
+            $cloneUrl = $plugin->cloneUrlHttp;
+        } else {
+            $cloneUrl = $plugin->cloneUrlSsh;
+        }
         $pluginName = $plugin->name;
         $destPath = $plugin->module . "/" . $plugin->name;
         $absPath = $path . '/' . $destPath;

@@ -5,6 +5,10 @@ namespace ShopwareCli\Plugin\Repositories;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Plugin\BaseRepository;
 
+/**
+ * Class Stash
+ * @package ShopwareCli\Plugin\Repositories
+ */
 class Stash extends BaseRepository
 {
     /**
@@ -39,33 +43,15 @@ class Stash extends BaseRepository
 
         $plugins = array();
         foreach ($content['values'] as $repo) {
-            $cloneUrl = $this->getCloneUrl($repo);
-            $cloneUrl = str_replace("stashadmin@", "", $cloneUrl);
+            $urls = array();
+            foreach ($repo['links']['clone'] as $clone) {
+                $clone['href'] = str_replace("stashadmin@", "", $clone['href']);
+                $urls[$clone['name']] = $clone['href'];
+            }
 
-            $plugins[] = $this->createPlugin($cloneUrl,  $repo['name']);
+            $plugins[] = $this->createPlugin($urls['ssh'], $urls['http'],  $repo['name']);
         }
 
         return $plugins;
-    }
-
-    /**
-     * @param string $repo
-     * @return string
-     * @throws \RuntimeException
-     */
-    protected function getCloneUrl($repo)
-    {
-        $urls = array();
-
-        foreach ($repo['links']['clone'] as $clone) {
-            $urls[$clone['name']] = $clone['href'];
-        }
-        $get = $this->useHttp ? 'http' : 'ssh';
-
-        if (!isset($urls[$get])) {
-            throw new \RuntimeException("Could not clone via '{$get}");
-        }
-
-        return $urls[$get];
     }
 }

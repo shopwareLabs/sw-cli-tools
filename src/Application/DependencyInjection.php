@@ -42,7 +42,7 @@ class DependencyInjection
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('output_writer'));
 
-        $container->register('manager_factory', 'ShopwareCli\Plugin\RepositoryFactory')
+        $container->register('plugin_provider', 'ShopwareCli\Plugin\PluginProvider')
             ->addArgument(new Reference('service_container'));
 
         $container->register('cache', 'ShopwareCli\Cache\File')

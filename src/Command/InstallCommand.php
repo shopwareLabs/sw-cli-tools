@@ -4,6 +4,7 @@ namespace ShopwareCli\Command;
 
 use ShopwareCli\Command\Helpers\PluginOperationManager;
 use ShopwareCli\Command\Helpers\PluginInputVerificator;
+use ShopwareCli\Services\Install;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,7 +27,7 @@ class InstallCommand extends BaseCommand
     protected $shopwarePath;
 
     /**
-     * @return object
+     * @return Install
      */
     public function getInstallService()
     {
@@ -83,8 +84,8 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
 
-        /** @var $pluginManager \ShopwareCli\Plugin\RepositoryFactory */
-        $pluginManager = $this->container->get('manager_factory')->factory($useHttp);
+        /** @var $pluginManager \ShopwareCli\Plugin\PluginProvider */
+        $pluginManager = $this->container->get('plugin_provider');
 
         /** @var DialogHelper $dialog */
         $dialog = $this->getHelperSet()->get('dialog');
@@ -103,7 +104,7 @@ class InstallCommand extends BaseCommand
         $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
 
         if (!empty($names)) {
-            $params = array( 'activate' => $this->askActivatePluginQuestion($questionHelper, $input, $output));
+            $params = array( 'activate' => $this->askActivatePluginQuestion($questionHelper, $input, $output), 'useHttp' => $useHttp);
             $params['output'] = $output;
             $params['branch'] = $branch;
             $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
@@ -111,7 +112,7 @@ class InstallCommand extends BaseCommand
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doInstall'), array('input' => $input, 'output' => $output, 'branch' => $branch));
+        $interactionManager->operationLoop(array($this, 'doInstall'), array('input' => $input, 'output' => $output, 'branch' => $branch, 'useHttp' => $useHttp));
     }
 
     /**
@@ -123,9 +124,8 @@ class InstallCommand extends BaseCommand
         if (!isset($params['activate'])) {
             $params['activate'] = $this->askActivatePluginQuestion($this->getHelperSet()->get('question'), $params['input'], $params['output']);
         }
-
         $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
-        $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch']);
+        $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch'], $params['useHttp']);
 
     }
 

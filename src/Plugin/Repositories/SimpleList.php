@@ -6,6 +6,13 @@ use ShopwareCli\Plugin\BaseRepository;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * The simple list provides a "virtual repository" from multiple git repos which also might come from different
+ * servers (e.g. local, github, bitbucket, stash…)
+ *
+ * Class SimpleList
+ * @package ShopwareCli\Plugin\Repositories
+ */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {
     /** @var  ContainerInterface */
@@ -44,8 +51,7 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
         $plugins = array();
         foreach ($config['repositories']['SimpleList']['repositories'] as $repositoryName => $repository) {
             foreach ($repository['plugins'] as $name => $cloneUrls) {
-                $cloneUrl = $this->useHttp ? $cloneUrls['http'] : $cloneUrls['ssh'];
-                $plugins[] = $this->createPlugin($cloneUrl, $name);
+                $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['http'], $name);
             }
         }
 

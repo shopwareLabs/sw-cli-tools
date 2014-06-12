@@ -2,7 +2,7 @@
 
 namespace ShopwareCli\Command\Helpers;
 
-use ShopwareCli\Plugin\RepositoryFactory;
+use ShopwareCli\Plugin\PluginProvider;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Helper\DialogHelper;
@@ -20,14 +20,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PluginOperationManager
 {
-    protected $pluginManager;
+    protected $pluginProvider;
     protected $dialog;
     protected $output;
     protected $pluginSelector;
 
-    public function __construct(RepositoryFactory $pluginManager, PluginInputVerificator $pluginSelector, DialogHelper $dialog, OutputInterface $output, $utilities)
+    public function __construct(PluginProvider $pluginProvider, PluginInputVerificator $pluginSelector, DialogHelper $dialog, OutputInterface $output, $utilities)
     {
-        $this->pluginManager = $pluginManager;
+        $this->pluginProvider = $pluginProvider;
         $this->pluginSelector = $pluginSelector;
         $this->dialog = $dialog;
         $this->output = $output;
@@ -45,7 +45,7 @@ class PluginOperationManager
     public function searchAndOperate($names, $callback, $params)
     {
         foreach ($names as $name) {
-            $plugins = $this->pluginManager->getPluginByName($name);
+            $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);
             if ($count == 1) {
                 $this->output->writeln("\nWill now process '<comment>{$name}</comment>'");
@@ -74,7 +74,7 @@ class PluginOperationManager
      */
     public function operationLoop($callback, $params)
     {
-        $plugins = $this->pluginManager->getPlugins();
+        $plugins = $this->pluginProvider->getPlugins();
         while (true) {
             $response = $this->pluginSelector->selectPlugin($plugins, array('all', 'exit'));
             if ($response == 'exit') {

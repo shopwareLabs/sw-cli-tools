@@ -18,25 +18,25 @@ abstract class BaseRepository implements RepositoryInterface
     protected $restService;
     protected $color;
 
-    public function __construct($repository, $useHttp, $name, RestInterface $restService, $color=null)
+    public function __construct($repository, $name, RestInterface $restService, $color=null)
     {
         $this->repository = $repository;
-        $this->useHttp = $useHttp;
         $this->name = $name;
         $this->restService = $restService;
         $this->color = $color;
     }
 
     /**
-     * @param string $url
+     * @param string $sshUrl
+     * @param string $httpUrl
      * @param string $name
      * @return \ShopwareCli\Struct\Plugin
      */
-    public function createPlugin($url, $name)
+    public function createPlugin($sshUrl, $httpUrl, $name)
     {
         $type = array_slice(explode('\\', get_class($this)), -1);
         $type = $type[0];
 
-        return PluginFactory::getPlugin($name, $url, $this->name, $type);
+        return PluginFactory::getPlugin($name, $sshUrl, $httpUrl, $this->name, $type);
     }
 }

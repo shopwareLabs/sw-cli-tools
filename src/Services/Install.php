@@ -24,11 +24,11 @@ class Install
         $this->writer = $writer;
     }
 
-    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master')
+    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
         $pluginName = $plugin->name;
 
-        $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch);
+        $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch, $useHttp);
 
         if ($inputActivate) {
             $this->writer->write(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
