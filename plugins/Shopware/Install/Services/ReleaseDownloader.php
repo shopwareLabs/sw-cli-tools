@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace Shopware\Install\Services;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Utilities;

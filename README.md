@@ -77,7 +77,9 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 
 ## New plugins
 
-Plugins are created in the "/home/USER/.config/sw-cli-tools/plugins" folder and consist of the plugin folder (with the plugin's name) and a Bootstrap.php inside the plugin folder. Additionally you can provide an own config.yaml inside the plugin folder which will extend the default config.yaml.
+Plugins are created in the "/home/USER/.config/sw-cli-tools/plugins" folder and consist of a vendor folder, the plugin folder (with the plugin's name) and a Bootstrap.php inside the plugin folder. Additionally you can provide an own config.yaml inside the plugin folder which will extend the default config.yaml.
+
+The namespace of your plugin bootstrap should be VENDOR_FOLDER\PLUGIN_FOLDER\Bootstrap.
 
 ### Bootstrap
 The bootstrap is the main entry point of your plugin. If it implements ContainerAwarePlugin, it will get the container builder

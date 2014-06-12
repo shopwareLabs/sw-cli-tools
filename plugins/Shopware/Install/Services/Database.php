@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace Shopware\Install\Services;
 
 use ShopwareCli\Application\Logger;
 use ShopwareCli\Utilities;
@@ -9,7 +9,7 @@ use ShopwareCli\Utilities;
  * Sets up the database by creating the database itself and running the build scripts to populate the database
  *
  * Class Database
- * @package Plugin\ShopwareInstall\Services
+ * @package Shopware\Install\Services
  */
 class Database
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Plugin\ShopwareInstall\Services;
+namespace Shopware\Install\Services;
 use ShopwareCli\Application\Logger;
 
 /**
  * The config writer is responsible for writing build.properties and config.php configuration files
  *
  * Class ConfigWriter
- * @package Plugin\ShopwareInstall\Services
+ * @package Shopware\Install\Services
  */
 class ConfigWriter
 {

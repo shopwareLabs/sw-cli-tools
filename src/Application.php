@@ -42,20 +42,12 @@ class Application extends \Symfony\Component\Console\Application
     public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this->container = DependencyInjection::createContainer();
+        $this->container->set('autoloader', $this->loader);
 
-        $this->registerAutoLoader($this->loader);
         $this->container->get('plugin_manager')->init();
 
         $this->addCommands($this->container->get('command_manager')->getCommands());
 
         return parent::doRun($input, $output);
-    }
-
-    /**
-     * Add the plugin path to the loader
-     */
-    private function registerAutoLoader(ClassLoader $loader)
-    {
-        $loader->addPsr4("Plugin\\", $this->container->get('path_provider')->getPluginPath());
     }
 }
