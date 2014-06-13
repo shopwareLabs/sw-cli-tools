@@ -40,14 +40,14 @@ class Demodata
         }
 
         if (!file_exists(($assetDir . '/demo.zip'))) {
-            $this->ioService->write("<info>Downloading demodata from shopware.de</info>");
+            $this->ioService->writeln("<info>Downloading demodata from shopware.de</info>");
             $this->utilities->executeCommand("wget {$this->demoUrl} -O {$assetDir}/demo.zip");
-            $this->ioService->write("<info>Unzipping demo data</info>");
+            $this->ioService->writeln("<info>Unzipping demo data</info>");
             $this->utilities->executeCommand("unzip -q {$assetDir}/demo.zip -d {$assetDir}");
         }
 
         // todo: This should be done in PHP
-        $this->ioService->write("<info>Copying demo data to shop</info>");
+        $this->ioService->writeln("<info>Copying demo data to shop</info>");
         $this->utilities->executeCommand("cp -rf {$assetDir}/files {$installDir}");
         $this->utilities->executeCommand("cp -rf {$assetDir}/media {$installDir}");
         $this->utilities->executeCommand("find {$installDir}/cache -type d -exec chmod 777 {} \;", true);
@@ -63,7 +63,7 @@ class Demodata
             $this->runCliCommands($installDir);
         }
 
-        $this->ioService->write("<info>Clearing the cache</info>");
+        $this->ioService->writeln("<info>Clearing the cache</info>");
 
         $this->utilities->executeCommand("{$installDir}/cache/clear_cache.sh");
     }
@@ -73,7 +73,7 @@ class Demodata
      */
     public function runCliCommands($installDir)
     {
-        $this->ioService->write("<info>Running license import</info>");
+        $this->ioService->writeln("<info>Running license import</info>");
 
         $this->utilities->executeCommand("{$installDir}/bin/console/ sw:generate:attributes");
         $this->utilities->executeCommand("{$installDir}/bin/console/ sw:plugin:refresh");

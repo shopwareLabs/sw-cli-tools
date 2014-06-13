@@ -32,8 +32,8 @@ class Install
         $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch, $useHttp);
 
         if ($inputActivate) {
-            $this->ioService->write(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->ioService->write(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath);

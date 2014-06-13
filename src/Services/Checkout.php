@@ -38,27 +38,27 @@ class Checkout
         $absPath = $path . '/' . $destPath;
 
         if (is_dir($absPath)) {
-            $this->ioService->write("Plugin is already installed");
+            $this->ioService->writeln("Plugin is already installed");
             $this->utilities->changeDir($absPath);
 
             $this->utilities->executeCommand("git fetch origin");
 
             $output = $this->utilities->executeCommand("git log HEAD..origin/master --oneline");
             if (trim($output) === '') {
-                $this->ioService->write("Plugin '$pluginName' ist Up to date");
+                $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
 
                 return;
             }
 
-            $this->ioService->write("Incomming Changes:");
-            $this->ioService->write($output);
+            $this->ioService->writeln("Incomming Changes:");
+            $this->ioService->writeln($output);
 
             $this->utilities->executeCommand("git reset --hard HEAD");
             $this->utilities->executeCommand("git pull");
             if ($branch) {
                 $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
             }
-            $this->ioService->write("Plugin '$pluginName' successfully updated.\n");
+            $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
 
             return;
         }
@@ -68,6 +68,6 @@ class Checkout
             $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
         }
         $branch = $branch ?: 'master';
-        $this->ioService->write("Successfully checked out '$branch' for '$pluginName'\n");
+        $this->ioService->writeln("Successfully checked out '$branch' for '$pluginName'\n");
     }
 }

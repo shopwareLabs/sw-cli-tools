@@ -101,11 +101,11 @@ class ReleaseDownloader
         $cacheFile = $this->getCacheFilePath($release);
 
         if (!file_exists($cacheFile)) {
-            $this->ioService->write("<info>Downloading release {$release}</info>");
+            $this->ioService->writeln("<info>Downloading release {$release}</info>");
             $this->download($url, $target);
             copy($target, $cacheFile);
         } else {
-            $this->ioService->write("<info>Reading cached release download for {$release}</info>");
+            $this->ioService->writeln("<info>Reading cached release download for {$release}</info>");
         }
 
         return $cacheFile;
@@ -143,7 +143,7 @@ class ReleaseDownloader
             }
         }
 
-        $this->ioService->write("\n Download finished");
+        $this->ioService->writeln("\n Download finished");
 
         fclose($readHandle);
         fclose($writeHandle);

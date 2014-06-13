@@ -72,7 +72,7 @@ class Release
         $this->writeShopwareConfig($installDir, $database);
         $this->setupDatabase($username, $password, $name, $mail, $language, $installDir, $database);
 
-        $this->ioService->write("<info>Install completed</info>");
+        $this->ioService->writeln("<info>Install completed</info>");
     }
 
     /**

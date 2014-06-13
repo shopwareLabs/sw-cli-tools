@@ -85,14 +85,23 @@ class IoService
     }
 
     /**
-     * Write a message to STDOUT
+     * Write a message to STDOUT without trailing newline
      *
      * @param $message
-     * @param bool $newLine
      */
-    public function write($message, $newLine = true)
+    public function write($message)
     {
-        $this->output->write($message, $newLine);
+        $this->output->write($message);
+    }
+
+    /**
+     * Write a message to STDOUT with trailing newline
+     *
+     * @param $message
+     */
+    public function writeln($message)
+    {
+        $this->output->write($message, true);
     }
 
     /**

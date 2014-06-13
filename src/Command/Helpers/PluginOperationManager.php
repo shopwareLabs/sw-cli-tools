@@ -52,7 +52,7 @@ class PluginOperationManager
             $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);
             if ($count == 1) {
-                $this->ioService->write("\nWill now process '<comment>{$name}</comment>'");
+                $this->ioService->writeln("\nWill now process '<comment>{$name}</comment>'");
                 $callback($plugins[0], $params);
             } elseif ($count > 1) {
                 $response = $this->pluginSelector->selectPlugin($plugins, array('all'));
@@ -64,7 +64,7 @@ class PluginOperationManager
                     }
                 }
             } elseif ($count == 0) {
-                $this->ioService->write("\n<error>Could not find a plugin named '{$name}'</error>");
+                $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
             }
         }
 

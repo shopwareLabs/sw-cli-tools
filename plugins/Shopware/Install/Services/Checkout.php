@@ -27,7 +27,7 @@ class Checkout
 
     public function checkout($repo, $branch, $destination)
     {
-        $this->ioService->write("<info>Checkout out $repo to $destination</info>");
+        $this->ioService->writeln("<info>Checkout out $repo to $destination</info>");
 
         $this->utilities->executeCommand(
             "git clone -b {$branch} {$repo} {$destination}"

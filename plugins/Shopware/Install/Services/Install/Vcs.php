@@ -78,7 +78,7 @@ class Vcs
         $this->setupDatabase($installDir,$database);
         $this->demoData->setup($installDir);
 
-        $this->ioService->write("<info>Install completed</info>");
+        $this->ioService->writeln("<info>Install completed</info>");
     }
 
     private function getDestinationPath($installDir, $destination)

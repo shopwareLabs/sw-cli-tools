@@ -72,11 +72,11 @@ class PluginColumnRenderer
             $plugin3 = isset($currentPlugins[2]) ? $currentPlugins[2] : null;
 
             if ($plugin1 && $plugin2 && $plugin3) {
-                $this->ioService->write(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2, $plugin3)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), $offset * 2 + $count, $this->formatPlugin($plugin3)));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2, $plugin3)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), $offset * 2 + $count, $this->formatPlugin($plugin3)));
             } elseif ($plugin1 && $plugin2) {
-                $this->ioService->write(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), '', ''));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), '', ''));
             } elseif ($plugin1) {
-                $this->ioService->write(sprintf($this->generateMaskForPlugins(array($plugin1)), $count, $this->formatPlugin($plugin1), '', '', '', ''));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1)), $count, $this->formatPlugin($plugin1), '', '', '', ''));
             } else {
                 break;
             }
@@ -112,7 +112,7 @@ class PluginColumnRenderer
             $output[] = "<fg={$color}>{$name}</fg={$color}>";
         }
 
-        $this->ioService->write('Legend: ' . implode(', ', $output) . "\n");
+        $this->ioService->writeln('Legend: ' . implode(', ', $output) . "\n");
     }
 
     /**
