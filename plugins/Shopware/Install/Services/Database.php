@@ -2,7 +2,7 @@
 
 namespace Shopware\Install\Services;
 
-use ShopwareCli\Application\Logger;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Utilities;
 
 /**
@@ -18,10 +18,15 @@ class Database
 
     /** @var  \PDO */
     private $connection;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
-    public function __construct(Utilities $utilities)
+    public function __construct(Utilities $utilities, IoService $ioService)
     {
         $this->utilities = $utilities;
+        $this->ioService = $ioService;
     }
 
     private function createConnection($host, $username, $password)
@@ -43,7 +48,7 @@ class Database
 
     public function setup($user, $password, $name, $host, $port = 3306)
     {
-        Logger::info("<info>Creating database $name</info>");
+        $this->ioService->write("<info>Creating database $name</info>");
 
         $this->createConnection($host, $user, $password)->query("CREATE DATABASE `{$name}`;");
         $this->getConnection()->query("use `{$name}`;");
@@ -76,7 +81,7 @@ class Database
 EOF
         );
 
-        Logger::info("<info>Importing main delta</info>");
+        $this->ioService->write("<info>Importing main delta</info>");
         $lines = explode(";\n", file_get_contents("{$installDir}/install/assets/sql/sw4_clean.sql"));
         foreach ($lines as $line) {
             $this->getConnection()->exec($line);
@@ -89,7 +94,7 @@ EOF
            SET @locale_en_GB = (SELECT id FROM s_core_locales WHERE locale = "en_GB");
        ');
 
-        Logger::info("<info>Importing snippet delta</info>");
+        $this->ioService->write("<info>Importing snippet delta</info>");
         $lines = explode(";\n", file_get_contents("{$installDir}/install/assets/sql/snippets.sql"));
         foreach ($lines as $line) {
             $this->getConnection()->exec($line);
@@ -104,21 +109,21 @@ EOF
         $buildXml = $installDir . '/build/build.xml';
 
         if (file_exists($installDir . '/composer.json')) {
-            Logger::info("<info>Running build-composer-install</info>");
+            $this->ioService->write("<info>Running build-composer-install</info>");
             $this->utilities->executeCommand("ant -f {$buildXml} build-composer-install");
         }
 
         if (file_exists($buildXml)) {
-            Logger::info("<info>Running build-database</info>");
+            $this->ioService->write("<info>Running build-database</info>");
             $this->utilities->executeCommand("ant -f {$buildXml} build-database");
 
-            Logger::info("<info>Running build-snippets-deploy</info>");
+            $this->ioService->write("<info>Running build-snippets-deploy</info>");
             if (file_exists($installDir . '/engine/Shopware/Commands/SnippetsToSqlCommand.php')) {
                 $this->utilities->executeCommand("ant -f {$buildXml} build-snippets-deploy");
             }
         } else {
-            Logger::info("<error>Could not find {$buildXml}</error>");
-            Logger::info("<error>If you checked out an SW version < 4.1.0, you can just import {$installDir}/_sql/demo/VERSION.sql</error>");
+            $this->ioService->write("<error>Could not find {$buildXml}</error>");
+            $this->ioService->write("<error>If you checked out an SW version < 4.1.0, you can just import {$installDir}/_sql/demo/VERSION.sql</error>");
         }
     }
 
@@ -146,7 +151,7 @@ EOF
      */
     public function createAdmin($user, $name, $mail, $language, $password)
     {
-        Logger::info("<info>Creating admin user $user</info>");
+        $this->ioService->write("<info>Creating admin user $user</info>");
 
         $fetchLanguageId = $this->getConnection()->prepare("
         SELECT id FROM s_core_locales WHERE locale = ?

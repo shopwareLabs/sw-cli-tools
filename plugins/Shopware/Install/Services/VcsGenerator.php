@@ -1,7 +1,8 @@
 <?php
 
 namespace Shopware\Install\Services;
-use ShopwareCli\Application\Logger;
+
+use ShopwareCli\Services\IoService;
 
 /**
  * creates the phpstorm vcs mapping file
@@ -21,10 +22,19 @@ class VcsGenerator
 EOF;
 
     protected $templateVcsMappingDirectory = '<mapping directory="$PROJECT_DIR$%s" vcs="Git" />';
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
+
+    public function __construct(IoService $ioService)
+    {
+        $this->ioService = $ioService;
+    }
 
     public function createVcsMapping($installDir, $paths)
     {
-        Logger::info("<info>Generating VCS mapping</info>");
+        $this->ioService->write("<info>Generating VCS mapping</info>");
 
         $dir = $installDir.'/.idea';
         if (!is_dir($dir)) {

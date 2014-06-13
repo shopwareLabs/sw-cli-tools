@@ -63,9 +63,6 @@ class DependencyInjection
             ->addArgument(new Reference('autoloader'))
             ->addArgument(new Reference('service_container'));
 
-        $container->register('logger', 'ShopwareCli\Application\Logger')
-            ->addArgument(new Reference('output_writer'));
-
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
             ->addArgument(new Reference('service_container'));
 

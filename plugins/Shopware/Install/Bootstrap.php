@@ -47,21 +47,28 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
     {
         $this->container->register('shopware_checkout_service', 'Shopware\Install\Services\Checkout')
             ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('logger'));
+            ->addArgument(new Reference('io_service'));
 
         $this->container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
             ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('logger'))
+            ->addArgument(new Reference('io_service'))
             ->addArgument($this->container->get('path_provider')->getCachePath());
 
-        $this->container->register('shopware-install.vcs_generator', 'Shopware\Install\Services\VcsGenerator');
-        $this->container->register('shopware-install.config_writer', 'Shopware\Install\Services\ConfigWriter');
+        $this->container->register('shopware-install.vcs_generator', 'Shopware\Install\Services\VcsGenerator')
+            ->addArgument(new Reference('io_service'));
+
+        $this->container->register('shopware-install.config_writer', 'Shopware\Install\Services\ConfigWriter')
+            ->addArgument(new Reference('io_service'));
+
         $this->container->register('shopware-install.database', 'Shopware\Install\Services\Database')
-            ->addArgument(new Reference('utilities'));
+            ->addArgument(new Reference('utilities'))
+            ->addArgument(new Reference('io_service'));
+
 
         $this->container->register('shopware-install.demodata', 'Shopware\Install\Services\Demodata')
             ->addArgument(new Reference('utilities'))
-            ->addArgument($this->container->get('path_provider'));
+            ->addArgument(new Reference('path_provider'))
+            ->addArgument(new Reference('io_service'));
 
         $this->container->register('shopware_vcs_install_service', 'Shopware\Install\Services\Install\Vcs')
             ->addArgument(new Reference('shopware_checkout_service'))
@@ -69,7 +76,8 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('shopware-install.vcs_generator'))
             ->addArgument(new Reference('shopware-install.config_writer'))
             ->addArgument(new Reference('shopware-install.database'))
-            ->addArgument(new Reference('shopware-install.demodata'));
+            ->addArgument(new Reference('shopware-install.demodata'))
+            ->addArgument(new Reference('io_service'));
 
         $this->container->register('shopware_release_install_service', 'Shopware\Install\Services\Install\Release')
             ->addArgument(new Reference('shopware_release_download_service'))
@@ -77,7 +85,8 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('shopware-install.vcs_generator'))
             ->addArgument(new Reference('shopware-install.config_writer'))
             ->addArgument(new Reference('shopware-install.database'))
-            ->addArgument(new Reference('shopware-install.demodata'));
+            ->addArgument(new Reference('shopware-install.demodata'))
+            ->addArgument(new Reference('io_service'));
     }
 
 }

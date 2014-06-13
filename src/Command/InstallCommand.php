@@ -2,10 +2,7 @@
 
 namespace ShopwareCli\Command;
 
-use ShopwareCli\Command\Helpers\PluginOperationManager;
-use ShopwareCli\Command\Helpers\PluginInputVerificator;
 use ShopwareCli\Services\Install;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -83,9 +80,6 @@ class InstallCommand extends BaseCommand
         $useHttp = $input->getOption('useHttp');
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
-
-        /** @var $questionHelper QuestionHelper */
-        $questionHelper = $this->getHelperSet()->get('question');
 
         if (!$shopwarePath) {
             $shopwarePath = null;

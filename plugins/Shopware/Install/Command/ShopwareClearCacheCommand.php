@@ -1,7 +1,6 @@
 <?php
 namespace Shopware\Install\Command;
 
-use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Command\Command;
@@ -43,9 +42,6 @@ EOF
         if (strpos($path, '/') !== 0) {
             $path = './' . $path;
         }
-
-        Logger::setLogLevel(Logger::LEVEL_INFO);
-        Logger::setOutputWriter($this->container->get('output_writer'));
 
         /** @var Utilities $utilities */
         $utilities = $this->container->get('utilities');
