@@ -97,11 +97,10 @@ class InstallCommand extends BaseCommand
             $shopwarePath = null;
         }
         $this->container->get('utilities')->cls();
-        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath, $output, $dialog);
+        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);
         $this->shopwarePath = $shopwarePath;
 
-        $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
-        $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
+        $interactionManager = $this->container->get('plugin_operation_manager');
 
         if (!empty($names)) {
             $params = array( 'activate' => $this->askActivatePluginQuestion($questionHelper, $input, $output), 'useHttp' => $useHttp);

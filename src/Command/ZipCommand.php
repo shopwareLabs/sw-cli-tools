@@ -74,11 +74,7 @@ class ZipCommand extends BaseCommand
 
         $this->container->get('utilities')->cls();
 
-        $pluginManager = $this->container->get('plugin_provider');
-
-        $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
-
-        $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
+        $interactionManager = $this->container->get('plugin_operation_manager');
 
         $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
 

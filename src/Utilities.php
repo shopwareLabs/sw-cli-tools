@@ -2,10 +2,21 @@
 
 namespace ShopwareCli;
 
-use Symfony\Component\Console\Helper\DialogHelper;
+use ShopwareCli\Services\IoService;
+use Symfony\Component\Process\Process;
 
 class Utilities
 {
+
+    /**
+     * @var Services\IoService
+     */
+    private $ioService;
+
+    public function __construct(IoService $ioService)
+    {
+        $this->ioService = $ioService;
+    }
 
     /**
      * Checks if a given path is a shopware installation (by checking for shopware.php)
@@ -22,11 +33,9 @@ class Utilities
      * Ask for a valid shopware path until the user enters it
      *
      * @param  null              $shopwarePath
-     * @param $output
-     * @param  DialogHelper      $dialog
      * @return mixed|null|string
      */
-    public function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
+    public function getValidShopwarePath($shopwarePath=null)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -36,7 +45,7 @@ class Utilities
             return $shopwarePath;
         }
 
-        return $dialog->askAndValidate($output, "Path to your Shopware installation: ", array($this, 'validateShopwarePath'));
+        return $this->ioService->askAndValidate($output, "Path to your Shopware installation: ", array($this, 'validateShopwarePath'));
 
     }
 
@@ -57,6 +66,8 @@ class Utilities
 
         return $shopwarePathReal;
     }
+
+
 
     /**
      * This could / should be switched do symfony's process component
