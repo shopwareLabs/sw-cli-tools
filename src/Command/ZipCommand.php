@@ -66,12 +66,6 @@ class ZipCommand extends BaseCommand
         $useHttp = $input->getOption('useHttp');
         $branch = $input->getOption('branch');
 
-        /** @var DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        /** @var $questionHelper QuestionHelper */
-        $questionHelper = $this->getHelperSet()->get('question');
-
         $this->container->get('utilities')->cls();
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
