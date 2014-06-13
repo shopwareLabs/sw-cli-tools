@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Application;
 
-use Shopware\Install\Services\ReleaseDownloader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -16,9 +15,16 @@ class DependencyInjection
     {
         $container = new ContainerBuilder();
 
-        $container->setDefinition('autoloader', new Definition())->setSynthetic(true);
-        $container->setDefinition('io_service', new Definition())->setSynthetic(true);
+        // synthetic services
+        $container->setDefinition('autoloader', new Definition('Composer\Autoload\ClassLoader'))->setSynthetic(true);
+        $container->setDefinition('input_interface', new Definition('Symfony\Component\Console\Input\InputInterface'))->setSynthetic(true);
+        $container->setDefinition('output_interface', new Definition('Symfony\Component\Console\Input\InputInterface'))->setSynthetic(true);
+        $container->setDefinition('question_helper', new Definition('Symfony\Component\Console\Helper\QuestionHelper'))->setSynthetic(true);
 
+        $container->register('io_service', 'ShopwareCli\Services\IoService')
+            ->addArgument(new Reference('input_interface'))
+            ->addArgument(new Reference('output_interface'))
+            ->addArgument(new Reference('question_helper'));
 
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
@@ -69,14 +75,14 @@ class DependencyInjection
             ->addArgument(new Reference('config'));
 
         $container->register('plugin_selector', 'ShopwareCli\Command\Helpers\PluginInputVerificator')
-                ->addArgument(new Reference('io_service'))
-                ->addArgument(new Reference('plugin_column_renderer'));
+            ->addArgument(new Reference('io_service'))
+            ->addArgument(new Reference('plugin_column_renderer'));
 
         $container->register('plugin_operation_manager', 'ShopwareCli\Command\Helpers\PluginOperationManager')
-                ->addArgument(new Reference('plugin_provider'))
-                ->addArgument(new Reference('plugin_selector'))
-                ->addArgument(new Reference('io_service'))
-                ->addArgument(new Reference('utilities'));
+            ->addArgument(new Reference('plugin_provider'))
+            ->addArgument(new Reference('plugin_selector'))
+            ->addArgument(new Reference('io_service'))
+            ->addArgument(new Reference('utilities'));
 
         return $container;
     }
