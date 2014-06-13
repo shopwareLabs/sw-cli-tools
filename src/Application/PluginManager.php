@@ -2,6 +2,8 @@
 
 namespace ShopwareCli\Application;
 use Composer\Autoload\ClassLoader;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Implements a simple plugin system.
@@ -26,24 +28,19 @@ class PluginManager
      */
     private $autoLoader;
 
-    public function __construct($pluginDirs, ClassLoader $autoLoader, $container)
+    public function __construct($pluginDirs, ClassLoader $autoLoader)
     {
         $this->pluginDirs = array_unique($pluginDirs);
-        $this->container = $container;
         $this->autoLoader = $autoLoader;
     }
 
-    public function init()
-    {
-        $this->readPlugins();
-    }
 
     /**
      * Read all available plugins
      *
      * @throws \RuntimeException
      */
-    protected function readPlugins()
+    public function discoverPlugins()
     {
         // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/plugins and 'plugins' in the sw-cli-tools main directory / phar
         foreach ($this->pluginDirs as $pluginDir) {
@@ -96,6 +93,15 @@ class PluginManager
         $plugin = new $className($this->container);
 
         return $plugin;
+    }
+
+    public function injectContainer(ContainerBuilder $container)
+    {
+        foreach ($this->plugins as $plugin) {
+            if ($plugin instanceof ContainerAwarePlugin) {
+                $plugin->setContainer($container);
+            }
+        }
     }
 
     /**

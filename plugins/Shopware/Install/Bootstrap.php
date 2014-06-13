@@ -22,7 +22,7 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
 
     protected $container;
 
-    public function __construct(ContainerBuilder $container)
+    public function setContainer(ContainerBuilder $container)
     {
         $this->container = $container;
 

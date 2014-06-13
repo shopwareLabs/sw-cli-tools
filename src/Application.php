@@ -47,9 +47,11 @@ class Application extends \Symfony\Component\Console\Application
     {
         $this->setupContainer($input, $output);
 
-        $this->container->get('plugin_manager')->init();
+        $this->container->get('plugin_manager')->discoverPlugins();
+        $this->container->get('plugin_manager')->injectContainer($this->container);
 
         $this->addCommands($this->container->get('command_manager')->getCommands());
+        $this->container->get('plugin_provider')->setRepositories($this->container->get('repository_manager')->getRepositories());
 
         return parent::doRun($input, $output);
     }

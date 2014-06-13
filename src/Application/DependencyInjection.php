@@ -44,7 +44,11 @@ class DependencyInjection
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('io_service'));
 
-        $container->register('plugin_provider', 'ShopwareCli\Plugin\PluginProvider')
+        $container->register('repository_manager', 'ShopwareCli\Application\RepositoryManager')
+            ->addArgument(new Reference('plugin_manager'))
+            ->addArgument(new Reference('default_repository_factory'));
+
+        $container->register('default_repository_factory', 'ShopwareCli\Plugin\DefaultRepositoryFactory')
             ->addArgument(new Reference('service_container'));
 
         $container->register('cache', 'ShopwareCli\Cache\File')
@@ -58,8 +62,7 @@ class DependencyInjection
 
         $container->register('plugin_manager', 'ShopwareCli\Application\PluginManager')
             ->addArgument(array($container->get('path_provider')->getPluginPath(), $container->get('path_provider')->getCliToolPath() . '/plugins'))
-            ->addArgument(new Reference('autoloader'))
-            ->addArgument(new Reference('service_container'));
+            ->addArgument(new Reference('autoloader'));
 
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
             ->addArgument(new Reference('service_container'));
@@ -77,6 +80,9 @@ class DependencyInjection
                 ->addArgument(new Reference('plugin_selector'))
                 ->addArgument(new Reference('io_service'))
                 ->addArgument(new Reference('utilities'));
+
+        $container->register('plugin_provider', 'ShopwareCli\Plugin\PluginProvider')
+            ->addArgument(new Reference('config'));
 
         return $container;
     }
