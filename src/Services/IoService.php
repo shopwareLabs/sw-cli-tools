@@ -9,6 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
+/**
+ * Class IoService
+ * @package ShopwareCli\Services
+ */
 class IoService
 {
     /**
@@ -31,11 +35,24 @@ class IoService
         $this->helper = $helper;
     }
 
+    /**
+     * Write a message to STDOUT
+     *
+     * @param $message
+     * @param bool $newLine
+     */
     public function write($message, $newLine = true)
     {
         $this->output->write($message, $newLine);
     }
 
+    /**
+     * Ask a $question
+     *
+     * @param $question
+     * @param null $default
+     * @return string
+     */
     public function ask($question, $default = null)
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
@@ -46,23 +63,31 @@ class IoService
         return $questionHelper->ask($this->input, $this->output, $question);
     }
 
-    public function askConfirmation($question, $validator = false, $attempts = false, $default = null)
+    /**
+     * Ask for confirmation
+     *
+     * @param $question
+     * @param null $default
+     * @return string
+     */
+    public function askConfirmation($question, $default = null)
     {
         $question = $question instanceof ConfirmationQuestion ? $question : new ConfirmationQuestion($question, $default);
-
-        if ($attempts) {
-            $question->setMaxAttempts($attempts);
-        }
-
-        if ($validator) {
-            $question->setValidator($validator);
-        }
 
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->helper->get('question');
         return $questionHelper->ask($this->input, $this->output, $question);
     }
 
+    /**
+     * Ask a question and validate the result
+     *
+     * @param $question
+     * @param bool $validator
+     * @param bool $attempts
+     * @param null $default
+     * @return string
+     */
     public function askAndValidate($question, $validator = false, $attempts = false, $default = null)
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
