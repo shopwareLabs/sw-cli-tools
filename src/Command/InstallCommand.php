@@ -102,6 +102,8 @@ class InstallCommand extends BaseCommand
 
         $interactionManager = $this->container->get('plugin_operation_manager');
 
+        $this->container->get('plugin_column_renderer')->setSmall($small);
+
         if (!empty($names)) {
             $params = array( 'activate' => $this->askActivatePluginQuestion($questionHelper, $input, $output), 'useHttp' => $useHttp);
             $params['output'] = $output;

@@ -74,6 +74,7 @@ class ZipCommand extends BaseCommand
 
         $this->container->get('utilities')->cls();
 
+        $this->container->get('plugin_column_renderer')->setSmall($small);
         $interactionManager = $this->container->get('plugin_operation_manager');
 
         $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
