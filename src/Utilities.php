@@ -45,7 +45,7 @@ class Utilities
             return $shopwarePath;
         }
 
-        return $this->ioService->askAndValidate($output, "Path to your Shopware installation: ", array($this, 'validateShopwarePath'));
+        return $this->ioService->askAndValidate("Path to your Shopware installation: ", array($this, 'validateShopwarePath'));
 
     }
 
