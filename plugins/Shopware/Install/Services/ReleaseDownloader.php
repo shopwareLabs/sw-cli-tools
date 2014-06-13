@@ -2,7 +2,7 @@
 
 namespace Shopware\Install\Services;
 
-use ShopwareCli\Application\Logger;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Utilities;
 
 class ReleaseDownloader
@@ -16,17 +16,18 @@ class ReleaseDownloader
      * @var \ShopwareCli\Utilities
      */
     private $utilities;
-    /**
-     * @var \ShopwareCli\Application\Logger
-     */
-    private $logger;
-    private $cachePath;
 
-    public function __construct(Utilities $utilities, Logger $logger, $cachePath)
+    private $cachePath;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
+
+    public function __construct(Utilities $utilities, IoService $ioService, $cachePath)
     {
         $this->utilities = $utilities;
-        $this->logger = $logger;
         $this->cachePath = $cachePath;
+        $this->ioService = $ioService;
     }
 
     /**
@@ -100,11 +101,11 @@ class ReleaseDownloader
         $cacheFile = $this->getCacheFilePath($release);
 
         if (!file_exists($cacheFile)) {
-            $this->logger->info("<info>Downloading release {$release}</info>");
+            $this->ioService->writeln("<info>Downloading release {$release}</info>");
             $this->download($url, $target);
             copy($target, $cacheFile);
         } else {
-            $this->logger->info("<info>Reading cached release download for {$release}</info>");
+            $this->ioService->writeln("<info>Reading cached release download for {$release}</info>");
         }
 
         return $cacheFile;
@@ -142,7 +143,7 @@ class ReleaseDownloader
             }
         }
 
-        $this->logger->info("\n Download finished");
+        $this->ioService->writeln("\n Download finished");
 
         fclose($readHandle);
         fclose($writeHandle);

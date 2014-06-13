@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Services;
 
-use ShopwareCli\OutputWriter\OutputWriterInterface;
 use ShopwareCli\Struct\Plugin;
 
 /**
@@ -15,13 +14,15 @@ class Install
 {
     /** @var \ShopwareCli\Services\Checkout */
     protected $checkout;
-    /** @var \ShopwareCli\OutputWriter\OutputWriterInterface */
-    protected $writer;
+    /**
+     * @var IoService
+     */
+    private $ioService;
 
-    public function __construct(Checkout $checkout, OutputWriterInterface $writer)
+    public function __construct(Checkout $checkout, IoService $ioService)
     {
         $this->checkout = $checkout;
-        $this->writer = $writer;
+        $this->ioService = $ioService;
     }
 
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
@@ -31,8 +32,8 @@ class Install
         $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch, $useHttp);
 
         if ($inputActivate) {
-            $this->writer->write(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->writer->write(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath);

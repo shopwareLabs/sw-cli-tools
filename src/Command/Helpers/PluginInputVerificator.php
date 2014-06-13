@@ -2,11 +2,7 @@
 
 namespace ShopwareCli\Command\Helpers;
 
-use ShopwareCli\Config;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -23,20 +19,15 @@ class PluginInputVerificator
     /** @var  PluginColumnRenderer */
     protected $outputRenderer;
 
-    protected $small;
-    /**
-     * @var QuestionHelper
+    /*
+     * @var \ShopwareCli\Services\IoService
      */
-    private $questionHelper;
+    private $ioService;
 
-    public function __construct(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper, $config, $small = false)
+    public function __construct(IoService $ioService, PluginColumnRenderer $outputRenderer)
     {
-        $this->inputInterface  = $input;
-        $this->outputInterface = $output;
-        $this->questionHelper  = $questionHelper;
-
-        $this->small = $small;
-        $this->outputRenderer = new PluginColumnRenderer($input, $output, $config, $small);
+        $this->outputRenderer = $outputRenderer;
+        $this->ioService = $ioService;
     }
 
     /**
@@ -57,11 +48,7 @@ class PluginInputVerificator
                 $this->formatQuestion(count($plugins), $allowedAnswers)
             );
 
-            $response = $this->questionHelper->ask(
-                $this->inputInterface,
-                $this->outputInterface,
-                $question
-            );
+            $response = $this->ioService->ask($question);
 
             if (isset($plugins[$response - 1])) {
                 return $plugins[$response - 1];
@@ -69,7 +56,7 @@ class PluginInputVerificator
                 return $response;
             } else {
                 $question = new Question('<error>Invalid answer, hit enter to continue</error>');
-                $this->questionHelper->ask($this->inputInterface, $this->outputInterface, $question);
+                $this->ioService->ask($question);
             }
         }
     }

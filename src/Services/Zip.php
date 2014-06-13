@@ -2,7 +2,6 @@
 
 namespace ShopwareCli\Services;
 
-use ShopwareCli\OutputWriter\OutputWriterInterface;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 
@@ -16,15 +15,12 @@ class Zip
 {
     /** @var \ShopwareCli\Services\Checkout  */
     protected $checkout;
-    /** @var \ShopwareCli\OutputWriter\OutputWriterInterface  */
-    protected $writer;
     /** @var \ShopwareCli\Utilities  */
     protected $utilities;
 
-    public function __construct(Checkout $checkout, Utilities $utilities, OutputWriterInterface $writer)
+    public function __construct(Checkout $checkout, Utilities $utilities)
     {
         $this->checkout = $checkout;
-        $this->writer = $writer;
         $this->utilities = $utilities;
     }
 

@@ -2,8 +2,8 @@
 
 namespace Shopware\Install\Services;
 
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Utilities;
-use ShopwareCli\Application\Logger;
 
 /**
  * The checkout service will checkout a given repo with a given branch to a given destination
@@ -14,17 +14,20 @@ use ShopwareCli\Application\Logger;
 class Checkout
 {
     protected $utilities;
-    protected $logger;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
-    public function __construct(Utilities $utilities, Logger $logger)
+    public function __construct(Utilities $utilities, IoService $ioService)
     {
         $this->utilities = $utilities;
-        $this->logger = $logger;
+        $this->ioService = $ioService;
     }
 
     public function checkout($repo, $branch, $destination)
     {
-        Logger::info("<info>Checkout out $repo to $destination</info>");
+        $this->ioService->writeln("<info>Checkout out $repo to $destination</info>");
 
         $this->utilities->executeCommand(
             "git clone -b {$branch} {$repo} {$destination}"

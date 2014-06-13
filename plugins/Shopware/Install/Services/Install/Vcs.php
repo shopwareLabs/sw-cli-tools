@@ -2,7 +2,6 @@
 
 namespace Shopware\Install\Services\Install;
 
-use ShopwareCli\Application\Logger;
 use ShopwareCli\Config;
 
 use Shopware\Install\Services\Checkout;
@@ -10,6 +9,7 @@ use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
 use Shopware\Install\Services\Database;
 use Shopware\Install\Services\Demodata;
+use ShopwareCli\Services\IoService;
 
 /**
  * This install service will run all steps needed to setup shopware in the correct order
@@ -36,6 +36,10 @@ class Vcs
 
     /** @var  Demodata */
     protected $demoData;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
     public function __construct(
         Checkout $checkout,
@@ -43,8 +47,8 @@ class Vcs
         VcsGenerator $vcsGenerator,
         ConfigWriter $configWriter,
         Database $database,
-        Demodata $demodata
-
+        Demodata $demodata,
+        IoService $ioService
     )
     {
         $this->checkout = $checkout;
@@ -53,6 +57,7 @@ class Vcs
         $this->configWriter = $configWriter;
         $this->database = $database;
         $this->demoData = $demodata;
+        $this->ioService = $ioService;
     }
 
     /**
@@ -73,7 +78,7 @@ class Vcs
         $this->setupDatabase($installDir,$database);
         $this->demoData->setup($installDir);
 
-        Logger::info("<info>Install completed</info>");
+        $this->ioService->writeln("<info>Install completed</info>");
     }
 
     private function getDestinationPath($installDir, $destination)

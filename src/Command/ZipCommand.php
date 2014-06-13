@@ -2,12 +2,6 @@
 
 namespace ShopwareCli\Command;
 
-use ShopwareCli\Application\DependencyInjection;
-use ShopwareCli\Command\Helpers\PluginOperationManager;
-use ShopwareCli\Command\Helpers\PluginInputVerificator;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -66,19 +60,10 @@ class ZipCommand extends BaseCommand
         $useHttp = $input->getOption('useHttp');
         $branch = $input->getOption('branch');
 
-        /** @var DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        /** @var $questionHelper QuestionHelper */
-        $questionHelper = $this->getHelperSet()->get('question');
-
         $this->container->get('utilities')->cls();
 
-        $pluginManager = $this->container->get('plugin_provider');
-
-        $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
-
-        $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
+        $this->container->get('plugin_column_renderer')->setSmall($small);
+        $interactionManager = $this->container->get('plugin_operation_manager');
 
         $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
 

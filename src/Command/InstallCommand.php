@@ -2,10 +2,7 @@
 
 namespace ShopwareCli\Command;
 
-use ShopwareCli\Command\Helpers\PluginOperationManager;
-use ShopwareCli\Command\Helpers\PluginInputVerificator;
 use ShopwareCli\Services\Install;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -84,27 +81,19 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
 
-        /** @var $pluginManager \ShopwareCli\Plugin\PluginProvider */
-        $pluginManager = $this->container->get('plugin_provider');
-
-        /** @var DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        /** @var $questionHelper QuestionHelper */
-        $questionHelper = $this->getHelperSet()->get('question');
-
         if (!$shopwarePath) {
             $shopwarePath = null;
         }
         $this->container->get('utilities')->cls();
-        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath, $output, $dialog);
+        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);
         $this->shopwarePath = $shopwarePath;
 
-        $pluginSelector = new PluginInputVerificator($input, $output, $questionHelper, $this->container->get('config'), $small);
-        $interactionManager = new PluginOperationManager($pluginManager, $pluginSelector, $dialog, $output, $this->container->get('utilities'));
+        $interactionManager = $this->container->get('plugin_operation_manager');
+
+        $this->container->get('plugin_column_renderer')->setSmall($small);
 
         if (!empty($names)) {
-            $params = array( 'activate' => $this->askActivatePluginQuestion($questionHelper, $input, $output), 'useHttp' => $useHttp);
+            $params = array( 'activate' => $this->askActivatePluginQuestion(), 'useHttp' => $useHttp);
             $params['output'] = $output;
             $params['branch'] = $branch;
             $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
@@ -112,7 +101,7 @@ class InstallCommand extends BaseCommand
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doInstall'), array('input' => $input, 'output' => $output, 'branch' => $branch, 'useHttp' => $useHttp));
+        $interactionManager->operationLoop(array($this, 'doInstall'), array( 'branch' => $branch, 'useHttp' => $useHttp));
     }
 
     /**
@@ -122,9 +111,10 @@ class InstallCommand extends BaseCommand
     public function doInstall($plugin, &$params)
     {
         if (!isset($params['activate'])) {
-            $params['activate'] = $this->askActivatePluginQuestion($this->getHelperSet()->get('question'), $params['input'], $params['output']);
+            $params['activate'] = $this->askActivatePluginQuestion();
         }
         $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
+
         $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch'], $params['useHttp']);
 
     }
@@ -140,15 +130,12 @@ class InstallCommand extends BaseCommand
     }
 
     /**
-     * @param QuestionHelper  $dialog
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @return bool
      */
-    protected function askActivatePluginQuestion(QuestionHelper $dialog, $input, $output)
+    protected function askActivatePluginQuestion()
     {
         $question = new ConfirmationQuestion('<question>Activate plugins after checkout?</question> <comment>[Y/n]</comment> ', true);
-        $activate = $dialog->ask($input, $output, $question);
+        $activate = $this->container->get('io_service')->ask($question);
 
         return $activate;
     }

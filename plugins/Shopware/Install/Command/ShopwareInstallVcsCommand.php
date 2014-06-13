@@ -1,7 +1,6 @@
 <?php
 namespace Shopware\Install\Command;
 
-use ShopwareCli\Application\Logger;
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -60,9 +59,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        Logger::setLogLevel(Logger::LEVEL_INFO);
-        Logger::setOutputWriter($this->container->get('output_writer'));
-
         /** @var \Shopware\Install\Services\Install\Vcs $installService */
         $installService = $this->container->get('shopware_vcs_install_service');
 

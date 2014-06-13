@@ -3,6 +3,7 @@
 namespace ShopwareCli\Command\Helpers;
 
 use ShopwareCli\Plugin\PluginProvider;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Helper\DialogHelper;
@@ -24,14 +25,17 @@ class PluginOperationManager
     protected $dialog;
     protected $output;
     protected $pluginSelector;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
-    public function __construct(PluginProvider $pluginProvider, PluginInputVerificator $pluginSelector, DialogHelper $dialog, OutputInterface $output, $utilities)
+    public function __construct(PluginProvider $pluginProvider, PluginInputVerificator $pluginSelector, IoService $ioService, $utilities)
     {
         $this->pluginProvider = $pluginProvider;
         $this->pluginSelector = $pluginSelector;
-        $this->dialog = $dialog;
-        $this->output = $output;
         $this->utilities = $utilities;
+        $this->ioService = $ioService;
     }
 
     /**
@@ -48,7 +52,7 @@ class PluginOperationManager
             $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);
             if ($count == 1) {
-                $this->output->writeln("\nWill now process '<comment>{$name}</comment>'");
+                $this->ioService->writeln("\nWill now process '<comment>{$name}</comment>'");
                 $callback($plugins[0], $params);
             } elseif ($count > 1) {
                 $response = $this->pluginSelector->selectPlugin($plugins, array('all'));
@@ -60,7 +64,7 @@ class PluginOperationManager
                     }
                 }
             } elseif ($count == 0) {
-                $this->output->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
+                $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
             }
         }
 
@@ -83,7 +87,7 @@ class PluginOperationManager
             if ($response instanceof \ShopwareCli\Struct\Plugin) {
                 $this->utilities->cls();
                 $callback($response, $params);
-                $this->dialog->ask($this->output, "\n<error>Done, hit enter to continue.</error>");
+                $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
                 $this->utilities->cls();
 
             } elseif ($response == 'all') {

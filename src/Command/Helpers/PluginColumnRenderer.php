@@ -3,9 +3,8 @@
 namespace ShopwareCli\Command\Helpers;
 
 use ShopwareCli\Config;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
@@ -15,18 +14,23 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PluginColumnRenderer
 {
-    protected $inputInterface;
-    protected $outputInterface;
     protected $config;
 
     protected $small = false;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
-    public function __construct(InputInterface $input, OutputInterface $output, Config $config, $small)
+    public function __construct(IoService $ioService, Config $config)
     {
-        $this->inputInterface = $input;
-        $this->outputInterface = $output;
-        $this->small = $small;
         $this->config = $config;
+        $this->ioService = $ioService;
+    }
+
+    public function setSmall($isSmall)
+    {
+        $this->small = $isSmall;
     }
 
     /**
@@ -68,11 +72,11 @@ class PluginColumnRenderer
             $plugin3 = isset($currentPlugins[2]) ? $currentPlugins[2] : null;
 
             if ($plugin1 && $plugin2 && $plugin3) {
-                $this->outputInterface->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2, $plugin3)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), $offset * 2 + $count, $this->formatPlugin($plugin3)));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2, $plugin3)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), $offset * 2 + $count, $this->formatPlugin($plugin3)));
             } elseif ($plugin1 && $plugin2) {
-                $this->outputInterface->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), '', ''));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1, $plugin2)), $count, $this->formatPlugin($plugin1), $offset + $count, $this->formatPlugin($plugin2), '', ''));
             } elseif ($plugin1) {
-                $this->outputInterface->writeln(sprintf($this->generateMaskForPlugins(array($plugin1)), $count, $this->formatPlugin($plugin1), '', '', '', ''));
+                $this->ioService->writeln(sprintf($this->generateMaskForPlugins(array($plugin1)), $count, $this->formatPlugin($plugin1), '', '', '', ''));
             } else {
                 break;
             }
@@ -108,7 +112,7 @@ class PluginColumnRenderer
             $output[] = "<fg={$color}>{$name}</fg={$color}>";
         }
 
-        $this->outputInterface->writeln('Legend: ' . implode(', ', $output) . "\n");
+        $this->ioService->writeln('Legend: ' . implode(', ', $output) . "\n");
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Shopware\Install\Services\Install;
 
-use ShopwareCli\Application\Logger;
 use ShopwareCli\Config;
 
 use Shopware\Install\Services\ReleaseDownloader;
@@ -10,6 +9,8 @@ use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
 use Shopware\Install\Services\Database;
 use Shopware\Install\Services\Demodata;
+use ShopwareCli\Services\IoService;
+
 /**
  * This install service will run all steps needed to setup shopware in the correct order
  *
@@ -36,6 +37,14 @@ class Release
      * @var ReleaseDownloader
      */
     private $releaseDownloader;
+    /**
+     * @var \Shopware\Install\Services\Demodata
+     */
+    private $demodata;
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
     public function __construct(
         ReleaseDownloader $releaseDownloader,
@@ -43,8 +52,8 @@ class Release
         VcsGenerator $vcsGenerator,
         ConfigWriter $configWriter,
         Database $database,
-        Demodata $demodata
-
+        Demodata $demodata,
+        IoService $ioService
     )
     {
         $this->config = $config;
@@ -52,6 +61,8 @@ class Release
         $this->configWriter = $configWriter;
         $this->database = $database;
         $this->releaseDownloader = $releaseDownloader;
+        $this->demodata = $demodata;
+        $this->ioService = $ioService;
     }
 
     public function installShopware($username, $password, $name, $mail, $language, $release, $installDir, $basePath, $database)
@@ -61,7 +72,7 @@ class Release
         $this->writeShopwareConfig($installDir, $database);
         $this->setupDatabase($username, $password, $name, $mail, $language, $installDir, $database);
 
-        Logger::info("<info>Install completed</info>");
+        $this->ioService->writeln("<info>Install completed</info>");
     }
 
     /**

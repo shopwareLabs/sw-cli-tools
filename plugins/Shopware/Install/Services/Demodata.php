@@ -2,7 +2,7 @@
 
 namespace Shopware\Install\Services;
 
-use ShopwareCli\Application\Logger;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\PathProvider\PathProvider;
 use ShopwareCli\Utilities;
 
@@ -20,11 +20,16 @@ class Demodata
     private $pathProvider;
 
     private $demoUrl = 'http://releases.s3.shopware.com/demo_4.2.0.zip';
+    /**
+     * @var \ShopwareCli\Services\IoService
+     */
+    private $ioService;
 
-    public function __construct(Utilities $utilities, PathProvider $pathProvider)
+    public function __construct(Utilities $utilities, PathProvider $pathProvider, IoService $ioService)
     {
         $this->utilities = $utilities;
         $this->pathProvider = $pathProvider;
+        $this->ioService = $ioService;
     }
 
     public function setup($installDir)
@@ -35,14 +40,14 @@ class Demodata
         }
 
         if (!file_exists(($assetDir . '/demo.zip'))) {
-            Logger::info("<info>Downloading demodata from shopware.de</info>");
+            $this->ioService->writeln("<info>Downloading demodata from shopware.de</info>");
             $this->utilities->executeCommand("wget {$this->demoUrl} -O {$assetDir}/demo.zip");
-            Logger::info("<info>Unzipping demo data</info>");
+            $this->ioService->writeln("<info>Unzipping demo data</info>");
             $this->utilities->executeCommand("unzip -q {$assetDir}/demo.zip -d {$assetDir}");
         }
 
         // todo: This should be done in PHP
-        Logger::info("<info>Copying demo data to shop</info>");
+        $this->ioService->writeln("<info>Copying demo data to shop</info>");
         $this->utilities->executeCommand("cp -rf {$assetDir}/files {$installDir}");
         $this->utilities->executeCommand("cp -rf {$assetDir}/media {$installDir}");
         $this->utilities->executeCommand("find {$installDir}/cache -type d -exec chmod 777 {} \;", true);
@@ -58,7 +63,7 @@ class Demodata
             $this->runCliCommands($installDir);
         }
 
-        Logger::info("<info>Clearing the cache</info>");
+        $this->ioService->writeln("<info>Clearing the cache</info>");
 
         $this->utilities->executeCommand("{$installDir}/cache/clear_cache.sh");
     }
@@ -68,7 +73,7 @@ class Demodata
      */
     public function runCliCommands($installDir)
     {
-        Logger::info("<info>Running license import</info>");
+        $this->ioService->writeln("<info>Running license import</info>");
 
         $this->utilities->executeCommand("{$installDir}/bin/console/ sw:generate:attributes");
         $this->utilities->executeCommand("{$installDir}/bin/console/ sw:plugin:refresh");

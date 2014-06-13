@@ -2,8 +2,6 @@
 
 namespace ShopwareCli\Services;
 
-use ShopwareCli\OutputWriter\OutputWriter;
-use ShopwareCli\OutputWriter\OutputWriterInterface;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 
@@ -17,14 +15,15 @@ class Checkout
 {
     /** @var \ShopwareCli\Utilities  */
     protected $utilities;
+    /**
+     * @var IoService
+     */
+    private $ioService;
 
-    /** @var \ShopwareCli\OutputWriter\OutputWriterInterface  */
-    protected $writer;
-
-    public function __construct(Utilities $utilities, OutputWriterInterface $writer)
+    public function __construct(Utilities $utilities, IoService $ioService)
     {
         $this->utilities = $utilities;
-        $this->writer = $writer;
+        $this->ioService = $ioService;
     }
 
     public function checkout(Plugin $plugin, $path, $branch=null, $useHttp=false)
@@ -39,27 +38,27 @@ class Checkout
         $absPath = $path . '/' . $destPath;
 
         if (is_dir($absPath)) {
-            $this->writer->write("Plugin is already installed");
+            $this->ioService->writeln("Plugin is already installed");
             $this->utilities->changeDir($absPath);
 
             $this->utilities->executeCommand("git fetch origin");
 
             $output = $this->utilities->executeCommand("git log HEAD..origin/master --oneline");
             if (trim($output) === '') {
-                $this->writer->write("Plugin '$pluginName' ist Up to date");
+                $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
 
                 return;
             }
 
-            $this->writer->write("Incomming Changes:");
-            $this->writer->write($output);
+            $this->ioService->writeln("Incomming Changes:");
+            $this->ioService->writeln($output);
 
             $this->utilities->executeCommand("git reset --hard HEAD");
             $this->utilities->executeCommand("git pull");
             if ($branch) {
                 $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
             }
-            $this->writer->write("Plugin '$pluginName' successfully updated.\n");
+            $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
 
             return;
         }
@@ -69,6 +68,6 @@ class Checkout
             $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
         }
         $branch = $branch ?: 'master';
-        $this->writer->write("Successfully checked out '$branch' for '$pluginName'\n");
+        $this->ioService->writeln("Successfully checked out '$branch' for '$pluginName'\n");
     }
 }
