@@ -16,10 +16,11 @@ class File implements CacheInterface
 
     public function __construct(PathProvider $pathProvider)
     {
-        $this->info = $this->read_table();
         $this->pathProvider = $pathProvider;
-
         $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
+
+        $this->info = $this->read_table();
+
     }
 
     public function write($key, $data, $valid)
@@ -53,6 +54,7 @@ class File implements CacheInterface
     public function exists($key)
     {
         $file = $this->path . $key;
+        
         if (!file_exists($file)) {
             return false;
         }
