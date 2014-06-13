@@ -2,16 +2,24 @@
 
 namespace ShopwareCli\Cache;
 
+use ShopwareCli\Services\PathProvider\PathProvider;
+
 class File implements CacheInterface
 {
 
     protected $path;
     protected $info;
+    /**
+     * @var \ShopwareCli\Services\PathProvider\PathProvider
+     */
+    private $pathProvider;
 
-    public function __construct($path)
+    public function __construct(PathProvider $pathProvider)
     {
-        $this->path = $path;
         $this->info = $this->read_table();
+        $this->pathProvider = $pathProvider;
+
+        $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
     }
 
     public function write($key, $data, $valid)

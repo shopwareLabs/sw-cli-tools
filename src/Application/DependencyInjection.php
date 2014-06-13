@@ -48,7 +48,7 @@ class DependencyInjection
             ->addArgument(new Reference('service_container'));
 
         $container->register('cache', 'ShopwareCli\Cache\File')
-            ->addArgument($container->get('path_provider')->getCachePath() . DIRECTORY_SEPARATOR);
+            ->addArgument($container->get('path_provider'));
 
         $container->register('rest_service_factory', 'ShopwareCli\Services\Rest\RestServiceFactory')
             ->addArgument(new Reference('service_container'));
