@@ -16,8 +16,6 @@ class DependencyInjection
     {
         $container = new ContainerBuilder();
 
-
-        $container->setDefinition('output_writer', new Definition())->setSynthetic(true);
         $container->setDefinition('autoloader', new Definition())->setSynthetic(true);
         $container->setDefinition('io_service', new Definition())->setSynthetic(true);
 

@@ -4,7 +4,6 @@ namespace ShopwareCli;
 
 use Composer\Autoload\ClassLoader;
 use ShopwareCli\Application\DependencyInjection;
-use ShopwareCli\OutputWriter\WrappedOutputWriter;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -64,7 +63,6 @@ class Application extends \Symfony\Component\Console\Application
         $this->container = DependencyInjection::createContainer();
 
         $this->container->set('autoloader', $this->loader);
-        $this->container->set('output_writer', new WrappedOutputWriter(array($output, 'writeln')));
         $this->container->set('io_service', new IoService($input, $output, $this->getHelperSet()));
     }
 }
