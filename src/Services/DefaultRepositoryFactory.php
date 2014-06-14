@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Plugin;
+namespace ShopwareCli\Services;
 
 use ShopwareCli\Config;
 use Symfony\Component\DependencyInjection\Container;
@@ -27,7 +27,7 @@ class DefaultRepositoryFactory
         $repositories = array();
 
         foreach ($config->getRepositories() as $type => $data) {
-            $className = 'ShopwareCli\\Plugin\\Repositories\\' . $type;
+            $className = 'ShopwareCli\\Services\\Repositories\\' . $type;
 
             $options = array();
             if (isset($data['config'])) {

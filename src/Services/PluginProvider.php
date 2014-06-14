@@ -1,9 +1,9 @@
 <?php
 
-namespace ShopwareCli\Plugin;
+namespace ShopwareCli\Services;
 
 use ShopwareCli\Config;
-use ShopwareCli\Plugin\RepositoryInterface;
+use ShopwareCli\Services\RepositoryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 

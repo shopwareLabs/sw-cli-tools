@@ -2,7 +2,7 @@
 
 namespace ShopwareCli\Application;
 
-use ShopwareCli\Plugin\DefaultRepositoryFactory;
+use ShopwareCli\Services\DefaultRepositoryFactory;
 
 /**
  * Collect default and plugin repositories
@@ -13,7 +13,7 @@ use ShopwareCli\Plugin\DefaultRepositoryFactory;
 class RepositoryManager
 {
     /**
-     * @var \ShopwareCli\Plugin\DefaultRepositoryFactory
+     * @var \ShopwareCli\Services\DefaultRepositoryFactory
      */
     private $defaultRepositoryFactory;
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Plugin;
+namespace ShopwareCli\Services;
 
 use ShopwareCli\Services\Rest\RestInterface;
 
