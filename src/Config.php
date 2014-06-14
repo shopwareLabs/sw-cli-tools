@@ -14,33 +14,33 @@ use Symfony\Component\Yaml\Yaml;
 class Config implements \ArrayAccess
 {
     protected $configArray;
+    /**
+     * @var Services\PathProvider\PathProvider
+     */
+    private $pathProvider;
 
     public function __construct(PathProvider $pathProvider)
     {
-        $paths = $this->collectConfigFiles($pathProvider);
-        $config = $this->getMergedConfigs($paths);
+        $this->enforceMainConfigFile();
+
+        $config = $this->getMergedConfigs($this->collectConfigFiles());
 
         $this->configArray = Yaml::parse($config, true);
+        $this->pathProvider = $pathProvider;
     }
 
-    private function collectConfigFiles(PathProvider $pathProvider)
+    /**
+     * Iterate the plugin directories and return config.yaml files
+     *
+     * @return array
+     */
+    private function collectConfigFiles()
     {
-        $configPath = $pathProvider->getConfigPath();
-
-        $configFile = $configPath . '/config.yaml';
-
-        if (!file_exists($configFile)) {
-            copy($pathProvider->getCliToolPath() . '/config.yaml.dist', $configFile);
-            if (!file_exists($configFile)) {
-                throw new \RuntimeException("Could not find '{$configFile}'");
-            }
-        }
-
         $files = array(
-            $configPath
+            $this->pathProvider->getConfigPath()
         );
 
-        $iterator = new \DirectoryIterator($pathProvider->getPluginPath());
+        $iterator = new \DirectoryIterator($this->pathProvider->getPluginPath());
         foreach ($iterator as $fileInfo) {
             $file = $fileInfo->getPathName() . '/config.yaml';
 
@@ -52,6 +52,12 @@ class Config implements \ArrayAccess
         return $files;
     }
 
+    /**
+     * Merge all given config.yaml files
+     *
+     * @param $paths
+     * @return string
+     */
     private function getMergedConfigs($paths)
     {
         $content = array();
@@ -86,6 +92,22 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->configArray[$offset]);
+    }
+
+    /**
+     * Copy config.yaml.dist to the config directory, if the main config file does not exist, yet.
+     *
+     * @throws \RuntimeException
+     */
+    private function enforceMainConfigFile()
+    {
+        $configFile = $this->pathProvider->getConfigPath() . '/config.yaml';
+        if (!file_exists($configFile)) {
+            copy($this->pathProvider->getCliToolPath() . '/config.yaml.dist', $configFile);
+            if (!file_exists($configFile)) {
+                throw new \RuntimeException("Could not find '{$configFile}'");
+            }
+        }
     }
 
 }
