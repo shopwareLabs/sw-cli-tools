@@ -4,7 +4,6 @@ namespace ShopwareCli;
 
 use Composer\Autoload\ClassLoader;
 use ShopwareCli\Application\DependencyInjection;
-use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Application extends \Symfony\Component\Console\Application
 {
-    const NAME = 'sw-cli-tools';
+    const NAME    = 'sw-cli-tools';
     const VERSION = '@package_version@';
 
     /**
@@ -45,7 +44,7 @@ class Application extends \Symfony\Component\Console\Application
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
-        $this->setupContainer($input, $output);
+        $container = $this->createContainer($input, $output);
 
         $this->container->get('plugin_manager')->discoverPlugins();
         $this->container->get('plugin_manager')->injectContainer($this->container);
@@ -59,12 +58,21 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Creates the container and sets some services which are only synthetic in the container
      *
+     * @param  InputInterface     $input
+     * @param  OutputInterface    $output
+     * @return ContainerInterface
      */
-    protected function setupContainer(InputInterface $input, OutputInterface $output)
+    protected function createContainer(InputInterface $input, OutputInterface $output)
     {
-        $this->container = DependencyInjection::createContainer();
+        $container = DependencyInjection::createContainer();
 
-        $this->container->set('autoloader', $this->loader);
-        $this->container->set('io_service', new IoService($input, $output, $this->getHelperSet()));
+        $questionHelper = $this->getHelperSet()->get('question');
+
+        $container->set('output_interface', $output);
+        $container->set('input_interface', $input);
+        $container->set('question_helper', $questionHelper);
+        $container->set('autoloader', $this->loader);
+
+        return $container;
     }
 }
