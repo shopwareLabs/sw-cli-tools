@@ -26,6 +26,9 @@ class DependencyInjection
             ->addArgument(new Reference('output_interface'))
             ->addArgument(new Reference('question_helper'));
 
+        $container->register('process_executor', 'ShopwareCli\Services\ProcessExecutor')
+            ->addArgument(new Reference('output_interface'));
+
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
 
