@@ -74,6 +74,7 @@ class DependencyInjection
             ->addArgument(new Reference('autoloader'));
 
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
+            ->addArgument(new Reference('plugin_manager'))
             ->addArgument(new Reference('service_container'));
 
         $container->register('plugin_column_renderer', 'ShopwareCli\Command\Helpers\PluginColumnRenderer')

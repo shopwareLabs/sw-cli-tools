@@ -10,11 +10,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * Plugins can be created in the "plugins" directory. Any folder needs to have a "Bootstrap.php" file.
  *
- * Basically you will get injected the DI container builder into the bootstrap's constructor - at this
+ * Basically you will get the DI container builder via setter injection- at this
  * point you might want to add your own dependencies to the container.
  *
  * If you implement the ConsoleAwarePlugin interface, the PluginManager will call getConsoleCommands()
  * on your bootstrap and expect you to return a list of instantiated ConsoleCommands
+ *
+ * Also you can implement the interface RepositoryAwarePlugin if you want to provide own repositories like
+ * e.g. github
  *
  * Class PluginManager
  * @package ShopwareCli\Application
@@ -76,6 +79,12 @@ class PluginManager
         }
     }
 
+    /**
+     * Register a namespace for given plugin path
+     *
+     * @param $path
+     * @param $namespace
+     */
     private function registerPluginNamespace($path, $namespace)
     {
         $namespace = rtrim($namespace, '\\') . '\\';
@@ -95,6 +104,11 @@ class PluginManager
         return $plugin;
     }
 
+    /**
+     * Inject the di container into the plugin
+     *
+     * @param ContainerBuilder $container
+     */
     public function injectContainer(ContainerBuilder $container)
     {
         foreach ($this->plugins as $plugin) {
@@ -102,26 +116,6 @@ class PluginManager
                 $plugin->setContainer($container);
             }
         }
-    }
-
-    /**
-     * Returns a flat array of all plugin's console commands
-     *
-     * @return array
-     */
-    public function getConsoleCommands()
-    {
-        $commands = array();
-
-        foreach ($this->plugins as $plugin) {
-            if ($plugin instanceof ConsoleAwarePlugin) {
-                foreach ($plugin->getConsoleCommands() as $command) {
-                    $commands[] = $command;
-                }
-            }
-        }
-
-        return $commands;
     }
 
     /**

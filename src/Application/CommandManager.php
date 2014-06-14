@@ -12,22 +12,53 @@ class CommandManager
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     private $container;
+    /**
+     * @var PluginManager
+     */
+    private $pluginManager;
 
-    public function __construct(ContainerBuilder $container)
+    public function __construct(PluginManager $pluginManager, ContainerBuilder $container)
     {
+        $this->pluginManager = $pluginManager;
         $this->container = $container;
     }
 
+    /**
+     * Returns all commands
+     *
+     * @return array
+     */
     public function getCommands()
     {
         $commands = array_merge(
             $this->getDefaultCommands(),
-            $this->container->get('plugin_manager')->getConsoleCommands()
+            $this->collectPluginCommands()
         );
 
         foreach ($commands as $command) {
             if ($command instanceof ContainerAwareInterface) {
                 $command->setContainer($this->container);
+            }
+        }
+
+        return $commands;
+    }
+
+
+    /**
+     * Returns a flat array of all plugin's console commands
+     *
+     * @return array
+     */
+    public function collectPluginCommands()
+    {
+        $commands = array();
+
+        foreach ($this->pluginManager->getPlugins() as $plugin) {
+            if ($plugin instanceof ConsoleAwarePlugin) {
+                foreach ($plugin->getConsoleCommands() as $command) {
+                    $commands[] = $command;
+                }
             }
         }
 
