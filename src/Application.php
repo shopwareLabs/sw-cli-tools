@@ -126,7 +126,7 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function loadPlugins($ignore3rdPartyPlugins)
     {
-        $paths = array($this->container->get('path_provider')->getCliToolPath() . '/plugins');
+        $paths = array($this->container->get('path_provider')->getCliToolPath() . '/src/Plugins');
 
         if (!$ignore3rdPartyPlugins) {
             $paths[] = $this->container->get('path_provider')->getPluginPath();
