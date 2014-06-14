@@ -70,7 +70,6 @@ class DependencyInjection
             ->addArgument(new Reference('path_provider'));
 
         $container->register('plugin_manager', 'ShopwareCli\Application\PluginManager')
-            ->addArgument(array($container->get('path_provider')->getPluginPath(), $container->get('path_provider')->getCliToolPath() . '/plugins'))
             ->addArgument(new Reference('autoloader'));
 
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')

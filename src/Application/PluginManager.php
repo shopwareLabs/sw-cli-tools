@@ -25,15 +25,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class PluginManager
 {
     protected $plugins;
-    protected $pluginDirs;
+
     /**
      * @var \Composer\Autoload\ClassLoader
      */
     private $autoLoader;
 
-    public function __construct($pluginDirs, ClassLoader $autoLoader)
+    public function __construct(ClassLoader $autoLoader)
     {
-        $this->pluginDirs = array_unique($pluginDirs);
         $this->autoLoader = $autoLoader;
     }
 
@@ -43,10 +42,10 @@ class PluginManager
      *
      * @throws \RuntimeException
      */
-    public function discoverPlugins()
+    public function discoverPlugins($pluginDirs)
     {
         // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/plugins and 'plugins' in the sw-cli-tools main directory / phar
-        foreach ($this->pluginDirs as $pluginDir) {
+        foreach ($pluginDirs as $pluginDir) {
             // iterate all vendor folders
             foreach (scandir($pluginDir) as $vendorFolder) {
                 $vendorPath = $pluginDir . '/' . $vendorFolder;
