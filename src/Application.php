@@ -20,11 +20,6 @@ class Application extends \Symfony\Component\Console\Application
     const VERSION = '@package_version@';
 
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var \Composer\Autoload\ClassLoader
      */
     private $loader;
@@ -46,11 +41,11 @@ class Application extends \Symfony\Component\Console\Application
     {
         $container = $this->createContainer($input, $output);
 
-        $this->container->get('plugin_manager')->discoverPlugins();
-        $this->container->get('plugin_manager')->injectContainer($this->container);
+        $container->get('plugin_manager')->discoverPlugins();
+        $container->get('plugin_manager')->injectContainer($container);
 
-        $this->addCommands($this->container->get('command_manager')->getCommands());
-        $this->container->get('plugin_provider')->setRepositories($this->container->get('repository_manager')->getRepositories());
+        $this->addCommands($container->get('command_manager')->getCommands());
+        $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
 
         return parent::doRun($input, $output);
     }
