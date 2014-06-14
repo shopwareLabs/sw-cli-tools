@@ -6,7 +6,7 @@ namespace ShopwareCli\Services\Rest;
  * Factory for cache decorated rest services
  *
  * Class RestServiceFactory
- * @package ShopwareCli\Plugin\Services\Rest
+ * @package ShopwareCli\Services\Services\Rest
  */
 class RestServiceFactory
 {

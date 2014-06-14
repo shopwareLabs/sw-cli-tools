@@ -2,12 +2,10 @@
 
 namespace ShopwareCli\Command\Helpers;
 
-use ShopwareCli\Plugin\PluginProvider;
+use ShopwareCli\Services\PluginProvider;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
-use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Handles operations on plugins. You can either search for a single plugin, force the user to select one if multiple

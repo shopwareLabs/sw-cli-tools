@@ -1,8 +1,8 @@
 <?php
 
-namespace ShopwareCli\Plugin\Repositories;
+namespace ShopwareCli\Services\Repositories;
 
-use ShopwareCli\Plugin\BaseRepository;
+use ShopwareCli\Services\BaseRepository;
 
 /**
  * This currently only supports a finite list of shopware plugins on github, as currently the
@@ -11,7 +11,7 @@ use ShopwareCli\Plugin\BaseRepository;
  * This could also be replaces with a SimpleList having all the following repositories in the config.yaml
  *
  * Class ShopwareGithub
- * @package ShopwareCli\Plugin\Repositories
+ * @package ShopwareCli\Services\Repositories
  */
 class ShopwareGithub extends BaseRepository
 {

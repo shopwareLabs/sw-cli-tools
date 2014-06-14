@@ -2,17 +2,22 @@
 
 namespace ShopwareCli\Application;
 use Composer\Autoload\ClassLoader;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Implements a simple plugin system.
  *
  * Plugins can be created in the "plugins" directory. Any folder needs to have a "Bootstrap.php" file.
  *
- * Basically you will get injected the DI container builder into the bootstrap's constructor - at this
+ * Basically you will get the DI container builder via setter injection- at this
  * point you might want to add your own dependencies to the container.
  *
  * If you implement the ConsoleAwarePlugin interface, the PluginManager will call getConsoleCommands()
  * on your bootstrap and expect you to return a list of instantiated ConsoleCommands
+ *
+ * Also you can implement the interface RepositoryAwarePlugin if you want to provide own repositories like
+ * e.g. github
  *
  * Class PluginManager
  * @package ShopwareCli\Application
@@ -26,24 +31,19 @@ class PluginManager
      */
     private $autoLoader;
 
-    public function __construct($pluginDirs, ClassLoader $autoLoader, $container)
+    public function __construct($pluginDirs, ClassLoader $autoLoader)
     {
         $this->pluginDirs = array_unique($pluginDirs);
-        $this->container = $container;
         $this->autoLoader = $autoLoader;
     }
 
-    public function init()
-    {
-        $this->readPlugins();
-    }
 
     /**
      * Read all available plugins
      *
      * @throws \RuntimeException
      */
-    protected function readPlugins()
+    public function discoverPlugins()
     {
         // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/plugins and 'plugins' in the sw-cli-tools main directory / phar
         foreach ($this->pluginDirs as $pluginDir) {
@@ -79,6 +79,12 @@ class PluginManager
         }
     }
 
+    /**
+     * Register a namespace for given plugin path
+     *
+     * @param $path
+     * @param $namespace
+     */
     private function registerPluginNamespace($path, $namespace)
     {
         $namespace = rtrim($namespace, '\\') . '\\';
@@ -99,23 +105,17 @@ class PluginManager
     }
 
     /**
-     * Returns a flat array of all plugin's console commands
+     * Inject the di container into the plugin
      *
-     * @return array
+     * @param ContainerBuilder $container
      */
-    public function getConsoleCommands()
+    public function injectContainer(ContainerBuilder $container)
     {
-        $commands = array();
-
         foreach ($this->plugins as $plugin) {
-            if ($plugin instanceof ConsoleAwarePlugin) {
-                foreach ($plugin->getConsoleCommands() as $command) {
-                    $commands[] = $command;
-                }
+            if ($plugin instanceof ContainerAwarePlugin) {
+                $plugin->setContainer($container);
             }
         }
-
-        return $commands;
     }
 
     /**

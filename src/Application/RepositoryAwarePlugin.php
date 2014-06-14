@@ -4,8 +4,8 @@ namespace ShopwareCli\Application;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-interface ContainerAwarePlugin
+interface RepositoryAwarePlugin
 {
-    public function setContainer(ContainerBuilder $container);
+    public function getRepositories();
 
 }

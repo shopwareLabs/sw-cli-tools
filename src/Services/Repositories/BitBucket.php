@@ -1,8 +1,8 @@
 <?php
 
-namespace ShopwareCli\Plugin\Repositories;
+namespace ShopwareCli\Services\Repositories;
 
-use ShopwareCli\Plugin\BaseRepository;
+use ShopwareCli\Services\BaseRepository;
 
 class BitBucket extends BaseRepository
 {
