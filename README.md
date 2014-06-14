@@ -82,10 +82,11 @@ Plugins are created in the "/home/USER/.config/sw-cli-tools/plugins" folder and 
 The namespace of your plugin bootstrap should be VENDOR_FOLDER\PLUGIN_FOLDER\Bootstrap.
 
 ### Bootstrap
-The bootstrap is the main entry point of your plugin. If it implements ContainerAwarePlugin, it will get the container builder
- of the application injected upon creation. This way the container can be extended by your plugin.
-Additionally the Bootstrap can implement ConsoleAwarePlugin. If this is the case, the method "getConsoleCommands" will be
+The bootstrap is the main entry point of your plugin. If it implements **ContainerAwarePlugin**, it will get the container builder
+ of the application injected via setContainer. This way the container can be extended by your plugin.
+Additionally the Bootstrap can implement **ConsoleAwarePlugin**. If this is the case, the method "getConsoleCommands" will be
 called after creation - please return an array of console command instances here.
+Finally the plugin will call the getRepositories method of plugins implementing **RepositoryAwareInterface will**
 
 ### Changing existing components
 
