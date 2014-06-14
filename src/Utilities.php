@@ -78,6 +78,8 @@ class Utilities
      * @param  bool              $mayFail
      * @return string
      * @throws \RuntimeException
+     *
+     * @deprecated Use the new ProcessExecutor instead
      */
     public function executeCommand($cmd, $mayFail=false)
     {
