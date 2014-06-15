@@ -3,8 +3,12 @@
 namespace ShopwareCli\Services\PathProvider\DirectoryGateway;
 
 /**
- * Simple implementation of the XDG standard based on the python implementation:
- *  https://github.com/takluyver/pyxdg/blob/master/xdg/BaseDirectory.py
+ * Simple implementation of the XDG standard http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+ *
+ * Based on the python implementation https://github.com/takluyver/pyxdg/blob/master/xdg/BaseDirectory.py
+ *
+ * todo:
+ *  - XDG_RUNTIME_DIR is not implemented, yet
  *
  * Class Xdg
  * @package ShopwareCli\Application
