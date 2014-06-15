@@ -19,7 +19,7 @@ abstract class BaseRepository implements RepositoryInterface
     protected $restService;
     protected $color;
 
-    public function __construct($repository, $name, RestInterface $restService, $color=null)
+    public function __construct($repository, $name, RestInterface $restService, $color = null)
     {
         $this->repository = $repository;
         $this->name = $name;
@@ -39,5 +39,21 @@ abstract class BaseRepository implements RepositoryInterface
         $type = $type[0];
 
         return PluginFactory::getPlugin($name, $sshUrl, $httpUrl, $this->name, $type);
+    }
+
+    /**
+     * Very simple compare method
+     *
+     * @param $searched
+     * @param $actual
+     * @param bool $exact
+     * @return bool
+     */
+    protected function doesMatch($actual, $searched, $exact = false)
+    {
+        return (
+            !$exact && stripos($actual, $searched) !== false
+            || $exact && $searched == $actual
+        );
     }
 }

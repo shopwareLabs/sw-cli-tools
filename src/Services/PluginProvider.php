@@ -30,6 +30,12 @@ class PluginProvider
         $this->repositories = $repositories;
     }
 
+    /**
+     * Sort a given array of plugins by the configured properties
+     *
+     * @param $plugins
+     * @return mixed
+     */
     protected function sortPlugins($plugins)
     {
         switch ($this->sortBy) {
@@ -53,18 +59,30 @@ class PluginProvider
         return $plugins;
     }
 
-    public function getPluginByName($name)
+    /**
+     * Query all plugin repositories for plugins named like $name
+     *
+     * @param $name     string  Name to search for
+     * @param $exact    boolean Whether to search for exact match or not
+     * @return mixed
+     */
+    public function getPluginByName($name, $exact = false)
     {
         $result = array();
 
         /** @var $repo RepositoryInterface */
         foreach ($this->repositories as $repo) {
-            $result = array_merge($result, $repo->getPluginByName($name));
+            $result = array_merge($result, $repo->getPluginByName($name, $exact));
         }
 
         return $this->sortPlugins($result);
     }
 
+    /**
+     * Query all plugin repositories for all available plugins
+     *
+     * @return mixed
+     */
     public function getPlugins()
     {
         $result = array();

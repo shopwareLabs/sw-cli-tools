@@ -9,11 +9,11 @@ class BitBucket extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPluginByName($name)
+    public function getPluginByName($name, $exact = false)
     {
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
-            if (stripos($plugin->name, $name) === false) {
+            if (!$this->doesMatch($plugin->name, $name, $exact)) {
                 unset ($plugins[$key]);
             }
         }

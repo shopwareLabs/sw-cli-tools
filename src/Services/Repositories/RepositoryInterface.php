@@ -13,12 +13,18 @@ use ShopwareCli\Struct\Plugin;
 interface RepositoryInterface
 {
     /**
+     * Return available plugins named $name. If $exact is true, search should be exact (==), else  stripos() or similar
+     *
+     *
      * @param $name
+     * @param $exact
      * @return Plugin[]
      */
-    public function getPluginByName($name);
+    public function getPluginByName($name, $exact = false);
 
     /**
+     * Return all known plugins
+     *
      * @return Plugin[]
      */
     public function getPlugins();
