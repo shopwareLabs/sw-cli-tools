@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Services;
+namespace ShopwareCli\Services\Repositories;
 
 use ShopwareCli\Struct\Plugin;
 

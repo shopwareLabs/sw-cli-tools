@@ -21,12 +21,12 @@ class Config implements \ArrayAccess
 
     public function __construct(PathProvider $pathProvider)
     {
+        $this->pathProvider = $pathProvider;
+
         $this->enforceMainConfigFile();
 
         $config = $this->getMergedConfigs($this->collectConfigFiles());
-
         $this->configArray = Yaml::parse($config, true);
-        $this->pathProvider = $pathProvider;
     }
 
     /**

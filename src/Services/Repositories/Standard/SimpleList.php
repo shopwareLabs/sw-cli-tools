@@ -1,8 +1,8 @@
 <?php
 
-namespace ShopwareCli\Services\Repositories;
+namespace ShopwareCli\Services\Repositories\Standard;
 
-use ShopwareCli\Services\BaseRepository;
+use ShopwareCli\Services\Repositories\BaseRepository;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

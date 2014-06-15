@@ -57,7 +57,7 @@ class DependencyInjection
             ->addArgument(new Reference('plugin_manager'))
             ->addArgument(new Reference('default_repository_factory'));
 
-        $container->register('default_repository_factory', 'ShopwareCli\Services\DefaultRepositoryFactory')
+        $container->register('default_repository_factory', 'ShopwareCli\Services\Repositories\DefaultRepositoryFactory')
             ->addArgument(new Reference('service_container'));
 
         $container->register('cache', 'ShopwareCli\Cache\File')

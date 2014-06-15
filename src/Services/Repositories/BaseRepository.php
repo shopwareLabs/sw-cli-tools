@@ -1,7 +1,8 @@
 <?php
 
-namespace ShopwareCli\Services;
+namespace ShopwareCli\Services\Repositories;
 
+use ShopwareCli\Services\PluginFactory;
 use ShopwareCli\Services\Rest\RestInterface;
 
 /**

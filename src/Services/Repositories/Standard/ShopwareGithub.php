@@ -1,8 +1,8 @@
 <?php
 
-namespace ShopwareCli\Services\Repositories;
+namespace ShopwareCli\Services\Repositories\Standard;
 
-use ShopwareCli\Services\BaseRepository;
+use ShopwareCli\Services\Repositories\BaseRepository;
 
 /**
  * This currently only supports a finite list of shopware plugins on github, as currently the
