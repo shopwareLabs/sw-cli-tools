@@ -6,6 +6,12 @@ use ShopwareCli\Config;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
+/**
+ * Step through the config file, lookup needed repositories and create them
+ *
+ * Class DefaultRepositoryFactory
+ * @package ShopwareCli\Services\Repositories
+ */
 class DefaultRepositoryFactory
 {
 

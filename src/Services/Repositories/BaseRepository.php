@@ -6,7 +6,7 @@ use ShopwareCli\Services\PluginFactory;
 use ShopwareCli\Services\Rest\RestInterface;
 
 /**
- * Base repository class
+ * Base repository class providing a constructor for injection and a convenient access to the PluginFactory
  *
  * Class BaseRepository
  * @package ShopwareCli\Plugin

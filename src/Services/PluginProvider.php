@@ -3,9 +3,7 @@
 namespace ShopwareCli\Services;
 
 use ShopwareCli\Config;
-use ShopwareCli\Services\RepositoryInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use ShopwareCli\Services\Repositories\RepositoryInterface;
 
 /**
  * Class PluginProvider
