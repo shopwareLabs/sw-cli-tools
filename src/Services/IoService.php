@@ -136,7 +136,9 @@ class IoService
      */
     public function askConfirmation($question, $default = null)
     {
-        $question = $question instanceof ConfirmationQuestion ? $question : new ConfirmationQuestion($question, $default);
+        $question = $question instanceof ConfirmationQuestion
+            ? $question
+            : new ConfirmationQuestion($question, $default);
 
         return $this->questionHelper->ask($this->input, $this->output, $question);
     }

@@ -47,6 +47,7 @@ EOF
         $shopwarePath = $input->getOption('shopwarePath');
         $arguments = implode(' ', $input->getArgument('sw-command'));
 
+        /** @var $ioService IoService */
         $ioService = $this->container->get('io_service');
         $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
 

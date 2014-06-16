@@ -13,19 +13,33 @@ use ShopwareCli\Struct\Plugin;
  */
 class Install
 {
-    /** @var \ShopwareCli\Services\Checkout */
-    protected $checkout;
+    /**
+     * @var Checkout
+     */
+    protected $checkout
+    ;
     /**
      * @var IoService
      */
     private $ioService;
 
+    /**
+     * @param Checkout  $checkout
+     * @param IoService $ioService
+     */
     public function __construct(Checkout $checkout, IoService $ioService)
     {
         $this->checkout = $checkout;
         $this->ioService = $ioService;
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param        $shopwarePath
+     * @param bool   $inputActivate
+     * @param string $branch
+     * @param bool   $useHttp
+     */
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
         $pluginName = $plugin->name;
@@ -42,6 +56,10 @@ class Install
         return;
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param        $shopwarePath
+     */
     public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';

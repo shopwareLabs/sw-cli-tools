@@ -1,8 +1,9 @@
 <?php
 
 namespace ShopwareCli\Application;
+
 use Composer\Autoload\ClassLoader;
-use Symfony\Component\DependencyInjection\Container;
+use ShopwareCli\Struct\Plugin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -24,13 +25,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PluginManager
 {
+    /**
+     * @var array
+     */
     protected $plugins;
 
     /**
-     * @var \Composer\Autoload\ClassLoader
+     * @var ClassLoader
      */
     private $autoLoader;
 
+    /**
+     * @param ClassLoader $autoLoader
+     */
     public function __construct(ClassLoader $autoLoader)
     {
         $this->autoLoader = $autoLoader;
@@ -80,8 +87,8 @@ class PluginManager
     /**
      * Register a namespace for given plugin path
      *
-     * @param $path
-     * @param $namespace
+     * @param string $path
+     * @param string $namespace
      */
     private function registerPluginNamespace($path, $namespace)
     {
@@ -93,11 +100,11 @@ class PluginManager
      * Instantiates a plugin
      *
      * @param $className
-     * @return mixed
+     * @return Plugin
      */
     public function bootstrapPlugin($className)
     {
-        $plugin = new $className($this->container);
+        $plugin = new $className();
 
         return $plugin;
     }
@@ -119,7 +126,7 @@ class PluginManager
     /**
      * Return all plugins
      *
-     * @return mixed
+     * @return Plugin[]
      */
     public function getPlugins()
     {
@@ -130,7 +137,7 @@ class PluginManager
      * Returns the plugin queried by name
      *
      * @param $name
-     * @return mixed
+     * @return Plugin
      */
     public function getPlugin($name)
     {
@@ -140,8 +147,8 @@ class PluginManager
     /**
      * Overwrite the instance of plugin $name with $class
      *
-     * @param $name
-     * @param $class
+     * @param string $name
+     * @param Plugin $class
      */
     public function setPlugin($name, $class)
     {

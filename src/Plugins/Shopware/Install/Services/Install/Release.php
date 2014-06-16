@@ -3,7 +3,6 @@
 namespace Shopware\Install\Services\Install;
 
 use ShopwareCli\Config;
-
 use Shopware\Install\Services\ReleaseDownloader;
 use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
@@ -33,19 +32,31 @@ class Release
 
     /** @var  Demodata */
     protected $demoData;
+
     /**
      * @var ReleaseDownloader
      */
     private $releaseDownloader;
+
     /**
      * @var \Shopware\Install\Services\Demodata
      */
     private $demodata;
+
     /**
      * @var \ShopwareCli\Services\IoService
      */
     private $ioService;
 
+    /**
+     * @param ReleaseDownloader $releaseDownloader
+     * @param Config            $config
+     * @param VcsGenerator      $vcsGenerator
+     * @param ConfigWriter      $configWriter
+     * @param Database          $database
+     * @param Demodata          $demodata
+     * @param IoService         $ioService
+     */
     public function __construct(
         ReleaseDownloader $releaseDownloader,
         Config $config,
@@ -54,8 +65,7 @@ class Release
         Database $database,
         Demodata $demodata,
         IoService $ioService
-    )
-    {
+    ) {
         $this->config = $config;
         $this->vcsGenerator = $vcsGenerator;
         $this->configWriter = $configWriter;
@@ -65,6 +75,17 @@ class Release
         $this->ioService = $ioService;
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @param $name
+     * @param $mail
+     * @param $language
+     * @param $release
+     * @param $installDir
+     * @param $basePath
+     * @param $database
+     */
     public function installShopware($username, $password, $name, $mail, $language, $release, $installDir, $basePath, $database)
     {
         $this->releaseDownloader->downloadRelease($release, $installDir);

@@ -69,9 +69,9 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Very simple compare method
      *
-     * @param string $searched
-     * @param string $actual
-     * @param  bool $exact
+     * @param  string $searched
+     * @param  string $actual
+     * @param  bool   $exact
      * @return bool
      */
     protected function doesMatch($actual, $searched, $exact = false)

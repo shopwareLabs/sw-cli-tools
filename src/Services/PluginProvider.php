@@ -48,7 +48,7 @@ class PluginProvider
      * Sort a given array of plugins by the configured properties
      *
      * @param $plugins
-     * @return mixed
+     * @return Plugin[]
      */
     protected function sortPlugins($plugins)
     {
@@ -78,7 +78,7 @@ class PluginProvider
      *
      * @param $name     string  Name to search for
      * @param $exact    boolean Whether to search for exact match or not
-     * @return Plugin
+     * @return Plugin[]
      */
     public function getPluginByName($name, $exact = false)
     {

@@ -5,7 +5,6 @@ namespace Shopware\Plugin\Services;
 use ShopwareCli\Services\PluginProvider;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
-use ShopwareCli\Utilities;
 
 /**
  * Handles operations on plugins. You can either search for a single plugin, force the user to select one if multiple

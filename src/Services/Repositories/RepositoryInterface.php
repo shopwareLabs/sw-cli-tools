@@ -17,7 +17,7 @@ interface RepositoryInterface
      * If $exact is true, search should be exact (==), else  stripos() or similar
      *
      * @param string $name
-     * @param bool $exact
+     * @param bool   $exact
      *
      * @return Plugin[]
      */

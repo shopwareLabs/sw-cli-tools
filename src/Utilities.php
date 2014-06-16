@@ -3,7 +3,6 @@
 namespace ShopwareCli;
 
 use ShopwareCli\Services\IoService;
-use Symfony\Component\Process\Process;
 
 class Utilities
 {
@@ -19,7 +18,8 @@ class Utilities
     }
 
     /**
-     * Checks if a given path is a shopware installation (by checking for shopware.php)
+     * Checks if a given path is a shopware installation
+     * (by checking for shopware.php)
      *
      * @param  string $path
      * @return bool
@@ -45,8 +45,10 @@ class Utilities
             return $shopwarePath;
         }
 
-        return $this->ioService->askAndValidate("Path to your Shopware installation: ", array($this, 'validateShopwarePath'));
-
+        return $this->ioService->askAndValidate(
+            "Path to your Shopware installation: ",
+            array($this, 'validateShopwarePath')
+        );
     }
 
     /**
@@ -61,7 +63,9 @@ class Utilities
         $shopwarePathReal = realpath($shopwarePath);
 
         if (!$this->isShopwareInstallation($shopwarePathReal)) {
-            throw new \RuntimeException("{$shopwarePathReal} is not a valid shopware path");
+            throw new \RuntimeException(
+                "{$shopwarePathReal} is not a valid shopware path"
+            );
         }
 
         return $shopwarePathReal;
@@ -86,7 +90,9 @@ class Utilities
         exec($cmd, $output, $returnCode);
 
         if (!$mayFail && $returnCode !== 0) {
-            throw new \RuntimeException(sprintf("An exception occurred: %s", implode("\n", $output)));
+            throw new \RuntimeException(
+                sprintf("An exception occurred: %s", implode("\n", $output))
+            );
         }
 
         return implode("\n", $output) . "\n";

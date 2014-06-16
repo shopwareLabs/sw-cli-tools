@@ -13,17 +13,35 @@ use ShopwareCli\Utilities;
  */
 class Zip
 {
-    /** @var \ShopwareCli\Services\Checkout  */
+    /**
+     * @var Checkout
+     */
     protected $checkout;
-    /** @var \ShopwareCli\Utilities  */
+
+    /**
+     * @var \ShopwareCli\Utilities
+     */
     protected $utilities;
 
+    /**
+     * @param Checkout  $checkout
+     * @param Utilities $utilities
+     */
     public function __construct(Checkout $checkout, Utilities $utilities)
     {
         $this->checkout = $checkout;
         $this->utilities = $utilities;
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param        $path
+     * @param        $zipTo
+     * @param        $branch
+     * @param bool   $useHttp
+     *
+     * @return string
+     */
     public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp = false)
     {
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
