@@ -105,16 +105,17 @@ class Application extends \Symfony\Component\Console\Application
         $pathProvider = $this->container->get('path_provider');
 
         foreach (array(
-                     $pathProvider->getAssetsPath(),
-                     $pathProvider->getCachePath(),
-                     $pathProvider->getPluginPath(),
-                     $pathProvider->getConfigPath()
-                 ) as $dir) {
-            if (!is_dir($dir)) {
-                $success = @mkdir($dir, 0777, true);
-                if (!$success) {
-                    throw new \RuntimeException("Could not find / create $dir");
-                }
+            $pathProvider->getAssetsPath(),
+            $pathProvider->getCachePath(),
+            $pathProvider->getPluginPath(),
+            $pathProvider->getConfigPath()
+         ) as $dir) {
+            if (is_dir($dir)) {
+                continue;
+            }
+
+            if (!@mkdir($dir, 0777, true)) {
+                throw new \RuntimeException("Could not find / create $dir");
             }
         }
     }

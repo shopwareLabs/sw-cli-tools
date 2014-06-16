@@ -34,8 +34,11 @@ class IoService
      * @param OutputInterface $output
      * @param QuestionHelper  $questionHelper
      */
-    public function __construct(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
-    {
+    public function __construct(
+        InputInterface $input,
+        OutputInterface $output,
+        QuestionHelper $questionHelper
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->questionHelper = $questionHelper;

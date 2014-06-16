@@ -13,12 +13,19 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config implements \ArrayAccess
 {
-    protected $configArray;
     /**
-     * @var Services\PathProvider\PathProvider
+     * @var array
+     */
+    protected $configArray;
+
+    /**
+     * @var PathProvider
      */
     private $pathProvider;
 
+    /**
+     * @param PathProvider $pathProvider
+     */
     public function __construct(PathProvider $pathProvider)
     {
         $this->pathProvider = $pathProvider;
@@ -41,6 +48,8 @@ class Config implements \ArrayAccess
         );
 
         $iterator = new \DirectoryIterator($this->pathProvider->getPluginPath());
+
+        /** @var $fileInfo \DirectoryIterator */
         foreach ($iterator as $fileInfo) {
             $file = $fileInfo->getPathName() . '/config.yaml';
 
@@ -69,26 +78,46 @@ class Config implements \ArrayAccess
         return implode("\n", $content);
     }
 
+    /**
+     * @return mixed
+     */
     public function getRepositories()
     {
         return $this->configArray['repositories'];
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return isset($this->configArray[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
         return $this->configArray[$offset];
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
     public function offsetSet($offset, $value)
     {
         $this->configArray[$offset] = $value;
     }
 
+    /**
+     * @param mixed $offset
+     */
     public function offsetUnset($offset)
     {
         unset($this->configArray[$offset]);

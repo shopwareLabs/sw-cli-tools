@@ -15,10 +15,10 @@ class PluginFactory
     /**
      * Input is a name like Frontend_SwagBusinessEssentials
      *
-     * @param $name
-     * @param $sshUrl
-     * @param $httpUrl
-     * @param $repoName
+     * @param  string $name
+     * @param  string $sshUrl
+     * @param  string $httpUrl
+     * @param  string $repoName
      * @param $repoType
      * @return Plugin
      */
@@ -37,10 +37,10 @@ class PluginFactory
     }
 
     /**
-     * @param $name
-     * @param $plugin
+     * @param string $name
+     * @param Plugin $plugin
      */
-    private static function setPluginModuleFromName($name, $plugin)
+    private static function setPluginModuleFromName($name, Plugin $plugin)
     {
         if (stripos($name, 'frontend') === 0) {
             $plugin->module = "Frontend";

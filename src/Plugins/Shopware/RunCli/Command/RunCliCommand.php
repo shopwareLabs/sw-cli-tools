@@ -54,8 +54,8 @@ EOF
     }
 
     /**
-     * @param string $shopwarePath
-     * @param IoService $ioService
+     * @param  string      $shopwarePath
+     * @param  IoService   $ioService
      * @return null|string
      */
     public function getValidShopwarePath($shopwarePath = null, IoService $ioService)

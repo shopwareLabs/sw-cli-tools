@@ -61,7 +61,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('utilities'));
 
-
         $this->container->register('install_service', 'Shopware\Plugin\Services\Install')
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('io_service'));

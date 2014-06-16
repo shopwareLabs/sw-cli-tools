@@ -20,11 +20,17 @@ class DefaultRepositoryFactory
      */
     private $container;
 
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @return RepositoryInterface[]
+     */
     public function getDefaultRepositories()
     {
         /** @var Config $config */

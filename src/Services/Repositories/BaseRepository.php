@@ -13,12 +13,37 @@ use ShopwareCli\Services\Rest\RestInterface;
  */
 abstract class BaseRepository implements RepositoryInterface
 {
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var
+     */
     protected $repository;
-    protected $useHttp;
+
+    /**
+     * @var
+     */
+    protected $useHttp
+    ;
+    /**
+     * @var RestInterface
+     */
     protected $restService;
+
+    /**
+     * @var null
+     */
     protected $color;
 
+    /**
+     * @param               $repository
+     * @param               $name
+     * @param RestInterface $restService
+     * @param null          $color
+     */
     public function __construct($repository, $name, RestInterface $restService, $color = null)
     {
         $this->repository = $repository;
@@ -44,8 +69,8 @@ abstract class BaseRepository implements RepositoryInterface
     /**
      * Very simple compare method
      *
-     * @param $searched
-     * @param $actual
+     * @param string $searched
+     * @param string $actual
      * @param  bool $exact
      * @return bool
      */

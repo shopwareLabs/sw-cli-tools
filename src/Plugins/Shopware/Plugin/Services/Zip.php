@@ -2,7 +2,6 @@
 
 namespace Shopware\Plugin\Services;
 
-use Shopware\Plugin\Services\Checkout;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 

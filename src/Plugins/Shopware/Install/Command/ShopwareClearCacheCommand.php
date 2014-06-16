@@ -49,7 +49,7 @@ EOF
     }
 
     /**
-     * @param string $path
+     * @param  string            $path
      * @return string
      * @throws \RuntimeException
      */
@@ -63,7 +63,7 @@ EOF
     }
 
     /**
-     * @param  InputInterface  $input
+     * @param  InputInterface $input
      * @return string
      */
     private function checkPath(InputInterface $input)

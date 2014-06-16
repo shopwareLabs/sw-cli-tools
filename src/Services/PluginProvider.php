@@ -4,6 +4,7 @@ namespace ShopwareCli\Services;
 
 use ShopwareCli\Config;
 use ShopwareCli\Services\Repositories\RepositoryInterface;
+use ShopwareCli\Struct\Plugin;
 
 /**
  * Class PluginProvider
@@ -11,20 +12,33 @@ use ShopwareCli\Services\Repositories\RepositoryInterface;
  */
 class PluginProvider
 {
+    /**
+     * @var RepositoryInterface[]
+     */
     protected $repositories = array();
+
+    /**
+     * @var string
+     */
     protected $sortBy;
+
     /**
      * @var \ShopwareCli\Config
      */
     private $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
-
         $this->sortBy = $config['general']['sortBy'];
     }
 
+    /**
+     * @param $repositories
+     */
     public function setRepositories($repositories)
     {
         $this->repositories = $repositories;
@@ -64,13 +78,11 @@ class PluginProvider
      *
      * @param $name     string  Name to search for
      * @param $exact    boolean Whether to search for exact match or not
-     * @return mixed
+     * @return Plugin
      */
     public function getPluginByName($name, $exact = false)
     {
         $result = array();
-
-        /** @var $repo RepositoryInterface */
         foreach ($this->repositories as $repo) {
             $result = array_merge($result, $repo->getPluginByName($name, $exact));
         }
@@ -81,13 +93,11 @@ class PluginProvider
     /**
      * Query all plugin repositories for all available plugins
      *
-     * @return mixed
+     * @return Plugin[]
      */
     public function getPlugins()
     {
         $result = array();
-
-        /** @var $repo RepositoryInterface */
         foreach ($this->repositories as $repo) {
             $result = array_merge($result, $repo->getPlugins());
         }

@@ -111,7 +111,7 @@ EOF
     /**
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
      *
-     * @param string $branch
+     * @param  string $branch
      * @return string
      */
     private function suggestNameFromBranch($branch)
@@ -128,7 +128,7 @@ EOF
     }
 
     /**
-     * @param string $path
+     * @param  string            $path
      * @throws \RuntimeException
      * @return string
      */

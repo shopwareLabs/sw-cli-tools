@@ -9,6 +9,9 @@ namespace ShopwareCli;
  */
 abstract class Struct
 {
+    /**
+     * @param array $values
+     */
     public function __construct(array $values = array())
     {
         foreach ($values as $name => $value) {
@@ -16,16 +19,32 @@ abstract class Struct
         }
     }
 
+    /**
+     * @param string $name
+     *
+     * @throws \OutOfRangeException
+     */
     public function __get($name)
     {
         throw new \OutOfRangeException("Unknown property \${$name} in " . get_class($this) . ".");
     }
 
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @throws \OutOfRangeException
+     */
     public function __set($name, $value)
     {
         throw new \OutOfRangeException("Unknown property \${$name} in " . get_class($this) . ".");
     }
 
+    /**
+     * @param string $name
+     *
+     * @throws \OutOfRangeException
+     */
     public function __unset($name)
     {
         throw new \OutOfRangeException("Unknown property \${$name} in " . get_class($this) . ".");

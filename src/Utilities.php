@@ -21,7 +21,7 @@ class Utilities
     /**
      * Checks if a given path is a shopware installation (by checking for shopware.php)
      *
-     * @param $path
+     * @param  string $path
      * @return bool
      */
     public function isShopwareInstallation($path)
@@ -32,8 +32,8 @@ class Utilities
     /**
      * Ask for a valid shopware path until the user enters it
      *
-     * @param  null              $shopwarePath
-     * @return mixed|null|string
+     * @param  string $shopwarePath
+     * @return string
      */
     public function getValidShopwarePath($shopwarePath = null)
     {
@@ -52,7 +52,7 @@ class Utilities
     /**
      * Shopware path validator - can be used in askAndValidate methods
      *
-     * @param $shopwarePath
+     * @param  string            $shopwarePath
      * @return string
      * @throws \RuntimeException
      */
@@ -67,14 +67,12 @@ class Utilities
         return $shopwarePathReal;
     }
 
-
-
     /**
      * This could / should be switched do symfony's process component
      * Currently it seems to have issues with realtime output,
      * so keeping "exec" for the time being
      *
-     * @param $cmd
+     * @param  string            $cmd
      * @param  bool              $mayFail
      * @return string
      * @throws \RuntimeException
