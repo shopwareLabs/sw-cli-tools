@@ -10,7 +10,7 @@ namespace ShopwareCli\Services\Rest;
  */
 interface RestInterface
 {
-    public function get($url, $parameters=array(), $headers=array());
+    public function get($url, $parameters = array(), $headers = array());
 
-    public function post($url, $parameters=array(), $headers=array());
+    public function post($url, $parameters = array(), $headers = array());
 }

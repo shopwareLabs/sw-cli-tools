@@ -133,7 +133,7 @@ class PluginColumnRenderer
 
         $output = array();
         $iterations = $this->small ? 3 : 2;
-        for ($i=0;$i<$iterations;$i++) {
+        for ($i=0; $i<$iterations; $i++) {
             $plugin = null;
             if (isset($plugins[$i])) {
                 $plugin = $plugins[$i];
@@ -175,7 +175,7 @@ class PluginColumnRenderer
     /**
      * Format the module name - in "small" mode, only the first char is shown (F/B/C)
      *
-     * @param Plugin $plugin
+     * @param  Plugin $plugin
      * @return mixed
      */
     private function formatModuleName(Plugin $plugin)
@@ -206,5 +206,4 @@ class PluginColumnRenderer
 
         return $color;
     }
-
 }

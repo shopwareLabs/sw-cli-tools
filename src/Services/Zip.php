@@ -24,7 +24,7 @@ class Zip
         $this->utilities = $utilities;
     }
 
-    public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp=false)
+    public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp = false)
     {
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
 

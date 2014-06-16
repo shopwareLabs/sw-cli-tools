@@ -28,9 +28,9 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @param string $sshUrl
-     * @param string $httpUrl
-     * @param string $name
+     * @param  string                     $sshUrl
+     * @param  string                     $httpUrl
+     * @param  string                     $name
      * @return \ShopwareCli\Struct\Plugin
      */
     public function createPlugin($sshUrl, $httpUrl, $name)
@@ -46,7 +46,7 @@ abstract class BaseRepository implements RepositoryInterface
      *
      * @param $searched
      * @param $actual
-     * @param bool $exact
+     * @param  bool $exact
      * @return bool
      */
     protected function doesMatch($actual, $searched, $exact = false)

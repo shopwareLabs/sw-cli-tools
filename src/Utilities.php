@@ -35,7 +35,7 @@ class Utilities
      * @param  null              $shopwarePath
      * @return mixed|null|string
      */
-    public function getValidShopwarePath($shopwarePath=null)
+    public function getValidShopwarePath($shopwarePath = null)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -81,7 +81,7 @@ class Utilities
      *
      * @deprecated Use the new ProcessExecutor instead
      */
-    public function executeCommand($cmd, $mayFail=false)
+    public function executeCommand($cmd, $mayFail = false)
     {
         $output = array();
         $returnCode = 0;

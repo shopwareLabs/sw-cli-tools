@@ -48,7 +48,7 @@ class Stash extends BaseRepository
                 $urls[$clone['name']] = $clone['href'];
             }
 
-            $plugins[] = $this->createPlugin($urls['ssh'], $urls['http'],  $repo['name']);
+            $plugins[] = $this->createPlugin($urls['ssh'], $urls['http'], $repo['name']);
         }
 
         return $plugins;

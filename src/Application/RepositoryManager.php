@@ -56,6 +56,7 @@ class RepositoryManager
                 }
             }
         }
+
         return $repositories;
     }
 }

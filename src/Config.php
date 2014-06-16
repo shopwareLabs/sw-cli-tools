@@ -109,5 +109,4 @@ class Config implements \ArrayAccess
             }
         }
     }
-
 }

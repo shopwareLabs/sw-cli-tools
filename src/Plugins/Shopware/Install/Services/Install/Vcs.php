@@ -75,7 +75,7 @@ class Vcs
         $this->generateVcsMapping($installDir);
         $this->writeShopwareConfig($installDir, $database);
         $this->writeBuildProperties($installDir, $basePath, $database);
-        $this->setupDatabase($installDir,$database);
+        $this->setupDatabase($installDir, $database);
         $this->demoData->setup($installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");

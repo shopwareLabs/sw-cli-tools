@@ -47,7 +47,8 @@ class ShopwareInstallVcsCommand extends BaseCommand
                 InputOption::VALUE_OPTIONAL,
                 'GIT repos username. If given, checkout will be done using HTTP'
             )
-            ->setHelp(<<<EOF
+            ->setHelp(
+<<<EOF
 The <info>%command.name%</info> sets up shopware
 EOF
             );

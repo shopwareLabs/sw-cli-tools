@@ -54,7 +54,7 @@ class File implements CacheInterface
     public function exists($key)
     {
         $file = $this->path . $key;
-        
+
         if (!file_exists($file)) {
             return false;
         }

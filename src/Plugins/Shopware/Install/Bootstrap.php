@@ -64,7 +64,6 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('io_service'));
 
-
         $this->container->register('shopware-install.demodata', 'Shopware\Install\Services\Demodata')
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('path_provider'))
@@ -88,5 +87,4 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             ->addArgument(new Reference('shopware-install.demodata'))
             ->addArgument(new Reference('io_service'));
     }
-
 }

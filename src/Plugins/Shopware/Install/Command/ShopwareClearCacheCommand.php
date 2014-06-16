@@ -25,7 +25,8 @@ class ShopwareClearCacheCommand extends BaseCommand
                 InputOption::VALUE_OPTIONAL,
                 'Install directory'
             )
-            ->setHelp(<<<EOF
+            ->setHelp(
+<<<EOF
 The <info>%command.name%</info> clears the shopware cache
 EOF
             );
@@ -76,5 +77,4 @@ EOF
 
         return $shopwarePath ;
     }
-
 }

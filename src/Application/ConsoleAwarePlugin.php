@@ -10,5 +10,4 @@ interface ConsoleAwarePlugin
      * @return mixed
      */
     public function getConsoleCommands();
-
 }

@@ -56,5 +56,4 @@ class CliToolGateway implements DirectoryGatewayInterface
     {
         return $this->getBasePath();
     }
-
 }

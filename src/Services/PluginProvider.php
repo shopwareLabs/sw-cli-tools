@@ -94,5 +94,4 @@ class PluginProvider
 
         return $this->sortPlugins($result);
     }
-
 }

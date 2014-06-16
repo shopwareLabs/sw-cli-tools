@@ -44,7 +44,6 @@ class CommandManager
         return $commands;
     }
 
-
     /**
      * Returns a flat array of all plugin's console commands
      *

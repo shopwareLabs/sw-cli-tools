@@ -10,7 +10,7 @@ namespace ShopwareCli\Services\Rest;
  */
 class Simple implements RestInterface
 {
-    public function get($url, $parameters=array(), $headers=array())
+    public function get($url, $parameters = array(), $headers = array())
     {
         foreach ($headers as $key => &$value) {
             $value = "{$key}: {$value}";

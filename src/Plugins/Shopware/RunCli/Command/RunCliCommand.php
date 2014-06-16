@@ -2,12 +2,10 @@
 namespace Shopware\RunCli\Command;
 
 use ShopwareCli\Command\BaseCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCliCommand extends BaseCommand
@@ -33,7 +31,8 @@ class RunCliCommand extends BaseCommand
                 InputArgument::IS_ARRAY,
                 'arguments for your shopare command'
             )
-            ->setHelp(<<<EOF
+            ->setHelp(
+<<<EOF
 The <info>%command.name%</info> command allows you to trigger shopware cli commands from any subdirectory.
 EOF
             );
@@ -54,7 +53,7 @@ EOF
 
     }
 
-    public function getValidShopwarePath($shopwarePath=null, $output, DialogHelper $dialog)
+    public function getValidShopwarePath($shopwarePath = null, $output, DialogHelper $dialog)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -69,5 +68,4 @@ EOF
         return $dialog->askAndValidate($output, "Path to your Shopware installation: ", array($this->container->get('utilities'), 'validateShopwarePath'));
 
     }
-
 }

@@ -27,5 +27,4 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
             new RunCliCommand()
         );
     }
-
 }

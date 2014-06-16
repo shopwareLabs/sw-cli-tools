@@ -30,5 +30,4 @@ abstract class Struct
     {
         throw new \OutOfRangeException("Unknown property \${$name} in " . get_class($this) . ".");
     }
-
 }

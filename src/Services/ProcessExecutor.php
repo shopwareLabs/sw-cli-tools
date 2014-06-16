@@ -20,8 +20,8 @@ class ProcessExecutor
     }
 
     /**
-     * @param string $commandline
-     * @param bool $allowFailure
+     * @param  string            $commandline
+     * @param  bool              $allowFailure
      * @throws \RuntimeException
      * @return int|null
      */

@@ -2,7 +2,6 @@
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,62 +13,70 @@ class ShopwareInstallReleaseCommand extends BaseCommand
      */
     protected function configure()
     {
-        $this->setName('install:release')->setDescription(
-            'Allows setting up shopware from release package.'
-        )->addOption(
+        $this
+            ->setName('install:release')
+            ->setDescription('Allows setting up shopware from release package.')
+            ->addOption(
                 'release',
                 '-r',
                 InputOption::VALUE_OPTIONAL,
                 'Release version. Default: Latest'
-            )->addOption(
+            )
+            ->addOption(
                 'databaseName',
                 '-d',
                 InputOption::VALUE_OPTIONAL,
                 'Name of database'
-            )->addOption(
+            )
+            ->addOption(
                 'installDir',
                 'i',
                 InputOption::VALUE_OPTIONAL,
                 'Install directory'
-            )->addOption(
+            )
+            ->addOption(
                 'basePath',
                 'p',
                 InputOption::VALUE_OPTIONAL,
                 'base path of the shop'
-            )->addOption(
+            )
+            ->addOption(
                 'username',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'User name of the backend user'
-            )->addOption(
+            )
+            ->addOption(
                 'password',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'password name of the backend user'
-            )->addOption(
+            )
+            ->addOption(
                 'name',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Full name of the backend user'
-            )->addOption(
+            )
+            ->addOption(
                 'mail',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'email of the backend user'
-            )->addOption(
+            )
+            ->addOption(
                 'language',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Language of the backend user. Currently only de_DE and en_GB are supported',
                 'de_DE'
-
             )
-
             ->setHelp(
-                <<<EOF
-                The <info>%command.name%</info> sets up shopware
+<<<EOF
+            The <info>%command.name%</info> sets up shopware
 EOF
-            );;
+            )
+        ;
     }
 
     /**

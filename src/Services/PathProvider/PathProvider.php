@@ -43,5 +43,4 @@ class PathProvider
     {
         return $this->directoryGateway->getConfigDir();
     }
-
 }

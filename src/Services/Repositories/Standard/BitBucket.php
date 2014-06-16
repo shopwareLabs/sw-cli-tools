@@ -44,5 +44,4 @@ class BitBucket extends BaseRepository
 
         return $plugins;
     }
-
 }

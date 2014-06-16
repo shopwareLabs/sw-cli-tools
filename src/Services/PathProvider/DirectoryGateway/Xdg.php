@@ -23,7 +23,6 @@ class Xdg
         return getenv('HOME');
     }
 
-
     /**
      * @return string
      */
@@ -68,5 +67,4 @@ class Xdg
         return getenv('XDG_CACHE_HOME') ?: $this->getHomeDir() . DIRECTORY_SEPARATOR . '.cache';
 
     }
-
 }

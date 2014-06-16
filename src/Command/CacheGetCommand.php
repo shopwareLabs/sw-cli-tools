@@ -22,7 +22,8 @@ class CacheGetCommand extends BaseCommand
     {
         $this->setName('cli:cache:get')
             ->setDescription('Read the cache')
-            ->addArgument('keys',
+            ->addArgument(
+                'keys',
                 InputArgument::IS_ARRAY,
                 'One or more cache keys to read'
             );
@@ -46,5 +47,4 @@ class CacheGetCommand extends BaseCommand
         }
 
     }
-
 }

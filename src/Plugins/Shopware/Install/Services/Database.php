@@ -64,7 +64,8 @@ class Database
      */
     public function importReleaseInstallDeltas($installDir)
     {
-        $this->getConnection()->exec(<<<'EOF'
+        $this->getConnection()->exec(
+<<<'EOF'
             SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
             SET time_zone = "+00:00";
             SET FOREIGN_KEY_CHECKS = 0;
@@ -87,12 +88,14 @@ EOF
             $this->getConnection()->exec($line);
         }
 
-        $this->getConnection()->exec('
+        $this->getConnection()->exec(
+<<<'EOF'
            SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
            SET time_zone = "+00:00";
            SET @locale_de_DE = (SELECT id FROM s_core_locales WHERE locale = "de_DE");
            SET @locale_en_GB = (SELECT id FROM s_core_locales WHERE locale = "en_GB");
-       ');
+EOF
+        );
 
         $this->ioService->writeln("<info>Importing snippet delta</info>");
         $lines = explode(";\n", file_get_contents("{$installDir}/install/assets/sql/snippets.sql"));
@@ -135,7 +138,7 @@ EOF
      */
     private function saltPassword($password)
     {
-       return md5("A9ASD:_AD!_=%a8nx0asssblPlasS$" . md5($password));
+        return md5("A9ASD:_AD!_=%a8nx0asssblPlasS$" . md5($password));
     }
 
     /**
@@ -153,9 +156,7 @@ EOF
     {
         $this->ioService->writeln("<info>Creating admin user $user</info>");
 
-        $fetchLanguageId = $this->getConnection()->prepare("
-        SELECT id FROM s_core_locales WHERE locale = ?
-        ");
+        $fetchLanguageId = $this->getConnection()->prepare("SELECT id FROM s_core_locales WHERE locale = ?");
         $fetchLanguageId->execute(array($language));
         $fetchLanguageId = $fetchLanguageId->fetchColumn();
 
@@ -164,17 +165,17 @@ EOF
         }
 
          // Drop previous inserted admins
-        $this->getConnection()->query("
-        DELETE FROM s_core_auth
-        ");
-        // Insert new admin
+        $this->getConnection()->query("DELETE FROM s_core_auth");
 
-        $prepareStatement = $this->getConnection()->prepare("
-        INSERT INTO s_core_auth (roleID,username,password,localeID,`name`,email,active,admin,salted,lockeduntil)
-        VALUES (
-        1,?,?,?,?,?,1,1,1,'0000-00-00 00:00:00'
-        )
-        ");
+        // Insert new admin
+        $prepareStatement = $this->getConnection()->prepare(
+<<<'EOF'
+INSERT INTO s_core_auth (roleID,username,password,localeID,`name`,email,active,admin,salted,lockeduntil)
+VALUES (
+    1,?,?,?,?,?,1,1,1,'0000-00-00 00:00:00'
+)
+EOF
+        );
         $prepareStatement->execute(array(
             $user,
             $this->saltPassword($password),

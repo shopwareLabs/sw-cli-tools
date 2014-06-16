@@ -26,7 +26,7 @@ class Checkout
         $this->ioService = $ioService;
     }
 
-    public function checkout(Plugin $plugin, $path, $branch=null, $useHttp=false)
+    public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
     {
         if ($useHttp) {
             $cloneUrl = $plugin->cloneUrlHttp;

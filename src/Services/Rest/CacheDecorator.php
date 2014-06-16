@@ -16,24 +16,24 @@ class CacheDecorator implements RestInterface
     protected $cacheProvider;
     protected $cacheTime;
 
-    public function __construct(RestInterface $restService, CacheInterface $cacheProvider, $cacheTime=1)
+    public function __construct(RestInterface $restService, CacheInterface $cacheProvider, $cacheTime = 1)
     {
         $this->decorate = $restService;
         $this->cacheProvider = $cacheProvider;
         $this->cacheTime = $cacheTime;
     }
 
-    public function get($url, $parameters=array(), $headers=array())
+    public function get($url, $parameters = array(), $headers = array())
     {
-        return $this->callCached('get', sha1($url), $url, $parameters=array(), $headers=array());
+        return $this->callCached('get', sha1($url), $url, $parameters = array(), $headers = array());
     }
 
-    public function post($url, $parameters=array(), $headers=array())
+    public function post($url, $parameters = array(), $headers = array())
     {
         call_user_func(array($this->decorate, 'post'), $url, $parameters, $headers);
     }
 
-    public function callCached($call, $key, $url, $parameters=array(), $headers=array())
+    public function callCached($call, $key, $url, $parameters = array(), $headers = array())
     {
         if (!$this->cacheProvider || $this->cacheTime == 0) {
             $content = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
@@ -52,5 +52,4 @@ class CacheDecorator implements RestInterface
 
         return $content;
     }
-
 }

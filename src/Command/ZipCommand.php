@@ -97,5 +97,4 @@ class ZipCommand extends BaseCommand
     {
         return $this->zipDir;
     }
-
 }

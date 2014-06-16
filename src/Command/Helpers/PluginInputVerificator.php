@@ -35,7 +35,7 @@ class PluginInputVerificator
      * Will loop until a valid choice was made
      *
      * @param $plugins
-     * @param array $allowedAnswers
+     * @param  array  $allowedAnswers
      * @return string
      */
     public function selectPlugin($plugins, $allowedAnswers = array('all'))

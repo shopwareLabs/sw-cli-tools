@@ -45,7 +45,7 @@ EOF;
         $this->ioService = $ioService;
     }
 
-    public function writeConfigPhp($installDir, $user, $password, $name, $host, $port=3306)
+    public function writeConfigPhp($installDir, $user, $password, $name, $host, $port = 3306)
     {
         $this->ioService->writeln("<info>Writing config.php</info>");
 
@@ -64,5 +64,4 @@ EOF;
 
         file_put_contents($installDir . '/build/build.properties', $config);
     }
-
 }

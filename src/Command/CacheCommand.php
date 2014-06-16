@@ -27,5 +27,4 @@ class CacheCommand extends BaseCommand
     {
         $this->container->get('cache')->clear();
     }
-
 }

@@ -36,7 +36,6 @@ class PluginManager
         $this->autoLoader = $autoLoader;
     }
 
-
     /**
      * Read all available plugins
      *
@@ -148,5 +147,4 @@ class PluginManager
     {
         $this->plugins[$name] = $class;
     }
-
 }

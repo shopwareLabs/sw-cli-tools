@@ -33,5 +33,4 @@ class Checkout
             "git clone -b {$branch} {$repo} {$destination}"
         );
     }
-
 }

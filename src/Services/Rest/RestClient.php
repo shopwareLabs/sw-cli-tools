@@ -8,7 +8,9 @@ namespace ShopwareCli\Services\Rest;
  * (c) 2013 Travis Dent <tcdent@gmail.com>
  */
 
-class RestClientException extends \Exception {}
+class RestClientException extends \Exception
+{
+}
 
 class RestClient implements RestInterface
 {
@@ -25,28 +27,30 @@ class RestClient implements RestInterface
     public $decoded_response; // Decoded response body.
     private $iterator_positon;
 
-    public function __construct($options=array())
+    public function __construct($options = array())
     {
         $default_options = array(
             'headers' => array(),
             'parameters' => array(),
             'curl_options' => array(),
             'user_agent' => "PHP RestClient/0.1.2",
-            'base_url' => NULL,
-            'format' => NULL,
+            'base_url' => null,
+            'format' => null,
             'format_regex' => "/(\w+)\/(\w+)(;[.+])?/",
             'decoders' => array(
                 'json' => 'json_decode',
                 'php' => 'unserialize'
             ),
-            'username' => NULL,
-            'password' => NULL
+            'username' => null,
+            'password' => null
         );
 
         $this->options = array_merge($default_options, $options);
-        if(array_key_exists('decoders', $options))
+        if (array_key_exists('decoders', $options)) {
             $this->options['decoders'] = array_merge(
-                $default_options['decoders'], $options['decoders']);
+                $default_options['decoders'], $options['decoders']
+            );
+        }
     }
 
     public function set_option($key, $value)
@@ -62,40 +66,43 @@ class RestClient implements RestInterface
     }
 
     // Request methods:
-    public function get($url, $parameters=array(), $headers=array())
+    public function get($url, $parameters = array(), $headers = array())
     {
         return $this->execute($url, 'GET', $parameters, $headers);
     }
 
-    public function post($url, $parameters=array(), $headers=array())
+    public function post($url, $parameters = array(), $headers = array())
     {
         return $this->execute($url, 'POST', $parameters, $headers);
     }
 
-    public function put($url, $parameters=array(), $headers=array())
+    public function put($url, $parameters = array(), $headers = array())
     {
         return $this->execute($url, 'PUT', $parameters, $headers);
     }
 
-    public function delete($url, $parameters=array(), $headers=array())
+    public function delete($url, $parameters = array(), $headers = array())
     {
         return $this->execute($url, 'DELETE', $parameters, $headers);
     }
 
-    public function execute($url, $method='GET', $parameters=array(), $headers=array())
+    public function execute($url, $method = 'GET', $parameters = array(), $headers = array())
     {
         $client = clone $this;
         $client->url = $url;
         $client->handle = curl_init();
         $curlopt = array(
-            CURLOPT_HEADER => TRUE,
-            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HEADER => true,
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_USERAGENT => $client->options['user_agent']
         );
 
-        if($client->options['username'] && $client->options['password'])
-            $curlopt[CURLOPT_USERPWD] = sprintf("%s:%s",
-                $client->options['username'], $client->options['password']);
+        if ($client->options['username'] && $client->options['password']) {
+            $curlopt[CURLOPT_USERPWD] = sprintf(
+                "%s:%s",
+                $client->options['username'], $client->options['password']
+            );
+        }
 
         if (count($client->options['headers']) || count($headers)) {
             $curlopt[CURLOPT_HTTPHEADER] = array();
@@ -105,12 +112,13 @@ class RestClient implements RestInterface
             }
         }
 
-        if($client->options['format'])
+        if ($client->options['format']) {
             $client->url .= '.'.$client->options['format'];
+        }
 
         $parameters = array_merge($client->options['parameters'], $parameters);
         if (strtoupper($method) == 'POST') {
-            $curlopt[CURLOPT_POST] = TRUE;
+            $curlopt[CURLOPT_POST] = true;
             $curlopt[CURLOPT_POSTFIELDS] = json_encode($parameters);
         } elseif (strtoupper($method) != 'GET') {
             $curlopt[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
@@ -121,8 +129,9 @@ class RestClient implements RestInterface
         }
 
         if ($client->options['base_url']) {
-            if($client->url[0] != '/' || substr($client->options['base_url'], -1) != '/')
+            if ($client->url[0] != '/' || substr($client->options['base_url'], -1) != '/') {
                 $client->url = '/' . $client->url;
+            }
             $client->url = $client->options['base_url'] . $client->url;
         }
         $curlopt[CURLOPT_URL] = $client->url;
@@ -145,7 +154,7 @@ class RestClient implements RestInterface
         return json_decode($client->response, true);
     }
 
-    public function format_query($parameters, $primary='=', $secondary='&')
+    public function format_query($parameters, $primary = '=', $secondary = '&')
     {
         $query = "";
         foreach ($parameters as $key => $value) {
@@ -162,17 +171,19 @@ class RestClient implements RestInterface
         $http_ver = strtok($response, "\n");
 
         while ($line = strtok("\n")) {
-            if(strlen(trim($line)) == 0) break;
+            if (strlen(trim($line)) == 0) {  break;
+            }
 
             list($key, $value) = explode(':', $line, 2);
             $key = trim(strtolower(str_replace('-', '_', $key)));
             $value = trim($value);
-            if(empty($headers[$key]))
+            if (empty($headers[$key])) {
                 $headers[$key] = $value;
-            elseif(is_array($headers[$key]))
+            } elseif(is_array($headers[$key]))
                 $headers[$key][] = $value;
-            else
+            else {
                 $headers[$key] = array($headers[$key], $value);
+            }
         }
 
         $this->headers = (object) $headers;
@@ -181,35 +192,43 @@ class RestClient implements RestInterface
 
     public function get_response_format()
     {
-        if(!$this->response)
+        if (!$this->response) {
             throw new RestClientException(
-                "A response must exist before it can be decoded.");
+                "A response must exist before it can be decoded."
+            );
+        }
 
         // User-defined format.
-        if(!empty($this->options['format']))
-
+        if (!empty($this->options['format'])) {
             return $this->options['format'];
+        }
 
         // Extract format from response content-type header.
-        if(!empty($this->headers->content_type))
-            if(preg_match($this->options['format_regex'], $this->headers->content_type, $matches))
-
+        if (!empty($this->headers->content_type)) {
+            if (preg_match($this->options['format_regex'], $this->headers->content_type, $matches)) {
                 return $matches[2];
+            }
+        }
 
         throw new RestClientException(
-            "Response format could not be determined.");
+            "Response format could not be determined."
+        );
     }
 
     public function decode_response()
     {
         if (empty($this->decoded_response)) {
             $format = $this->get_response_format();
-            if(!array_key_exists($format, $this->options['decoders']))
-                throw new RestClientException("'${format}' is not a supported ".
-                "format, register a decoder to handle this response.");
+            if (!array_key_exists($format, $this->options['decoders'])) {
+                throw new RestClientException(
+                    "'${format}' is not a supported ".
+                    "format, register a decoder to handle this response."
+                );
+            }
 
             $this->decoded_response = call_user_func(
-                $this->options['decoders'][$format], $this->response);
+                $this->options['decoders'][$format], $this->response
+            );
         }
 
         return $this->decoded_response;
