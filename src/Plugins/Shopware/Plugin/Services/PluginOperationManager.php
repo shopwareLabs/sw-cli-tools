@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Command\Helpers;
+namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Services\PluginProvider;
 use ShopwareCli\Services\IoService;
@@ -15,7 +15,7 @@ use ShopwareCli\Utilities;
  * Works via callback you can pass in order to get notified about the selected plugins
  *
  * Class PluginOperationManager
- * @package ShopwareCli\Command\Helpers
+ * @package ShopwareCli\Command\Services
  */
 class PluginOperationManager
 {

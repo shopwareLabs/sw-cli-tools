@@ -122,6 +122,8 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Load plugins. The default plugins are always loaded, 3rd party plugins depending on $ignore3rdPartyPlugins
      *
+     * Default plugins are loaded first
+     *
      * @param $ignore3rdPartyPlugins
      */
     protected function loadPlugins($ignore3rdPartyPlugins)

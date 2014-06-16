@@ -40,19 +40,6 @@ class DependencyInjection
         $container->register('path_provider', 'ShopwareCli\Services\PathProvider\PathProvider')
             ->addArgument(new Reference('directory_gateway'));
 
-        $container->register('install_service', 'ShopwareCli\Services\Install')
-            ->addArgument(new Reference('checkout_service'))
-            ->addArgument(new Reference('io_service'));
-
-        $container->register('zip_service', 'ShopwareCli\Services\Zip')
-            ->addArgument(new Reference('checkout_service'))
-            ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('io_service'));
-
-        $container->register('checkout_service', 'ShopwareCli\Services\Checkout')
-            ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('io_service'));
-
         $container->register('repository_manager', 'ShopwareCli\Application\RepositoryManager')
             ->addArgument(new Reference('plugin_manager'))
             ->addArgument(new Reference('default_repository_factory'));
@@ -75,20 +62,6 @@ class DependencyInjection
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
             ->addArgument(new Reference('plugin_manager'))
             ->addArgument(new Reference('service_container'));
-
-        $container->register('plugin_column_renderer', 'ShopwareCli\Command\Helpers\PluginColumnRenderer')
-            ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('config'));
-
-        $container->register('plugin_selector', 'ShopwareCli\Command\Helpers\PluginInputVerificator')
-            ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('plugin_column_renderer'));
-
-        $container->register('plugin_operation_manager', 'ShopwareCli\Command\Helpers\PluginOperationManager')
-            ->addArgument(new Reference('plugin_provider'))
-            ->addArgument(new Reference('plugin_selector'))
-            ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('utilities'));
 
         $container->register('plugin_provider', 'ShopwareCli\Services\PluginProvider')
             ->addArgument(new Reference('config'));

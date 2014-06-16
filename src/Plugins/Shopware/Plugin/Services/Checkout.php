@@ -1,7 +1,8 @@
 <?php
 
-namespace ShopwareCli\Services;
+namespace Shopware\Plugin\Services;
 
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
 use ShopwareCli\Utilities;
 

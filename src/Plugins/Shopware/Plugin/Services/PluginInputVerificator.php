@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Command\Helpers;
+namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Question\Question;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Question\Question;
  * Will trigger the PluginColumnRenderer until an valid answer was made. Will then return the corresponding plugin/answer
  *
  * Class PluginInputVerificator
- * @package ShopwareCli\Command\Helpers
+ * @package ShopwareCli\Command\Services
  */
 class PluginInputVerificator
 {

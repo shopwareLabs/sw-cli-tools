@@ -1,8 +1,9 @@
 <?php
 
-namespace ShopwareCli\Command;
+namespace Shopware\Plugin\Command;
 
-use ShopwareCli\Services\Install;
+use ShopwareCli\Command\BaseCommand;
+use Shopware\Plugin\Services\Install;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

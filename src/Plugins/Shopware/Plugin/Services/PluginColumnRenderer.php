@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Command\Helpers;
+namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
@@ -10,7 +10,7 @@ use ShopwareCli\Struct\Plugin;
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
  *
  * Class PluginColumnRenderer
- * @package ShopwareCli\Command\Helpers
+ * @package ShopwareCli\Command\Services
  */
 class PluginColumnRenderer
 {

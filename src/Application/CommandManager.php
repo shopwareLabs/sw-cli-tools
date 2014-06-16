@@ -70,8 +70,6 @@ class CommandManager
     private function getDefaultCommands()
     {
         return array(
-            new Command\InstallCommand(),
-            new Command\ZipCommand(),
             new Command\CacheCommand(),
             new Command\CacheGetCommand()
         );
