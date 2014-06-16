@@ -108,3 +108,9 @@ The configuration of the script is done in ~/.config/sw-cli-tools/config.yaml. I
 For building the release packages (sw.phar) [box](https://github.com/kherge/php-box) is used:
 
     box build
+
+# Coding standard
+Coding standard for the project is [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
+Coding standard violations may be detected using phpcs:
+
+    ./vendor/bin/phpcs --standard=PSR2 ./src ./tests

@@ -11,7 +11,10 @@
         "symfony/dependency-injection": "~2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "ext-phar":  "*",
+        "phpunit/phpunit": "@stable",
+        "squizlabs/php_codesniffer": "2.0.*@ALPHA"
+
     },
     "autoload": {
         "psr-4": {
