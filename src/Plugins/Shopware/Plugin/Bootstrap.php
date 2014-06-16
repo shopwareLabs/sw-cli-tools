@@ -18,23 +18,16 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
 {
-
     /**
-     * @var ContainerBuilder
+     * {@inheritdoc}
      */
-    protected $container;
-
     public function setContainer(ContainerBuilder $container)
     {
-        $this->container = $container;
-
-        $this->populateContainer();
+        $this->populateContainer($container);
     }
 
     /**
-     * Return an array with instances of your console commands here
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getConsoleCommands()
     {
@@ -44,35 +37,36 @@ class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
         );
     }
 
-    private function populateContainer()
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function populateContainer($container)
     {
-
-        $this->container->register('plugin_column_renderer', 'Shopware\Plugin\Services\PluginColumnRenderer')
+        $container->register('plugin_column_renderer', 'Shopware\Plugin\Services\PluginColumnRenderer')
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('config'));
 
-        $this->container->register('plugin_selector', 'Shopware\Plugin\Services\PluginInputVerificator')
+        $container->register('plugin_selector', 'Shopware\Plugin\Services\PluginInputVerificator')
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('plugin_column_renderer'));
 
-        $this->container->register('plugin_operation_manager', 'Shopware\Plugin\Services\PluginOperationManager')
+        $container->register('plugin_operation_manager', 'Shopware\Plugin\Services\PluginOperationManager')
             ->addArgument(new Reference('plugin_provider'))
             ->addArgument(new Reference('plugin_selector'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('utilities'));
 
-        $this->container->register('install_service', 'Shopware\Plugin\Services\Install')
+        $container->register('install_service', 'Shopware\Plugin\Services\Install')
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('io_service'));
 
-        $this->container->register('zip_service', 'Shopware\Plugin\Services\Zip')
+        $container->register('zip_service', 'Shopware\Plugin\Services\Zip')
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('io_service'));
 
-        $this->container->register('checkout_service', 'Shopware\Plugin\Services\Checkout')
+        $container->register('checkout_service', 'Shopware\Plugin\Services\Checkout')
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('io_service'));
-
     }
 }

@@ -7,19 +7,10 @@ use ShopwareCli\Application\ConsoleAwarePlugin;
 use ShopwareCli\Application\ContainerAwarePlugin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
+class Bootstrap implements ConsoleAwarePlugin
 {
-    protected $container;
-
-    public function setContainer(ContainerBuilder $container)
-    {
-        $this->container = $container;
-    }
-
     /**
-     * Return an array with instances of your console commands here
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getConsoleCommands()
     {
