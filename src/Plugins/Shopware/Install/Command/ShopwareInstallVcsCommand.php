@@ -2,6 +2,7 @@
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,17 +71,16 @@ EOF
             $input->getOption('databaseName'),
             $input->getOption('user')
         );
-
     }
 
     public function interact(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
+        /** @var $ioService IoService */
+        $ioService = $this->container->get('io_service');
 
         $branch = $input->getOption('branch');
         if (!$branch) {
-            $branch = $dialog->ask($output, 'Please provide the branch you want to install <master>: ');
+            $branch = $ioService->ask('Please provide the branch you want to install <master>: ');
             $branch = trim($branch) ? $branch : 'master';
             $input->setOption('branch', $branch);
         }
@@ -89,7 +89,7 @@ EOF
 
         $installDir = $input->getOption('installDir');
         if (!$installDir) {
-            $installDir = $dialog->askAndValidate($output, "Please provide the install directory <{$suggestion}>: ", array($this,'validateInstallDir'));
+            $installDir = $ioService->askAndValidate("Please provide the install directory <{$suggestion}>: ", array($this,'validateInstallDir'));
             $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
         }
 
@@ -97,13 +97,13 @@ EOF
 
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
-            $databaseName = $dialog->ask($output, "Please provide the database name you want to use <{$suggestion}>: ");
+            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
             $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
         }
 
         $basePath = $input->getOption('basePath');
         if (!$basePath) {
-            $basePath = $dialog->ask($output, "Please provide the basepath you want to use <{$suggestion}>: ");
+            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
             $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
         }
     }
@@ -111,7 +111,7 @@ EOF
     /**
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
      *
-     * @param $branch
+     * @param string $branch
      * @return string
      */
     private function suggestNameFromBranch($branch)
@@ -128,7 +128,9 @@ EOF
     }
 
     /**
-     * @return bool
+     * @param string $path
+     * @throws \RuntimeException
+     * @return string
      */
     public function validateInstallDir($path)
     {

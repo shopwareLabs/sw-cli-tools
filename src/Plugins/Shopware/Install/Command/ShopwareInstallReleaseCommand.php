@@ -2,6 +2,7 @@
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -104,8 +105,8 @@ EOF
     {
         $this->validateInput($input);
 
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
+        /** @var $ioService IoService */
+        $ioService = $this->container->get('io_service');
 
         $required = array(
             'username' => 'backend user name',
@@ -119,8 +120,7 @@ EOF
                 continue;
             }
 
-            $fieldData = $dialog->askAndValidate(
-                $output,
+            $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
                 array($this, 'genericValidator')
             );
@@ -129,7 +129,7 @@ EOF
 
         $release = $input->getOption('release');
         if (!$release) {
-            $release = $dialog->ask($output, 'Please provide the release you want to install <latest>: ');
+            $release = $ioService->ask('Please provide the release you want to install <latest>: ');
             $release = trim($release) ? $release : 'latest';
             $input->setOption('release', $release);
         }
@@ -138,8 +138,7 @@ EOF
 
         $installDir = $input->getOption('installDir');
         if (!$installDir) {
-            $installDir = $dialog->askAndValidate(
-                $output,
+            $installDir = $ioService->askAndValidate(
                 "Please provide the install directory <{$suggestion}>: ",
                 array($this, 'validateInstallDir')
             );
@@ -150,13 +149,13 @@ EOF
 
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
-            $databaseName = $dialog->ask($output, "Please provide the database name you want to use <{$suggestion}>: ");
+            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
             $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
         }
 
         $basePath = $input->getOption('basePath');
         if (!$basePath) {
-            $basePath = $dialog->ask($output, "Please provide the basepath you want to use <{$suggestion}>: ");
+            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
             $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
         }
     }

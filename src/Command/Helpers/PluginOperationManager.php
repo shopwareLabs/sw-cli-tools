@@ -20,7 +20,6 @@ use ShopwareCli\Utilities;
 class PluginOperationManager
 {
     protected $pluginProvider;
-    protected $dialog;
     protected $output;
     protected $pluginSelector;
     /**

@@ -2,7 +2,7 @@
 namespace Shopware\RunCli\Command;
 
 use ShopwareCli\Command\BaseCommand;
-use Symfony\Component\Console\Helper\DialogHelper;
+use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,21 +39,26 @@ EOF
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $shopwarePath = $input->getOption('shopwarePath');
         $arguments = implode(' ', $input->getArgument('sw-command'));
 
-        /** @var DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        $shopwarePath = $this->getValidShopwarePath($shopwarePath, $output, $dialog);
+        $ioService = $this->container->get('io_service');
+        $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
 
         system("{$shopwarePath}/bin/console {$arguments}");
-
     }
 
-    public function getValidShopwarePath($shopwarePath = null, $output, DialogHelper $dialog)
+    /**
+     * @param string $shopwarePath
+     * @param IoService $ioService
+     * @return null|string
+     */
+    public function getValidShopwarePath($shopwarePath = null, IoService $ioService)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -65,7 +70,9 @@ EOF
             }
         } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
 
-        return $dialog->askAndValidate($output, "Path to your Shopware installation: ", array($this->container->get('utilities'), 'validateShopwarePath'));
-
+        return $ioService->askAndValidate(
+            "Path to your Shopware installation: ",
+            array($this->container->get('utilities'), 'validateShopwarePath')
+        );
     }
 }

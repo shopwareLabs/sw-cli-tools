@@ -3,14 +3,12 @@ namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Utilities;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareClearCacheCommand extends BaseCommand
 {
-
     /**
      * {@inheritdoc}
      */
@@ -38,7 +36,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->checkPath($input, $output);
+        $path = $this->checkPath($input);
 
         if (strpos($path, '/') !== 0) {
             $path = './' . $path;
@@ -50,6 +48,11 @@ EOF
 
     }
 
+    /**
+     * @param string $path
+     * @return string
+     * @throws \RuntimeException
+     */
     public function validateShopwareDirectory($path)
     {
         if (!$this->container->get('utilities')->isShopwareInstallation($path)) {
@@ -61,17 +64,13 @@ EOF
 
     /**
      * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @return mixed
+     * @return string
      */
-    private function checkPath(InputInterface $input, OutputInterface $output)
+    private function checkPath(InputInterface $input)
     {
         $shopwarePath  = $input->getOption('installDir');
 
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath, $output, $dialog);
+        $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);
 
         $input->setOption('installDir', $shopwarePath );
 
