@@ -48,7 +48,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('io_service'));
 
         $container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
-            ->addArgument(new Reference('utilities'))
+            ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'))
             ->addArgument($container->get('path_provider')->getCachePath());
 

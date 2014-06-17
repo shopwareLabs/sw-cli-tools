@@ -3,7 +3,7 @@
 namespace Shopware\Install\Services;
 
 use ShopwareCli\Services\IoService;
-use ShopwareCli\Utilities;
+use ShopwareCli\Services\ProcessExecutor;
 
 class ReleaseDownloader
 {
@@ -13,28 +13,36 @@ class ReleaseDownloader
     const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/release/install';
 
     /**
-     * @var \ShopwareCli\Utilities
+     * @var string
      */
-    private $utilities;
-
     private $cachePath;
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
 
-    public function __construct(Utilities $utilities, IoService $ioService, $cachePath)
+    /**
+     * @var ProcessExecutor
+     */
+    private $processExecutor;
+
+    /**
+     * @param ProcessExecutor $processExecutor
+     * @param IoService $ioService
+     * @param string $cachePath
+     */
+    public function __construct(ProcessExecutor $processExecutor, IoService $ioService, $cachePath)
     {
-        $this->utilities = $utilities;
         $this->cachePath = $cachePath;
         $this->ioService = $ioService;
+        $this->processExecutor = $processExecutor;
     }
 
     /**
      * Download a release and unzip it
      *
-     * @param $release
-     * @param $installDir
+     * @param string $release
+     * @param string $installDir
      */
     public function downloadRelease($release, $installDir)
     {
@@ -48,17 +56,16 @@ class ReleaseDownloader
             mkdir($installDir);
         }
 
-        $this->utilities->executeCommand("unzip {$zipLocation} -d {$installDir}");
+        $this->processExecutor->execute("unzip {$zipLocation} -d {$installDir}");
     }
 
     /**
      * New releases can be downloaded via the update api and provide a sha1 hash
      *
-     * @param $release
      * @return string
      * @throws \RuntimeException
      */
-    private function downloadFromUpdateApi($release)
+    private function downloadFromUpdateApi()
     {
         $content = json_decode(trim(file_get_contents(self::DOWNLOAD_UPDATE_API)), true);
         if (empty($content)) {
@@ -78,8 +85,8 @@ class ReleaseDownloader
         }
 
         $this->download($url, $target);
-        $sha1_actual = sha1_file($target);
-        if ($sha1 != $sha1_actual) {
+        $sha1Actual = sha1_file($target);
+        if ($sha1 != $sha1Actual) {
             throw new \RuntimeException("Hash missmatch");
         }
         copy($target, $cacheFilePath);
@@ -90,7 +97,7 @@ class ReleaseDownloader
     /**
      * Older releases needs to be installed directly via the s3 url
      *
-     * @param $release
+     * @param string $release
      * @return string
      */
     private function downloadFromUrl($release)
