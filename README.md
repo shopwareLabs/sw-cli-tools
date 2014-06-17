@@ -158,6 +158,7 @@ For building the release packages (sw.phar) [box](https://github.com/kherge/php-
 
 # Coding standard
 Coding standard for the project is [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
-Coding standard violations may be detected using phpcs:
+Coding standard violations may be detected using php-cs-fixer:
 
-    ./vendor/bin/phpcs --standard=PSR2 ./src ./tests
+    ./vendor/bin/php-cs-fixer fix -v --level=psr2 ./src
+    ./vendor/bin/php-cs-fixer fix -v --level=psr2 ./tests

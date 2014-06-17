@@ -102,7 +102,7 @@ class PluginProvider
         $result = array();
         foreach ($this->repositories as $repo) {
             if ($repo instanceof BaseRepository && stripos($repo->getName(), $name) !== false) {
-               $result = array_merge($result, $repo->getPlugins());
+                $result = array_merge($result, $repo->getPlugins());
             }
         }
 
