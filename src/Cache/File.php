@@ -19,7 +19,7 @@ class File implements CacheInterface
         $this->pathProvider = $pathProvider;
         $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
 
-        $this->info = $this->read_table();
+        $this->info = $this->readTable();
 
     }
 
@@ -29,7 +29,7 @@ class File implements CacheInterface
         $success = file_put_contents($file, $data);
 
         $this->info[$key] = array('valid' => $valid);
-        $this->write_table($key, $valid);
+        $this->writeTable($key, $valid);
 
         return $success !== false;
     }
@@ -48,7 +48,7 @@ class File implements CacheInterface
     public function delete($key)
     {
         unlink($this->path . $key);
-        $this->write_table();
+        $this->writeTable();
     }
 
     public function exists($key)
@@ -71,7 +71,7 @@ class File implements CacheInterface
             unlink($this->path . $key);
             unset($this->info[$key]);
         }
-        $this->write_table();
+        $this->writeTable();
     }
 
     public function getKeys()
@@ -84,7 +84,7 @@ class File implements CacheInterface
         return $this->path . 'info.json';
     }
 
-    private function read_table()
+    private function readTable()
     {
         $file = $this->getInfoFile();
         $content = null;
@@ -102,7 +102,7 @@ class File implements CacheInterface
         return $content;
     }
 
-    private function write_table()
+    private function writeTable()
     {
         $file = $this->getInfoFile();
 

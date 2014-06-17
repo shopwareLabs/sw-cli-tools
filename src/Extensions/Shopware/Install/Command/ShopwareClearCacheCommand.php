@@ -72,7 +72,7 @@ EOF
 
         $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);
 
-        $input->setOption('installDir', $shopwarePath );
+        $input->setOption('installDir', $shopwarePath);
 
         return $shopwarePath ;
     }

@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreStart
 
 namespace ShopwareCli\Services\Rest;
 
@@ -234,3 +235,4 @@ class RestClient implements RestInterface
         return $this->decoded_response;
     }
 }
+// @codingStandardsIgnoreEnd

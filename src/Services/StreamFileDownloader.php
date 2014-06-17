@@ -8,7 +8,7 @@ namespace ShopwareCli\Services;
 class StreamFileDownloader implements FileDownloader
 {
     const BLOCKSIZE = 8192;
-    
+
     /**
      * @var IoService
      */

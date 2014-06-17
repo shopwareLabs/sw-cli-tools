@@ -49,8 +49,7 @@ class Vcs
         Database $database,
         Demodata $demodata,
         IoService $ioService
-    )
-    {
+    ) {
         $this->checkout = $checkout;
         $this->config = $config;
         $this->vcsGenerator = $vcsGenerator;

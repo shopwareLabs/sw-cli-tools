@@ -59,7 +59,7 @@ EOF
      * @param  IoService   $ioService
      * @return null|string
      */
-    public function getValidShopwarePath($shopwarePath = null, IoService $ioService)
+    public function getValidShopwarePath($shopwarePath, IoService $ioService)
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());

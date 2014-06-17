@@ -80,7 +80,8 @@ class PluginInputVerificator
             $allowedAnswers = array_map(
                 function ($option) {
                     return sprintf('"<comment>%s</comment>"', $option);
-                }, $allowedAnswers
+                },
+                $allowedAnswers
             );
 
             return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
