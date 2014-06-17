@@ -50,6 +50,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'))
+            ->addArgument(new Reference('file_downloader'))
             ->addArgument($container->get('path_provider')->getCachePath());
 
         $container->register('shopware-install.vcs_generator', 'Shopware\Install\Services\VcsGenerator')

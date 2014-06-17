@@ -2,13 +2,14 @@
 
 namespace Shopware\Install\Services;
 
+use ShopwareCli\Services\FileDownloader;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\ProcessExecutor;
 
 class ReleaseDownloader
 {
     const DOWNLOAD_URL_TEMPLATE = 'http://releases.s3.shopware.com/install_%s.zip';
-    const BLOCKSIZE = 8192;
+
     const DOWNLOAD_URL_LATEST = 'http://install.s3.shopware.com/';
     const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/release/install';
 
@@ -27,15 +28,22 @@ class ReleaseDownloader
     private $processExecutor;
 
     /**
+     * @var FileDownloader
+     */
+    private $downloader;
+
+    /**
      * @param ProcessExecutor $processExecutor
      * @param IoService $ioService
+     * @param FileDownloader $downloader
      * @param string $cachePath
      */
-    public function __construct(ProcessExecutor $processExecutor, IoService $ioService, $cachePath)
+    public function __construct(ProcessExecutor $processExecutor, IoService $ioService, FileDownloader $downloader, $cachePath)
     {
         $this->cachePath = $cachePath;
         $this->ioService = $ioService;
         $this->processExecutor = $processExecutor;
+        $this->downloader = $downloader;
     }
 
     /**
@@ -84,7 +92,7 @@ class ReleaseDownloader
             return $cacheFilePath;
         }
 
-        $this->download($url, $target);
+        $this->downloader->download($url, $target);
         $sha1Actual = sha1_file($target);
         if ($sha1 != $sha1Actual) {
             throw new \RuntimeException("Hash missmatch");
@@ -109,52 +117,13 @@ class ReleaseDownloader
 
         if (!file_exists($cacheFile)) {
             $this->ioService->writeln("<info>Downloading release {$release}</info>");
-            $this->download($url, $target);
+            $this->downloader->download($url, $target);
             copy($target, $cacheFile);
         } else {
             $this->ioService->writeln("<info>Reading cached release download for {$release}</info>");
         }
 
         return $cacheFile;
-    }
-
-    /**
-     * Download a file from $url to $file
-     *
-     * @param  string            $url
-     * @param  string            $file
-     * @throws \RuntimeException
-     */
-    private function download($url, $file)
-    {
-        if (false === $readHandle = fopen($url, "rb")) {
-            throw new \RuntimeException(sprintf("Could not open URL '%s'.", $url));
-        }
-
-        if (false === $writeHandle = fopen($file, "wb")) {
-            throw new \RuntimeException(sprintf("Could not write file: %s.", $file));
-        }
-
-        $length = $this->getContentLengthFromStream($readHandle);
-
-        $progress = $this->ioService->createProgressBar($length/1024);
-        $progress->start();
-
-        // update every 0.5 magabytes
-        $progress->setRedrawFrequency(524288/1024);
-
-        $currentSize = 0;
-
-        while (!feof($readHandle)) {
-            $currentSize += fwrite($writeHandle, fread($readHandle, self::BLOCKSIZE));
-            $progress->setCurrent($currentSize/1024);
-        }
-        $progress->finish();
-
-        $this->ioService->writeln("\n Download finished");
-
-        fclose($readHandle);
-        fclose($writeHandle);
     }
 
     /**
@@ -191,20 +160,5 @@ class ReleaseDownloader
         }
 
         return sprintf(self::DOWNLOAD_URL_TEMPLATE, $release);
-    }
-
-    /**
-     * @param $readHandle
-     */
-    private function getContentLengthFromStream($readHandle)
-    {
-        $info = stream_get_meta_data($readHandle);
-        foreach ($info['wrapper_data'] as $field) {
-            if (stripos($field, 'content-length') !== false) {
-                list($header, $size) = explode(':', $field);
-            }
-        }
-
-        return $size;
     }
 }
