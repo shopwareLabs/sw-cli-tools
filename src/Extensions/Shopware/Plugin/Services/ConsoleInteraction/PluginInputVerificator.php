@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Plugin\Services;
+namespace Shopware\Plugin\Services\ConsoleInteraction;
 
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Question\Question;

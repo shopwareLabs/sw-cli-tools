@@ -42,15 +42,15 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
      */
     private function populateContainer($container)
     {
-        $container->register('plugin_column_renderer', 'Shopware\Plugin\Services\PluginColumnRenderer')
+        $container->register('plugin_column_renderer', 'Shopware\Plugin\Services\ConsoleInteraction\PluginColumnRenderer')
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('config'));
 
-        $container->register('plugin_selector', 'Shopware\Plugin\Services\PluginInputVerificator')
+        $container->register('plugin_selector', 'Shopware\Plugin\Services\ConsoleInteraction\PluginInputVerificator')
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('plugin_column_renderer'));
 
-        $container->register('plugin_operation_manager', 'Shopware\Plugin\Services\PluginOperationManager')
+        $container->register('plugin_operation_manager', 'Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager')
             ->addArgument(new Reference('plugin_provider'))
             ->addArgument(new Reference('plugin_selector'))
             ->addArgument(new Reference('io_service'))
