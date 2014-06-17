@@ -4,7 +4,7 @@ namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
-use ShopwareCli\Struct\Plugin;
+use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
@@ -64,9 +64,9 @@ class PluginColumnRenderer
         $this->printLegend($allPlugins);
 
         while ($currentPlugins[0]) {
-            /** @var \ShopwareCli\Struct\Plugin $plugin1 */
-            /** @var \ShopwareCli\Struct\Plugin $plugin2 */
-            /** @var \ShopwareCli\Struct\Plugin $plugin3 */
+            /** @var \Shopware\Plugin\Struct\Plugin $plugin1 */
+            /** @var \Shopware\Plugin\Struct\Plugin $plugin2 */
+            /** @var \Shopware\Plugin\Struct\Plugin $plugin3 */
             $plugin1 = $currentPlugins[0];
             $plugin2 = $currentPlugins[1];
             $plugin3 = isset($currentPlugins[2]) ? $currentPlugins[2] : null;

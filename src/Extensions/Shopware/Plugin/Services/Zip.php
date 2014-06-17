@@ -2,7 +2,7 @@
 
 namespace Shopware\Plugin\Services;
 
-use ShopwareCli\Struct\Plugin;
+use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Utilities;
 
 /**

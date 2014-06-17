@@ -3,7 +3,7 @@
 namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Services\IoService;
-use ShopwareCli\Struct\Plugin;
+use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml

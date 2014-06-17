@@ -3,7 +3,7 @@
 namespace Shopware\Plugin\Services;
 
 use ShopwareCli\Services\IoService;
-use ShopwareCli\Struct\Plugin;
+use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Handles operations on plugins. You can either search for a single plugin, force the user to select one if multiple
@@ -79,7 +79,7 @@ class PluginOperationManager
             if ($response == 'exit') {
                 return;
             }
-            if ($response instanceof \ShopwareCli\Struct\Plugin) {
+            if ($response instanceof \Shopware\Plugin\Struct\Plugin) {
                 $this->utilities->cls();
                 $callback($response, $params);
                 $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");

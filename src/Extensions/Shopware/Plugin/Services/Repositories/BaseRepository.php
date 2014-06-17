@@ -56,7 +56,7 @@ abstract class BaseRepository implements RepositoryInterface
      * @param  string                     $sshUrl
      * @param  string                     $httpUrl
      * @param  string                     $name
-     * @return \ShopwareCli\Struct\Plugin
+     * @return \Shopware\Plugin\Struct\Plugin
      */
     public function createPlugin($sshUrl, $httpUrl, $name)
     {

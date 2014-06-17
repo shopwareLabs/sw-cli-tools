@@ -2,7 +2,7 @@
 
 namespace Shopware\Plugin\Services;
 
-use ShopwareCli\Struct\Plugin;
+use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Create a plugin struct from the passed data

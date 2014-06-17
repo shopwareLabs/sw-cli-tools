@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Struct;
+namespace Shopware\Plugin\Struct;
 
 use ShopwareCli\Struct;
 
@@ -8,7 +8,7 @@ use ShopwareCli\Struct;
  * Shopware plugin struct
  *
  * Class Plugin
- * @package ShopwareCli\Struct
+ * @package Shopware\Plugin\Struct
  */
 class Plugin extends Struct
 {
