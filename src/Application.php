@@ -49,8 +49,8 @@ class Application extends \Symfony\Component\Console\Application
         $container = $this->createContainer($input, $output);
         $this->checkDirectories();
 
-        $ignore3rdPartyPlugins = $input->hasParameterOption('--no-plugins');
-        $this->loadPlugins($ignore3rdPartyPlugins);
+        $noExtensions = $input->hasParameterOption('--no-extensions');
+        $this->loadExtensions($noExtensions);
 
         $this->addCommands($container->get('command_manager')->getCommands());
 
@@ -60,7 +60,7 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
-     * Add global "--no-plugins" option
+     * Add global "--no-extensions" option
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */
@@ -68,7 +68,7 @@ class Application extends \Symfony\Component\Console\Application
     {
         $inputDefinitions = parent::getDefaultInputDefinition();
         $inputDefinitions->addOption(
-            new InputOption('--no-plugins', null, InputOption::VALUE_NONE, 'Don\'t load 3rd party plugins.')
+            new InputOption('--no-extensions', null, InputOption::VALUE_NONE, 'Don\'t load 3rd party extensions.')
         );
 
         return $inputDefinitions;
@@ -108,7 +108,7 @@ class Application extends \Symfony\Component\Console\Application
         foreach (array(
             $pathProvider->getAssetsPath(),
             $pathProvider->getCachePath(),
-            $pathProvider->getPluginPath(),
+            $pathProvider->getExtensionPath(),
             $pathProvider->getConfigPath()
          ) as $dir) {
             if (is_dir($dir)) {
@@ -122,18 +122,19 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
-     * Load plugins. The default plugins are always loaded, 3rd party plugins depending on $ignore3rdPartyPlugins
+     * Load extensions. The default extensions are always loaded,
+     * 3rd party extensions depending on $noExtensions
      *
-     * Default plugins are loaded first
+     * Default extensions are loaded first
      *
-     * @param $ignore3rdPartyPlugins
+     * @param bool $noExtensions
      */
-    protected function loadPlugins($ignore3rdPartyPlugins)
+    protected function loadExtensions($noExtensions)
     {
         $paths = array($this->container->get('path_provider')->getCliToolPath() . '/src/Extensions');
 
-        if (!$ignore3rdPartyPlugins) {
-            $paths[] = $this->container->get('path_provider')->getPluginPath();
+        if (!$noExtensions) {
+            $paths[] = $this->container->get('path_provider')->getExtensionPath();
         }
 
         $this->container->get('extension_manager')->discoverExtensions($paths);

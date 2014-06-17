@@ -12,7 +12,7 @@ interface DirectoryGatewayInterface
     /**
      * @return string
      */
-    public function getPluginDir();
+    public function getExtensionDir();
 
     /**
      * @return string

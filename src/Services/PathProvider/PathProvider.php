@@ -34,9 +34,9 @@ class PathProvider
         return $this->directoryGateway->getAssetsDir();
     }
 
-    public function getPluginPath()
+    public function getExtensionPath()
     {
-        return $this->directoryGateway->getPluginDir();
+        return $this->directoryGateway->getExtensionDir();
     }
 
     public function getConfigPath()

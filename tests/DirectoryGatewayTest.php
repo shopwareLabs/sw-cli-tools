@@ -9,7 +9,7 @@ class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
     {
         $gateway = new CliToolGateway('/some/dir/');
 
-        $this->assertEquals('/some/dir/plugins', $gateway->getPluginDir());
+        $this->assertEquals('/some/dir/extensions', $gateway->getExtensionDir());
         $this->assertEquals('/some/dir/assets', $gateway->getAssetsDir());
         $this->assertEquals('/some/dir/cache', $gateway->getCacheDir());
         $this->assertEquals('/some/dir', $gateway->getConfigDir());
@@ -24,7 +24,7 @@ class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
 
         $gateway = new XdgGateway(new Xdg());
 
-        $this->assertEquals('/tmp/xdg-config/sw-cli-tools/plugins', $gateway->getPluginDir());
+        $this->assertEquals('/tmp/xdg-config/sw-cli-tools/extensions', $gateway->getExtensionDir());
         $this->assertEquals('/tmp/xdg-data/sw-cli-tools/assets', $gateway->getAssetsDir());
         $this->assertEquals('/tmp/xdg-cache/sw-cli-tools', $gateway->getCacheDir());
         $this->assertEquals('/tmp/xdg-config/sw-cli-tools', $gateway->getConfigDir());

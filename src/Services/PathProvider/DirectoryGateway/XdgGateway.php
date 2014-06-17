@@ -28,7 +28,7 @@ class XdgGateway implements DirectoryGatewayInterface
     /**
      * {@inheritdoc}
      */
-    public function getPluginDir()
+    public function getExtensionDir()
     {
         return $this->xdg->getHomeConfigDir() . '/sw-cli-tools/extensions';
     }

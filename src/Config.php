@@ -47,7 +47,7 @@ class Config implements \ArrayAccess
             $this->pathProvider->getConfigPath() . '/config.yaml'
         );
 
-        $iterator = new \DirectoryIterator($this->pathProvider->getPluginPath());
+        $iterator = new \DirectoryIterator($this->pathProvider->getExtensionPath());
 
         /** @var $fileInfo \DirectoryIterator */
         foreach ($iterator as $fileInfo) {
