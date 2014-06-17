@@ -18,8 +18,7 @@
                 "vendor/symfony/dependency-injection",
                 "vendor/symfony/process",
                 "vendor/symfony/yaml",
-                "src",
-                "plugins"
+                "src"
             ]
         }
     ],
