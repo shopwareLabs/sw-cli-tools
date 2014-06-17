@@ -37,6 +37,9 @@ class DependencyInjection
         $container->register('directory_gateway', 'ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway')
             ->addArgument(new Reference('xdg'));
 
+        $container->register('file_downloader', 'ShopwareCli\Services\StreamFileDownloader')
+                ->addArgument(new Reference('io_service'));
+
         $container->register('path_provider', 'ShopwareCli\Services\PathProvider\PathProvider')
             ->addArgument(new Reference('directory_gateway'));
 
