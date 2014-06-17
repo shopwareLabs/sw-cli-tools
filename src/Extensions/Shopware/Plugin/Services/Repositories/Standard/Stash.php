@@ -1,12 +1,12 @@
 <?php
 
-namespace ShopwareCli\Services\Repositories\Standard;
+namespace Shopware\Plugin\Services\Repositories\Standard;
 
-use ShopwareCli\Services\Repositories\BaseRepository;
+use Shopware\Plugin\Services\Repositories\BaseRepository;
 
 /**
  * Class Stash
- * @package ShopwareCli\Services\Repositories
+ * @package Shopware\Plugin\Services\Repositories
  */
 class Stash extends BaseRepository
 {

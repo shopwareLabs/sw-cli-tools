@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Application extends \Symfony\Component\Console\Application
 {
-    const NAME    = 'sw-cli-tools';
+    const NAME = 'sw-cli-tools';
     const VERSION = '@package_version@';
 
     /**
@@ -53,6 +53,7 @@ class Application extends \Symfony\Component\Console\Application
         $this->loadPlugins($ignore3rdPartyPlugins);
 
         $this->addCommands($container->get('command_manager')->getCommands());
+
         $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
 
         return parent::doRun($input, $output);
@@ -76,8 +77,8 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Creates the container and sets some services which are only synthetic in the container
      *
-     * @param  InputInterface     $input
-     * @param  OutputInterface    $output
+     * @param  InputInterface $input
+     * @param  OutputInterface $output
      * @return ContainerInterface
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)

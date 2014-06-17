@@ -1,8 +1,8 @@
 <?php
 
-namespace ShopwareCli\Services\Repositories\Standard;
+namespace Shopware\Plugin\Services\Repositories\Standard;
 
-use ShopwareCli\Services\Repositories\BaseRepository;
+use Shopware\Plugin\Services\Repositories\BaseRepository;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * servers (e.g. local, github, bitbucket, stash…)
  *
  * Class SimpleList
- * @package ShopwareCli\Services\Repositories
+ * @package Shopware\Plugin\Services\Repositories
  */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {

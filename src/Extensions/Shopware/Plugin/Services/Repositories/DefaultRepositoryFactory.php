@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Services\Repositories;
+namespace Shopware\Plugin\Services\Repositories;
 
 use ShopwareCli\Config;
 use Symfony\Component\DependencyInjection\Container;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
  * Step through the config file, lookup needed repositories and create them
  *
  * Class DefaultRepositoryFactory
- * @package ShopwareCli\Services\Repositories
+ * @package Shopware\Plugin\Services\Repositories
  */
 class DefaultRepositoryFactory
 {
@@ -39,7 +39,7 @@ class DefaultRepositoryFactory
         $repositories = array();
 
         foreach ($config->getRepositories() as $type => $data) {
-            $className = 'ShopwareCli\\Services\\Repositories\\Standard\\' . $type;
+            $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
 
             $options = array();
             if (isset($data['config'])) {

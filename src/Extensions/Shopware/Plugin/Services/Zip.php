@@ -9,7 +9,7 @@ use ShopwareCli\Utilities;
  * Checks out a given plugin and creates a zip file from it
  *
  * Class Zip
- * @package ShopwareCli\Services
+ * @package Shopware\Plugin\Services
  */
 class Zip
 {

@@ -68,5 +68,15 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $container->register('checkout_service', 'Shopware\Plugin\Services\Checkout')
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('io_service'));
+
+        $container->register('default_repository_factory', 'Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory')
+            ->addArgument(new Reference('service_container'));
+
+        $container->register('repository_manager', 'Shopware\Plugin\Services\RepositoryManager')
+            ->addArgument(new Reference('extension_manager'))
+            ->addArgument(new Reference('default_repository_factory'));
+
+        $container->register('plugin_provider', 'Shopware\Plugin\Services\PluginProvider')
+            ->addArgument(new Reference('config'));
     }
 }

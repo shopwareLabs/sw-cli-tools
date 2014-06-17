@@ -1,8 +1,10 @@
 <?php
 
-namespace ShopwareCli\Application;
+namespace Shopware\Plugin\Services;
 
-use ShopwareCli\Services\Repositories\DefaultRepositoryFactory;
+use Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory;
+use ShopwareCli\Application\ExtensionManager;
+use ShopwareCli\Application\RepositoryAwareExtension;
 
 /**
  * Collect default and plugin repositories
@@ -13,7 +15,7 @@ use ShopwareCli\Services\Repositories\DefaultRepositoryFactory;
 class RepositoryManager
 {
     /**
-     * @var \ShopwareCli\Services\Repositories\DefaultRepositoryFactory
+     * @var \Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory
      */
     private $defaultRepositoryFactory;
     /**

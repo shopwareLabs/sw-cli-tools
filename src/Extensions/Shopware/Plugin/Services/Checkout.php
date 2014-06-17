@@ -10,7 +10,7 @@ use ShopwareCli\Utilities;
  * Checkouts a given plugin
  *
  * Class Checkout
- * @package ShopwareCli\Services
+ * @package Shopware\Plugin\Services
  */
 class Checkout
 {

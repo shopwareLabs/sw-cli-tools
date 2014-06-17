@@ -2,7 +2,6 @@
 
 namespace Shopware\Plugin\Services;
 
-use ShopwareCli\Services\PluginProvider;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Struct\Plugin;
 

@@ -9,7 +9,7 @@ use ShopwareCli\Struct\Plugin;
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml
  *
  * Class Install
- * @package ShopwareCli\Services
+ * @package Shopware\Plugin\Services
  */
 class Install
 {
