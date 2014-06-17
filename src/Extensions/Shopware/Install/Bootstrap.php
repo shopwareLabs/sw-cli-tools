@@ -44,7 +44,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     private function populateContainer(ContainerBuilder $container)
     {
         $container->register('shopware_checkout_service', 'Shopware\Install\Services\Checkout')
-            ->addArgument(new Reference('utilities'))
+            ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'));
 
         $container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
