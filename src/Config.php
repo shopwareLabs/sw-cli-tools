@@ -44,13 +44,17 @@ class Config implements \ArrayAccess
     private function collectConfigFiles()
     {
         $files = array(
-            $this->pathProvider->getConfigPath()
+            $this->pathProvider->getConfigPath() . '/config.yaml'
         );
 
         $iterator = new \DirectoryIterator($this->pathProvider->getPluginPath());
 
         /** @var $fileInfo \DirectoryIterator */
         foreach ($iterator as $fileInfo) {
+            if ($fileInfo->isFile() || $fileInfo->isDot()) {
+                continue;
+            }
+
             $file = $fileInfo->getPathName() . '/config.yaml';
 
             if (file_exists($file)) {

@@ -130,26 +130,6 @@ class Release
     }
 
     /**
-     * Write the build.properties file
-     *
-     * @param string $installDir
-     * @param string $basePath
-     * @param string $database
-     */
-    private function writeBuildProperties($installDir, $basePath, $database)
-    {
-        $this->configWriter->writeBuildProperties(
-            $installDir,
-            $this->config['ShopwareInstallConfig']['ShopConfig']['host'],
-            $basePath,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
-            $database,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
-        );
-    }
-
-    /**
      * Setup the database
      *
      * @param InstallationRequest $request

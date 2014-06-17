@@ -42,7 +42,7 @@ class Checkout
             $this->ioService->writeln("Plugin is already installed");
             $this->utilities->changeDir($absPath);
 
-            $this->utilities->executeCommand("git fetch origin");
+            $this->utilities->executeCommand("git fetch --progress origin");
 
             $output = $this->utilities->executeCommand("git log HEAD..origin/master --oneline");
             if (trim($output) === '') {
@@ -64,7 +64,7 @@ class Checkout
             return;
         }
 
-        $output = $this->utilities->executeCommand("git clone $cloneUrl $absPath");
+        $output = $this->utilities->executeCommand("git clone  --progress $cloneUrl $absPath");
         if ($branch) {
             $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
         }
