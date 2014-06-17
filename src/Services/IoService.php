@@ -2,6 +2,7 @@
 
 namespace ShopwareCli\Services;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -165,5 +166,14 @@ class IoService
         }
 
         return $this->questionHelper->ask($this->input, $this->output, $question);
+    }
+
+    /**
+     * @param int $max Maximum steps (0 if unknown)
+     * @return ProgressBar
+     */
+    public function createProgressBar($max = 0)
+    {
+        return new ProgressBar($this->output, $max);
     }
 }
