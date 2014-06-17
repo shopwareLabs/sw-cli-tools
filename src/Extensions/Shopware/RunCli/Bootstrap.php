@@ -3,9 +3,9 @@
 namespace Shopware\RunCli;
 
 use Shopware\RunCli\Command\RunCliCommand;
-use ShopwareCli\Application\ConsoleAwarePlugin;
+use ShopwareCli\Application\ConsoleAwareExtension;
 
-class Bootstrap implements ConsoleAwarePlugin
+class Bootstrap implements ConsoleAwareExtension
 {
     /**
      * {@inheritdoc}

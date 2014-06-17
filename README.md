@@ -75,18 +75,18 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 
 # Extending the cli tools
 
-## New plugins
+## New Extensions
 
-Plugins are created in the "/home/USER/.config/sw-cli-tools/plugins" folder and consist of a vendor folder, the plugin folder (with the plugin's name) and a Bootstrap.php inside the plugin folder. Additionally you can provide an own config.yaml inside the plugin folder which will extend the default config.yaml.
+Extensions are created in the "/home/USER/.config/sw-cli-tools/extensions" folder and consist of a vendor folder, the plugin folder (with the plugin's name) and a Bootstrap.php inside the plugin folder. Additionally you can provide an own config.yaml inside the plugin folder which will extend the default config.yaml.
 
-The namespace of your plugin bootstrap should be VENDOR_FOLDER\PLUGIN_FOLDER\Bootstrap.
+The namespace of your extension bootstrap should be VENDOR_FOLDER\EXTENSION_FOLDER\Bootstrap.
 
 ### Bootstrap
-The bootstrap is the main entry point of your plugin. If it implements **ContainerAwarePlugin**, it will get the container builder
- of the application injected via setContainer. This way the container can be extended by your plugin.
-Additionally the Bootstrap can implement **ConsoleAwarePlugin**. If this is the case, the method "getConsoleCommands" will be
+The bootstrap is the main entry point of your extension. If it implements **ContainerAwareExtension**, it will get the container builder
+ of the application injected via setContainer. This way the container can be extended by your extension.
+Additionally the Bootstrap can implement **ConsoleAwareExtension**. If this is the case, the method "getConsoleCommands" will be
 called after creation - please return an array of console command instances here.
-Finally the plugin will call the getRepositories method of plugins implementing **RepositoryAwareInterface will**
+Finally the extension will call the getRepositories method of extensions implementing **RepositoryAwareInterface will**
 
 ### Changing existing components
 
@@ -95,7 +95,7 @@ As you Bootstrap.php is instantiated after the container, you can replace any se
 # Paths
 The SW cli tools make use of the XDG directory standard. Following directories are used:
 
-    ~/.config/sw-cli-tools: Here the main configuration as well as the plugins are stored
+    ~/.config/sw-cli-tools: Here the main configuration as well as the extensions are stored
     ~/.cache/sw-cli-tools: Here caches (like repo content) as well as release downloads are cached
     ~/.local/share/sw-cli-tools: Assets the demo data package are stored here
 

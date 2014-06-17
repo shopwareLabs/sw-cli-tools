@@ -41,7 +41,7 @@ class DependencyInjection
             ->addArgument(new Reference('directory_gateway'));
 
         $container->register('repository_manager', 'ShopwareCli\Application\RepositoryManager')
-            ->addArgument(new Reference('plugin_manager'))
+            ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('default_repository_factory'));
 
         $container->register('default_repository_factory', 'ShopwareCli\Services\Repositories\DefaultRepositoryFactory')
@@ -56,11 +56,11 @@ class DependencyInjection
         $container->register('config', 'ShopwareCli\Config')
             ->addArgument(new Reference('path_provider'));
 
-        $container->register('plugin_manager', 'ShopwareCli\Application\PluginManager')
+        $container->register('extension_manager', 'ShopwareCli\Application\ExtensionManager')
             ->addArgument(new Reference('autoloader'));
 
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
-            ->addArgument(new Reference('plugin_manager'))
+            ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
 
         $container->register('plugin_provider', 'ShopwareCli\Services\PluginProvider')

@@ -2,7 +2,7 @@
 
 namespace ShopwareCli\Application;
 
-interface RepositoryAwarePlugin
+interface RepositoryAwareExtension
 {
     public function getRepositories();
 }

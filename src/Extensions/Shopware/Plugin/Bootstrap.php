@@ -5,8 +5,8 @@ namespace Shopware\Plugin;
 use Shopware\Plugin\Command\InstallCommand;
 use Shopware\Plugin\Command\ZipCommand;
 
-use ShopwareCli\Application\ConsoleAwarePlugin;
-use ShopwareCli\Application\ContainerAwarePlugin;
+use ShopwareCli\Application\ConsoleAwareExtension;
+use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * Class Bootstrap
  * @package Shopware\Install
  */
-class Bootstrap implements ContainerAwarePlugin, ConsoleAwarePlugin
+class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 {
     /**
      * {@inheritdoc}

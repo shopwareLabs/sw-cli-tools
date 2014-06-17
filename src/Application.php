@@ -129,13 +129,13 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function loadPlugins($ignore3rdPartyPlugins)
     {
-        $paths = array($this->container->get('path_provider')->getCliToolPath() . '/src/Plugins');
+        $paths = array($this->container->get('path_provider')->getCliToolPath() . '/src/Extensions');
 
         if (!$ignore3rdPartyPlugins) {
             $paths[] = $this->container->get('path_provider')->getPluginPath();
         }
 
-        $this->container->get('plugin_manager')->discoverPlugins($paths);
-        $this->container->get('plugin_manager')->injectContainer($this->container);
+        $this->container->get('extension_manager')->discoverExtensions($paths);
+        $this->container->get('extension_manager')->injectContainer($this->container);
     }
 }

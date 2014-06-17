@@ -13,13 +13,13 @@ class CommandManager
      */
     private $container;
     /**
-     * @var PluginManager
+     * @var ExtensionManager
      */
-    private $pluginManager;
+    private $extensionManager;
 
-    public function __construct(PluginManager $pluginManager, ContainerBuilder $container)
+    public function __construct(ExtensionManager $extensionManager, ContainerBuilder $container)
     {
-        $this->pluginManager = $pluginManager;
+        $this->extensionManager = $extensionManager;
         $this->container = $container;
     }
 
@@ -53,8 +53,8 @@ class CommandManager
     {
         $commands = array();
 
-        foreach ($this->pluginManager->getPlugins() as $plugin) {
-            if ($plugin instanceof ConsoleAwarePlugin) {
+        foreach ($this->extensionManager->getExtensions() as $plugin) {
+            if ($plugin instanceof ConsoleAwareExtension) {
                 foreach ($plugin->getConsoleCommands() as $command) {
                     $commands[] = $command;
                 }

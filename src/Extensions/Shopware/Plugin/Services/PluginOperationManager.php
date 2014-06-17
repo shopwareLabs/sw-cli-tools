@@ -35,7 +35,7 @@ class PluginOperationManager
     }
 
     /**
-     * Search the pluginManager by $name and operate on the matching plugin. If multiple plugins are found
+     * Search the plugin provider by $name and operate on the matching plugin. If multiple plugins are found
      * the users is asked for a selection. If no plugin was found, a corresponding message is printed
      *
      * @param $names

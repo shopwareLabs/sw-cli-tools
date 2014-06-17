@@ -46,7 +46,7 @@ class CliToolGateway implements DirectoryGatewayInterface
      */
     public function getPluginDir()
     {
-        return $this->getBasePath() . '/plugins';
+        return $this->getBasePath() . '/extensions';
     }
 
     /**

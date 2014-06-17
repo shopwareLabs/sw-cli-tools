@@ -30,7 +30,7 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     public function getPluginDir()
     {
-        return $this->xdg->getHomeConfigDir() . '/sw-cli-tools/plugins';
+        return $this->xdg->getHomeConfigDir() . '/sw-cli-tools/extensions';
     }
 
     /**

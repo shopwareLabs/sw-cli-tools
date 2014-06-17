@@ -17,14 +17,14 @@ class RepositoryManager
      */
     private $defaultRepositoryFactory;
     /**
-     * @var PluginManager
+     * @var ExtensionManager
      */
-    private $pluginManager;
+    private $extensionManager;
 
-    public function __construct(PluginManager $pluginManager, DefaultRepositoryFactory $defaultRepositoryFactory)
+    public function __construct(ExtensionManager $extensionManager, DefaultRepositoryFactory $defaultRepositoryFactory)
     {
         $this->defaultRepositoryFactory = $defaultRepositoryFactory;
-        $this->pluginManager = $pluginManager;
+        $this->extensionManager = $extensionManager;
     }
 
     /**
@@ -49,8 +49,8 @@ class RepositoryManager
     {
         $repositories = array();
 
-        foreach ($this->pluginManager->getPlugins() as $plugin) {
-            if ($plugin instanceof RepositoryAwarePlugin) {
+        foreach ($this->extensionManager->getExtensions() as $plugin) {
+            if ($plugin instanceof RepositoryAwareExtension) {
                 foreach ($plugin->getRepositories() as $repository) {
                     $repositories[] = $repository;
                 }
