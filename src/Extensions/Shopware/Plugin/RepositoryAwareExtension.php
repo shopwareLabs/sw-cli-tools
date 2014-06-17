@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Application;
+namespace Shopware\Plugin;
 
 interface RepositoryAwareExtension
 {
