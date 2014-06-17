@@ -2,6 +2,7 @@
 
 namespace Shopware\Install\Services\Install;
 
+use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Config;
 use Shopware\Install\Services\ReleaseDownloader;
 use Shopware\Install\Services\VcsGenerator;
@@ -18,19 +19,29 @@ use ShopwareCli\Services\IoService;
  */
 class Release
 {
-    /** @var Config */
+    /**
+     * @var Config
+     **/
     protected $config;
 
-    /** @var  VcsGenerator */
+    /**
+     * @var  VcsGenerator
+     */
     protected $vcsGenerator;
 
-    /** @var  ConfigWriter */
+    /**
+     * @var  ConfigWriter
+     */
     protected $configWriter;
 
-    /** @var  Database */
+    /**
+     * @var  Database
+     */
     protected $database;
 
-    /** @var  Demodata */
+    /**
+     * @var  Demodata
+     */
     protected $demoData;
 
     /**
@@ -76,22 +87,15 @@ class Release
     }
 
     /**
-     * @param $username
-     * @param $password
-     * @param $name
-     * @param $mail
-     * @param $language
-     * @param $release
-     * @param $installDir
-     * @param $basePath
-     * @param $database
+     * @param InstallationRequest $request
      */
-    public function installShopware($username, $password, $name, $mail, $language, $release, $installDir, $basePath, $database)
+    public function installShopware(InstallationRequest $request)
     {
-        $this->releaseDownloader->downloadRelease($release, $installDir);
-        $this->generateVcsMapping($installDir);
-        $this->writeShopwareConfig($installDir, $database);
-        $this->setupDatabase($username, $password, $name, $mail, $language, $installDir, $database);
+        $this->releaseDownloader->downloadRelease($request->release, $request->installDir);
+
+        $this->generateVcsMapping($request->installDir);
+        $this->writeShopwareConfig($request->installDir, $request->databaseName);
+        $this->setupDatabase($request);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
@@ -99,7 +103,7 @@ class Release
     /**
      * Generate the VCS mapping for phpstorm
      *
-     * @param $installDir
+     * @param string $installDir
      */
     private function generateVcsMapping($installDir)
     {
@@ -111,8 +115,8 @@ class Release
     /**
      * Write shopware's config.php
      *
-     * @param $installDir
-     * @param $database
+     * @param string $installDir
+     * @param string $database
      */
     private function writeShopwareConfig($installDir, $database)
     {
@@ -128,9 +132,9 @@ class Release
     /**
      * Write the build.properties file
      *
-     * @param $installDir
-     * @param $basePath
-     * @param $database
+     * @param string $installDir
+     * @param string $basePath
+     * @param string $database
      */
     private function writeBuildProperties($installDir, $basePath, $database)
     {
@@ -148,23 +152,23 @@ class Release
     /**
      * Setup the database
      *
-     * @param $username
-     * @param $password
-     * @param $name
-     * @param $mail
-     * @param $language
-     * @param $installDir
-     * @param $database
+     * @param InstallationRequest $request
      */
-    private function setupDatabase($username, $password, $name, $mail, $language, $installDir, $database)
+    private function setupDatabase(InstallationRequest $request)
     {
         $this->database->setup(
             $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
             $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
-            $database,
+            $request->databaseName,
             $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
         );
-        $this->database->importReleaseInstallDeltas($installDir);
-        $this->database->createAdmin($username, $name, $mail, $language, $password);
+        $this->database->importReleaseInstallDeltas($request->installDir);
+        $this->database->createAdmin(
+            $request->username,
+            $request->name,
+            $request->name,
+            $request->language,
+            $request->password
+        );
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Shopware\Install\Command;
 
+use Shopware\Install\Struct\InstallationMetadata;
+use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,7 +22,7 @@ class ShopwareInstallReleaseCommand extends BaseCommand
             ->addOption(
                 'release',
                 '-r',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'Release version. Default: Latest'
             )
             ->addOption(
@@ -85,22 +87,27 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $request = new InstallationRequest(array(
+            'username'     => $input->getOption('username'),
+            'password'     => $input->getOption('password'),
+            'name'         => $input->getOption('name'),
+            'mail'         => $input->getOption('mail'),
+            'language'     => $input->getOption('language'),
+            'release'      => $input->getOption('release'),
+            'installDir'   => trim($input->getOption('installDir'), '/'),
+            'basePath'     => $input->getOption('basePath'),
+            'databaseName' => $input->getOption('databaseName')
+        ));
+
         /** @var \Shopware\Install\Services\Install\Release $installService */
         $installService = $this->container->get('shopware_release_install_service');
-
-        $installService->installShopware(
-            $input->getOption('username'),
-            $input->getOption('password'),
-            $input->getOption('name'),
-            $input->getOption('mail'),
-            $input->getOption('language'),
-            $input->getOption('release'),
-            trim($input->getOption('installDir'), '/'),
-            $input->getOption('basePath'),
-            $input->getOption('databaseName')
-        );
+        $installService->installShopware($request);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     public function interact(InputInterface $input, OutputInterface $output)
     {
         $this->validateInput($input);
@@ -114,6 +121,7 @@ EOF
             'name' => 'your full name',
             'mail' => 'your email'
         );
+
         foreach ($required as $field => $description) {
             $fieldData = $input->getOption($field);
             if ($fieldData) {
@@ -160,6 +168,11 @@ EOF
         }
     }
 
+    /**
+     * @param string $input
+     * @return string
+     * @throws \RuntimeException
+     */
     public function genericValidator($input)
     {
         if (empty($input)) {
@@ -170,8 +183,8 @@ EOF
     }
 
     /**
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return string
      * @throws \RuntimeException
      */
     public function validateInstallDir($path)
