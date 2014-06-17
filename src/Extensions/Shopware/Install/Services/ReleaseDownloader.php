@@ -130,18 +130,19 @@ class ReleaseDownloader
 
         $length = $this->getContentLengthFromStream($readHandle);
 
-        $progressCounter = 0;
+        $progress = $this->ioService->createProgressBar($length/1024);
+        $progress->start();
+
+        // update every 0.5 magabytes
+        $progress->setRedrawFrequency(524288/1024);
+
         $currentSize = 0;
 
         while (!feof($readHandle)) {
             $currentSize += fwrite($writeHandle, fread($readHandle, self::BLOCKSIZE));
-
-            if ($currentSize >= $progressCounter * ($length / 100)) {
-                $progressCounter++;
-
-                $this->printProgress($progressCounter);
-            }
+            $progress->setCurrent($currentSize/1024);
         }
+        $progress->finish();
 
         $this->ioService->writeln("\n Download finished");
 
@@ -198,14 +199,5 @@ class ReleaseDownloader
         }
 
         return $size;
-    }
-
-    /**
-     * @param $progressCounter  INT 1-100
-     */
-    private function printProgress($progressCounter)
-    {
-        $progress = str_pad("", $progressCounter - 1, "=") . '>';
-        echo "\r[" . str_pad($progress, 100, " ") . "] {$progressCounter}%";
     }
 }
