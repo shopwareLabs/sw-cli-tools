@@ -40,7 +40,7 @@ repositories:
 #    config:
 #      username: STASH_USER
 #      password: STASH_PASSWORD
-#      endpoint: http://stash.shopware.in/stash/rest/api/1.0
+#      endpoint: http://you-stash-instande.tld/rest/api/1.0
 #    repositories:
     ## You can also use your stash user space as repo. Public
     ## repos will be shown in the plugin list
@@ -59,9 +59,9 @@ repositories:
       example1:
         color: yellow
         plugins:
-          Core_Sys11SuperCache:
-            ssh: git@github.com:ShopwareAG/SW4-Premium-Sys11SuperCache.git
-            http: https://github.com/ShopwareAG/SW4-Premium-Sys11SuperCache.git
+          Core_SwagJobQueue: ## Schema: MODULE_PLUGINNAME
+            ssh: git@github.com:bcremer/SwagJobQueue.git
+            http: https://github.com/bcremer/SwagJobQueue.git
 
 general:
   # Allows you do determine how the plugin repositories should be sorted
