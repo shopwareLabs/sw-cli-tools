@@ -32,7 +32,7 @@ class Stash extends BaseRepository
     {
         echo "Reading Stash repo {$this->name}\n";
 
-        $content = $this->restService->get($this->repository);
+        $content = $this->restService->get($this->repository)->getResult();
 
         if (isset($content['errors'])) {
             throw new \RuntimeException(

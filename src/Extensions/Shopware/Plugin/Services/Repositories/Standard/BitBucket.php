@@ -27,7 +27,7 @@ class BitBucket extends BaseRepository
     public function getPlugins()
     {
         echo "Reading BitBucket repo {$this->name}\n";
-        $content = $this->restService->get($this->repository);
+        $content = $this->restService->get($this->repository)->getResult();
 
         $plugins = array();
         foreach ($content['values'] as $repo) {

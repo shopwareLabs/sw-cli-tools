@@ -52,7 +52,7 @@ class ShopwareGithub extends BaseRepository
     public function getPlugins()
     {
         echo "Reading Shopware repo {$this->name}\n";
-        $content = $this->restService->get($this->repository);
+        $content = $this->restService->get($this->repository)->getResult();
 
         $knownRepos = array_keys($this->mapping);
 

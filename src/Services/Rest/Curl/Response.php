@@ -2,6 +2,8 @@
 
 namespace ShopwareCli\Services\Rest\Curl;
 
+use ShopwareCli\Services\Rest\ResponseInterface;
+
 /**
  * Response object wrapping a response body of a curl request.
  * Does provide a simple interface to access error messages and status codes
@@ -10,7 +12,7 @@ namespace ShopwareCli\Services\Rest\Curl;
  * Class Response
  * @package ShopwareCli\Services\Rest\Curl
  */
-class Response implements \ArrayAccess
+class Response implements  ResponseInterface
 {
     protected $rawBody;
     protected $body;
@@ -85,29 +87,5 @@ error;
     public function getResult()
     {
         return $this->body;
-    }
-
-    public function offsetExists($offset)
-    {
-        $content = $this->getResult();
-        return isset($content[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        $content = $this->getResult();
-        return $content[$offset];
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        $content = $this->getResult();
-        $content[$offset] = $value;
-    }
-
-    public function offsetUnset($offset)
-    {
-        $content = $this->getResult();
-        unset($content[$offset]);
     }
 }
