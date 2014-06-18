@@ -41,22 +41,22 @@ class DefaultRepositoryFactory
         foreach ($config->getRepositories() as $type => $data) {
             $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
 
-            $options = array();
-            if (isset($data['config'])) {
-                $options = array(
-                    'base_url' => $data['config']['endpoint'],
-                    'username' => $data['config']['username'],
-                    'password' => $data['config']['password']
-                );
-            }
+            $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
+            $username = isset($data['config']['username']) ? $data['config']['username'] : null;
+            $password = isset($data['config']['password']) ? $data['config']['password'] : null;
 
             foreach ($data['repositories'] as $name => $repoConfig) {
                 $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
 
+                $restClient = null;
+                if ($baseUrl) {
+                    $restClient = $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime);
+                }
+
                 $repo = new $className(
                     isset($repoConfig['url']) ? $repoConfig['url'] : '',
                     $name,
-                    $this->container->get('rest_service_factory')->factory($options, $cacheTime)
+                    $restClient
                 );
                 $repositories[] = $repo;
 

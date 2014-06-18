@@ -44,7 +44,7 @@ abstract class BaseRepository implements RepositoryInterface
      * @param RestInterface $restService
      * @param null          $color
      */
-    public function __construct($repository, $name, RestInterface $restService, $color = null)
+    public function __construct($repository, $name, RestInterface $restService = null, $color = null)
     {
         $this->repository = $repository;
         $this->name = $name;
