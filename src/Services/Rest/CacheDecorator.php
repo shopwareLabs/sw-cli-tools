@@ -44,9 +44,9 @@ class CacheDecorator implements RestInterface
                 if ($content === false) {
                     return false;
                 }
-                $this->cacheProvider->write($key, json_encode($content), $this->cacheTime);
+                $this->cacheProvider->write($key, serialize($content), $this->cacheTime);
             } else {
-                $content = json_decode($content, true);
+                $content = unserialize($content);
             }
         }
 
