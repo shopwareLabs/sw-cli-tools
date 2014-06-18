@@ -12,27 +12,50 @@ use ShopwareCli\Services\Rest\ResponseInterface;
  * Class Response
  * @package ShopwareCli\Services\Rest\Curl
  */
-class Response implements  ResponseInterface
+class Response implements ResponseInterface
 {
+    /**
+     * @var string
+     */
     protected $rawBody;
+
+    /**
+     * @var mixed
+     */
     protected $body;
+
+    /**
+     * @var int
+     */
     protected $code;
+
+    /**
+     * @var null|string
+     */
     protected $errorMessage = null;
+
+    /**
+     * @var bool
+     */
     protected $success = false;
 
+    /**
+     * @param $body
+     * @param $curlHandle
+     */
     public function __construct($body, $curlHandle)
     {
         $this->rawBody = $body;
 
         if ($body === false) {
             $this->errorMessage = curl_error($curlHandle);
+
             return;
         }
 
         $this->code = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
 
         if (null === $decodedResult = json_decode($this->rawBody, true)) {
-
             $jsonError = json_last_error_msg();
             $rawErrorBody = print_r($body, true);
 
@@ -42,6 +65,7 @@ json_last_error: $jsonError;
 <br>Raw:<br>
 <pre>$rawErrorBody"</pre>";
 error;
+
             return;
         }
 
@@ -49,10 +73,7 @@ error;
     }
 
     /**
-     * If an error occurred during the curl request or json_decode, it will be available here.
-     * Else null is returned
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getErrorMessage()
     {
@@ -60,9 +81,7 @@ error;
     }
 
     /**
-     * Returns the http response code
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -70,9 +89,7 @@ error;
     }
 
     /**
-     * Returns the json_encoded response body
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getRawBody()
     {
@@ -80,9 +97,7 @@ error;
     }
 
     /**
-     * Returns the decoded response body
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getResult()
     {

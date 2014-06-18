@@ -17,6 +17,9 @@ class RestClient implements RestInterface
     const METHOD_POST = 'POST';
     const METHOD_DELETE = 'DELETE';
 
+    /**
+     * @var array
+     */
     protected $validMethods = array(
         self::METHOD_GET,
         self::METHOD_PUT,
@@ -24,9 +27,23 @@ class RestClient implements RestInterface
         self::METHOD_DELETE
     );
 
+    /**
+     * @var string
+     */
     protected $apiUrl;
+
+    /**
+     * @var resource
+     */
     protected $cURL;
 
+    /**
+     * @param $apiUrl
+     * @param $username
+     * @param $apiKey
+     * @param array $curlOptions
+     * @throws \Exception
+     */
     public function __construct($apiUrl, $username, $apiKey, $curlOptions = array())
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
@@ -55,9 +72,9 @@ class RestClient implements RestInterface
      * Generic call method to perform an HTTP request with the given $method
      *
      * @param $url
-     * @param string $method
-     * @param array $parameters
-     * @param array $headers
+     * @param  string     $method
+     * @param  array      $parameters
+     * @param  array      $headers
      * @return Response
      * @throws \Exception
      */
@@ -79,12 +96,7 @@ class RestClient implements RestInterface
     }
 
     /**
-     * Perform a http get request
-     *
-     * @param $url
-     * @param array $parameters
-     * @param array $headers
-     * @return Response
+     * {@inheritdoc}
      */
     public function get($url, $parameters = array(), $headers = array())
     {
@@ -92,12 +104,7 @@ class RestClient implements RestInterface
     }
 
     /**
-     * Perform a http post request
-     *
-     * @param $url
-     * @param array $parameters
-     * @param array $headers
-     * @return Response
+     * {@inheritdoc}
      */
     public function post($url, $parameters = array(), $headers = array())
     {
@@ -105,12 +112,7 @@ class RestClient implements RestInterface
     }
 
     /**
-     * Perform a http put request
-     *
-     * @param $url
-     * @param array $parameters
-     * @param array $headers
-     * @return Response
+     * {@inheritdoc}
      */
     public function put($url, $parameters = array(), $headers = array())
     {
@@ -118,12 +120,7 @@ class RestClient implements RestInterface
     }
 
     /**
-     * Perform a http delete request
-     *
-     * @param $url
-     * @param array $parameters
-     * @param array $headers
-     * @return Response
+     * {@inheritdoc}
      */
     public function delete($url, $parameters = array(), $headers = array())
     {

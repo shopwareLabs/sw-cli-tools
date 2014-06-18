@@ -4,7 +4,6 @@ namespace ShopwareCli\Services\Rest;
 
 interface ResponseInterface
 {
-
     /**
      * If an error occurred during request, it should be available here.
      * Else null should be returned
@@ -16,14 +15,14 @@ interface ResponseInterface
     /**
      * Returns the http response code
      *
-     * @return mixed
+     * @return integer
      */
     public function getCode();
 
     /**
      * Returns the response body
      *
-     * @return mixed
+     * @return string
      */
     public function getRawBody();
 

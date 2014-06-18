@@ -10,6 +10,9 @@ namespace ShopwareCli\Services\Rest;
  */
 class Simple implements RestInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function get($url, $parameters = array(), $headers = array())
     {
         foreach ($headers as $key => &$value) {
@@ -17,40 +20,55 @@ class Simple implements RestInterface
         }
 
         $opts = array(
-          'http'=>array(
-            'method'=>"GET",
-            'timeout' => 300,
-            'header'=>implode("\r\n", $headers)
-          )
+            'http' => array(
+                'method' => "GET",
+                'timeout' => 300,
+                'header' => implode("\r\n", $headers)
+            )
         );
 
         $parameters = http_build_query($parameters, '', "&");
-
         $parameters = empty($parameters) ? '' : '?' . $parameters;
-
         $context = stream_context_create($opts);
-
         $result = file_get_contents($url . $parameters, false, $context);
 
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function post($url, $parameters = array(), $headers = array())
     {
         $data = http_build_query($parameters);
 
-        $opts = array('http' =>
-            array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
+        $opts = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
                 'content' => $data
             )
         );
 
-        $context  = stream_context_create($opts);
-
+        $context = stream_context_create($opts);
         $result = file_get_contents($url, false, $context);
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function put($url, $parameters = array(), $headers = array())
+    {
+        throw new \BadMethodCallException("Method put not implemented.");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($url, $parameters = array(), $headers = array())
+    {
+        throw new \BadMethodCallException("Method delete not implemented.");
     }
 }
