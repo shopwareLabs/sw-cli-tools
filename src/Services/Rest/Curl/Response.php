@@ -2,12 +2,20 @@
 
 namespace ShopwareCli\Services\Rest\Curl;
 
+/**
+ * Response object wrapping a response body of a curl request.
+ * Does provide a simple interface to access error messages and status codes
+ * as well as the decoded result object
+ *
+ * Class Response
+ * @package ShopwareCli\Services\Rest\Curl
+ */
 class Response implements \ArrayAccess
 {
     protected $rawBody;
     protected $body;
     protected $code;
-    protected $errorMessage;
+    protected $errorMessage = null;
     protected $success = false;
 
     public function __construct($body, $curlHandle)
@@ -38,38 +46,45 @@ error;
         $this->body = $decodedResult;
     }
 
+    /**
+     * If an error occurred during the curl request or json_decode, it will be available here.
+     * Else null is returned
+     *
+     * @return null|string
+     */
     public function getErrorMessage()
     {
         return $this->errorMessage;
     }
 
+    /**
+     * Returns the http response code
+     *
+     * @return mixed
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * Returns the json_encoded response body
+     *
+     * @return mixed
+     */
     public function getRawBody()
     {
         return $this->rawBody;
     }
 
+    /**
+     * Returns the decoded response body
+     *
+     * @return mixed
+     */
     public function getResult()
     {
         return $this->body;
-    }
-
-    public function debugDump()
-    {
-        if (!$this->success) {
-            echo "<h2>Error</h2>\n";
-            echo "Code:". $this->code . "<br />\n";
-            echo "Message: <br />\n";
-            echo $this->errorMessage;
-        } else {
-            echo "<h2>Success</h2>\n";
-            echo "Message: <br />\n";
-            echo print_r($this->body, true);
-        }
     }
 
     public function offsetExists($offset)
