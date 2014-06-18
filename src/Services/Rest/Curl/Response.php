@@ -22,14 +22,8 @@ class Response implements \ArrayAccess
         $this->code = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
 
         if (null === $decodedResult = json_decode($this->rawBody, true)) {
-            $jsonErrors = array(
-                JSON_ERROR_NONE => 'Es ist kein Fehler aufgetreten',
-                JSON_ERROR_DEPTH => 'Die maximale Stacktiefe wurde erreicht',
-                JSON_ERROR_CTRL_CHAR => 'Steuerzeichenfehler, möglicherweise fehlerhaft kodiert',
-                JSON_ERROR_SYNTAX => 'Syntaxfehler',
-            );
 
-            $jsonError = $jsonErrors[json_last_error()];
+            $jsonError = json_last_error_msg();
             $rawErrorBody = print_r($body, true);
 
             $this->errorMessage = <<<error
