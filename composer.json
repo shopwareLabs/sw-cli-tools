@@ -1,6 +1,7 @@
 {
     "name": "shopware-ag/cli-tools",
-    "type": "application",
+    "description": "A CLI toolset for shopware",
+    "type": "project",
     "license": "MIT",
     "require": {
         "php": ">=5.3.2",
@@ -14,7 +15,6 @@
         "ext-phar":  "*",
         "phpunit/phpunit": "@stable",
         "squizlabs/php_codesniffer": "2.0.*@ALPHA"
-
     },
     "autoload": {
         "psr-4": {
