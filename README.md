@@ -1,6 +1,24 @@
-# Shopware 4 CLI Tools
+# Shopware CLI Tools
 
-# Installation
+The shopware CLI tools are your console helpers for all kind of shopware tasks. They will allow you to:
+
+ * setup shopware from VCS
+ * setup shopware from a release tag
+ * define a bunch of plugin repositories you use
+ * install plugins from the repositories and activate them in shopware
+ * zip plugins in the way the shopware store or the shopware plugin manager expect it to be
+
+The shopware CLI tools come with a slim extension interface, so you can extend it for your needs.
+
+This is an **early development preview** - so don't expect it to be stable. Please wait for a 1.0.0 stable release before using this tools for production deployments
+
+ Pull requests are very welcome as well as ideas for possible extensions.
+
+# Support
+
+Use at your own risk, there is no support for this tools.
+
+# Install
 
 Generally we recommend to use the sw.phar release files, you can download them to e.g. ~/bin/sw and add this directory to the $PATH of your local user.
 
@@ -77,7 +95,7 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 
 ## New Extensions
 
-Extensions are created in the "/home/USER/.config/sw-cli-tools/extensions" folder and consist of a vendor folder, the plugin folder (with the plugin's name) and a Bootstrap.php inside the plugin folder. Additionally you can provide an own config.yaml inside the plugin folder which will extend the default config.yaml.
+Extensions are created in the "/home/USER/.config/sw-cli-tools/extensions" folder and consist of a vendor folder, the extension folder (with the extension's name) and a Bootstrap.php inside the extension folder. Additionally you can provide an own config.yaml inside the extension folder which will extend the default config.yaml.
 
 The namespace of your extension bootstrap should be VENDOR_FOLDER\EXTENSION_FOLDER\Bootstrap.
 
