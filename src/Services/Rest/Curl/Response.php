@@ -2,7 +2,7 @@
 
 namespace ShopwareCli\Services\Rest\Curl;
 
-class Response
+class Response implements \ArrayAccess
 {
     protected $rawBody;
     protected $body;
@@ -41,18 +41,7 @@ error;
             return;
         }
 
-        if (!isset($decodedResult['success'])) {
-            $this->errorMessage = 'Could not parse Response';
-            return;
-        }
-
-        if (!$decodedResult['success']) {
-            $this->errorMessage = $decodedResult['message'];
-            return;
-        }
-
-        $this->success = true;
-        $this->body = $decodedResult['data'];
+        $this->body = $decodedResult;
     }
 
     public function getErrorMessage()
@@ -75,11 +64,6 @@ error;
         return $this->body;
     }
 
-    public function isSuccess()
-    {
-        return ($this->success === true);
-    }
-
     public function debugDump()
     {
         if (!$this->success) {
@@ -92,5 +76,29 @@ error;
             echo "Message: <br />\n";
             echo print_r($this->body, true);
         }
+    }
+
+    public function offsetExists($offset)
+    {
+        $content = $this->getResult();
+        return isset($content[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        $content = $this->getResult();
+        return $content[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $content = $this->getResult();
+        $content[$offset] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        $content = $this->getResult();
+        unset($content[$offset]);
     }
 }

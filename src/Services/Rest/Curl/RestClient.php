@@ -6,9 +6,9 @@ use ShopwareCli\Services\Rest\RestInterface;
 
 class RestClient implements RestInterface
 {
-    const METHOD_GET    = 'GET';
-    const METHOD_PUT    = 'PUT';
-    const METHOD_POST   = 'POST';
+    const METHOD_GET = 'GET';
+    const METHOD_PUT = 'PUT';
+    const METHOD_POST = 'POST';
     const METHOD_DELETE = 'DELETE';
 
     protected $validMethods = array(
@@ -21,7 +21,7 @@ class RestClient implements RestInterface
     protected $apiUrl;
     protected $cURL;
 
-    public function __construct($apiUrl, $username, $apiKey)
+    public function __construct($apiUrl, $username, $apiKey, $curlOptions = array())
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL given');
@@ -29,29 +29,30 @@ class RestClient implements RestInterface
 
         $this->apiUrl = rtrim($apiUrl, '/') . '/';
 
-         //Initializes the cURL instance
+        //Initializes the cURL instance
         $this->cURL = curl_init();
         curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($this->cURL, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
         curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
-        curl_setopt($this->cURL, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json; charset=utf-8',
-        ));
+        curl_setopt(
+            $this->cURL,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json; charset=utf-8',
+            )
+        );
+
+        curl_setopt_array($this->cURL, $curlOptions);
     }
 
-    public function call($url, $method = self::METHOD_GET, $data = array(), $params = array())
+    public function call($url, $method = self::METHOD_GET, $parameters = array(), $headers = array())
     {
         if (!in_array($method, $this->validMethods)) {
             throw new \Exception('Invalid HTTP method: ' . $method);
         }
-        $queryString = '';
-        if (!empty($params)) {
-            $queryString = http_build_query($params);
-        }
-        $url = rtrim($url, '?') . '?';
-        $url = $this->apiUrl . $url . $queryString;
-        $dataString = json_encode($data);
+        $url = $this->apiUrl . $url;
+
+        $dataString = json_encode($parameters);
         curl_setopt($this->cURL, CURLOPT_URL, $url);
         curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
