@@ -109,13 +109,13 @@ class Utilities
     /**
      * Changes a directory
      *
-     * @param string $path
+     * @param $path
+     * @throws \RuntimeException
      */
     public function changeDir($path)
     {
         if (!chdir($path)) {
-            echo "Could not cd into $path";
-            exit(1);
+            throw new \RuntimeException("Could not cd into '$path''");
         }
     }
 }
