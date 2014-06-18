@@ -2,6 +2,8 @@
 
 namespace ShopwareCli\Services\Rest;
 
+use ShopwareCli\Services\Rest\Curl\RestClient;
+
 /**
  * Factory for cache decorated rest services
  *
@@ -18,8 +20,8 @@ class RestServiceFactory
         $this->container = $container;
     }
 
-    public function factory($options, $cacheTime)
+    public function factory($baseUrl, $username = null, $password = null, $cacheTime = 3600)
     {
-        return new CacheDecorator(new RestClient($options), $this->container->get('cache'), $cacheTime);
+        return new CacheDecorator(new RestClient($baseUrl, $username, $password), $this->container->get('cache'), $cacheTime);
     }
 }
