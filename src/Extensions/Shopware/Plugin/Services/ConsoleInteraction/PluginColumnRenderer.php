@@ -93,7 +93,7 @@ class PluginColumnRenderer
         $length = count($plugins);
         $pluginColumns = array();
 
-        $pluginsPerColumn = $offset = ceil($length / $columns);
+        $pluginsPerColumn = ceil($length / $columns);
         // Build columns and prepare unshift plugin of each column
         for ($i = 0; $i < $columns; $i++) {
             $sliceOffset = $pluginsPerColumn * $i;
