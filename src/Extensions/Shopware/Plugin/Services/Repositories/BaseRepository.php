@@ -3,6 +3,7 @@
 namespace Shopware\Plugin\Services\Repositories;
 
 use Shopware\Plugin\Services\PluginFactory;
+use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\Rest\RestInterface;
 
 /**
@@ -53,10 +54,10 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @param  string                     $sshUrl
-     * @param  string                     $httpUrl
-     * @param  string                     $name
-     * @return \Shopware\Plugin\Struct\Plugin
+     * @param  string $sshUrl
+     * @param  string $httpUrl
+     * @param  string $name
+     * @return Plugin
      */
     public function createPlugin($sshUrl, $httpUrl, $name)
     {

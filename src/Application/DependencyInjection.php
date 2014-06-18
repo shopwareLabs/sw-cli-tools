@@ -59,7 +59,6 @@ class DependencyInjection
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
 
-
         return $container;
     }
 }

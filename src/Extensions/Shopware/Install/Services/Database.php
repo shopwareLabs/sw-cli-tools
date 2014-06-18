@@ -60,7 +60,7 @@ class Database
      * todo: The way the sql deltas are splitted should be improved
      * todo: Support the "en" delta
      *
-     * @param $installDir
+     * @param string $installDir
      */
     public function importReleaseInstallDeltas($installDir)
     {
@@ -144,11 +144,11 @@ EOF
     /**
      * Create backend user
      *
-     * @param $user
-     * @param $name
-     * @param $mail
-     * @param $language
-     * @param $password
+     * @param  string            $user
+     * @param  string            $name
+     * @param  string            $mail
+     * @param  string            $language
+     * @param  string            $password
      * @return bool
      * @throws \RuntimeException
      */

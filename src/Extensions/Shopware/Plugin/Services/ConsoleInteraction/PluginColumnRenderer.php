@@ -149,7 +149,7 @@ class PluginColumnRenderer
      * Modifies the baseMask for a plugin by setting the repository colors
      *
      * @param $plugin
-     * @param $baseMask
+     * @param  string $baseMask
      * @return mixed
      */
     private function getMaskForPlugin($plugin, $baseMask)
@@ -176,7 +176,7 @@ class PluginColumnRenderer
      * Format the module name - in "small" mode, only the first char is shown (F/B/C)
      *
      * @param  Plugin $plugin
-     * @return mixed
+     * @return string
      */
     private function formatModuleName(Plugin $plugin)
     {

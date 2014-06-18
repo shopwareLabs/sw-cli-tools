@@ -38,10 +38,10 @@ class RestClient implements RestInterface
     protected $cURL;
 
     /**
-     * @param $apiUrl
-     * @param $username
-     * @param $apiKey
-     * @param array $curlOptions
+     * @param  string      $apiUrl
+     * @param  string|null $username
+     * @param  string|null $apiKey
+     * @param  array       $curlOptions
      * @throws \Exception
      */
     public function __construct($apiUrl, $username, $apiKey, $curlOptions = array())
@@ -71,7 +71,7 @@ class RestClient implements RestInterface
     /**
      * Generic call method to perform an HTTP request with the given $method
      *
-     * @param $url
+     * @param  string     $url
      * @param  string     $method
      * @param  array      $parameters
      * @param  array      $headers

@@ -35,7 +35,7 @@ class Install
 
     /**
      * @param Plugin $plugin
-     * @param        $shopwarePath
+     * @param string $shopwarePath
      * @param bool   $inputActivate
      * @param string $branch
      * @param bool   $useHttp

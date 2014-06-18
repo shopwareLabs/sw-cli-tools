@@ -77,8 +77,8 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Creates the container and sets some services which are only synthetic in the container
      *
-     * @param  InputInterface $input
-     * @param  OutputInterface $output
+     * @param  InputInterface     $input
+     * @param  OutputInterface    $output
      * @return ContainerInterface
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)

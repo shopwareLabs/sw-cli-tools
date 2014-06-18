@@ -120,7 +120,7 @@ class InstallCommand extends BaseCommand
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     protected function getShopwarePath()
     {

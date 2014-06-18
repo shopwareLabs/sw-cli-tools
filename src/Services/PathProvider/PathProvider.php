@@ -17,7 +17,7 @@ class PathProvider
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCliToolPath()
     {

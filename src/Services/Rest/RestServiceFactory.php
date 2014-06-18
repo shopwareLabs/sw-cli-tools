@@ -27,10 +27,10 @@ class RestServiceFactory
     }
 
     /**
-     * @param string $baseUrl
-     * @param string $username
-     * @param string $password
-     * @param int $cacheTime
+     * @param  string        $baseUrl
+     * @param  string        $username
+     * @param  string        $password
+     * @param  int           $cacheTime
      * @return RestInterface
      */
     public function factory($baseUrl, $username = null, $password = null, $cacheTime = 3600)

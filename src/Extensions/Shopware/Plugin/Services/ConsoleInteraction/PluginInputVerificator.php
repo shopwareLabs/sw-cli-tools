@@ -2,7 +2,10 @@
 
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
+use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\IoService;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -13,17 +16,30 @@ use Symfony\Component\Console\Question\Question;
  */
 class PluginInputVerificator
 {
+    /**
+     * @var InputInterface
+     */
     protected $inputInterface;
+
+    /**
+     * @var OutputInterface
+     */
     protected $outputInterface;
 
-    /** @var  PluginColumnRenderer */
+    /**
+     * @var  PluginColumnRenderer
+     */
     protected $outputRenderer;
 
-    /*
-     * @var \ShopwareCli\Services\IoService
+    /**
+     * @var IoService
      */
     private $ioService;
 
+    /**
+     * @param IoService            $ioService
+     * @param PluginColumnRenderer $outputRenderer
+     */
     public function __construct(IoService $ioService, PluginColumnRenderer $outputRenderer)
     {
         $this->outputRenderer = $outputRenderer;
@@ -34,8 +50,8 @@ class PluginInputVerificator
      * Ask the user to select one of the given plugins or enter one of $allowedAnswers
      * Will loop until a valid choice was made
      *
-     * @param $plugins
-     * @param  array  $allowedAnswers
+     * @param  Plugin[] $plugins
+     * @param  string[] $allowedAnswers
      * @return string
      */
     public function selectPlugin($plugins, $allowedAnswers = array('all'))
@@ -64,8 +80,8 @@ class PluginInputVerificator
     /**
      * Format the question for the user
      *
-     * @param $count
-     * @param $allowedAnswers
+     * @param  integer  $count
+     * @param  string[] $allowedAnswers
      * @return string
      */
     private function formatQuestion($count, $allowedAnswers)

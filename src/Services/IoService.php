@@ -169,7 +169,7 @@ class IoService
     }
 
     /**
-     * @param int $max Maximum steps (0 if unknown)
+     * @param  int         $max Maximum steps (0 if unknown)
      * @return ProgressBar
      */
     public function createProgressBar($max = 0)

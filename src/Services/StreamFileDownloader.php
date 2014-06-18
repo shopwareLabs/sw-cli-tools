@@ -23,8 +23,8 @@ class StreamFileDownloader implements FileDownloader
     }
 
     /**
-     * @param string $sourceUrl
-     * @param string $destination
+     * @param  string            $sourceUrl
+     * @param  string            $destination
      * @throws \RuntimeException
      */
     public function download($sourceUrl, $destination)
@@ -60,7 +60,7 @@ class StreamFileDownloader implements FileDownloader
     }
 
     /**
-     * @param resource $readHandle
+     * @param  resource $readHandle
      * @return int
      */
     private function getContentLengthFromStream($readHandle)

@@ -39,7 +39,7 @@ class Config implements \ArrayAccess
     /**
      * Iterate the plugin directories and return config.yaml files
      *
-     * @return array
+     * @return string[]
      */
     private function collectConfigFiles()
     {
@@ -68,7 +68,7 @@ class Config implements \ArrayAccess
     /**
      * Merge all given config.yaml files
      *
-     * @param $paths
+     * @param  string[] $paths
      * @return string
      */
     private function getMergedConfigs($paths)

@@ -41,7 +41,7 @@ class Response implements ResponseInterface
 
     /**
      * @param $body
-     * @param $curlHandle
+     * @param resource $curlHandle
      */
     public function __construct($body, $curlHandle)
     {

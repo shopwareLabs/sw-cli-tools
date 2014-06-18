@@ -3,7 +3,6 @@
 namespace Shopware\Install\Services\Install;
 
 use ShopwareCli\Config;
-
 use Shopware\Install\Services\Checkout;
 use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
@@ -63,10 +62,10 @@ class Vcs
      * Runs the steps needed to setup shopware
      *
      * @param $branch
-     * @param $installDir
+     * @param string $installDir
      * @param $basePath
      * @param $database
-     * @param null $httpUser
+     * @param null   $httpUser
      */
     public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null)
     {

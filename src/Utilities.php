@@ -109,7 +109,7 @@ class Utilities
     /**
      * Changes a directory
      *
-     * @param $path
+     * @param string $path
      */
     public function changeDir($path)
     {

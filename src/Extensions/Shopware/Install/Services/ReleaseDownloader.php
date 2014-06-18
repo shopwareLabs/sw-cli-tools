@@ -34,9 +34,9 @@ class ReleaseDownloader
 
     /**
      * @param ProcessExecutor $processExecutor
-     * @param IoService $ioService
-     * @param FileDownloader $downloader
-     * @param string $cachePath
+     * @param IoService       $ioService
+     * @param FileDownloader  $downloader
+     * @param string          $cachePath
      */
     public function __construct(ProcessExecutor $processExecutor, IoService $ioService, FileDownloader $downloader, $cachePath)
     {
@@ -105,7 +105,7 @@ class ReleaseDownloader
     /**
      * Older releases needs to be installed directly via the s3 url
      *
-     * @param string $release
+     * @param  string $release
      * @return string
      */
     private function downloadFromUrl($release)
@@ -150,7 +150,7 @@ class ReleaseDownloader
     /**
      * get a release url for an older release
      *
-     * @param $release
+     * @param  string $release
      * @return string
      */
     private function getDownloadUrl($release)

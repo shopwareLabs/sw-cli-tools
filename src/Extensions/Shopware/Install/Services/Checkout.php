@@ -4,7 +4,6 @@ namespace Shopware\Install\Services;
 
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\ProcessExecutor;
-use ShopwareCli\Utilities;
 
 /**
  * The checkout service will checkout a given repo with a given branch to a given destination

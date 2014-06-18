@@ -1,7 +1,6 @@
 <?php
 namespace Shopware\Install\Command;
 
-use Shopware\Install\Struct\InstallationMetadata;
 use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\IoService;
@@ -105,7 +104,7 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     public function interact(InputInterface $input, OutputInterface $output)
@@ -169,7 +168,7 @@ EOF
     }
 
     /**
-     * @param string $input
+     * @param  string            $input
      * @return string
      * @throws \RuntimeException
      */
@@ -183,7 +182,7 @@ EOF
     }
 
     /**
-     * @param string $path
+     * @param  string            $path
      * @return string
      * @throws \RuntimeException
      */
