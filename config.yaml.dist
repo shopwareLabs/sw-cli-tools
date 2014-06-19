@@ -1,6 +1,6 @@
 repositories:
   ## Github API
-#  ShopwareGithub:
+#  GitHub:
 #    ## General repo configuration
 #    config:
 #      ## API username
@@ -9,14 +9,14 @@ repositories:
 #      password: GITHUB_PASSWORD
 #      ## API endpoint
 #      endpoint: https://api.github.com
-#    ## This defines the repos that are used with the ShopwareGithub repo type
+#    ## This defines the repos that are used with the GitHub repo type
 #    repositories:
 #      ## A user defined name for a repo
 #      private:
 #        ## How long should this be cached?
 #        cache: 86400
 #        ## URL which returns the branches of the repo
-#        url: orgs/ShopwareAG/repos
+#        url: orgs/MyPluginRepos/repos
 #        ## Plugins of this repo will be shown in this color within the repo listing
 #        color: red
 

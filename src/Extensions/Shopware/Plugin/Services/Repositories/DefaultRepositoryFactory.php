@@ -16,6 +16,12 @@ class DefaultRepositoryFactory
 {
 
     /**
+     * List of repositories the DefaultRepository will handle
+     * @var array
+     */
+    private $defaultRepositories = array('GitHub', 'Stash', 'BitBucket', 'SimpleList');
+
+    /**
      * @var \Symfony\Component\DependencyInjection\Container
      */
     private $container;
@@ -39,6 +45,10 @@ class DefaultRepositoryFactory
         $repositories = array();
 
         foreach ($config->getRepositories() as $type => $data) {
+            if (!in_array($type, $this->defaultRepositories)) {
+                continue;
+            }
+
             $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
 
             $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
