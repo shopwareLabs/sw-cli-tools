@@ -28,9 +28,9 @@ class CacheDecorator implements RestInterface
     protected $cacheTime;
 
     /**
-     * @param RestInterface  $restService
+     * @param RestInterface $restService
      * @param CacheInterface $cacheProvider
-     * @param int            $cacheTime
+     * @param int $cacheTime
      */
     public function __construct(RestInterface $restService, CacheInterface $cacheProvider, $cacheTime = 1)
     {
@@ -44,7 +44,8 @@ class CacheDecorator implements RestInterface
      */
     public function get($url, $parameters = array(), $headers = array())
     {
-        return $this->callCached('get', sha1($url), $url, $parameters = array(), $headers = array());
+        $cacheKey = $url . json_encode($parameters) . json_encode($headers);
+        return $this->callCached('get', sha1($cacheKey), $url, $parameters = array(), $headers = array());
     }
 
     /**
@@ -72,30 +73,34 @@ class CacheDecorator implements RestInterface
     }
 
     /**
-     * @param  string     $call
-     * @param  string     $key
-     * @param  string     $url
-     * @param  array      $parameters
-     * @param  array      $headers
+     * @param  string $call
+     * @param  string $key
+     * @param  string $url
+     * @param  array $parameters
+     * @param  array $headers
      * @return bool|mixed
      */
     public function callCached($call, $key, $url, $parameters = array(), $headers = array())
     {
+        /** @var $response ResponseInterface */
         if (!$this->cacheProvider || $this->cacheTime == 0) {
-            $content = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
+            $response = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
         } else {
-            $content = $this->cacheProvider->read($key);
-            if ($content === false) {
-                $content = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
-                if ($content === false) {
+            $response = $this->cacheProvider->read($key);
+            if ($response === false) {
+                $response = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
+                if ($response === false) {
                     return false;
                 }
-                $this->cacheProvider->write($key, serialize($content), $this->cacheTime);
+                // Don't cache errors
+                if (!$response->getErrorMessage()) {
+                    $this->cacheProvider->write($key, serialize($response), $this->cacheTime);
+                }
             } else {
-                $content = unserialize($content);
+                $response = unserialize($response);
             }
         }
 
-        return $content;
+        return $response;
     }
 }
