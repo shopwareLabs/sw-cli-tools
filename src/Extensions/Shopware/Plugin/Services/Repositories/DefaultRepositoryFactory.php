@@ -82,12 +82,7 @@ class DefaultRepositoryFactory
 
             $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
-            $repo = $this->createRepository($name, $type, $repoConfig, $restClient);
-            $this->defaultRepositories[] = $repo;
-
-            if ($repo instanceof ContainerAwareInterface) {
-                $repo->setContainer($this->container);
-            }
+            $this->defaultRepositories[] =  $this->createRepository($name, $type, $repoConfig, $restClient);;
         }
     }
 
@@ -107,6 +102,11 @@ class DefaultRepositoryFactory
             $name,
             $restClient
         );
+
+        if ($repo instanceof ContainerAwareInterface) {
+            $repo->setContainer($this->container);
+        }
+
         return $repo;
     }
 
