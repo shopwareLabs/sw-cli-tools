@@ -17,6 +17,8 @@ class RestClient implements RestInterface
     const METHOD_POST = 'POST';
     const METHOD_DELETE = 'DELETE';
 
+    const USER_AGENT = 'sw-cli-tools/1.0';
+
     /**
      * @var array
      */
@@ -38,10 +40,10 @@ class RestClient implements RestInterface
     protected $cURL;
 
     /**
-     * @param  string      $apiUrl
+     * @param  string $apiUrl
      * @param  string|null $username
      * @param  string|null $apiKey
-     * @param  array       $curlOptions
+     * @param  array $curlOptions
      * @throws \Exception
      */
     public function __construct($apiUrl, $username, $apiKey, $curlOptions = array())
@@ -57,6 +59,7 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
+        curl_setopt($this->cURL, CURLOPT_USERAGENT, self::USER_AGENT);
         curl_setopt(
             $this->cURL,
             CURLOPT_HTTPHEADER,
@@ -71,10 +74,10 @@ class RestClient implements RestInterface
     /**
      * Generic call method to perform an HTTP request with the given $method
      *
-     * @param  string     $url
-     * @param  string     $method
-     * @param  array      $parameters
-     * @param  array      $headers
+     * @param  string $url
+     * @param  string $method
+     * @param  array $parameters
+     * @param  array $headers
      * @return Response
      * @throws \Exception
      */
