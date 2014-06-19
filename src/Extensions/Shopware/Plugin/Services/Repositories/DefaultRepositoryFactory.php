@@ -19,7 +19,9 @@ class DefaultRepositoryFactory
      * List of repositories the DefaultRepository will handle
      * @var array
      */
-    private $defaultRepositories = array('GitHub', 'Stash', 'BitBucket', 'SimpleList');
+    private $supportedRepositories = array('GitHub', 'Stash', 'BitBucket', 'SimpleList');
+
+    private $defaultRepositories = array();
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container
@@ -39,43 +41,73 @@ class DefaultRepositoryFactory
      */
     public function getDefaultRepositories()
     {
+        if (!$this->defaultRepositories) {
+            $this->setupRepositories();
+        }
+
+        return $this->defaultRepositories;
+    }
+
+    /**
+     * Iterate all repositories in the config and set them up
+     */
+    private function setupRepositories()
+    {
         /** @var Config $config */
         $config = $this->container->get('config');
 
-        $repositories = array();
-
         foreach ($config->getRepositories() as $type => $data) {
-            if (!in_array($type, $this->defaultRepositories)) {
+            if (!in_array($type, $this->supportedRepositories)) {
                 continue;
             }
 
-            $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
+            $this->createSubRepositories($type, $data);
+        }
+    }
 
-            $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
-            $username = isset($data['config']['username']) ? $data['config']['username'] : null;
-            $password = isset($data['config']['password']) ? $data['config']['password'] : null;
+    /**
+     * Setup all sub-repositories
+     *
+     * @param $type
+     * @param $data
+     */
+    private function createSubRepositories($type, $data)
+    {
+        $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
+        $username = isset($data['config']['username']) ? $data['config']['username'] : null;
+        $password = isset($data['config']['password']) ? $data['config']['password'] : null;
 
-            foreach ($data['repositories'] as $name => $repoConfig) {
-                $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
+        foreach ($data['repositories'] as $name => $repoConfig) {
+            $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
 
-                $restClient = null;
-                if ($baseUrl) {
-                    $restClient = $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime);
-                }
+            $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
-                $repo = new $className(
-                    isset($repoConfig['url']) ? $repoConfig['url'] : '',
-                    $name,
-                    $restClient
-                );
-                $repositories[] = $repo;
+            $repo = $this->createRepository($name, $type, $repoConfig, $restClient);
+            $this->defaultRepositories[] = $repo;
 
-                if ($repo instanceof ContainerAwareInterface) {
-                    $repo->setContainer($this->container);
-                }
+            if ($repo instanceof ContainerAwareInterface) {
+                $repo->setContainer($this->container);
             }
         }
-
-        return $repositories;
     }
+
+
+    /**
+     * @param $name
+     * @param $type
+     * @param $repoConfig
+     * @param $restClient
+     * @return BaseRepository
+     */
+    private function createRepository($name, $type, $repoConfig, $restClient)
+    {
+        $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
+        $repo = new $className(
+            isset($repoConfig['url']) ? $repoConfig['url'] : '',
+            $name,
+            $restClient
+        );
+        return $repo;
+    }
+
 }
