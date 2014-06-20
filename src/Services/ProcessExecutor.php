@@ -7,6 +7,12 @@ use Symfony\Component\Process\Process;
 class ProcessExecutor
 {
     /**
+     * Number of seconds before the ProcessExecutor will cancel an operation.
+     * You might need to increase it at some point, if your checkout / database building takes too long
+     */
+    const DEFAULT_TIMEOUT = 180;
+
+    /**
      * @var OutputInterface
      */
     private $output;
@@ -28,6 +34,8 @@ class ProcessExecutor
     public function execute($commandline, $allowFailure = false)
     {
         $process = new Process($commandline);
+        $process->setTimeout(self::DEFAULT_TIMEOUT);
+
         $output = $this->output; // tmp var needed for php < 5.4
         $process->run(function ($type, $buffer) use ($output) {
             $output->write($buffer);

@@ -47,7 +47,7 @@ class Checkout
         $destination = escapeshellarg($destination);
 
         $this->processExecutor->execute(
-            "git clone -b {$branch} {$repo} {$destination}"
+            "git clone --progress -b {$branch} {$repo} {$destination}"
         );
     }
 }
