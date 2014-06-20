@@ -116,7 +116,7 @@ EOF
     private function suggestNameFromBranch($branch)
     {
         $result = array();
-        $pattern = '#(?P<type>.+?)/(?P<target>.+?)/sw-(?P<number>.+)-.*#i';
+        $pattern = '#(?P<type>.+?)/(?P<target>.+?)/sw-(?P<number>.+?)-.*#i';
         preg_match($pattern, $branch, $result);
 
         if (isset($result['number'])) {
