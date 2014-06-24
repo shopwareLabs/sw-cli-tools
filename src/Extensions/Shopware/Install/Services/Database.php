@@ -82,11 +82,7 @@ class Database
 EOF
         );
 
-        $this->ioService->writeln("<info>Importing main delta</info>");
-        $lines = explode(";\n", file_get_contents("{$installDir}/install/assets/sql/sw4_clean.sql"));
-        foreach ($lines as $line) {
-            $this->getConnection()->exec($line);
-        }
+        $this->importBaseDelta($installDir);
 
         $this->getConnection()->exec(
 <<<'EOF'
@@ -97,11 +93,7 @@ EOF
 EOF
         );
 
-        $this->ioService->writeln("<info>Importing snippet delta</info>");
-        $lines = explode(";\n", file_get_contents("{$installDir}/install/assets/sql/snippets.sql"));
-        foreach ($lines as $line) {
-            $this->getConnection()->exec($line);
-        }
+        $this->importSnippetDeltas($installDir);
     }
 
     /**
@@ -186,5 +178,51 @@ EOF
 
         return true;
 
+    }
+
+    /**
+     * @param $installDir
+     * @throws \RuntimeException
+     */
+    private function importBaseDelta($installDir)
+    {
+        $this->ioService->writeln("<info>Importing main delta</info>");
+
+        $path42 = "{$installDir}/install/assets/sql/sw4_clean.sql";
+        $path43 = "{$installDir}/recovery/./install/data/sql/sw4_clean.sql";
+
+        if (!file_exists($path42) && !file_exists($path43)) {
+            throw new \RuntimeException("Could not find setup delta");
+        }
+
+        $path = file_exists($path42) ? $path42 : $path43;
+
+        $deltas = explode(";\n", file_get_contents($path));
+        foreach ($deltas as $delta) {
+            $this->getConnection()->exec($delta);
+        }
+    }
+
+    /**
+     * @param $installDir
+     * @throws \RuntimeException
+     */
+    private function importSnippetDeltas($installDir)
+    {
+        $this->ioService->writeln("<info>Importing snippet delta</info>");
+
+        $path42 = "{$installDir}/install/assets/sql/snippets.sql";
+        $path43 = "{$installDir}/recovery/./install/data/sql/snippets.sql";
+
+        if (!file_exists($path42) && !file_exists($path43)) {
+            throw new \RuntimeException("Could not find snippet delta");
+        }
+
+        $path = file_exists($path42) ? $path42 : $path43;
+
+        $deltas = explode(";\n", file_get_contents($path));
+        foreach ($deltas as $delta) {
+            $this->getConnection()->exec($delta);
+        }
     }
 }
