@@ -35,14 +35,25 @@ class XdgTest extends PHPUnit_Framework_TestCase
         putenv('XDG_DATA_HOME=tmp/');
         putenv('XDG_CONFIG_HOME=tmp/');
 
-        $this->assertEquals('tmp/', $this->getXdg()->getDataDirs()[0]);
+        $expectedDirs = array(
+            'tmp/',
+            '/usr/local/share',
+            '/usr/share',
+        );
+
+        $this->assertEquals($expectedDirs, $this->getXdg()->getDataDirs());
     }
 
     public function testXdgConfigDirsShouldIncludeHomeConfigDir()
     {
         putenv('XDG_CONFIG_HOME=tmp/');
 
-        $this->assertEquals('tmp/', $this->getXdg()->getConfigDirs()[0]);
+        $expectedDirs = array(
+            'tmp/',
+            '/etc/xdg',
+        );
+
+        $this->assertEquals($expectedDirs, $this->getXdg()->getConfigDirs());
     }
 
 }
