@@ -1,5 +1,9 @@
 # Shopware CLI Tools
 
+[![Build Status](https://travis-ci.org/ShopwareAG/sw-cli-tools.svg?branch=master)](https://travis-ci.org/ShopwareAG/sw-cli-tools)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ShopwareAG/sw-cli-tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ShopwareAG/sw-cli-tools/?branch=master)
+[![License](https://poser.pugx.org/shopware-ag/cli-tools/license.svg)](https://packagist.org/packages/shopware-ag/cli-tools)
+
 The shopware CLI tools are your console helpers for all kind of shopware tasks. They will allow you to:
 
  * setup shopware from VCS
