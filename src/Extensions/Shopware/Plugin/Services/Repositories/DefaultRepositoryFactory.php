@@ -82,7 +82,7 @@ class DefaultRepositoryFactory
 
             $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
-            $this->defaultRepositories[] =  $this->createRepository($name, $type, $repoConfig, $restClient);;
+            $this->defaultRepositories[] =  $this->createRepository($name, $type, $repoConfig, $restClient);
         }
     }
 
