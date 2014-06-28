@@ -8,6 +8,7 @@ use ShopwareCli\Services\PathProvider\PathProvider;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,9 +53,13 @@ class Application extends \Symfony\Component\Console\Application
         $noExtensions = $input->hasParameterOption('--no-extensions');
         $this->loadExtensions($noExtensions);
 
+        // Compile the container after the plugins did their container extensions
+        $container->compile();
+
         $this->addCommands($container->get('command_manager')->getCommands());
 
         $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
+
 
         return parent::doRun($input, $output);
     }
@@ -79,7 +84,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @param  InputInterface     $input
      * @param  OutputInterface    $output
-     * @return ContainerInterface
+     * @return ContainerBuilder
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)
     {
