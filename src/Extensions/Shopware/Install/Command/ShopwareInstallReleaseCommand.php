@@ -114,57 +114,19 @@ EOF
         /** @var $ioService IoService */
         $ioService = $this->container->get('io_service');
 
-        $required = array(
-            'username' => 'backend user name',
-            'password' => 'backend user password',
-            'name' => 'your full name',
-            'mail' => 'your email'
-        );
+        $this->askGenericOptions($input, $ioService);
 
-        foreach ($required as $field => $description) {
-            $fieldData = $input->getOption($field);
-            if ($fieldData) {
-                continue;
-            }
-
-            $fieldData = $ioService->askAndValidate(
-                "Please enter $description: ",
-                array($this, 'genericValidator')
-            );
-            $input->setOption($field, $fieldData);
-        }
-
-        $release = $input->getOption('release');
-        if (!$release) {
-            $release = $ioService->ask('Please provide the release you want to install <latest>: ');
-            $release = trim($release) ? $release : 'latest';
-            $input->setOption('release', $release);
-        }
+        $release = $this->askRelease($input, $ioService);
 
         $suggestion = $release ?: 'latest';
 
-        $installDir = $input->getOption('installDir');
-        if (!$installDir) {
-            $installDir = $ioService->askAndValidate(
-                "Please provide the install directory <{$suggestion}>: ",
-                array($this, 'validateInstallDir')
-            );
-            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
-        }
+        $installDir = $this->askInstallationDirectory($input, $ioService, $suggestion);
 
         $suggestion = $installDir ?: $suggestion;
 
-        $databaseName = $input->getOption('databaseName');
-        if (!$databaseName) {
-            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
-            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
-        }
+        $this->askDatabaseName($input, $ioService, $suggestion);
 
-        $basePath = $input->getOption('basePath');
-        if (!$basePath) {
-            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
-            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
-        }
+        $this->askBasePath($input, $ioService, $suggestion);
     }
 
     /**
@@ -204,6 +166,104 @@ EOF
         $language = $input->getOption('language');
         if (!in_array($language, array('en_GB', 'de_DE'))) {
             throw new \RuntimeException("Invalid language: '$language'");
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     */
+    private function askGenericOptions(InputInterface $input, IoService $ioService)
+    {
+        $required = array(
+            'username' => 'backend user name',
+            'password' => 'backend user password',
+            'name' => 'your full name',
+            'mail' => 'your email'
+        );
+
+        foreach ($required as $field => $description) {
+            $fieldData = $input->getOption($field);
+            if ($fieldData) {
+                continue;
+            }
+
+            $fieldData = $ioService->askAndValidate(
+                "Please enter $description: ",
+                array($this, 'genericValidator')
+            );
+            $input->setOption($field, $fieldData);
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     *
+     * @return string
+     */
+    private function askRelease(InputInterface $input, IoService $ioService)
+    {
+        $release = $input->getOption('release');
+        if (!$release) {
+            $release = $ioService->ask('Please provide the release you want to install <latest>: ');
+            $release = trim($release) ? $release : 'latest';
+            $input->setOption('release', $release);
+
+            return $release;
+        }
+
+        return $release;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     *
+     * @return string
+     */
+    private function askInstallationDirectory(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $installDir = $input->getOption('installDir');
+        if (!$installDir) {
+            $installDir = $ioService->askAndValidate(
+                "Please provide the install directory <{$suggestion}>: ",
+                array($this, 'validateInstallDir')
+            );
+            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
+
+            return $installDir;
+        }
+
+        return $installDir;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     */
+    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $databaseName = $input->getOption('databaseName');
+        if (!$databaseName) {
+            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
+            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     */
+    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $basePath = $input->getOption('basePath');
+        if (!$basePath) {
+            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
+            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
         }
     }
 }
