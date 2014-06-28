@@ -1,6 +1,10 @@
 {
     "alias": "sw.phar",
     "chmod": "0755",
+    "compactors": [
+        "Herrera\\Box\\Compactor\\Json",
+        "Herrera\\Box\\Compactor\\Php"
+    ],
     "directories": ["src"],
     "files": [
         "LICENSE",
