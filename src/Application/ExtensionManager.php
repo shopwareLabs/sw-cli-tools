@@ -53,7 +53,7 @@ class ExtensionManager
         foreach ($extensionDirs as $extensionDir) {
             /** @var $vendorPath \DirectoryIterator */
             foreach (new \DirectoryIterator($extensionDir) as $vendorPath) {
-                if (!$vendorPath->isDir() || $vendorPath->isDot()) {
+                if (!$this->isValidExtensionDir($vendorPath)) {
                     continue;
                 }
 
@@ -63,7 +63,6 @@ class ExtensionManager
             }
         }
     }
-
 
     /**
      * @param string $vendorPath
@@ -75,7 +74,7 @@ class ExtensionManager
     {
         /** @var $extensionPath \DirectoryIterator */
         foreach (new \DirectoryIterator($vendorPath) as $extensionPath) {
-            if (!$extensionPath->isDir() || $extensionPath->isDot()) {
+            if (!$this->isValidExtensionDir($extensionPath)) {
                 continue;
             }
 
@@ -88,6 +87,18 @@ class ExtensionManager
             $extensionInstance = $this->bootstrapExtension($className);
             $this->setExtension("{$vendorName}\\{$extensionName}", $extensionInstance);
         }
+    }
+
+    /**
+     * @param \DirectoryIterator $vendorPath
+     *
+     * @return bool
+     */
+    private function isValidExtensionDir(\DirectoryIterator $vendorPath)
+    {
+        return $vendorPath->isDir()
+            && !$vendorPath->isDot()
+            && stripos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
     }
 
     /**
