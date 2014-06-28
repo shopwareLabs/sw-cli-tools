@@ -72,39 +72,25 @@ EOF
         );
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
     public function interact(InputInterface $input, OutputInterface $output)
     {
         /** @var $ioService IoService */
         $ioService = $this->container->get('io_service');
 
-        $branch = $input->getOption('branch');
-        if (!$branch) {
-            $branch = $ioService->ask('Please provide the branch you want to install <master>: ');
-            $branch = trim($branch) ? $branch : 'master';
-            $input->setOption('branch', $branch);
-        }
+        $branch = $this->askBranch($input, $ioService);
 
         $suggestion = $this->suggestNameFromBranch($branch) ?: 'master';
 
-        $installDir = $input->getOption('installDir');
-        if (!$installDir) {
-            $installDir = $ioService->askAndValidate("Please provide the install directory <{$suggestion}>: ", array($this,'validateInstallDir'));
-            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
-        }
+        $installDir = $this->askInstallationDir($input, $ioService, $suggestion);
 
         $suggestion = $installDir ?: $suggestion;
 
-        $databaseName = $input->getOption('databaseName');
-        if (!$databaseName) {
-            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
-            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
-        }
-
-        $basePath = $input->getOption('basePath');
-        if (!$basePath) {
-            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
-            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
-        }
+        $this->askDatabaseName($input, $ioService, $suggestion);
+        $this->askBasePath($input, $ioService, $suggestion);
     }
 
     /**
@@ -138,5 +124,76 @@ EOF
         }
 
         return $path;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     *
+     * @return string
+     */
+    private function askInstallationDir(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $installDir = $input->getOption('installDir');
+        if (!$installDir) {
+            $installDir = $ioService->askAndValidate(
+                "Please provide the install directory <{$suggestion}>: ",
+                array($this, 'validateInstallDir')
+            );
+            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
+
+            return $installDir;
+        }
+
+        return $installDir;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     */
+    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $databaseName = $input->getOption('databaseName');
+        if (!$databaseName) {
+            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
+            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     * @param string         $suggestion
+     */
+    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion)
+    {
+        $basePath = $input->getOption('basePath');
+        if (!$basePath) {
+            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
+            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService      $ioService
+     *
+     * @return string
+     */
+    private function askBranch(InputInterface $input, IoService $ioService)
+    {
+        $branch = $input->getOption('branch');
+        if (!$branch) {
+            $branch = $ioService->ask('Please provide the branch you want to install <master>: ');
+            $branch = trim($branch) ? $branch : 'master';
+            $input->setOption('branch', $branch);
+
+            return $branch;
+        }
+
+        return $branch;
     }
 }
