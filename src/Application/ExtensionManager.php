@@ -51,17 +51,15 @@ class ExtensionManager
     {
         // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/extensions and 'Extensions' in the sw-cli-tools directory /src/
         foreach ($extensionDirs as $extensionDir) {
-            // iterate all vendor folders
-            foreach (scandir($extensionDir) as $vendorFolder) {
-                $vendorPath = $extensionDir . '/' . $vendorFolder;
-
-                // skip files and dot-folders
-                if (!is_dir($vendorPath) || strpos($vendorFolder, '.') === 0) {
+            /** @var $vendorPath \DirectoryIterator */
+            foreach (new \DirectoryIterator($extensionDir) as $vendorPath) {
+                if (!$vendorPath->isDir() || $vendorPath->isDot()) {
                     continue;
                 }
 
-                $this->registerExtensionNamespace($vendorPath, "{$vendorFolder}\\");
-                $this->discoverVendorFolder($vendorPath, $vendorFolder);
+                $vendorName = $vendorPath->getBasename();
+                $this->registerExtensionNamespace($vendorPath->getPathname(), "{$vendorName}\\");
+                $this->discoverVendorFolder($vendorPath->getPathname(), $vendorName);
             }
         }
     }
@@ -75,19 +73,17 @@ class ExtensionManager
      */
     private function discoverVendorFolder($vendorPath, $vendorName)
     {
-        // iterate all extension folders
-        foreach (scandir($vendorPath) as $extensionName) {
-            $extensionPath = $vendorPath . '/' . $extensionName;
-
-            // skip files and dot-folders
-            if (!is_dir($extensionPath) || strpos($extensionName, '.') === 0) {
+        /** @var $extensionPath \DirectoryIterator */
+        foreach (new \DirectoryIterator($vendorPath) as $extensionPath) {
+            if (!$extensionPath->isDir() || $extensionPath->isDot()) {
                 continue;
             }
 
-            if (!file_exists("{$extensionPath}/Bootstrap.php")) {
-                throw new \RuntimeException("Could not find Bootstrap.php in {$extensionPath}");
+            if (!file_exists($extensionPath->getPathname() . "/Bootstrap.php")) {
+                throw new \RuntimeException(sprintf("Could not find Bootstrap.php in %s", $extensionPath->getPathname()));
             }
 
+            $extensionName = $extensionPath->getBasename();
             $className = "{$vendorName}\\{$extensionName}\\Bootstrap";
             $extensionInstance = $this->bootstrapExtension($className);
             $this->setExtension("{$vendorName}\\{$extensionName}", $extensionInstance);
