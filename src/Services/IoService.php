@@ -147,10 +147,11 @@ class IoService
     /**
      * Ask a question and validate the result
      *
-     * @param  string|Question $question
-     * @param  bool            $validator
-     * @param  bool            $attempts
-     * @param  null            $default
+     * @param  string|Question    $question
+     * @param  bool|callable      $validator
+     * @param  bool|int           $attempts
+     * @param  null|string        $default
+     *
      * @return string
      */
     public function askAndValidate($question, $validator = false, $attempts = false, $default = null)
