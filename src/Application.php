@@ -60,7 +60,6 @@ class Application extends \Symfony\Component\Console\Application
 
         $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
 
-
         return parent::doRun($input, $output);
     }
 

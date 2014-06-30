@@ -10,7 +10,8 @@
         "symfony/config": "~2.5",
         "symfony/yaml": "~2.5",
         "symfony/process": "~2.5",
-        "symfony/dependency-injection": "~2.5"
+        "symfony/dependency-injection": "~2.5",
+        "dnoegel/php-xdg-base-dir": "dev-master"
     },
     "require-dev": {
         "ext-phar":  "*",

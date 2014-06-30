@@ -32,7 +32,7 @@ class DependencyInjection
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
 
-        $container->register('xdg', 'ShopwareCli\Services\PathProvider\DirectoryGateway\Xdg');
+        $container->register('xdg', '\XdgBaseDir\Xdg');
 
         $container->register('directory_gateway', 'ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway')
             ->addArgument(new Reference('xdg'));
