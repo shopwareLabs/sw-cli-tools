@@ -22,7 +22,7 @@ class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
         putenv('XDG_CONFIG_HOME=/tmp/xdg-config');
         putenv('XDG_CACHE_HOME=/tmp/xdg-cache');
 
-        $gateway = new XdgGateway(new Xdg());
+        $gateway = new XdgGateway(new \XdgBaseDir\Xdg());
 
         $this->assertEquals('/tmp/xdg-config/sw-cli-tools/extensions', $gateway->getExtensionDir());
         $this->assertEquals('/tmp/xdg-data/sw-cli-tools/assets', $gateway->getAssetsDir());
