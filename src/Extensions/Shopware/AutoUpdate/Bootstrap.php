@@ -6,8 +6,9 @@ use ShopwareCli\Application\ConsoleAwareExtension;
 
 use KevinGH\Amend\Command;
 use KevinGH\Amend\Helper;
+use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\Console\Application;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Class Bootstrap
  * @package Shopware\AutoUpdate
  */
-class Bootstrap implements ConsoleAwareExtension, ContainerAwareInterface
+class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
     /**
      * {@inheritdoc}
@@ -25,7 +26,6 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareInterface
     {
         $command = new Command('update');
         $command->setManifestUri('http://box-project.org/manifest.json');
-
 
         return array(
             $command
@@ -37,7 +37,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareInterface
      *
      * @param ContainerInterface|null $container A ContainerInterface instance or null
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerBuilder$container = null)
     {
         $container->get('helper_set')->set(new Helper());
     }

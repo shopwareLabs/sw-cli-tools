@@ -10,7 +10,9 @@
         "LICENSE",
         "README.md",
         "config.yaml.dist",
-        "vendor/autoload.php"
+        "config.yaml.dist",
+        "vendor/autoload.php",
+        "vendor/herrera-io/phar-update/res/schema.json"
     ],
     "finder": [
         {
@@ -22,7 +24,15 @@
                 "vendor/symfony/config",
                 "vendor/symfony/dependency-injection",
                 "vendor/symfony/process",
+                "vendor/symfony/filesystem",
                 "vendor/symfony/yaml",
+                "vendor/seld/jsonlint",
+                "vendor/kherge/amend",
+                "vendor/justinrainbow/json-schema",
+                "vendor/herrera-io/json",
+                "vendor/herrera-io/phar-update",
+                "vendor/herrera-io/version",
+                "vendor/dnoegel",
                 "src"
             ]
         }

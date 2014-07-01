@@ -94,6 +94,7 @@ class Application extends \Symfony\Component\Console\Application
         $container->set('output_interface', $output);
         $container->set('input_interface', $input);
         $container->set('question_helper', $questionHelper);
+        $container->set('helper_set', $this->getHelperSet());
         $container->set('autoloader', $this->loader);
 
         return $this->container = $container;
