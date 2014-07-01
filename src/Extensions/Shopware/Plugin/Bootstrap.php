@@ -66,6 +66,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 
         $container->register('checkout_service', 'Shopware\Plugin\Services\Checkout')
             ->addArgument(new Reference('utilities'))
+            ->addArgument(new Reference('git_util'))
             ->addArgument(new Reference('io_service'));
 
         $container->register('default_repository_factory', 'Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory')

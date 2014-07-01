@@ -2,6 +2,7 @@
 
 namespace Shopware\Plugin\Services;
 
+use ShopwareCli\Services\GitUtil;
 use ShopwareCli\Services\IoService;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Utilities;
@@ -16,17 +17,35 @@ class Checkout
 {
     /** @var \ShopwareCli\Utilities  */
     protected $utilities;
+
     /**
      * @var IoService
      */
     private $ioService;
 
-    public function __construct(Utilities $utilities, IoService $ioService)
+    /**
+     * @var \ShopwareCli\Services\GitUtil
+     */
+    private $gitUtil;
+
+    /**
+     * @param Utilities $utilities
+     * @param GitUtil   $gitUtil
+     * @param IoService $ioService
+     */
+    public function __construct(Utilities $utilities, GitUtil $gitUtil, IoService $ioService)
     {
         $this->utilities = $utilities;
         $this->ioService = $ioService;
+        $this->gitUtil   = $gitUtil;
     }
 
+    /**
+     * @param Plugin $plugin
+     * @param string $path
+     * @param string $branch
+     * @param bool   $useHttp
+     */
     public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
     {
         if ($useHttp) {
@@ -42,9 +61,9 @@ class Checkout
             $this->ioService->writeln("Plugin is already installed");
             $this->utilities->changeDir($absPath);
 
-            $this->utilities->executeCommand("git fetch --progress origin");
+            $this->gitUtil->run("fetch --progress origin");
 
-            $output = $this->utilities->executeCommand("git log HEAD..origin/master --oneline");
+            $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
             if (trim($output) === '') {
                 $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
 
@@ -54,19 +73,19 @@ class Checkout
             $this->ioService->writeln("Incomming Changes:");
             $this->ioService->writeln($output);
 
-            $this->utilities->executeCommand("git reset --hard HEAD");
-            $this->utilities->executeCommand("git pull");
+            $this->gitUtil->run("reset --hard HEAD");
+            $this->gitUtil->run("pull");
             if ($branch) {
-                $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
+                $this->gitUtil->run("-C {$absPath} checkout {$branch}");
             }
             $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
 
             return;
         }
 
-        $output = $this->utilities->executeCommand("git clone  --progress $cloneUrl $absPath");
+        $this->gitUtil->run("clone  --progress $cloneUrl $absPath");
         if ($branch) {
-            $this->utilities->executeCommand("git -C {$absPath} checkout {$branch}");
+            $this->gitUtil->run("-C {$absPath} checkout {$branch}");
         }
         $branch = $branch ?: 'master';
         $this->ioService->writeln("Successfully checked out '$branch' for '$pluginName'\n");

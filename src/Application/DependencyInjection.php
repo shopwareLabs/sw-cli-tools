@@ -29,6 +29,9 @@ class DependencyInjection
         $container->register('process_executor', 'ShopwareCli\Services\ProcessExecutor')
             ->addArgument(new Reference('output_interface'));
 
+        $container->register('git_util', 'ShopwareCli\Services\GitUtil')
+                ->addArgument(new Reference('output_interface'));
+
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
 

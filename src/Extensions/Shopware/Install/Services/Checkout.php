@@ -2,6 +2,7 @@
 
 namespace Shopware\Install\Services;
 
+use ShopwareCli\Services\GitUtil;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\ProcessExecutor;
 
@@ -19,18 +20,18 @@ class Checkout
     private $ioService;
 
     /**
-     * @var ProcessExecutor
+     * @var GitUtil
      */
-    private $processExecutor;
+    private $gitUtil;
 
     /**
-     * @param ProcessExecutor $processExecutor
-     * @param IoService       $ioService
+     * @param GitUtil   $gitUtil
+     * @param IoService $ioService
      */
-    public function __construct(ProcessExecutor $processExecutor, IoService $ioService)
+    public function __construct(GitUtil $gitUtil, IoService $ioService)
     {
         $this->ioService = $ioService;
-        $this->processExecutor = $processExecutor;
+        $this->gitUtil = $gitUtil;
     }
 
     /**
@@ -46,8 +47,8 @@ class Checkout
         $branch      = escapeshellarg($branch);
         $destination = escapeshellarg($destination);
 
-        $this->processExecutor->execute(
-            "git clone --progress -b {$branch} {$repo} {$destination}"
+        $this->gitUtil->run(
+            "clone --progress -b {$branch} {$repo} {$destination}"
         );
     }
 }
