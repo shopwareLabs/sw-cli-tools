@@ -75,7 +75,7 @@ EOF;
     {
         $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
 
-        $wrapperFile = $dir . 'ssh-as.sh';
+        $wrapperFile = $dir . $this->wrapperFileName;
 
         if (file_exists($wrapperFile) || $this->writeGitSshWrapper($dir)) {
             return $wrapperFile;
