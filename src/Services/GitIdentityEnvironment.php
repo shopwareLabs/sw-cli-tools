@@ -47,7 +47,8 @@ EOF;
      */
     private function getCustomKey()
     {
-        $packageKey = $this->pathProvider->getCliToolPath() . 'ssh.key';
+        $packageKey = $this->pathProvider->getCliToolPath() . '/ssh.key';
+
         if (file_exists($packageKey)) {
             return $packageKey;
         }
@@ -72,7 +73,8 @@ EOF;
      */
     private function getGitWrapper()
     {
-        $dir = $this->pathProvider->getRuntimeDir() . 'sw-cli-tools/';
+        $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
+
         $wrapperFile = $dir . 'ssh-as.sh';
 
         if (file_exists($wrapperFile) || $this->writeGitSshWrapper($dir)) {
@@ -90,7 +92,7 @@ EOF;
      */
     private function writeGitSshWrapper($dir)
     {
-        if (is_dir($dir)) {
+        if (!is_dir($dir)) {
             mkdir($dir, 0700, true);
         }
 
