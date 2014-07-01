@@ -62,6 +62,10 @@ class DependencyInjection
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
 
+        $container->register('git_identity_environment', 'ShopwareCli\Services\GitIdentityEnvironment')
+            ->addArgument(new Reference('path_provider'))
+            ->addArgument(new Reference('config'));
+
         return $container;
     }
 }

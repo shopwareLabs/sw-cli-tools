@@ -23,4 +23,9 @@ interface DirectoryGatewayInterface
      * @return string
      */
     public function getConfigDir();
+
+    /**
+     * @return mixed
+     */
+    public function getRuntimeDir();
 }

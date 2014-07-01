@@ -43,4 +43,9 @@ class PathProvider
     {
         return $this->directoryGateway->getConfigDir();
     }
+
+    public function getRuntimeDir()
+    {
+        return $this->directoryGateway->getRuntimeDir();
+    }
 }

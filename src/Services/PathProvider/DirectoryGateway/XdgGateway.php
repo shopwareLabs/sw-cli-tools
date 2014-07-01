@@ -50,4 +50,12 @@ class XdgGateway implements DirectoryGatewayInterface
     {
         return $this->xdg->getHomeConfigDir() . '/sw-cli-tools';
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRuntimeDir()
+    {
+        return $this->xdg->getRuntimeDir(false);
+    }
 }
