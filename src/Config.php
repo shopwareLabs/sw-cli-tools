@@ -23,6 +23,8 @@ class Config implements \ArrayAccess
      */
     private $pathProvider;
 
+    private $mainConfig;
+
     /**
      * @param PathProvider $pathProvider
      */
@@ -30,39 +32,59 @@ class Config implements \ArrayAccess
     {
         $this->pathProvider = $pathProvider;
 
-        $this->enforceMainConfigFile();
+        $this->mainConfig = $this->getMainConfigFile();
 
         $config = $this->getMergedConfigs($this->collectConfigFiles());
         $this->configArray = Yaml::parse($config, true);
     }
 
     /**
-     * Iterate the plugin directories and return config.yaml files
+     * Iterate the extension directories and return config.yaml files
      *
      * @return string[]
      */
     private function collectConfigFiles()
     {
         $files = array(
-            $this->pathProvider->getConfigPath() . '/config.yaml'
+            $this->mainConfig
         );
 
-        $iterator = new \DirectoryIterator($this->pathProvider->getExtensionPath());
+        $vendorIterator = new \DirectoryIterator($this->pathProvider->getExtensionPath());
 
-        /** @var $fileInfo \DirectoryIterator */
-        foreach ($iterator as $fileInfo) {
-            if ($fileInfo->isFile() || $fileInfo->isDot()) {
+        /** @var $vendorFileInfo \DirectoryIterator */
+        foreach ($vendorIterator as $vendorFileInfo) {
+            if (!$this->isValidDir($vendorFileInfo)) {
                 continue;
             }
+            $extensionIterator = new \DirectoryIterator($vendorFileInfo->getPathname());
 
-            $file = $fileInfo->getPathName() . '/config.yaml';
+            /** @var $extensionFileInfo \DirectoryIterator */
+            foreach ($extensionIterator as $extensionFileInfo) {
+                if (!$this->isValidDir($extensionFileInfo)) {
+                    continue;
+                }
+                $file = $extensionFileInfo->getPathname() . '/config.yaml';
 
-            if (file_exists($file)) {
-                $files[] = $file;
+                if (file_exists($file)) {
+                    $files[] = $file;
+                }
             }
         }
 
         return $files;
+    }
+
+    /**
+     * @param \DirectoryIterator $fileInfo
+     *
+     * @return bool
+     */
+    private function isValidDir(\DirectoryIterator $fileInfo)
+    {
+        return $fileInfo->isDir() && !$fileInfo->isDot() && stripos(
+            $fileInfo->getBasename(),
+            '.'
+        ) !== 0; // skip dot directories e.g. .git
     }
 
     /**
@@ -132,14 +154,28 @@ class Config implements \ArrayAccess
      *
      * @throws \RuntimeException
      */
-    private function enforceMainConfigFile()
+    private function getMainConfigFile()
     {
         $configFile = $this->pathProvider->getConfigPath() . '/config.yaml';
-        if (!file_exists($configFile)) {
-            copy($this->pathProvider->getCliToolPath() . '/config.yaml.dist', $configFile);
-            if (!file_exists($configFile)) {
-                throw new \RuntimeException("Could not find '{$configFile}'");
-            }
+
+        // If the main config file exists, use that
+        if (file_exists($configFile)) {
+            return $configFile;
         }
+
+        // Else try the config.yaml (not .dist) file inside the cli dir
+        // This will allow you to release own box releases with bundled config
+        $bundledConfig = $this->pathProvider->getCliToolPath() . '/config.yaml';
+        if (file_exists($bundledConfig)) {
+            return $bundledConfig;
+        }
+
+        // Else copy over config.yaml.dist to the user's config dir and use that
+        copy($this->pathProvider->getCliToolPath() . '/config.yaml.dist', $configFile);
+        if (!file_exists($configFile)) {
+            throw new \RuntimeException("Could not find '{$configFile}'");
+        }
+
+        return $configFile;
     }
 }
