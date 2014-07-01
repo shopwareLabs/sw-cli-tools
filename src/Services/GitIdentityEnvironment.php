@@ -96,9 +96,11 @@ EOF;
             mkdir($dir, 0700, true);
         }
 
-        file_put_contents($dir . $this->wrapperFileName, $this->sshAliasTemplate);
+        $filename = $dir . $this->wrapperFileName;
+        file_put_contents($filename, $this->sshAliasTemplate);
+        chmod($filename, 0700);
 
-        return file_exists($dir . $this->wrapperFileName);
+        return file_exists($filename);
     }
 
     /**

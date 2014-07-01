@@ -17,13 +17,18 @@ class GitUtil
      * @var OutputInterface
      */
     private $output;
+    /**
+     * @var GitIdentityEnvironment
+     */
+    private $gitEnv;
 
     /**
      * @param OutputInterface $output
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, GitIdentityEnvironment $gitEnv)
     {
         $this->output = $output;
+        $this->gitEnv = $gitEnv;
     }
 
     /**
@@ -35,7 +40,7 @@ class GitUtil
     {
         $commandline = 'git ' . $commandline;
 
-        $process = new Process($commandline);
+        $process = new Process($commandline, null, $this->gitEnv->getGitEnv());
         $process->setTimeout(self::DEFAULT_TIMEOUT);
 
         $output = $this->output; // tmp var needed for php < 5.4

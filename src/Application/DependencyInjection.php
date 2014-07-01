@@ -29,8 +29,13 @@ class DependencyInjection
         $container->register('process_executor', 'ShopwareCli\Services\ProcessExecutor')
             ->addArgument(new Reference('output_interface'));
 
+        $container->register('git_identity_environment', 'ShopwareCli\Services\GitIdentityEnvironment')
+            ->addArgument(new Reference('path_provider'))
+            ->addArgument(new Reference('config'));
+
         $container->register('git_util', 'ShopwareCli\Services\GitUtil')
-                ->addArgument(new Reference('output_interface'));
+                ->addArgument(new Reference('output_interface'))
+                ->addArgument(new Reference('git_identity_environment'));
 
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
@@ -61,10 +66,6 @@ class DependencyInjection
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
-
-        $container->register('git_identity_environment', 'ShopwareCli\Services\GitIdentityEnvironment')
-            ->addArgument(new Reference('path_provider'))
-            ->addArgument(new Reference('config'));
 
         return $container;
     }
