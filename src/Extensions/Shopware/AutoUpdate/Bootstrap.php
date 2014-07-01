@@ -19,11 +19,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
+
+    /** @var  ContainerBuilder */
+    protected $container;
+
     /**
      * {@inheritdoc}
      */
     public function getConsoleCommands()
     {
+        if (!$this->isPharFile()) {
+            return array();
+        }
+
         $command = new Command('update');
         $command->setManifestUri('http://box-project.org/manifest.json');
 
@@ -33,14 +41,21 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     }
 
     /**
-     * Extend the helper set with the amend helper
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     * @param ContainerBuilder $container
      */
-    public function setContainer(ContainerBuilder$container = null)
+    public function setContainer(ContainerBuilder $container = null)
     {
-        $container->get('helper_set')->set(new Helper());
+        $this->container = $container;
+
+        if ($this->isPharFile()) {
+            $container->get('helper_set')->set(new Helper());
+        }
     }
 
+    public function isPharFile()
+    {
+        $toolPath = $this->container->get('path_provider')->getCliToolPath();
+        return strpos($toolPath, 'phar:') !== false ;
+    }
 
 }
