@@ -57,8 +57,8 @@ EOF;
             return $sshKeyFile;
         }
 
-        if (isset($config['sshKey'])) {
-            $keyPath = $config['sshKey'];
+        if (isset($this->config['sshKey'])) {
+            $keyPath = $this->config['sshKey'];
             if (!file_exists($keyPath)) {
                 throw new \RuntimeException("Could not find ssh key $keyPath");
             }
