@@ -32,8 +32,11 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             return array();
         }
 
+        $config = $this->container->get('config');
+        $manifest = $config['general']['manifestUrl'];
+
         $command = new Command('update');
-        $command->setManifestUri('http://box-project.org/manifest.json');
+        $command->setManifestUri($manifest);
 
         return array(
             $command
@@ -54,8 +57,11 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
     public function isPharFile()
     {
-        // Disable by default
-        return false;
+        $config = $this->container->get('config');
+        if (!isset($config['general']['manifestUrl'])) {
+            return false;
+        }
+
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
         return strpos($toolPath, 'phar:') !== false ;
     }
