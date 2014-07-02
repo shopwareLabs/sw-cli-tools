@@ -31,7 +31,8 @@
                 "vendor/herrera-io/json",
                 "vendor/herrera-io/phar-update",
                 "vendor/herrera-io/version",
-                "vendor/dnoegel"
+                "vendor/dnoegel",
+                "src"
             ]
         }
     ],

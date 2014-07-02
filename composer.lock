@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "528ac73874bfa8dd4502ea0585b681b0",
+    "hash": "5311b0e5d56e1038788ebbf89a0dea04",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -107,21 +107,21 @@
         },
         {
             "name": "herrera-io/phar-update",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/herrera-io/php-phar-update.git",
-                "reference": "00a79e1d5b8cf3c080a2e3becf1ddf7a7fea025b"
+                "reference": "15643c90d3d43620a4f45c910e6afb7a0ad4b488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/herrera-io/php-phar-update/zipball/00a79e1d5b8cf3c080a2e3becf1ddf7a7fea025b",
-                "reference": "00a79e1d5b8cf3c080a2e3becf1ddf7a7fea025b",
+                "url": "https://api.github.com/repos/herrera-io/php-phar-update/zipball/15643c90d3d43620a4f45c910e6afb7a0ad4b488",
+                "reference": "15643c90d3d43620a4f45c910e6afb7a0ad4b488",
                 "shasum": ""
             },
             "require": {
                 "herrera-io/json": "1.*",
-                "kherge/version": "1.*",
+                "herrera-io/version": "1.*",
                 "php": ">=5.3.3"
             },
             "require-dev": {
@@ -132,7 +132,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -161,7 +161,59 @@
                 "phar",
                 "update"
             ],
-            "time": "2013-10-30 17:23:01"
+            "time": "2013-11-09 17:13:13"
+        },
+        {
+            "name": "herrera-io/version",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/herrera-io/php-version.git",
+                "reference": "d39d9642b92a04d8b8a28b871b797a35a2545e85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/herrera-io/php-version/zipball/d39d9642b92a04d8b8a28b871b797a35a2545e85",
+                "reference": "d39d9642b92a04d8b8a28b871b797a35a2545e85",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "herrera-io/phpunit-test-case": "1.*",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Herrera\\Version": "src/lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Herrera",
+                    "email": "kevin@herrera.io",
+                    "homepage": "http://kevin.herrera.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A library for creating, editing, and comparing semantic versioning numbers.",
+            "homepage": "http://github.com/herrera-io/php-version",
+            "keywords": [
+                "semantic",
+                "version"
+            ],
+            "time": "2014-05-27 05:29:25"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -232,31 +284,38 @@
             "time": "2014-03-05 15:03:52"
         },
         {
-            "name": "kherge/version",
-            "version": "1.0.1",
+            "name": "kherge/amend",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kherge-unmaintained/Version.git",
-                "reference": "f07cf83f8ce533be8f93d2893d96d674bbeb7e30"
+                "url": "https://github.com/kherge/php-amend.git",
+                "reference": "d191de606b3b76a28f09d97ddc04014426116965"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kherge-unmaintained/Version/zipball/f07cf83f8ce533be8f93d2893d96d674bbeb7e30",
-                "reference": "f07cf83f8ce533be8f93d2893d96d674bbeb7e30",
+                "url": "https://api.github.com/repos/kherge/php-amend/zipball/d191de606b3b76a28f09d97ddc04014426116965",
+                "reference": "d191de606b3b76a28f09d97ddc04014426116965",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "herrera-io/phar-update": "~2.0",
+                "php": ">=5.3.3",
+                "symfony/console": "~2.1"
+            },
+            "require-dev": {
+                "herrera-io/box": "~1.0",
+                "herrera-io/phpunit-test-case": "1.*",
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "KevinGH\\Version": "src/lib/"
+                    "KevinGH\\Amend": "src/lib"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -266,13 +325,19 @@
             "authors": [
                 {
                     "name": "Kevin Herrera",
-                    "email": "me@kevingh.com",
-                    "homepage": "http://www.kevingh.com/"
+                    "email": "kevin@herrera.io",
+                    "homepage": "http://kevin.herrera.io",
+                    "role": "Developer"
                 }
             ],
-            "description": "A parsing and comparison library for semantic versioning.",
-            "homepage": "http://github.com/kherge/Version",
-            "time": "2012-08-16 17:13:03"
+            "description": "Integrates Phar Update to Symfony Console.",
+            "homepage": "http://kherge.github.com/Amend",
+            "keywords": [
+                "console",
+                "phar",
+                "update"
+            ],
+            "time": "2013-11-09 17:50:41"
         },
         {
             "name": "seld/jsonlint",
@@ -1357,7 +1422,9 @@
             "time": "2014-05-01 03:26:02"
         }
     ],
-    "aliases": [],
+    "aliases": [
+
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
         "dnoegel/php-xdg-base-dir": 20,
