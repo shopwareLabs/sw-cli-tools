@@ -1422,9 +1422,7 @@
             "time": "2014-05-01 03:26:02"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "dnoegel/php-xdg-base-dir": 20,

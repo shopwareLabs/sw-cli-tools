@@ -54,6 +54,8 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
     public function isPharFile()
     {
+        // Disable by default
+        return false;
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
         return strpos($toolPath, 'phar:') !== false ;
     }
