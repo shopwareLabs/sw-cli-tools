@@ -163,19 +163,7 @@ class Config implements \ArrayAccess
             return $configFile;
         }
 
-        // Else try the config.yaml (not .dist) file inside the cli dir
-        // This will allow you to release own box releases with bundled config
-        $bundledConfig = $this->pathProvider->getCliToolPath() . '/assets/config.yaml';
-        if (file_exists($bundledConfig)) {
-            return $bundledConfig;
-        }
-
-        // Else copy over config.yaml.dist to the user's config dir and use that
-        copy($this->pathProvider->getCliToolPath() . '/config.yaml.dist', $configFile);
-        if (!file_exists($configFile)) {
-            throw new \RuntimeException("Could not find '{$configFile}'");
-        }
-
-        return $configFile;
+        // Else use config.yaml.dist
+        return $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
     }
 }
