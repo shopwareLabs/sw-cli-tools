@@ -47,7 +47,7 @@ EOF;
      */
     private function getCustomKey()
     {
-        $packageKey = $this->pathProvider->getCliToolPath() . '/ssh.key';
+        $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
 
         if (file_exists($packageKey)) {
             return $packageKey;

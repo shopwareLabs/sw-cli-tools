@@ -165,7 +165,7 @@ class Config implements \ArrayAccess
 
         // Else try the config.yaml (not .dist) file inside the cli dir
         // This will allow you to release own box releases with bundled config
-        $bundledConfig = $this->pathProvider->getCliToolPath() . '/config.yaml';
+        $bundledConfig = $this->pathProvider->getCliToolPath() . '/assets/config.yaml';
         if (file_exists($bundledConfig)) {
             return $bundledConfig;
         }

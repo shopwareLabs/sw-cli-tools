@@ -5,7 +5,7 @@
         "Herrera\\Box\\Compactor\\Json",
         "Herrera\\Box\\Compactor\\Php"
     ],
-    "directories": ["src"],
+    "directories": ["src", "assets"],
     "files": [
         "LICENSE",
         "README.md",
@@ -23,7 +23,7 @@
                 "vendor/symfony/dependency-injection",
                 "vendor/symfony/process",
                 "vendor/symfony/yaml",
-                "src"
+                "vendor/dnoegel"
             ]
         }
     ],
