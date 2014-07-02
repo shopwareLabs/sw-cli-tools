@@ -15,6 +15,7 @@ class GitIdentityEnvironment
 {
 
     protected $wrapperFileName = 'ssh-as.sh';
+    protected $keyFileName = 'ssh.key';
 
     protected $sshAliasTemplate = <<<'EOF'
 #!/bin/bash
@@ -49,8 +50,11 @@ EOF;
     {
         $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
 
-        if (file_exists($packageKey)) {
-            return $packageKey;
+        $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
+        $sshKeyFile = $dir . $this->keyFileName;
+
+        if (file_exists($sshKeyFile) || $this->writeSshKey($dir, $packageKey)) {
+            return $sshKeyFile;
         }
 
         if (isset($config['sshKey'])) {
@@ -63,6 +67,19 @@ EOF;
         }
 
         return null;
+    }
+
+    private function writeSshKey($dir, $sshKeyFile)
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0700, true);
+        }
+
+        $filename = $dir . $this->keyFileName;
+        file_put_contents($filename, file_get_contents($sshKeyFile));
+        chmod($filename, 0700);
+
+        return file_exists($filename);
     }
 
     /**
