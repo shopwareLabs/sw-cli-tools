@@ -50,6 +50,10 @@ EOF;
     {
         $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
 
+        if (!file_exists($packageKey)) {
+            return false;
+        }
+
         $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
         $sshKeyFile = $dir . $this->keyFileName;
 

@@ -46,6 +46,8 @@ class PathProvider
 
     public function getRuntimeDir()
     {
-        return $this->directoryGateway->getRuntimeDir();
+        // temporary fix: selinux seems to interfere with executables in /run/user on some systems
+        return '/tmp';
+        // return $this->directoryGateway->getRuntimeDir();
     }
 }
