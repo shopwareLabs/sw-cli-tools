@@ -2,6 +2,7 @@
 
 namespace Shopware\Install\Services\Install;
 
+use Shopware\Install\Services\PostInstall;
 use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Config;
 use Shopware\Install\Services\ReleaseDownloader;
@@ -58,6 +59,10 @@ class Release
      * @var \ShopwareCli\Services\IoService
      */
     private $ioService;
+    /**
+     * @var \Shopware\Install\Services\PostInstall
+     */
+    private $postInstall;
 
     /**
      * @param ReleaseDownloader $releaseDownloader
@@ -75,7 +80,8 @@ class Release
         ConfigWriter $configWriter,
         Database $database,
         Demodata $demodata,
-        IoService $ioService
+        IoService $ioService,
+        PostInstall $postInstall
     ) {
         $this->config = $config;
         $this->vcsGenerator = $vcsGenerator;
@@ -84,6 +90,7 @@ class Release
         $this->releaseDownloader = $releaseDownloader;
         $this->demodata = $demodata;
         $this->ioService = $ioService;
+        $this->postInstall = $postInstall;
     }
 
     /**
@@ -96,6 +103,8 @@ class Release
         $this->generateVcsMapping($request->installDir);
         $this->writeShopwareConfig($request->installDir, $request->databaseName);
         $this->setupDatabase($request);
+
+        $this->postInstall->fixPermissions($installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }

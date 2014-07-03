@@ -2,6 +2,7 @@
 
 namespace Shopware\Install\Services\Install;
 
+use Shopware\Install\Services\PostInstall;
 use ShopwareCli\Config;
 use Shopware\Install\Services\Checkout;
 use Shopware\Install\Services\VcsGenerator;
@@ -39,6 +40,10 @@ class Vcs
      * @var \ShopwareCli\Services\IoService
      */
     private $ioService;
+    /**
+     * @var PostInstall
+     */
+    private $postInstall;
 
     public function __construct(
         Checkout $checkout,
@@ -47,7 +52,8 @@ class Vcs
         ConfigWriter $configWriter,
         Database $database,
         Demodata $demodata,
-        IoService $ioService
+        IoService $ioService,
+        PostInstall $postInstall
     ) {
         $this->checkout = $checkout;
         $this->config = $config;
@@ -56,6 +62,7 @@ class Vcs
         $this->database = $database;
         $this->demoData = $demodata;
         $this->ioService = $ioService;
+        $this->postInstall = $postInstall;
     }
 
     /**
@@ -75,6 +82,8 @@ class Vcs
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
         $this->demoData->setup($installDir);
+
+        $this->postInstall->fixPermissions($installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
