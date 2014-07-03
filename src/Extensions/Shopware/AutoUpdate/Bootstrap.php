@@ -32,8 +32,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             return array();
         }
 
-        $config = $this->container->get('config');
-        $manifest = $config['general']['manifestUrl'];
+        $manifest = $this->getManifestUrl();
 
         $command = new Command('update');
         $command->setManifestUri($manifest);
@@ -55,6 +54,11 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         }
     }
 
+    /**
+     * Checks if script is run as phar archive and manifestUrl is available
+     *
+     * @return bool
+     */
     public function isPharFile()
     {
         $config = $this->container->get('config');
@@ -64,6 +68,39 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
         return strpos($toolPath, 'phar:') !== false ;
+    }
+
+    /**
+     * perform update on the fly
+     */
+    private function runUpdate()
+    {
+        /** @var $amend Helper */
+        $amend = $this->container->get('helper_set')->get('amend');
+        $manager = $amend->getManager($this->getManifestUrl());
+
+        if ($manager->update(
+            \ShopwareCli\Application::VERSION,
+            false,
+            false
+        )){
+            $this->container->get('io_service')->writeln('<info>Just updated the script. Please run again</info>');
+            exit(0);
+        } else {
+            $this->container->get('io_service')->writeln('<comment>Already up-to-date.</comment>');
+        }
+    }
+
+    /**
+     * Get manifest url
+     *
+     * @return mixed
+     */
+    private function getManifestUrl()
+    {
+        $config = $this->container->get('config');
+        $manifest = $config['general']['manifestUrl'];
+        return $manifest;
     }
 
 }
