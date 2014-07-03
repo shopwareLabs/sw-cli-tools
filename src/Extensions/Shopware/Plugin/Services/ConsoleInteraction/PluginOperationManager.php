@@ -109,7 +109,7 @@ class PluginOperationManager
      */
     private function executeMethodCallback($subject, $callback, $params)
     {
-        $callback($subject, $params);
+        call_user_func_array($callback, array($subject, $params));
     }
 
     /**
@@ -129,7 +129,7 @@ class PluginOperationManager
 
             if ($response == 'all') {
                 foreach ($plugins as $plugin) {
-                    $callback($plugin, $params);
+                    $this->executeMethodCallback($plugin, $callback, $params);
                 }
 
                 return;
@@ -137,7 +137,7 @@ class PluginOperationManager
 
             if ($response instanceof Plugin) {
                 $this->utilities->cls();
-                $callback($response, $params);
+                $this->executeMethodCallback($response, $callback, $params);
                 $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
                 $this->utilities->cls();
             }
