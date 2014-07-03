@@ -76,7 +76,7 @@ general:
 
 ShopwareInstallConfig:
   ShopConfig:
-    host: localhost
+    host:
 
   DatabaseConfig:
     host: localhost
