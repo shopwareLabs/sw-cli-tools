@@ -104,7 +104,7 @@ class Release
         $this->writeShopwareConfig($request->installDir, $request->databaseName);
         $this->setupDatabase($request);
 
-        $this->postInstall->fixPermissions($installDir);
+        $this->postInstall->fixPermissions($request->installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
