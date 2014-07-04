@@ -109,7 +109,7 @@ class PluginOperationManager
      */
     private function executeMethodCallback($subject, $callback, $params)
     {
-        call_user_func_array($callback, array($subject, $params));
+        call_user_func_array($callback, array($subject, &$params));
     }
 
     /**
