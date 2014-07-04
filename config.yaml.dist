@@ -74,6 +74,11 @@ general:
   # Do you want to use colors in your listing?
   enableRepositoryColors: true
 
+update:
+  # Manifest url for internal updates
+  manifestUrl: https://github.com/ShopwareAG/sw-cli-tools/blob/master/manifest.json
+  checkOnStartup: false
+
 ShopwareInstallConfig:
   ShopConfig:
     host:

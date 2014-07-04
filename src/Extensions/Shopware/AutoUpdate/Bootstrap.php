@@ -32,6 +32,10 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             return array();
         }
 
+        if ($this->checkUpdateOnRun()) {
+            $this->runUpdate();
+        }
+        
         $manifest = $this->getManifestUrl();
 
         $command = new Command('update');
@@ -62,7 +66,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     public function isPharFile()
     {
         $config = $this->container->get('config');
-        if (!isset($config['general']['manifestUrl'])) {
+        if (!isset($config['update']['manifestUrl'])) {
             return false;
         }
 
@@ -84,10 +88,8 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             false,
             false
         )){
-            $this->container->get('io_service')->writeln('<info>Just updated the script. Please run again</info>');
+            echo "\nUpdated your archive. Please run again\n";
             exit(0);
-        } else {
-            $this->container->get('io_service')->writeln('<comment>Already up-to-date.</comment>');
         }
     }
 
@@ -99,8 +101,17 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     private function getManifestUrl()
     {
         $config = $this->container->get('config');
-        $manifest = $config['general']['manifestUrl'];
+        $manifest = $config['update']['manifestUrl'];
         return $manifest;
+    }
+
+    private function checkUpdateOnRun()
+    {
+        $config = $this->container->get('config');
+        if (!isset($config['update']['checkOnStartup'])) {
+            return false;
+        }
+        return $config['update']['checkOnStartup'];
     }
 
 }
