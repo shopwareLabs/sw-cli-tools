@@ -43,13 +43,14 @@ class Config implements \ArrayAccess
     {
         $files = array();
 
+        // Load user file first. Its config values cannot be overwritten
         $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
         if (file_exists($userConfig)) {
             $files[] = $userConfig;
         }
 
+        // load config.yaml files from extensions
         $vendorIterator = new \DirectoryIterator($this->pathProvider->getExtensionPath());
-
         /** @var $vendorFileInfo \DirectoryIterator */
         foreach ($vendorIterator as $vendorFileInfo) {
             if (!$this->isValidDir($vendorFileInfo)) {
@@ -70,6 +71,7 @@ class Config implements \ArrayAccess
             }
         }
 
+        // Load config.yaml.dist as latest - this way the fallback config options are defined
         $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
         return $files;
     }
