@@ -101,7 +101,7 @@ class Vcs
      */
     private function checkCoreConfig()
     {
-        $core = $this->config['ShopwareInstallConfig']['Repos']['core'];
+        $core = $this->config['ShopwareInstallRepos']['core'];
         if (!$core['destination'] || !$core['ssh'] || !$core['http']) {
             throw new  \RuntimeException('You need to have a repo "core" defined in the config.yaml of this plugin');
         }
@@ -137,7 +137,7 @@ class Vcs
 
         $this->checkoutRepo($branch, $installDir, $httpUser, $core);
 
-        foreach ($this->config['ShopwareInstallConfig']['Repos'] as $name => $repo) {
+        foreach ($this->config['ShopwareInstallRepos'] as $name => $repo) {
             if ($name == 'core') {
                 continue;
             }
@@ -154,7 +154,7 @@ class Vcs
     {
         $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
             return $repo['destination'];
-        }, $this->config['ShopwareInstallConfig']['Repos']));
+        }, $this->config['ShopwareInstallRepos']));
     }
 
     /**
@@ -167,10 +167,10 @@ class Vcs
     {
         $this->configWriter->writeConfigPhp(
             $installDir,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
+            $this->config['DatabaseConfig']['user'],
+            $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host']
         );
     }
 
@@ -185,12 +185,12 @@ class Vcs
     {
         $this->configWriter->writeBuildProperties(
             $installDir,
-            $this->config['ShopwareInstallConfig']['ShopConfig']['host'],
+            $this->config['ShopConfig']['host'],
             $basePath,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
+            $this->config['DatabaseConfig']['user'],
+            $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host']
         );
     }
 
@@ -203,10 +203,10 @@ class Vcs
     private function setupDatabase($installDir, $database)
     {
         $this->database->setup(
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
+            $this->config['DatabaseConfig']['user'],
+            $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host']
         );
 
         $this->database->runBuildScripts($installDir);

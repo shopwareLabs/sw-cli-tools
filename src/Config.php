@@ -23,16 +23,12 @@ class Config implements \ArrayAccess
      */
     private $pathProvider;
 
-    private $mainConfig;
-
     /**
      * @param PathProvider $pathProvider
      */
     public function __construct(PathProvider $pathProvider)
     {
         $this->pathProvider = $pathProvider;
-
-        $this->mainConfig = $this->getMainConfigFile();
 
         $config = $this->getMergedConfigs($this->collectConfigFiles());
         $this->configArray = Yaml::parse($config, true);
@@ -45,9 +41,12 @@ class Config implements \ArrayAccess
      */
     private function collectConfigFiles()
     {
-        $files = array(
-            $this->mainConfig
-        );
+        $files = array();
+
+        $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
+        if (file_exists($userConfig)) {
+            $files[] = $userConfig;
+        }
 
         $vendorIterator = new \DirectoryIterator($this->pathProvider->getExtensionPath());
 
@@ -71,6 +70,7 @@ class Config implements \ArrayAccess
             }
         }
 
+        $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
         return $files;
     }
 
@@ -147,23 +147,5 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->configArray[$offset]);
-    }
-
-    /**
-     * Copy config.yaml.dist to the config directory, if the main config file does not exist, yet.
-     *
-     * @throws \RuntimeException
-     */
-    private function getMainConfigFile()
-    {
-        $configFile = $this->pathProvider->getConfigPath() . '/config.yaml';
-
-        // If the main config file exists, use that
-        if (file_exists($configFile)) {
-            return $configFile;
-        }
-
-        // Else use config.yaml.dist
-        return $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
     }
 }

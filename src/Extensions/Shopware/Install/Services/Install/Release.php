@@ -118,7 +118,7 @@ class Release
     {
         $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
             return $repo['destination'];
-        }, $this->config['ShopwareInstallConfig']['Repos']));
+        }, $this->config['ShopwareInstallRepos']));
     }
 
     /**
@@ -131,10 +131,10 @@ class Release
     {
         $this->configWriter->writeConfigPhp(
             $installDir,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
+            $this->config['DatabaseConfig']['user'],
+            $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host']
         );
     }
 
@@ -146,10 +146,10 @@ class Release
     private function setupDatabase(InstallationRequest $request)
     {
         $this->database->setup(
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['user'],
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['pass'],
+            $this->config['DatabaseConfig']['user'],
+            $this->config['DatabaseConfig']['pass'],
             $request->databaseName,
-            $this->config['ShopwareInstallConfig']['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host']
         );
         $this->database->importReleaseInstallDeltas($request->installDir);
         $this->database->createAdmin(

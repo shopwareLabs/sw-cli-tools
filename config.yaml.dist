@@ -79,32 +79,33 @@ update:
   manifestUrl: https://github.com/ShopwareAG/sw-cli-tools/blob/master/manifest.json
   checkOnStartup: false
 
-ShopwareInstallConfig:
-  ShopConfig:
-    host:
 
-  DatabaseConfig:
-    host: localhost
-    user: root
-    pass: root
 
-  ## Here you can specify a list of repositories to checkout.
-  # You can specify the destination path with the "destination" field
-  #
-  # Warning: The "core" repository is always required - it is the main
-  # shopware repo to checkout. If you want to, you can replace the ssh/http
-  # urls with urls to your own repository.
-  Repos:
-    core:
-      destination: /
-      ssh: git@github.com:ShopwareAG/shopware-4.git
-      http: https://github.com/ShopwareAG/shopware-4.git
+ShopConfig:
+  host:
 
-    ##
-    # Here you could add own plugins and other stuff you want to include in any
-    # installation you set up
-    # e.g.
-    # my-plugin:
-    #   destination: /engine/Shopware/Plugins/Local/Core/SwagMyPlugin
-    #    ssh: git@github.com:ShopwareAG/swag-my-plugin.git
-    #    http: https://github.com/ShopwareAG/swag-my-plugin.git
+DatabaseConfig:
+  host: localhost
+  user: root
+  pass: root
+
+## Here you can specify a list of repositories to checkout.
+# You can specify the destination path with the "destination" field
+#
+# Warning: The "core" repository is always required - it is the main
+# shopware repo to checkout. If you want to, you can replace the ssh/http
+# urls with urls to your own repository.
+ShopwareInstallRepos:
+  core:
+    destination: /
+    ssh: git@github.com:ShopwareAG/shopware-4.git
+    http: https://github.com/ShopwareAG/shopware-4.git
+
+  ##
+  # Here you could add own plugins and other stuff you want to include in any
+  # installation you set up
+  # e.g.
+  # my-plugin:
+  #   destination: /engine/Shopware/Plugins/Local/Core/SwagMyPlugin
+  #    ssh: git@github.com:ShopwareAG/swag-my-plugin.git
+  #    http: https://github.com/ShopwareAG/swag-my-plugin.git
