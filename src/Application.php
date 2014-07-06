@@ -50,13 +50,15 @@ class Application extends \Symfony\Component\Console\Application
         $container = $this->createContainer($input, $output);
         $this->checkDirectories();
 
+        $container->get('config_loader')->loadConfig($container);
+
         $noExtensions = $input->hasParameterOption('--no-extensions');
         $this->loadExtensions($noExtensions);
 
         // Compile the container after the plugins did their container extensions
         $container->compile();
-
         $this->addCommands($container->get('command_manager')->getCommands());
+
 
         $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
 

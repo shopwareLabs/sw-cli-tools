@@ -21,6 +21,10 @@ class DependencyInjection
         $container->setDefinition('output_interface', new Definition('Symfony\Component\Console\Input\InputInterface'))->setSynthetic(true);
         $container->setDefinition('question_helper', new Definition('Symfony\Component\Console\Helper\QuestionHelper'))->setSynthetic(true);
 
+        $container->register('config_loader', 'ShopwareCli\Services\ConfigLoader')
+            ->setPublic(false)
+            ->addArgument(new Reference('path_provider'));
+
         $container->register('io_service', 'ShopwareCli\Services\IoService')
             ->addArgument(new Reference('input_interface'))
             ->addArgument(new Reference('output_interface'))
@@ -58,7 +62,7 @@ class DependencyInjection
             ->addArgument(new Reference('service_container'));
 
         $container->register('config', 'ShopwareCli\Config')
-            ->addArgument(new Reference('path_provider'));
+            ->addArgument(new Reference('service_container'));
 
         $container->register('extension_manager', 'ShopwareCli\Application\ExtensionManager')
             ->addArgument(new Reference('autoloader'));
@@ -67,6 +71,8 @@ class DependencyInjection
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
 
+
         return $container;
     }
+
 }
