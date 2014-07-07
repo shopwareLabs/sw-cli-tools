@@ -32,6 +32,8 @@ class Config implements \ArrayAccess
 
         $config = $this->getMergedConfigs($this->collectConfigFiles());
         $this->configArray = Yaml::parse($config, true);
+
+        $this->validateConfig();
     }
 
     /**
@@ -149,5 +151,12 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->configArray[$offset]);
+    }
+
+    private function validateConfig()
+    {
+        if ($this->configArray['ShopwareInstallConfig']) {
+            throw new \RuntimeException("The config format changed, 'ShopwareInstallConfig' is not used anymore. Its former options are now distinct options 'ShopConfig', 'DatabaseConfig' and 'ShopwareInstallRepos'. Have a look at config.yaml.dist for more info.");
+        }
     }
 }
