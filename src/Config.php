@@ -155,7 +155,7 @@ class Config implements \ArrayAccess
 
     private function validateConfig()
     {
-        if ($this->configArray['ShopwareInstallConfig']) {
+        if (isset($this->configArray['ShopwareInstallConfig'])) {
             throw new \RuntimeException("The config format changed, 'ShopwareInstallConfig' is not used anymore. Its former options are now distinct options 'ShopConfig', 'DatabaseConfig' and 'ShopwareInstallRepos'. Have a look at config.yaml.dist for more info.");
         }
     }
