@@ -22,8 +22,8 @@ class ZipCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('plugin:zip')
-            ->setDescription('Creates a installable plugin zip in the current directory')
+            ->setName('plugin:zip:vcs')
+            ->setDescription('Creates a installable plugin zip in the current directory from VCS')
             ->addArgument(
                 'names',
                 InputArgument::IS_ARRAY,

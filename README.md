@@ -43,7 +43,8 @@ On your system at least the following packages needs to be available.
 * sw install:vcs
 * sw install:release
 * sw plugin:install
-* sw plugin:zip
+* sw plugin:zip:dir
+* sw plugin:zip:vcs
 
 ## Using the Commands
 ### sw plugin:install
@@ -60,8 +61,8 @@ Valid options/arguments are:
 This command will automatically create a VCS mapping for phpstorm if .idea/vcs.xml can be found. You will need
 to refresh you config with File->Sychronize (Control+Alt+Y)
 
-### sw plugin:zip
-Will checkout a plugin from stash and zip it properly for the store
+### sw plugin:zip:vcs
+Will checkout a plugin from VCS and zip it properly for the store
 
 Valid options/arguments are:
 
@@ -69,6 +70,9 @@ Valid options/arguments are:
     --small: Show 3 columns of plugins in a short form
     --branch branch to checkout out
     names1…nameN - names of plugins to zip
+
+### sw plugin:zip:dir
+Will zip the given plugin directory. DIRECTORY must point to the directory where the plugin bootstrap can be found.
 
 ### sw install:vcs
 Checkout the latest shopware version from vcs (for development)

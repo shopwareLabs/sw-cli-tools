@@ -47,8 +47,12 @@ class Zip
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
-        $this->utilities->executeCommand("zip -r $outputFile {$plugin->module} -x *.git*");
-
+        $this->zipDir($plugin->module, $outputFile);
         return $outputFile;
+    }
+
+    public function zipDir($directory, $outputFile)
+    {
+        $this->utilities->executeCommand("zip -r $outputFile $directory -x *.git*");
     }
 }

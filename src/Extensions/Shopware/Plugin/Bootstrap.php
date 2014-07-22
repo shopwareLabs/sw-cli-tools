@@ -4,6 +4,7 @@ namespace Shopware\Plugin;
 
 use Shopware\Plugin\Command\InstallCommand;
 use Shopware\Plugin\Command\ZipCommand;
+use Shopware\Plugin\Command\ZipLocalCommand;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,7 +33,8 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     {
         return array(
             new InstallCommand(),
-            new ZipCommand()
+            new ZipCommand(),
+            new ZipLocalCommand()
         );
     }
 
@@ -54,6 +56,8 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('plugin_selector'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('utilities'));
+
+        $container->register('bootstrap_info', 'Shopware\Plugin\Services\BootstrapInfo');
 
         $container->register('install_service', 'Shopware\Plugin\Services\Install')
             ->addArgument(new Reference('checkout_service'))
