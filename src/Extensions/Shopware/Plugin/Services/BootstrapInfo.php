@@ -4,9 +4,17 @@ namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Struct\PluginBootstrap;
 
+/**
+ * Extract info from a shopware plugin bootstrap
+ *
+ * Class BootstrapInfo
+ * @package Shopware\Plugin\Services
+ */
 class BootstrapInfo
 {
     /**
+     * Analyze a bootstrap file and return a PluginBootstrap struct
+     *
      * @param $bootstrapFile
      * @return PluginBootstrap
      */
@@ -25,6 +33,8 @@ class BootstrapInfo
     }
 
     /**
+     * Return name and namespace from a plugin by regex-ing the class name
+     *
      * @param $content
      * @return array
      * @throws \RuntimeException
