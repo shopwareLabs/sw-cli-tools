@@ -94,6 +94,8 @@ class PluginOperationManager
             $response = $this->pluginSelector->selectPlugin($plugins, array('all'));
             if ($response instanceof Plugin) {
                 $plugins = array($response);
+            } elseif (is_array($response)) {
+                $plugins = $response;
             }
 
             foreach ($plugins as $plugin) {
@@ -103,9 +105,9 @@ class PluginOperationManager
     }
 
     /**
-     * @param object   $subject
+     * @param object $subject
      * @param callable $callback
-     * @param array    $params
+     * @param array $params
      */
     private function executeMethodCallback($subject, $callback, $params)
     {
@@ -116,13 +118,14 @@ class PluginOperationManager
      * Show the plugin list to the user, until "all" or "exit" was entered
      *
      * @param callable $callback
-     * @param array    $params
+     * @param array $params
      */
     public function operationLoop($callback, $params)
     {
         $plugins = $this->pluginProvider->getPlugins();
         while (true) {
             $response = $this->pluginSelector->selectPlugin($plugins, array('all', 'exit'));
+
             if ($response == 'exit') {
                 return;
             }
@@ -132,6 +135,13 @@ class PluginOperationManager
                     $this->executeMethodCallback($plugin, $callback, $params);
                 }
 
+                return;
+            }
+
+            if (is_array($response)) {
+                foreach ($response as $plugin) {
+                    $this->executeMethodCallback($plugin, $callback, $params);
+                }
                 return;
             }
 

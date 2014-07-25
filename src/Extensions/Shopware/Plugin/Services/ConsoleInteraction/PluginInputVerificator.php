@@ -66,7 +66,19 @@ class PluginInputVerificator
 
             $response = $this->ioService->ask($question);
 
-            if (isset($plugins[$response - 1])) {
+            if ($range = $this->getPluginRange($response)) {
+                return array_filter(
+                    array_map(
+                        function ($number) use ($plugins) {
+                            return isset($plugins[$number - 1]) ? $plugins[$number - 1] : null;
+                        },
+                        $range
+                    ),
+                    function ($plugin) {
+                        return $plugin;
+                    }
+                );
+            } elseif (isset($plugins[$response - 1])) {
                 return $plugins[$response - 1];
             } elseif (in_array($response, $allowedAnswers)) {
                 return $response;
@@ -102,5 +114,39 @@ class PluginInputVerificator
 
             return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
         }
+    }
+
+    /**
+     * Check if a range like 12-99 was entered
+     *
+     * Will return false if not or the numbers from the range as an array
+     *
+     * @param $userInput
+     * @return array|bool
+     */
+    private function getPluginRange($userInput)
+    {
+        $pattern = '#(?P<from>[0-9]+)-(?P<to>[0-9]+)#';
+        $matches = array();
+
+        preg_match($pattern, $userInput, $matches);
+
+        if (empty($matches) || !isset($matches['from']) || !isset($matches['to'])) {
+            return false;
+        }
+
+        $from = $matches['from'];
+        $to = $matches['to'];
+
+        // Swag from and to if needed
+        if ($from > $to) {
+            list($from, $to) = array($to, $from);
+        }
+
+        if ($from == $to) {
+            return array($from);
+        }
+
+        return range($from, $to);
     }
 }
