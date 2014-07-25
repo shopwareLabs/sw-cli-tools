@@ -47,10 +47,10 @@ class PluginOperationManager
     private $ioService;
 
     /**
-     * @param PluginProvider         $pluginProvider
+     * @param PluginProvider $pluginProvider
      * @param PluginInputVerificator $pluginSelector
-     * @param IoService              $ioService
-     * @param Utilities              $utilities
+     * @param IoService $ioService
+     * @param Utilities $utilities
      */
     public function __construct(
         PluginProvider $pluginProvider,
@@ -70,7 +70,7 @@ class PluginOperationManager
      *
      * @param string[] $names
      * @param callable $callback
-     * @param array    $params
+     * @param array $params
      */
     public function searchAndOperate($names, $callback, $params)
     {
@@ -81,6 +81,7 @@ class PluginOperationManager
 
             if ($count == 0) {
                 $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
+
                 return;
             }
 
@@ -88,15 +89,12 @@ class PluginOperationManager
 
             if ($count == 1) {
                 $this->executeMethodCallback($plugins[0], $callback, $params);
+
                 return;
             }
 
             $response = $this->pluginSelector->selectPlugin($plugins, array('all'));
-            if ($response instanceof Plugin) {
-                $plugins = array($response);
-            } elseif (is_array($response)) {
-                $plugins = $response;
-            }
+            $plugins = $this->getPluginsFromResponse($response, $plugins);
 
             foreach ($plugins as $plugin) {
                 $this->executeMethodCallback($plugin, $callback, $params);
@@ -115,6 +113,24 @@ class PluginOperationManager
     }
 
     /**
+     * Prepares a response and returns an array of plugin objects
+     *
+     * @param $response
+     * @param $plugins
+     * @return array
+     */
+    private function getPluginsFromResponse($response, $plugins)
+    {
+        if ($response instanceof Plugin) {
+            return array($response);
+        } elseif (is_array($response)) {
+            return $response;
+        } elseif ($response == 'all') {
+            return $plugins;
+        }
+    }
+
+    /**
      * Show the plugin list to the user, until "all" or "exit" was entered
      *
      * @param callable $callback
@@ -130,27 +146,14 @@ class PluginOperationManager
                 return;
             }
 
-            if ($response == 'all') {
-                foreach ($plugins as $plugin) {
-                    $this->executeMethodCallback($plugin, $callback, $params);
-                }
+            $this->utilities->cls();
 
-                return;
+            $responsePlugins = $this->getPluginsFromResponse($response, $plugins);
+            foreach ($responsePlugins as $plugin) {
+                $this->executeMethodCallback($plugin, $callback, $params);
             }
-
-            if (is_array($response)) {
-                foreach ($response as $plugin) {
-                    $this->executeMethodCallback($plugin, $callback, $params);
-                }
-                return;
-            }
-
-            if ($response instanceof Plugin) {
-                $this->utilities->cls();
-                $this->executeMethodCallback($response, $callback, $params);
-                $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
-                $this->utilities->cls();
-            }
+            $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
+            $this->utilities->cls();
         }
     }
 }
