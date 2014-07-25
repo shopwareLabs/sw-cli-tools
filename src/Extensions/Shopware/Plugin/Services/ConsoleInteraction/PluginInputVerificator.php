@@ -135,18 +135,6 @@ class PluginInputVerificator
             return false;
         }
 
-        $from = $matches['from'];
-        $to = $matches['to'];
-
-        // Swag from and to if needed
-        if ($from > $to) {
-            list($from, $to) = array($to, $from);
-        }
-
-        if ($from == $to) {
-            return array($from);
-        }
-
-        return range($from, $to);
+        return range($matches['from'], $matches['to']);
     }
 }
