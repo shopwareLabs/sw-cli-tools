@@ -48,7 +48,9 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('io_service'));
 
         $container->register('post_install', 'Shopware\Install\Services\PostInstall')
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->addArgument(new Reference('shopware-install.owner'))
+            ->addArgument(new Reference('config'));
 
         $container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
             ->addArgument(new Reference('process_executor'))
@@ -61,6 +63,9 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 
         $container->register('shopware-install.config_writer', 'Shopware\Install\Services\ConfigWriter')
             ->addArgument(new Reference('io_service'));
+
+
+        $container->register('shopware-install.owner', 'Shopware\Install\Services\Owner');
 
         $container->register('shopware-install.database', 'Shopware\Install\Services\Database')
             ->addArgument(new Reference('utilities'))

@@ -106,7 +106,7 @@ EOF
         preg_match($pattern, $branch, $result);
 
         if (isset($result['number'])) {
-            return 'SW' . $result['number'];
+            return 'sw' . $result['number'];
         }
 
         return $branch;

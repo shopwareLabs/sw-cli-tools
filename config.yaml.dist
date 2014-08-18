@@ -89,6 +89,11 @@ DatabaseConfig:
   user: root
   pass: root
 
+## If needed, you can change the owner of the shopware install dir
+# ChangeOwner:
+#  user: www-data
+#  group: www-data
+
 ## Here you can specify a list of repositories to checkout.
 # You can specify the destination path with the "destination" field
 #
