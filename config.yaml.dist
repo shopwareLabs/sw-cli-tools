@@ -79,8 +79,6 @@ update:
   manifestUrl: https://github.com/ShopwareAG/sw-cli-tools/blob/master/manifest.json
   checkOnStartup: false
 
-
-
 ShopConfig:
   host:
 
@@ -93,6 +91,12 @@ DatabaseConfig:
 # ChangeOwner:
 #  user: www-data
 #  group: www-data
+
+## A list of sql files you want to import after shopware was set up
+# CustomDeltas:
+#  - /home/USER/setup_mail_client.sql
+#  - /home/USER/configure_shop.sql
+
 
 ## Here you can specify a list of repositories to checkout.
 # You can specify the destination path with the "destination" field

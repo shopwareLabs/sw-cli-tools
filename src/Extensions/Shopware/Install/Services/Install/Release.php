@@ -104,7 +104,9 @@ class Release
         $this->writeShopwareConfig($request->installDir, $request->databaseName);
         $this->setupDatabase($request);
 
+        $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($request->installDir);
+        $this->postInstall->importCustomDeltas($request->databaseName);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }

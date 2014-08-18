@@ -28,6 +28,11 @@ class PostInstall
         $this->config = $config;
     }
 
+    /**
+     * Set permissions for the shopware directory
+     *
+     * @param $directory
+     */
     public function fixPermissions($directory)
     {
         $command = sprintf('chmod 0777 -R "%s"', $directory . '/logs');
@@ -38,6 +43,29 @@ class PostInstall
 
         $this->setUser($directory);
         $this->setGroup($directory);
+    }
+
+    /**
+     * Import custom deltas
+     *
+     * @param $database
+     * @throws \RuntimeException
+     */
+    public function importCustomDeltas($database)
+    {
+        if (!isset($this->config['CustomDeltas'])) {
+            return;
+        }
+
+        $connection = $this->getConnection();
+        $connection->query("USE `{$database}`");
+
+        foreach ($this->config['CustomDeltas'] as $file) {
+            if (!file_exists($file)) {
+                throw new \RuntimeException("File '{$file}' not found");
+            }
+            $connection->exec(file_get_contents($file));
+        }
     }
 
     /**
@@ -62,5 +90,22 @@ class PostInstall
         if (isset($this->config['ChangeOwner']['group'])) {
             $this->owner->setGroup($directory, $this->config['ChangeOwner']['group'], true);
         }
+    }
+
+    /**
+     * Get a PDO connection
+     *
+     * @return \PDO
+     */
+    private function getConnection()
+    {
+        $username = $this->config['DatabaseConfig']['user'];
+        $password = $this->config['DatabaseConfig']['pass'];
+        $host = $this->config['DatabaseConfig']['host'];
+
+        $connection = new \PDO("mysql:host={$host};charset=utf8", $username, $password);
+        $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        return $connection;
     }
 }
