@@ -97,6 +97,12 @@ DatabaseConfig:
 #  - /home/USER/setup_mail_client.sql
 #  - /home/USER/configure_shop.sql
 
+## A list of shell commands to execute after shopware was set up
+## CWD will be the shopware instal dir
+# CustomScripts:
+# - ./bin/console sw:plugin:refresh
+# - ./bin/console sw:plugin:install --activate AdvancedMenu
+
 
 ## Here you can specify a list of repositories to checkout.
 # You can specify the destination path with the "destination" field

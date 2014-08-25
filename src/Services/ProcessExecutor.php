@@ -28,12 +28,13 @@ class ProcessExecutor
     /**
      * @param  string            $commandline
      * @param  bool              $allowFailure
+     * @param  string            $cwd
      * @throws \RuntimeException
      * @return int|null
      */
-    public function execute($commandline, $allowFailure = false)
+    public function execute($commandline, $cwd = null, $allowFailure = false)
     {
-        $process = new Process($commandline);
+        $process = new Process($commandline, $cwd);
         $process->setTimeout(self::DEFAULT_TIMEOUT);
 
         $output = $this->output; // tmp var needed for php < 5.4

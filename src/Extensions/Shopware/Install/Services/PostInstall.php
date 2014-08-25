@@ -69,6 +69,22 @@ class PostInstall
     }
 
     /**
+     * Run user scripts
+     *
+     * @param $path
+     */
+    public function runCustomScripts($path)
+    {
+        if (!isset($this->config['CustomScripts'])) {
+            return;
+        }
+
+        foreach ($this->config['CustomScripts'] as $script) {
+            $this->processExecutor->execute($script, $path, true);
+        }
+    }
+
+    /**
      * set the user for the shopware directory
      *
      * @param $directory

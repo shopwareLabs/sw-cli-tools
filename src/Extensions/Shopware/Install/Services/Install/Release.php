@@ -107,6 +107,7 @@ class Release
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($request->installDir);
         $this->postInstall->importCustomDeltas($request->databaseName);
+        $this->postInstall->runCustomScripts($request->installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }

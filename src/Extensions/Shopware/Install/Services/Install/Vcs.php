@@ -86,6 +86,7 @@ class Vcs
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($installDir);
         $this->postInstall->importCustomDeltas($database);
+        $this->postInstall->runCustomScripts($installDir);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
