@@ -57,7 +57,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
 
         $expectedOutput = "ls: cannot access /no-such-file: No such file or directory\n";
 
-        $exitCode = $executor->execute('LC_ALL=C ls /no-such-file', true);
+        $exitCode = $executor->execute('LC_ALL=C ls /no-such-file', null, true);
 
         $this->assertEquals(2, $exitCode);
         $this->assertEquals($expectedOutput, $output->fetch());
