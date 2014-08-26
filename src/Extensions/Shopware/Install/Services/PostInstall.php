@@ -2,7 +2,6 @@
 
 namespace Shopware\Install\Services;
 
-
 use ShopwareCli\Config;
 use ShopwareCli\Services\ProcessExecutor;
 
@@ -91,7 +90,7 @@ class PostInstall
      */
     private function setUser($directory)
     {
-        if (isset($this->config['ChangeOwner']['user'])) {
+        if (isset($this->config['ChangeOwner'], $this->config['ChangeOwner']['user'])) {
             $this->owner->setUser($directory, $this->config['ChangeOwner']['user'], true);
         }
     }
@@ -103,7 +102,7 @@ class PostInstall
      */
     private function setGroup($directory)
     {
-        if (isset($this->config['ChangeOwner']['group'])) {
+        if (isset($this->config['ChangeOwner'], $this->config['ChangeOwner']['group'])) {
             $this->owner->setGroup($directory, $this->config['ChangeOwner']['group'], true);
         }
     }
