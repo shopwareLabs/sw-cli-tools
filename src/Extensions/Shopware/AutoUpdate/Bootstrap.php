@@ -81,7 +81,14 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     {
         /** @var $amend Helper */
         $amend = $this->container->get('helper_set')->get('amend');
-        $manager = $amend->getManager($this->getManifestUrl());
+
+        try {
+            $manager = $amend->getManager($this->getManifestUrl());
+        } catch(\Herrera\Json\Exception\FileException $e) {
+            echo "\nCould not download {$this->getManifestUrl()}\n";
+            echo "\nCheck your connection\n";
+            return;
+        }
 
         if ($manager->update(
             \ShopwareCli\Application::VERSION,
