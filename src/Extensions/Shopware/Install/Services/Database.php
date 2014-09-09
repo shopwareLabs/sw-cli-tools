@@ -215,7 +215,8 @@ EOF
         $path43 = "{$installDir}/recovery/./install/data/sql/snippets.sql";
 
         if (!file_exists($path42) && !file_exists($path43)) {
-            throw new \RuntimeException("Could not find snippet delta");
+            $this->ioService->writeln("<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>");
+            return;
         }
 
         $path = file_exists($path42) ? $path42 : $path43;

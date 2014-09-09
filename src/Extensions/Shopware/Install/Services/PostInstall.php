@@ -35,10 +35,10 @@ class PostInstall
     public function fixPermissions($directory)
     {
         $command = sprintf('chmod 0777 -R "%s"', $directory . '/logs');
-        $this->processExecutor->execute($command);
+        $this->processExecutor->execute($command, null, true);
 
         $command = sprintf('chmod 0777 -R "%s"', $directory . '/cache');
-        $this->processExecutor->execute($command);
+        $this->processExecutor->execute($command, null, true);
 
         $this->setUser($directory);
         $this->setGroup($directory);
