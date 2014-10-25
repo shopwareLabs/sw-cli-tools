@@ -63,7 +63,7 @@ class ZipLocalCommand extends BaseCommand
         $sourceDir = $tempDir . '/' . $info->module . '/' . $info->name;
         mkdir($sourceDir, 0777, true);
 
-        $this->container->get('process_executor')->execute("cp -r $pluginDirectory $sourceDir");
+        $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
         $this->container->get('utilities')->changeDir($tempDir);
 
         $this->container->get('zip_service')->zipDir($info->module . '/' . $info->name, $outputFile);
