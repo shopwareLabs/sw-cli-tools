@@ -94,7 +94,7 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_URL, $url);
         curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
-
+        curl_setopt($this->cURL, CURLOPT_HTTPHEADER, $headers);
         $body = curl_exec($this->cURL);
 
         return new Response($body, $this->cURL);
