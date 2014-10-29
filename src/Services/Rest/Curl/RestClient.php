@@ -46,7 +46,7 @@ class RestClient implements RestInterface
      * @param  array $curlOptions
      * @throws \Exception
      */
-    public function __construct($apiUrl, $username="", $apiKey="", $curlOptions = array())
+    public function __construct($apiUrl, $username = "", $apiKey = "", $curlOptions = array())
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL given');
@@ -62,13 +62,6 @@ class RestClient implements RestInterface
             curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
         }
         curl_setopt($this->cURL, CURLOPT_USERAGENT, self::USER_AGENT);
-        curl_setopt(
-            $this->cURL,
-            CURLOPT_HTTPHEADER,
-            array(
-                'Content-Type: application/json; charset=utf-8',
-            )
-        );
 
         curl_setopt_array($this->cURL, $curlOptions);
     }
@@ -94,6 +87,14 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_URL, $url);
         curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
+
+        $headers = array_merge(
+            array(
+                'Content-Type: application/json; charset=utf-8',
+            ),
+            $headers
+        );
+
         curl_setopt($this->cURL, CURLOPT_HTTPHEADER, $headers);
         $body = curl_exec($this->cURL);
 
