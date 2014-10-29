@@ -12,6 +12,7 @@
         "symfony/process": "~2.5",
         "symfony/dependency-injection": "~2.5",
         "dnoegel/php-xdg-base-dir": "dev-master",
+        "shopware-ag/plugin-info": "dev-master",
         "kherge/amend": "3.*"
     },
     "require-dev": {

@@ -42,6 +42,8 @@ class DependencyInjection
 
         $container->register('xdg', '\XdgBaseDir\Xdg');
 
+        $container->register('plugin_info', '\Shopware\PluginInfo\PluginInfo');
+
         $container->register('directory_gateway', 'ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway')
             ->addArgument(new Reference('xdg'));
 
