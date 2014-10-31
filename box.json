@@ -20,6 +20,7 @@
             "in": [
                 "vendor/composer",
                 "vendor/shopware-ag",
+                "vendor/justinrainbow",
                 "vendor/symfony/console",
                 "vendor/symfony/config",
                 "vendor/symfony/dependency-injection",
