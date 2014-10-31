@@ -384,12 +384,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ShopwareAG/plugin-info.git",
-                "reference": "7bf6ac2d1f7ec05d15b3de16621501cc159c27b6"
+                "reference": "54503ec15ac2da0c17582105275c3b4627fe928f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ShopwareAG/plugin-info/zipball/7bf6ac2d1f7ec05d15b3de16621501cc159c27b6",
-                "reference": "7bf6ac2d1f7ec05d15b3de16621501cc159c27b6",
+                "url": "https://api.github.com/repos/ShopwareAG/plugin-info/zipball/54503ec15ac2da0c17582105275c3b4627fe928f",
+                "reference": "54503ec15ac2da0c17582105275c3b4627fe928f",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
                 "MIT"
             ],
             "description": "Read plugin metadata for shopware plugins",
-            "time": "2014-10-29 15:18:35"
+            "time": "2014-10-31 09:59:19"
         },
         {
             "name": "symfony/config",
