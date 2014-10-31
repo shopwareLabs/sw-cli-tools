@@ -73,8 +73,7 @@ class InstallCommand extends BaseCommand
                 'branch',
                 '-b',
                 InputOption::VALUE_OPTIONAL,
-                'Checkout the given branch',
-                'master'
+                'Checkout the given branch'
             );
     }
 
@@ -181,11 +180,14 @@ class InstallCommand extends BaseCommand
         $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
 
         $repo        = escapeshellarg($url);
-        $branch      = escapeshellarg($params['branch']);
+        $branch      = $params['branch'] ? escapeshellarg($params['branch']) : null;
         $destination = escapeshellarg('./' . $destination);
 
+
+        $branchArg = $branch ? "-b {$branch}" : '';
+
         $this->container->get('git_util')->run(
-            "clone --progress -b {$branch} {$repo} {$destination}"
+            "clone --progress {$branchArg} {$repo} {$destination}"
         );
     }
 }
