@@ -19,6 +19,7 @@
             "exclude": ["tests"],
             "in": [
                 "vendor/composer",
+                "vendor/shopware-ag",
                 "vendor/symfony/console",
                 "vendor/symfony/config",
                 "vendor/symfony/dependency-injection",

@@ -1493,7 +1493,6 @@
         "phpunit/phpunit": 0,
         "squizlabs/php_codesniffer": 15
     },
-    "prefer-stable": false,
     "platform": {
         "php": ">=5.3.2",
         "ext-curl": "*"
