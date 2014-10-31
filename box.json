@@ -11,7 +11,8 @@
         "README.md",
         "config.yaml.dist",
         "vendor/autoload.php",
-        "vendor/herrera-io/phar-update/res/schema.json"
+        "vendor/herrera-io/phar-update/res/schema.json",
+        "vendor/shopware-ag/plugin-info/res/plugin-info-schema.json"
     ],
     "finder": [
         {
