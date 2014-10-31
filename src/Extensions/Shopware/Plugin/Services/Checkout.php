@@ -66,7 +66,9 @@ class Checkout
             $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
             if (trim($output) === '') {
                 $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
-
+                if ($branch) {
+                    $this->gitUtil->run("checkout {$branch}");
+                }
                 return;
             }
 
