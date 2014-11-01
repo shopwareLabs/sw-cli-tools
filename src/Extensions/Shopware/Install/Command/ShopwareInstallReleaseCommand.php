@@ -3,6 +3,7 @@ namespace Shopware\Install\Command;
 
 use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,6 +11,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
 {
+
+    /**
+     * @return Config
+     */
+    protected function getConfig()
+    {
+        return $this->container->get('config');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -170,6 +180,8 @@ EOF
     }
 
     /**
+     * Make sure, that some required fields are available
+     *
      * @param InputInterface $input
      * @param IoService      $ioService
      */
@@ -182,12 +194,21 @@ EOF
             'mail' => 'your email'
         );
 
+        $config = $this->getConfig();
+
         foreach ($required as $field => $description) {
-            $fieldData = $input->getOption($field);
-            if ($fieldData) {
+            // If field was set via cli option, use that
+            if ($input->getOption($field)) {
                 continue;
             }
 
+            // else: check if the option is configured via config
+            if (isset($config['ShopConfig']) && isset($config['ShopConfig'][$field])) {
+                $input->setOption($field, $config['ShopConfig'][$field]);
+                continue;
+            }
+
+            //
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
                 array($this, 'genericValidator')

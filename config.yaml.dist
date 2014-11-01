@@ -79,8 +79,14 @@ update:
   manifestUrl: https://github.com/ShopwareAG/sw-cli-tools/blob/master/manifest.json
   checkOnStartup: false
 
+## the configured host will always be used
+# username, password, mail and name only apply for "release" packages
 ShopConfig:
   host:
+  username: demo
+  password: demo
+  mail: test@example.org
+  name: "Demo admin"
 
 DatabaseConfig:
   host: localhost
