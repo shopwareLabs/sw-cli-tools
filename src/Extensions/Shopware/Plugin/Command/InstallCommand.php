@@ -92,7 +92,7 @@ class InstallCommand extends BaseCommand
         if (!$shopwarePath) {
             $shopwarePath = null;
         }
-        $this->container->get('utilities')->cls();
+        $this->container->get('io_service')->cls();
 
         if (!$checkout) {
             $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);

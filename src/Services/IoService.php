@@ -177,4 +177,20 @@ class IoService
     {
         return new ProgressBar($this->output, $max);
     }
+
+    /**
+     * Clears the screen in the terminal
+     */
+    public function cls()
+    {
+        if (!$this->input->isInteractive()) {
+            return;
+        }
+
+        // http://en.wikipedia.org/wiki/ANSI_escape_code
+        $this->output->write(chr(27) . "[2J"); // ED – Erase Display
+        $this->output->write(chr(27) . "[1;1H"); // CUP – Set Cursor Position to upper left
+    }
+
+
 }

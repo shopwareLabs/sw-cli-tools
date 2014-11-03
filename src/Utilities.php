@@ -100,6 +100,8 @@ class Utilities
 
     /**
      * Clears the screen in the terminal
+     *
+     * @deprecated Replaced by \ShopwareCli\Services\IoService::cls()
      */
     public function cls()
     {

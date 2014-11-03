@@ -61,7 +61,7 @@ class ZipCommand extends BaseCommand
         $useHttp = $input->getOption('useHttp');
         $branch = $input->getOption('branch');
 
-        $this->container->get('utilities')->cls();
+        $this->container->get('io_service')->cls();
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
         $interactionManager = $this->container->get('plugin_operation_manager');

@@ -146,14 +146,14 @@ class PluginOperationManager
                 return;
             }
 
-            $this->utilities->cls();
+            $this->ioService->cls();
 
             $responsePlugins = $this->getPluginsFromResponse($response, $plugins);
             foreach ($responsePlugins as $plugin) {
                 $this->executeMethodCallback($plugin, $callback, $params);
             }
             $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
-            $this->utilities->cls();
+            $this->ioService->cls();
         }
     }
 }
