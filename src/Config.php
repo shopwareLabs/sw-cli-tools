@@ -2,7 +2,6 @@
 
 namespace ShopwareCli;
 
-use ShopwareCli\Services\PathProvider\PathProvider;
 use Symfony\Component\Yaml\Yaml;
 
 /**

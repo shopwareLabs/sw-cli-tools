@@ -43,7 +43,7 @@ class ConfigFileCollector
     }
 
     /**
-     * @param string $extensionPath
+     * @param  string   $extensionPath
      * @return string[]
      */
     private function interateVendors($extensionPath)
@@ -62,7 +62,7 @@ class ConfigFileCollector
     }
 
     /**
-     * @param string $vendorPath
+     * @param  string   $vendorPath
      * @return string[]
      */
     private function iterateExtensions($vendorPath)
