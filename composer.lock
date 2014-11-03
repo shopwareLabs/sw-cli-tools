@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "00e42ebf0cb9e8fa8d7768e89fe87219",
+    "hash": "8c41869b4b0ce2f1a6636dddbc0aa89e",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
-            "version": "dev-master",
+            "version": "0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dnoegel/php-xdg-base-dir.git",
-                "reference": "863e7589f85aab018441d567b8c6f23340a092c9"
+                "reference": "265b8593498b997dc2d31e75b89f053b5cc9621a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dnoegel/php-xdg-base-dir/zipball/863e7589f85aab018441d567b8c6f23340a092c9",
-                "reference": "863e7589f85aab018441d567b8c6f23340a092c9",
+                "url": "https://api.github.com/repos/dnoegel/php-xdg-base-dir/zipball/265b8593498b997dc2d31e75b89f053b5cc9621a",
+                "reference": "265b8593498b997dc2d31e75b89f053b5cc9621a",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "require-dev": {
                 "phpunit/phpunit": "@stable"
             },
-            "type": "library",
+            "type": "project",
             "autoload": {
                 "psr-4": {
                     "XdgBaseDir\\": "src/"
@@ -37,7 +37,7 @@
                 "MIT"
             ],
             "description": "implementation of xdg base directory specification for php",
-            "time": "2014-10-25 12:35:24"
+            "time": "2014-10-24 07:27:01"
         },
         {
             "name": "herrera-io/json",
@@ -86,7 +86,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -146,7 +146,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -198,7 +198,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -319,7 +319,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -1488,11 +1488,11 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dnoegel/php-xdg-base-dir": 20,
         "shopware-ag/plugin-info": 20,
         "phpunit/phpunit": 0,
         "squizlabs/php_codesniffer": 15
     },
+    "prefer-stable": false,
     "platform": {
         "php": ">=5.3.2",
         "ext-curl": "*"
