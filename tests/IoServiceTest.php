@@ -2,6 +2,7 @@
 
 namespace ShopwareCli\Tests;
 
+use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -47,15 +48,15 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \ShopwareCli\Services\IoService
+     * @return IoService
      */
     private function createSUT()
     {
-        $this->input = $input = new ArrayInput([]);
+        $this->input = $input = new ArrayInput(array());
         $this->output = $output = new BufferedOutput();
         $questionHelper = new QuestionHelper();
 
-        return new \ShopwareCli\Services\IoService(
+        return new IoService(
             $input,
             $output,
             $questionHelper
