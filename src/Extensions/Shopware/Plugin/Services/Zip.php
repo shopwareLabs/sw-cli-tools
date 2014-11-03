@@ -48,6 +48,7 @@ class Zip
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
         $this->zipDir($plugin->module, $outputFile);
+
         return $outputFile;
     }
 

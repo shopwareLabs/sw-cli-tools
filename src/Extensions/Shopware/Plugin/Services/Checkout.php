@@ -69,6 +69,7 @@ class Checkout
                 if ($branch) {
                     $this->gitUtil->run("checkout {$branch}");
                 }
+
                 return;
             }
 

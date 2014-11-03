@@ -183,7 +183,6 @@ class InstallCommand extends BaseCommand
         $branch      = $params['branch'] ? escapeshellarg($params['branch']) : null;
         $destination = escapeshellarg('./' . $destination);
 
-
         $branchArg = $branch ? "-b {$branch}" : '';
 
         $this->container->get('git_util')->run(

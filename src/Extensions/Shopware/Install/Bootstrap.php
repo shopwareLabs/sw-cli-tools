@@ -64,7 +64,6 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $container->register('shopware-install.config_writer', 'Shopware\Install\Services\ConfigWriter')
             ->addArgument(new Reference('io_service'));
 
-
         $container->register('shopware-install.owner', 'Shopware\Install\Services\Owner');
 
         $container->register('shopware-install.database', 'Shopware\Install\Services\Database')

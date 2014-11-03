@@ -28,9 +28,9 @@ class CacheDecorator implements RestInterface
     protected $cacheTime;
 
     /**
-     * @param RestInterface $restService
+     * @param RestInterface  $restService
      * @param CacheInterface $cacheProvider
-     * @param int $cacheTime
+     * @param int            $cacheTime
      */
     public function __construct(RestInterface $restService, CacheInterface $cacheProvider, $cacheTime = 1)
     {
@@ -45,6 +45,7 @@ class CacheDecorator implements RestInterface
     public function get($url, $parameters = array(), $headers = array())
     {
         $cacheKey = $url . json_encode($parameters) . json_encode($headers);
+
         return $this->callCached('get', sha1($cacheKey), $url, $parameters = array(), $headers = array());
     }
 
@@ -73,11 +74,11 @@ class CacheDecorator implements RestInterface
     }
 
     /**
-     * @param  string $call
-     * @param  string $key
-     * @param  string $url
-     * @param  array $parameters
-     * @param  array $headers
+     * @param  string     $call
+     * @param  string     $key
+     * @param  string     $url
+     * @param  array      $parameters
+     * @param  array      $headers
      * @return bool|mixed
      */
     public function callCached($call, $key, $url, $parameters = array(), $headers = array())

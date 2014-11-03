@@ -32,7 +32,7 @@ class GitUtil
     }
 
     /**
-     * @param string $commandline
+     * @param  string            $commandline
      * @throws \RuntimeException
      * @return string
      */

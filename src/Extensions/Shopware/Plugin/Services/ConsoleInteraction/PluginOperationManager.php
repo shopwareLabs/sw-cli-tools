@@ -47,10 +47,10 @@ class PluginOperationManager
     private $ioService;
 
     /**
-     * @param PluginProvider $pluginProvider
+     * @param PluginProvider         $pluginProvider
      * @param PluginInputVerificator $pluginSelector
-     * @param IoService $ioService
-     * @param Utilities $utilities
+     * @param IoService              $ioService
+     * @param Utilities              $utilities
      */
     public function __construct(
         PluginProvider $pluginProvider,
@@ -70,7 +70,7 @@ class PluginOperationManager
      *
      * @param string[] $names
      * @param callable $callback
-     * @param array $params
+     * @param array    $params
      */
     public function searchAndOperate($names, $callback, $params)
     {
@@ -103,9 +103,9 @@ class PluginOperationManager
     }
 
     /**
-     * @param object $subject
+     * @param object   $subject
      * @param callable $callback
-     * @param array $params
+     * @param array    $params
      */
     private function executeMethodCallback($subject, $callback, $params)
     {
@@ -134,7 +134,7 @@ class PluginOperationManager
      * Show the plugin list to the user, until "all" or "exit" was entered
      *
      * @param callable $callback
-     * @param array $params
+     * @param array    $params
      */
     public function operationLoop($callback, $params)
     {

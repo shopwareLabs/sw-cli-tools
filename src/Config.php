@@ -75,6 +75,7 @@ class Config implements \ArrayAccess
 
         // Load config.yaml.dist as latest - this way the fallback config options are defined
         $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
+
         return $files;
     }
 

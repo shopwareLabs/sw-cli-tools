@@ -147,10 +147,10 @@ class IoService
     /**
      * Ask a question and validate the result
      *
-     * @param  string|Question    $question
-     * @param  bool|callable      $validator
-     * @param  bool|int           $attempts
-     * @param  null|string        $default
+     * @param string|Question $question
+     * @param bool|callable   $validator
+     * @param bool|int        $attempts
+     * @param null|string     $default
      *
      * @return string
      */
@@ -191,6 +191,4 @@ class IoService
         $this->output->write(chr(27) . "[2J"); // ED – Erase Display
         $this->output->write(chr(27) . "[1;1H"); // CUP – Set Cursor Position to upper left
     }
-
-
 }

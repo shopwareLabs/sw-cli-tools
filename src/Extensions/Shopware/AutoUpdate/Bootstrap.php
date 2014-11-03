@@ -9,7 +9,6 @@ use KevinGH\Amend\Helper;
 use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides self update capability
@@ -35,7 +34,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         if ($this->checkUpdateOnRun()) {
             $this->runUpdate();
         }
-        
+
         $manifest = $this->getManifestUrl();
 
         $command = new Command('update');
@@ -71,6 +70,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         }
 
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
+
         return strpos($toolPath, 'phar:') !== false ;
     }
 
@@ -84,9 +84,10 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
         try {
             $manager = $amend->getManager($this->getManifestUrl());
-        } catch(\Herrera\Json\Exception\FileException $e) {
+        } catch (\Herrera\Json\Exception\FileException $e) {
             echo "\nCould not download {$this->getManifestUrl()}\n";
             echo "\nCheck your connection\n";
+
             return;
         }
 
@@ -109,6 +110,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     {
         $config = $this->container->get('config');
         $manifest = $config['update']['manifestUrl'];
+
         return $manifest;
     }
 
@@ -118,6 +120,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         if (!isset($config['update']['checkOnStartup'])) {
             return false;
         }
+
         return $config['update']['checkOnStartup'];
     }
 

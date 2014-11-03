@@ -216,6 +216,7 @@ EOF
 
         if (!file_exists($path42) && !file_exists($path43)) {
             $this->ioService->writeln("<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>");
+
             return;
         }
 

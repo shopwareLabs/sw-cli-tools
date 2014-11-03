@@ -86,7 +86,6 @@ class DefaultRepositoryFactory
         }
     }
 
-
     /**
      * @param $name
      * @param $type
