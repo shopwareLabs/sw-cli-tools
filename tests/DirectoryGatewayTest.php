@@ -1,4 +1,7 @@
 <?php
+
+namespace ShopwareCli\Tests;
+
 use ShopwareCli\Services\PathProvider\DirectoryGateway\CliToolGateway;
 use ShopwareCli\Services\PathProvider\DirectoryGateway\Xdg;
 use ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway;

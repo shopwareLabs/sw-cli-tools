@@ -1,4 +1,7 @@
 <?php
+
+namespace ShopwareCli\Tests;
+
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -53,7 +56,9 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
         $questionHelper = new QuestionHelper();
 
         return new \ShopwareCli\Services\IoService(
-            $input, $output, $questionHelper
+            $input,
+            $output,
+            $questionHelper
         );
     }
 }
