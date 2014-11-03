@@ -58,34 +58,57 @@ class Checkout
         $absPath = $path . '/' . $destPath;
 
         if (is_dir($absPath)) {
-            $this->ioService->writeln("Plugin is already installed");
-            $this->utilities->changeDir($absPath);
-
-            $this->gitUtil->run("fetch --progress origin");
-
-            $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
-            if (trim($output) === '') {
-                $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
-                if ($branch) {
-                    $this->gitUtil->run("checkout {$branch}");
-                }
-
-                return;
-            }
-
-            $this->ioService->writeln("Incomming Changes:");
-            $this->ioService->writeln($output);
-
-            $this->gitUtil->run("reset --hard HEAD");
-            $this->gitUtil->run("pull");
-            if ($branch) {
-                $this->gitUtil->run("-C {$absPath} checkout {$branch}");
-            }
-            $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
+            $this->updatePlugin($branch, $absPath, $pluginName);
 
             return;
         }
 
+        $this->installPlugin($branch, $cloneUrl, $absPath, $pluginName);
+    }
+
+    /**
+     * @param string $branch
+     * @param string $absPath
+     * @param string $pluginName
+     */
+    private function updatePlugin($branch, $absPath, $pluginName)
+    {
+        $this->ioService->writeln("Plugin is already installed");
+        $this->utilities->changeDir($absPath);
+
+        $this->gitUtil->run("fetch --progress origin");
+
+        $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
+        if (trim($output) === '') {
+            $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
+            if ($branch) {
+                $this->gitUtil->run("checkout {$branch}");
+            }
+
+            return;
+        }
+
+        $this->ioService->writeln("Incomming Changes:");
+        $this->ioService->writeln($output);
+
+        $this->gitUtil->run("reset --hard HEAD");
+        $this->gitUtil->run("pull");
+        if ($branch) {
+            $this->gitUtil->run("-C {$absPath} checkout {$branch}");
+        }
+        $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
+
+        return;
+    }
+
+    /**
+     * @param string $branch
+     * @param string $cloneUrl
+     * @param string $absPath
+     * @param string $pluginName
+     */
+    private function installPlugin($branch, $cloneUrl, $absPath, $pluginName)
+    {
         $this->gitUtil->run("clone  --progress $cloneUrl $absPath");
         if ($branch) {
             $this->gitUtil->run("-C {$absPath} checkout {$branch}");
