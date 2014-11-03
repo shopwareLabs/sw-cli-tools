@@ -59,8 +59,11 @@ class DependencyInjection
         $container->register('rest_service_factory', 'ShopwareCli\Services\Rest\RestServiceFactory')
             ->addArgument(new Reference('service_container'));
 
-        $container->register('config', 'ShopwareCli\Config')
+        $container->register('config_file_collector', 'ShopwareCli\ConfigFileCollector')
             ->addArgument(new Reference('path_provider'));
+
+        $container->register('config', 'ShopwareCli\Config')
+            ->addArgument(new Reference('config_file_collector'));
 
         $container->register('extension_manager', 'ShopwareCli\Application\ExtensionManager')
             ->addArgument(new Reference('autoloader'));

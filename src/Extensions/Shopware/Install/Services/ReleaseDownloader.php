@@ -75,6 +75,8 @@ class ReleaseDownloader
      */
     private function downloadFromUpdateApi()
     {
+        file_get_contents(self::DOWNLOAD_UPDATE_API);
+
         $content = json_decode(trim(file_get_contents(self::DOWNLOAD_UPDATE_API)), true);
         if (empty($content)) {
             throw new \RuntimeException("Could not get latest install package");
