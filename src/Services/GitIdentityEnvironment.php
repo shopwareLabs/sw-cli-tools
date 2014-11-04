@@ -73,6 +73,10 @@ EOF;
         return null;
     }
 
+    /**
+     * @param string $dir
+     * @param string $sshKeyFile
+     */
     private function writeSshKey($dir, $sshKeyFile)
     {
         if (!is_dir($dir)) {
@@ -108,7 +112,7 @@ EOF;
     /**
      * Create git wrapper file
      *
-     * @param $dir
+     * @param  string $dir
      * @return bool
      */
     private function writeGitSshWrapper($dir)

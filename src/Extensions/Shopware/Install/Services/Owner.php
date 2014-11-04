@@ -15,7 +15,7 @@ class Owner
      *
      * @param $path
      * @param $user
-     * @param $recursive
+     * @param boolean $recursive
      */
     public function setUser($path, $user, $recursive)
     {
@@ -35,7 +35,7 @@ class Owner
      *
      * @param $path
      * @param $group
-     * @param $recursive
+     * @param boolean $recursive
      */
     public function setGroup($path, $group, $recursive)
     {

@@ -52,7 +52,7 @@ class XdgGateway implements DirectoryGatewayInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRuntimeDir()
     {

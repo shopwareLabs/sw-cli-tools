@@ -121,7 +121,7 @@ class PluginInputVerificator
      *
      * Will return false if not or the numbers from the range as an array
      *
-     * @param $userInput
+     * @param  string     $userInput
      * @return array|bool
      */
     private function getPluginRange($userInput)

@@ -54,7 +54,6 @@ class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($testDir));
 
         $SUT = new ConfigFileCollector($pathProvider);
-
         $result = $SUT->collectConfigFiles();
 
         $expectedResults = array(

@@ -76,7 +76,7 @@ class PluginProvider
     /**
      * Query all plugin repositories for plugins named like $name
      *
-     * @param $name     string  Name to search for
+     * @param  string   $name string  Name to search for
      * @param $exact    boolean Whether to search for exact match or not
      * @return Plugin[]
      */

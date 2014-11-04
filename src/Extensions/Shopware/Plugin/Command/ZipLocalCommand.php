@@ -45,6 +45,9 @@ class ZipLocalCommand extends BaseCommand
         $this->doZip($directory);
     }
 
+    /**
+     * @param string $dir
+     */
     public function validatePluginDir($dir)
     {
         if (!file_exists($dir . '/Bootstrap.php')) {
@@ -52,6 +55,9 @@ class ZipLocalCommand extends BaseCommand
         }
     }
 
+    /**
+     * @param string $pluginDirectory
+     */
     public function doZip($pluginDirectory)
     {
         /** @var PluginBootstrap $info */

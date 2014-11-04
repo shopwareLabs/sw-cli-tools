@@ -30,7 +30,7 @@ class PostInstall
     /**
      * Set permissions for the shopware directory
      *
-     * @param $directory
+     * @param string $directory
      */
     public function fixPermissions($directory)
     {
@@ -70,7 +70,7 @@ class PostInstall
     /**
      * Run user scripts
      *
-     * @param $path
+     * @param string $path
      */
     public function runCustomScripts($path)
     {

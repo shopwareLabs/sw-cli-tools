@@ -131,7 +131,7 @@ class Vcs
      * Checkout all user defined repositories (except: core)
      *
      * @param $branch
-     * @param $installDir
+     * @param string $installDir
      * @param $httpUser
      */
     private function checkoutRepos($branch, $installDir, $httpUser)
@@ -151,7 +151,7 @@ class Vcs
     /**
      * Create VCS mapping for phpstorm
      *
-     * @param $installDir
+     * @param string $installDir
      */
     private function generateVcsMapping($installDir)
     {
@@ -163,7 +163,7 @@ class Vcs
     /**
      * Create config.php with the configured database credentials
      *
-     * @param $installDir
+     * @param string $installDir
      * @param $database
      */
     private function writeShopwareConfig($installDir, $database)
@@ -180,7 +180,7 @@ class Vcs
     /**
      * Write the build properties file
      *
-     * @param $installDir
+     * @param string $installDir
      * @param $basePath
      * @param $database
      */
@@ -200,7 +200,7 @@ class Vcs
     /**
      * Run the database setup tool
      *
-     * @param $installDir
+     * @param string $installDir
      * @param $database
      */
     private function setupDatabase($installDir, $database)

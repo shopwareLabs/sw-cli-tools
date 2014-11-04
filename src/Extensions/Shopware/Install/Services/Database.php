@@ -125,7 +125,7 @@ EOF
     /**
      * Salt password for SW backend user
      *
-     * @param $password
+     * @param  string $password
      * @return string
      */
     private function saltPassword($password)
@@ -181,7 +181,7 @@ EOF
     }
 
     /**
-     * @param $installDir
+     * @param  string            $installDir
      * @throws \RuntimeException
      */
     private function importBaseDelta($installDir)
@@ -204,7 +204,7 @@ EOF
     }
 
     /**
-     * @param $installDir
+     * @param  string            $installDir
      * @throws \RuntimeException
      */
     private function importSnippetDeltas($installDir)

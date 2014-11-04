@@ -7,7 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 interface ContainerAwareExtension
 {
     /**
-     * @param ContainerBuilder $container
+     * @param  ContainerBuilder $container
+     * @return void
      */
     public function setContainer(ContainerBuilder $container);
 }

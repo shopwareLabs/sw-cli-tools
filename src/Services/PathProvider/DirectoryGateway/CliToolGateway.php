@@ -10,7 +10,7 @@ class CliToolGateway implements DirectoryGatewayInterface
     private $basePath;
 
     /**
-     * @param $basePath
+     * @param string $basePath
      */
     public function __construct($basePath)
     {

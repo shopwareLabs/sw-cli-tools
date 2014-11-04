@@ -52,6 +52,9 @@ class Zip
         return $outputFile;
     }
 
+    /**
+     * @param string $directory
+     */
     public function zipDir($directory, $outputFile)
     {
         $this->utilities->executeCommand("zip -r $outputFile $directory -x *.git*");

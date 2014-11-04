@@ -32,6 +32,9 @@ class Demodata
         $this->ioService = $ioService;
     }
 
+    /**
+     * @param string $installDir
+     */
     public function setup($installDir)
     {
         $assetDir = $this->pathProvider->getAssetsPath();

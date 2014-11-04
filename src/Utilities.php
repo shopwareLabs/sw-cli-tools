@@ -111,7 +111,7 @@ class Utilities
     /**
      * Changes a directory
      *
-     * @param $path
+     * @param  string            $path
      * @throws \RuntimeException
      */
     public function changeDir($path)

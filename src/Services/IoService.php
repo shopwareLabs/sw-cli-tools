@@ -97,7 +97,7 @@ class IoService
     /**
      * Write a message to STDOUT without trailing newline
      *
-     * @param $message
+     * @param string $message
      */
     public function write($message)
     {

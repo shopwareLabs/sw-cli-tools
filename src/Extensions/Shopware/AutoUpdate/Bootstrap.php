@@ -3,7 +3,6 @@
 namespace Shopware\AutoUpdate;
 
 use ShopwareCli\Application\ConsoleAwareExtension;
-
 use KevinGH\Amend\Command;
 use KevinGH\Amend\Helper;
 use ShopwareCli\Application\ContainerAwareExtension;
@@ -104,7 +103,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     /**
      * Get manifest url
      *
-     * @return mixed
+     * @return string
      */
     private function getManifestUrl()
     {

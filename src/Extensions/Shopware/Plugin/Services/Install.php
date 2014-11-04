@@ -58,7 +58,7 @@ class Install
 
     /**
      * @param Plugin $plugin
-     * @param        $shopwarePath
+     * @param string $shopwarePath
      */
     public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {

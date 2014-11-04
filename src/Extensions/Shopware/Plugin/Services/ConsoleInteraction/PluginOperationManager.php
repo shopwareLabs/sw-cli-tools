@@ -116,7 +116,7 @@ class PluginOperationManager
      * Prepares a response and returns an array of plugin objects
      *
      * @param $response
-     * @param $plugins
+     * @param  Plugin[] $plugins
      * @return array
      */
     private function getPluginsFromResponse($response, $plugins)
