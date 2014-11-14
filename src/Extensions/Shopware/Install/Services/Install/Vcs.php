@@ -82,6 +82,8 @@ class Vcs
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
         $this->demoData->setup($installDir);
+        $this->demoData->runLicenseImport($installDir);
+
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($installDir);

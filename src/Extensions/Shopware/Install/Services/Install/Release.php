@@ -109,6 +109,8 @@ class Release
         $this->postInstall->importCustomDeltas($request->databaseName);
         $this->postInstall->runCustomScripts($request->installDir);
 
+        $this->demodata->runLicenseImport($request->installDir);
+
         $this->ioService->writeln("<info>Install completed</info>");
     }
 

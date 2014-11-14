@@ -17,6 +17,7 @@ class Demodata
     /** @var  Utilities */
     private $utilities;
 
+    /** @var \ShopwareCli\Services\PathProvider\PathProvider  */
     private $pathProvider;
 
     private $demoUrl = 'http://releases.s3.shopware.com/demo_4.2.0.zip';
@@ -78,13 +79,13 @@ class Demodata
     {
         $this->ioService->writeln("<info>Running license import</info>");
 
-        $this->utilities->executeCommand("{$installDir}/bin/console/ sw:generate:attributes");
-        $this->utilities->executeCommand("{$installDir}/bin/console/ sw:plugin:refresh");
-        $this->utilities->executeCommand("{$installDir}/bin/console/ sw:plugin:install SwagLicense --activate");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:generate:attributes");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:refresh");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:install SwagLicense --activate");
 
-        $licenseFile = $this->pathProvider->getHomeDir() . '/licenses.txt';
+        $licenseFile = @getenv('HOME') . '/licenses.txt';
         if (file_exists($licenseFile)) {
-            $this->utilities->executeCommand("{$installDir}/bin/console/ swaglicense:import {$licenseFile}");
+            $this->utilities->executeCommand("{$installDir}/bin/console swaglicense:import {$licenseFile}");
         }
     }
 }
