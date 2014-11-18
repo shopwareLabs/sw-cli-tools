@@ -34,8 +34,8 @@ class ConfigFileCollector
         }
 
         $extensionPath = $this->pathProvider->getExtensionPath();
-        $files = $this->interateVendors($extensionPath);
-
+        $files = array_merge($files, $this->interateVendors($extensionPath));
+        
         // Load config.yaml.dist as latest - this way the fallback config options are defined
         $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
 
