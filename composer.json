@@ -1,5 +1,5 @@
 {
-    "name": "shopware-ag/cli-tools",
+    "name": "shopwarelabs/sw-cli-tools",
     "description": "A CLI toolset for shopware",
     "type": "project",
     "license": "MIT",
