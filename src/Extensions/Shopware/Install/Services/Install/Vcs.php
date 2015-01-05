@@ -89,6 +89,7 @@ class Vcs
         $this->postInstall->fixPermissions($installDir);
         $this->postInstall->importCustomDeltas($database);
         $this->postInstall->runCustomScripts($installDir);
+        $this->postInstall->fixShopHost($database);
 
         $this->ioService->writeln("<info>Install completed</info>");
     }

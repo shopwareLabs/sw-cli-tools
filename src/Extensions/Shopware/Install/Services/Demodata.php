@@ -79,13 +79,13 @@ class Demodata
     {
         $this->ioService->writeln("<info>Running license import</info>");
 
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:generate:attributes");
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:refresh");
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:install SwagLicense --activate");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:generate:attributes", true);
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:refresh", true);
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:install SwagLicense --activate", true);
 
         $licenseFile = @getenv('HOME') . '/licenses.txt';
         if (file_exists($licenseFile)) {
-            $this->utilities->executeCommand("{$installDir}/bin/console swaglicense:import {$licenseFile}");
+            $this->utilities->executeCommand("{$installDir}/bin/console swaglicense:import {$licenseFile}", true);
         }
     }
 }

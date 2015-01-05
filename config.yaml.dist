@@ -109,7 +109,6 @@ DatabaseConfig:
 # - ./bin/console sw:plugin:refresh
 # - ./bin/console sw:plugin:install --activate AdvancedMenu
 
-
 ## Here you can specify a list of repositories to checkout.
 # You can specify the destination path with the "destination" field
 #

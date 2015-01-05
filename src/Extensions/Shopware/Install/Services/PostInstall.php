@@ -27,6 +27,14 @@ class PostInstall
         $this->config = $config;
     }
 
+    public function fixShopHost($database)
+    {
+        $connection = $this->getConnection();
+        $connection->query("USE `{$database}`");
+
+        $connection->exec('UPDATE s_core_shops SET host = NULL WHERE host = ""');
+    }
+
     /**
      * Set permissions for the shopware directory
      *
