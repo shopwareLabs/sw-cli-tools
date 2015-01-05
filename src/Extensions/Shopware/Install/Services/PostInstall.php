@@ -48,6 +48,12 @@ class PostInstall
         $command = sprintf('chmod 0777 -R "%s"', $directory . '/cache');
         $this->processExecutor->execute($command, null, true);
 
+        $command = sprintf('chmod +x  "%s"', $directory . '/bin/console');
+        $this->processExecutor->execute($command, null, true);
+
+        $command = sprintf('chmod +x  "%s"', $directory . '/cache/clear_cache.sh');
+        $this->processExecutor->execute($command, null, true);
+
         $this->setUser($directory);
         $this->setGroup($directory);
     }
