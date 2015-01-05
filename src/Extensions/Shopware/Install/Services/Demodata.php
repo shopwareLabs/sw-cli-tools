@@ -17,7 +17,7 @@ class Demodata
     /** @var  Utilities */
     private $utilities;
 
-    /** @var \ShopwareCli\Services\PathProvider\PathProvider  */
+    /** @var \ShopwareCli\Services\PathProvider\PathProvider */
     private $pathProvider;
 
     private $demoUrl = 'http://releases.s3.shopware.com/demo_4.2.0.zip';
@@ -64,7 +64,11 @@ class Demodata
     {
 
         if (file_exists("{$installDir}/bin/console")) {
-            $this->runCliCommands($installDir);
+            try {
+                $this->runCliCommands($installDir);
+            } catch(\RuntimeException $e) {
+                $this->ioService->writeln("<comment>Skipping license import: {$e->getMessage()}</comment>");
+            }
         }
 
         $this->ioService->writeln("<info>Clearing the cache</info>");
@@ -75,17 +79,17 @@ class Demodata
     /**
      * @param $installDir
      */
-    public function runCliCommands($installDir)
+    private function runCliCommands($installDir)
     {
         $this->ioService->writeln("<info>Running license import</info>");
 
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:generate:attributes", true);
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:refresh", true);
-        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:install SwagLicense --activate", true);
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:generate:attributes");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:refresh");
+        $this->utilities->executeCommand("{$installDir}/bin/console sw:plugin:install SwagLicense --activate");
 
         $licenseFile = @getenv('HOME') . '/licenses.txt';
         if (file_exists($licenseFile)) {
-            $this->utilities->executeCommand("{$installDir}/bin/console swaglicense:import {$licenseFile}", true);
+            $this->utilities->executeCommand("{$installDir}/bin/console swaglicense:import {$licenseFile}");
         }
     }
 }
