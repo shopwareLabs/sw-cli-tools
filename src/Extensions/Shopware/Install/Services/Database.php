@@ -50,7 +50,7 @@ class Database
     {
         $this->ioService->writeln("<info>Creating database $name</info>");
 
-        $this->createConnection($host, $user, $password)->query("CREATE DATABASE `{$name}`;");
+        $this->createConnection($host, $user, $password)->query("CREATE DATABASE IF NOT EXISTS `{$name}`;");
         $this->getConnection()->query("use `{$name}`;");
     }
 
