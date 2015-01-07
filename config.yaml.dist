@@ -76,7 +76,7 @@ general:
 
 update:
   # Manifest url for internal updates
-  manifestUrl: https://github.com/ShopwareAG/sw-cli-tools/blob/master/manifest.json
+  manifestUrl: https://github.com/shopwareLabs/sw-cli-tools/blob/master/manifest.json
   checkOnStartup: false
 
 ## the configured host will always be used
@@ -118,8 +118,8 @@ DatabaseConfig:
 ShopwareInstallRepos:
   core:
     destination: /
-    ssh: git@github.com:ShopwareAG/shopware-4.git
-    http: https://github.com/ShopwareAG/shopware-4.git
+    ssh: git@github.com:shopware/shopware.git
+    http: https://github.com/shopware/shopware.git
 
   ##
   # Here you could add own plugins and other stuff you want to include in any
