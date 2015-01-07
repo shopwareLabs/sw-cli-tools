@@ -102,29 +102,17 @@ EOF
     public function runBuildScripts($installDir)
     {
         $buildXml = $installDir . '/build/build.xml';
-
-        if (file_exists($installDir . '/composer.json')) {
-            $this->ioService->writeln("<info>Running build-composer-install</info>");
-            $this->utilities->executeCommand("ant -f {$buildXml} build-composer-install");
-        }
-
-        if (file_exists($buildXml)) {
-            $this->ioService->writeln("<info>Running build-database</info>");
-            $this->utilities->executeCommand("ant -f {$buildXml} build-database");
-
-            $this->ioService->writeln("<info>Running build-snippets-deploy</info>");
-            if (file_exists($installDir . '/engine/Shopware/Commands/SnippetsToSqlCommand.php')) {
-                $this->utilities->executeCommand("ant -f {$buildXml} build-snippets-deploy");
-            }
-
-            if (file_exists($installDir . '/engine/Shopware/Commands/ThemeInitializeCommand.php')) {
-                $this->ioService->writeln("<info>Initializing themes</info>");
-                $this->utilities->executeCommand("ant -f {$buildXml} build-theme-initialize");
-            }
-        } else {
+        if (!file_exists($buildXml)) {
             $this->ioService->writeln("<error>Could not find {$buildXml}</error>");
-            $this->ioService->writeln("<error>If you checked out an SW version < 4.1.0, you can just import {$installDir}/_sql/demo/VERSION.sql</error>");
+            $this->ioService->writeln(
+                "<error>If you checked out an SW version < 4.1.0, you can just import {$installDir}/_sql/demo/VERSION.sql</error>"
+            );
+
+            return;
         }
+
+        $this->ioService->writeln("<info>Running build-unit</info>");
+        $this->utilities->executeCommand("ant -f {$buildXml} build-unit");
     }
 
     /**

@@ -78,12 +78,10 @@ class Vcs
     {
         $this->checkoutRepos($branch, $installDir, $httpUser);
         $this->generateVcsMapping($installDir);
-        $this->writeShopwareConfig($installDir, $database);
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
         $this->demoData->setup($installDir);
         $this->demoData->runLicenseImport($installDir);
-
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($installDir);
@@ -161,23 +159,6 @@ class Vcs
         $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
             return $repo['destination'];
         }, $this->config['ShopwareInstallRepos']));
-    }
-
-    /**
-     * Create config.php with the configured database credentials
-     *
-     * @param string $installDir
-     * @param $database
-     */
-    private function writeShopwareConfig($installDir, $database)
-    {
-        $this->configWriter->writeConfigPhp(
-            $installDir,
-            $this->config['DatabaseConfig']['user'],
-            $this->config['DatabaseConfig']['pass'],
-            $database,
-            $this->config['DatabaseConfig']['host']
-        );
     }
 
     /**
