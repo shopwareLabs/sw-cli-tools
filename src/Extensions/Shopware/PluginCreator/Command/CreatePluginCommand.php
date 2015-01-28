@@ -2,6 +2,7 @@
 namespace Shopware\PluginCreator\Command;
 
 use Shopware\PluginCreator\Services\Generator;
+use Shopware\PluginCreator\Services\IoAdapter\HardDrive;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Struct\Configuration;
@@ -127,7 +128,7 @@ EOF
         $configuration = $this->getConfigurationObject($input);
 
         $generator = new Generator(
-            $configuration, new NameGenerator($configuration), new Template()
+            new HardDrive(), $configuration, new NameGenerator($configuration), new Template()
         );
 
         $generator->run();

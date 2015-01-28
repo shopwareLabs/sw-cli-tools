@@ -2,13 +2,14 @@
 
 namespace Shopware\PluginCreator\Services;
 
+use Shopware\PluginCreator\Services\IoAdapter\IoAdapter;
 use Shopware\PluginCreator\Struct\Configuration;
 
 class Generator
 {
     const TEMPLATE_DIRECTORY = 'template';
 
-    protected $outputDirectory;
+    protected $outputDirectory = null;
     /**
      * @var Configuration
      */
@@ -21,17 +22,23 @@ class Generator
      * @var NameGenerator
      */
     private $nameGenerator;
+    /**
+     * @var IoAdapter\IoAdapter
+     */
+    private $ioAdapter;
 
     /**
+     * @param IoAdapter     $ioAdapter
      * @param Configuration $configuration
      * @param NameGenerator $nameGenerator
      * @param Template      $template
      */
-    public function __construct(Configuration $configuration, NameGenerator $nameGenerator, Template $template)
+    public function __construct(IoAdapter $ioAdapter, Configuration $configuration, NameGenerator $nameGenerator, Template $template)
     {
         $this->configuration = $configuration;
         $this->template = $template;
         $this->nameGenerator = $nameGenerator;
+        $this->ioAdapter = $ioAdapter;
     }
 
     /**
@@ -41,12 +48,17 @@ class Generator
      */
     public function getOutputDirectory()
     {
-        if (!$this->outputDirectory) {
+        if (is_null($this->outputDirectory)) {
             $basePath = getcwd();
             $this->outputDirectory = $basePath . '/' . $this->configuration->name . '/';
         }
 
         return $this->outputDirectory;
+    }
+
+    public function setOutputDirectory($path)
+    {
+        $this->outputDirectory = $path;
     }
 
     /**
@@ -55,7 +67,13 @@ class Generator
     public function run()
     {
         $this->configureTemplate();
-        $this->createDirectory($this->getOutputDirectory(), true);
+
+        $path = $this->getOutputDirectory();
+        if ($this->ioAdapter->exists($path)) {
+            throw new \RuntimeException("Could not create »{$path}«. Directory already exists");
+        }
+        $this->ioAdapter->createDirectory($path);
+
         $this->processTemplateFiles();
     }
 
@@ -69,9 +87,9 @@ class Generator
         foreach ($files as $from => $to) {
             $fileContent = $this->template->fetch($from);
 
-            $this->createDirectory(dirname($this->getOutputDirectory() . $to));
+            $this->ioAdapter->createDirectory(dirname($this->getOutputDirectory() . $to));
 
-            file_put_contents($this->getOutputDirectory() . $to, $fileContent);
+            $this->ioAdapter->createFile($this->getOutputDirectory() . $to, $fileContent);
         }
     }
 

@@ -16,13 +16,19 @@
         "kherge/amend": "3.*"
     },
     "require-dev": {
-        "ext-phar":  "*",
+        "ext-phar": "*",
         "phpunit/phpunit": "@stable",
         "squizlabs/php_codesniffer": "~2"
     },
     "autoload": {
         "psr-4": {
             "ShopwareCli\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ShopwareCli\\": "src/",
+            "Shopware\\": "src/Extensions/Shopware"
         }
     },
     "bin": ["bin/sw"],
