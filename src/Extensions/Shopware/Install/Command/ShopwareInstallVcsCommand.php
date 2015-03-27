@@ -47,6 +47,12 @@ class ShopwareInstallVcsCommand extends BaseCommand
                 InputOption::VALUE_OPTIONAL,
                 'GIT repos username. If given, checkout will be done using HTTP'
             )
+            ->addOption(
+                'noDemoData',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, the demo data will not be installed'
+            )
             ->setHelp(
 <<<EOF
 The <info>%command.name%</info> sets up shopware
@@ -68,7 +74,8 @@ EOF
             trim($input->getOption('installDir'), '/'),
             $input->getOption('basePath'),
             $input->getOption('databaseName'),
-            $input->getOption('user')
+            $input->getOption('user'),
+            $input->getOption('noDemoData')
         );
     }
 
