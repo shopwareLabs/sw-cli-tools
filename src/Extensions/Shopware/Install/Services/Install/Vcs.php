@@ -72,16 +72,20 @@ class Vcs
      * @param string $installDir
      * @param $basePath
      * @param $database
-     * @param null   $httpUser
+     * @param null $httpUser
+     * @param bool $noDemoData
      */
-    public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null)
+    public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null, $noDemoData = false)
     {
         $this->checkoutRepos($branch, $installDir, $httpUser);
         $this->generateVcsMapping($installDir);
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
-        $this->demoData->setup($installDir);
         $this->demoData->runLicenseImport($installDir);
+
+        if (!$noDemoData) {
+            $this->demoData->setup($installDir);
+        }
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($installDir);
