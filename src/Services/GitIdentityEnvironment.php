@@ -48,6 +48,15 @@ EOF;
      */
     private function getCustomKey()
     {
+        if (isset($this->config['sshKey'])) {
+            $keyPath = $this->config['sshKey'];
+            if (!file_exists($keyPath)) {
+                throw new \RuntimeException("Could not find ssh key $keyPath");
+            }
+
+            return $keyPath;
+        }
+
         $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
 
         if (!file_exists($packageKey)) {
@@ -59,15 +68,6 @@ EOF;
 
         if (file_exists($sshKeyFile) || $this->writeSshKey($dir, $packageKey)) {
             return $sshKeyFile;
-        }
-
-        if (isset($this->config['sshKey'])) {
-            $keyPath = $this->config['sshKey'];
-            if (!file_exists($keyPath)) {
-                throw new \RuntimeException("Could not find ssh key $keyPath");
-            }
-
-            return $keyPath;
         }
 
         return null;
