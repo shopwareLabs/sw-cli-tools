@@ -66,12 +66,13 @@ class Release
 
     /**
      * @param ReleaseDownloader $releaseDownloader
-     * @param Config            $config
-     * @param VcsGenerator      $vcsGenerator
-     * @param ConfigWriter      $configWriter
-     * @param Database          $database
-     * @param Demodata          $demodata
-     * @param IoService         $ioService
+     * @param Config $config
+     * @param VcsGenerator $vcsGenerator
+     * @param ConfigWriter $configWriter
+     * @param Database $database
+     * @param Demodata $demodata
+     * @param IoService $ioService
+     * @param PostInstall $postInstall
      */
     public function __construct(
         ReleaseDownloader $releaseDownloader,
@@ -103,9 +104,11 @@ class Release
         $this->generateVcsMapping($request->installDir);
         $this->writeShopwareConfig($request->installDir, $request->databaseName);
         $this->setupDatabase($request);
+        $this->lockInstaller($request->installDir);
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
         $this->postInstall->fixPermissions($request->installDir);
+        $this->postInstall->setupTheme($request->installDir);
         $this->postInstall->importCustomDeltas($request->databaseName);
         $this->postInstall->runCustomScripts($request->installDir);
 
@@ -164,5 +167,17 @@ class Release
             $request->language,
             $request->password
         );
+    }
+
+    /**
+     * Create install.lock in SW5
+     *
+     * @param string $installDir
+     */
+    private function lockInstaller($installDir)
+    {
+        if (file_exists($installDir . '/recovery/install/data')){
+            touch($installDir . '/recovery/install/data/install.lock');
+        }
     }
 }

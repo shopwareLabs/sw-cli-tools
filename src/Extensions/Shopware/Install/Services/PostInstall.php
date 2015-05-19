@@ -48,6 +48,11 @@ class PostInstall
         $command = sprintf('chmod 0777 -R "%s"', $directory . '/cache');
         $this->processExecutor->execute($command, null, true);
 
+        if (file_exists($directory . '/web')) {
+            $command = sprintf('chmod 0777 -R "%s"', $directory.'/web');
+            $this->processExecutor->execute($command, null, true);
+        }
+
         $command = sprintf('chmod +x  "%s"', $directory . '/bin/console');
         $this->processExecutor->execute($command, null, true);
 
@@ -56,6 +61,24 @@ class PostInstall
 
         $this->setUser($directory);
         $this->setGroup($directory);
+    }
+
+    /**
+     * Set up default theme settings
+     *
+     * @param $directory
+     */
+    public function setupTheme($directory)
+    {
+        if (!file_exists($directory . '/themes')) {
+            return;
+        }
+
+        $command = sprintf('php bin/console sw:generate:attributes');
+        $this->processExecutor->execute($command, $directory, true);
+
+        $command = sprintf('php bin/console sw:theme:initialize');
+        $this->processExecutor->execute($command, $directory, true);
     }
 
     /**

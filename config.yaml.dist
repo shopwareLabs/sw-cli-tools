@@ -104,7 +104,7 @@ DatabaseConfig:
 #  - /home/USER/configure_shop.sql
 
 ## A list of shell commands to execute after shopware was set up
-## CWD will be the shopware instal dir
+## CWD will be the shopware install dir
 # CustomScripts:
 # - ./bin/console sw:plugin:refresh
 # - ./bin/console sw:plugin:install --activate AdvancedMenu

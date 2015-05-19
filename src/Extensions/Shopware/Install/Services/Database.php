@@ -145,6 +145,10 @@ EOF
         $fetchLanguageId->execute(array($language));
         $fetchLanguageId = $fetchLanguageId->fetchColumn();
 
+        $authTableVersion = $this->getConnection()->prepare("SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411");
+        $authTableVersion->execute();
+        $authTableVersion = $authTableVersion->fetchColumn();
+
         if (!$fetchLanguageId) {
             throw new \RuntimeException("Could not resolve language ".$language);
         }
@@ -153,14 +157,23 @@ EOF
         $this->getConnection()->query("DELETE FROM s_core_auth");
 
         // Insert new admin
-        $prepareStatement = $this->getConnection()->prepare(
-<<<'EOF'
+        if ($authTableVersion) {
+            $query = <<<'EOF'
+INSERT INTO s_core_auth (roleID,username,password,localeID,`name`,email,active,lockeduntil)
+VALUES (
+    1,?,?,?,?,?,1,'0000-00-00 00:00:00'
+)
+EOF;
+        } else {
+            $query = <<<'EOF'
 INSERT INTO s_core_auth (roleID,username,password,localeID,`name`,email,active,admin,salted,lockeduntil)
 VALUES (
     1,?,?,?,?,?,1,1,1,'0000-00-00 00:00:00'
 )
-EOF
-        );
+EOF;
+        }
+
+        $prepareStatement = $this->getConnection()->prepare($query);
         $prepareStatement->execute(array(
             $user,
             $this->saltPassword($password),
@@ -170,7 +183,6 @@ EOF
         ));
 
         return true;
-
     }
 
     /**
@@ -181,14 +193,16 @@ EOF
     {
         $this->ioService->writeln("<info>Importing main delta</info>");
 
-        $path42 = "{$installDir}/install/assets/sql/sw4_clean.sql";
-        $path43 = "{$installDir}/recovery/./install/data/sql/sw4_clean.sql";
+        $installDataDir = $this->getInstallDataFolder($installDir);
 
-        if (!file_exists($path42) && !file_exists($path43)) {
+        $path42 = "{$installDataDir}/sw4_clean.sql";
+        $pathLatest = "{$installDataDir}/install.sql";
+
+        if (!$installDataDir || (!file_exists($path42) && !file_exists($pathLatest))) {
             throw new \RuntimeException("Could not find setup delta");
         }
 
-        $path = file_exists($path42) ? $path42 : $path43;
+        $path = file_exists($path42) ? $path42 : $pathLatest;
 
         $deltas = explode(";\n", file_get_contents($path));
         foreach ($deltas as $delta) {
@@ -204,20 +218,30 @@ EOF
     {
         $this->ioService->writeln("<info>Importing snippet delta</info>");
 
-        $path42 = "{$installDir}/install/assets/sql/snippets.sql";
-        $path43 = "{$installDir}/recovery/./install/data/sql/snippets.sql";
+        $installDataDir = $this->getInstallDataFolder($installDir);
+        $snippetsFilePath = "{$installDataDir}/snippets.sql";
 
-        if (!file_exists($path42) && !file_exists($path43)) {
+        if (!file_exists($installDataDir) || !file_exists($snippetsFilePath)) {
             $this->ioService->writeln("<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>");
 
             return;
         }
 
-        $path = file_exists($path42) ? $path42 : $path43;
-
-        $deltas = explode(";\n", file_get_contents($path));
+        $deltas = explode(";\n", file_get_contents($snippetsFilePath));
         foreach ($deltas as $delta) {
             $this->getConnection()->exec($delta);
         }
+    }
+
+    private function getInstallDataFolder($installDir)
+    {
+        $path42 = "{$installDir}/install/assets/sql";
+        $pathLatest = "{$installDir}/recovery/install/data/sql";
+
+        if (!file_exists($path42) && !file_exists($pathLatest)) {
+            return;
+        }
+
+        return file_exists($path42) ? $path42 : $pathLatest;
     }
 }
