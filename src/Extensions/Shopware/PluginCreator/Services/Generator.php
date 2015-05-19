@@ -140,7 +140,7 @@ class Generator
             "LICENSE" => "LICENSE",
             "plugin.tpl" => "plugin.json",
             "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
-            "phpunit.xml.dist" => "phpunit.xml.dist",
+            "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
             "tests/Test.tpl" => "tests/Test.php"
         ));
 
