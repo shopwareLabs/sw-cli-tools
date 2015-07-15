@@ -94,7 +94,11 @@ class Checkout
         $this->gitUtil->run("reset --hard HEAD");
         $this->gitUtil->run("pull");
         if ($branch) {
-            $this->gitUtil->run("-C {$absPath} checkout {$branch}");
+            // the CWD change is a fix for older versions of GIT which do not support the -C flag
+            $cwd = getcwd();
+            $this->utilities->changeDir($absPath);
+            $this->gitUtil->run("checkout {$branch}");
+            $this->utilities->changeDir($cwd);
         }
         $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
 
@@ -111,7 +115,11 @@ class Checkout
     {
         $this->gitUtil->run("clone  --progress $cloneUrl $absPath");
         if ($branch) {
-            $this->gitUtil->run("-C {$absPath} checkout {$branch}");
+            // the CWD change is a fix for older versions of GIT which do not support the -C flag
+            $cwd = getcwd();
+            $this->utilities->changeDir($absPath);
+            $this->gitUtil->run("checkout {$branch}");
+            $this->utilities->changeDir($cwd);
         }
         $branch = $branch ?: 'master';
         $this->ioService->writeln("Successfully checked out '$branch' for '$pluginName'\n");
