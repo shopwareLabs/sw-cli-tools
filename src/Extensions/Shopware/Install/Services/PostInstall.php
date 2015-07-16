@@ -4,6 +4,7 @@ namespace Shopware\Install\Services;
 
 use ShopwareCli\Config;
 use ShopwareCli\Services\ProcessExecutor;
+use ShopwareCli\Services\ShopwareInfo;
 
 class PostInstall
 {
@@ -19,12 +20,17 @@ class PostInstall
      * @var \ShopwareCli\Config
      */
     private $config;
+    /**
+     * @var ShopwareInfo
+     */
+    private $shopwareInfo;
 
-    public function __construct(ProcessExecutor $processExecutor, Owner $owner, Config $config)
+    public function __construct(ProcessExecutor $processExecutor, Owner $owner, Config $config, ShopwareInfo $shopwareInfo)
     {
         $this->processExecutor = $processExecutor;
         $this->owner = $owner;
         $this->config = $config;
+        $this->shopwareInfo = $shopwareInfo;
     }
 
     public function fixShopHost($database)
@@ -42,10 +48,10 @@ class PostInstall
      */
     public function fixPermissions($directory)
     {
-        $command = sprintf('chmod 0777 -R "%s"', $directory . '/logs');
+        $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getLogDir($directory));
         $this->processExecutor->execute($command, null, true);
 
-        $command = sprintf('chmod 0777 -R "%s"', $directory . '/cache');
+        $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getCacheDir($directory));
         $this->processExecutor->execute($command, null, true);
 
         if (file_exists($directory . '/web')) {
@@ -56,7 +62,7 @@ class PostInstall
         $command = sprintf('chmod +x  "%s"', $directory . '/bin/console');
         $this->processExecutor->execute($command, null, true);
 
-        $command = sprintf('chmod +x  "%s"', $directory . '/cache/clear_cache.sh');
+        $command = sprintf('chmod +x  "%s"', $this->shopwareInfo->getCacheDir($directory) . '/clear_cache.sh');
         $this->processExecutor->execute($command, null, true);
 
         $this->setUser($directory);

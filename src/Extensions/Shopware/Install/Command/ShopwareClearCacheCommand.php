@@ -2,6 +2,7 @@
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Services\ShopwareInfo;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,9 +43,12 @@ EOF
             $path = './' . $path;
         }
 
+        /** @var $shopwareInfo ShopwareInfo */
+        $shopwareInfo = $this->container->get('shopware_info');
+
         /** @var Utilities $utilities */
         $utilities = $this->container->get('utilities');
-        echo $utilities->executeCommand("{$path}/cache/clear_cache.sh");
+        echo $utilities->executeCommand($shopwareInfo->getCacheDir($path) . "/clear_cache.sh");
 
     }
 

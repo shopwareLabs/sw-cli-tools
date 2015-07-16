@@ -4,6 +4,7 @@ namespace Shopware\Install\Services;
 
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\PathProvider\PathProvider;
+use ShopwareCli\Services\ShopwareInfo;
 use ShopwareCli\Utilities;
 
 /**
@@ -25,12 +26,17 @@ class Demodata
      * @var \ShopwareCli\Services\IoService
      */
     private $ioService;
+    /**
+     * @var ShopwareInfo
+     */
+    private $shopwareInfo;
 
-    public function __construct(Utilities $utilities, PathProvider $pathProvider, IoService $ioService)
+    public function __construct(Utilities $utilities, PathProvider $pathProvider, IoService $ioService, ShopwareInfo $shopwareInfo)
     {
         $this->utilities = $utilities;
         $this->pathProvider = $pathProvider;
         $this->ioService = $ioService;
+        $this->shopwareInfo = $shopwareInfo;
     }
 
     /**
@@ -54,10 +60,10 @@ class Demodata
         $this->ioService->writeln("<info>Copying demo data to shop</info>");
         $this->utilities->executeCommand("cp -rf {$assetDir}/files {$installDir}");
         $this->utilities->executeCommand("cp -rf {$assetDir}/media {$installDir}");
-        $this->utilities->executeCommand("find {$installDir}/cache -type d -exec chmod 777 {} \;", true);
-        $this->utilities->executeCommand("find {$installDir}/media -type d -exec chmod 777 {} \;", true);
-        $this->utilities->executeCommand("find {$installDir}/files -type d -exec chmod 777 {} \;", true);
-        $this->utilities->executeCommand("find {$installDir}/logs  -type d -exec chmod 777 {} \;", true);
+        $this->utilities->executeCommand("find " .$this->shopwareInfo->getCacheDir($installDir) ." -type d -exec chmod 777 {} \;", true);
+        $this->utilities->executeCommand("find " .$this->shopwareInfo->getMediaDir($installDir) ." -type d -exec chmod 777 {} \;", true);
+        $this->utilities->executeCommand("find " .$this->shopwareInfo->getFilesDir($installDir) ." -type d -exec chmod 777 {} \;", true);
+        $this->utilities->executeCommand("find " .$this->shopwareInfo->getCacheDir($installDir) ."  -type d -exec chmod 777 {} \;", true);
     }
 
     public function runLicenseImport($installDir)
@@ -73,7 +79,7 @@ class Demodata
 
         $this->ioService->writeln("<info>Clearing the cache</info>");
 
-        $this->utilities->executeCommand("{$installDir}/cache/clear_cache.sh");
+        echo $this->utilities->executeCommand($this->shopwareInfo->getCacheDir($installDir) . "/clear_cache.sh");
     }
 
     /**

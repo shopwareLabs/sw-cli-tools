@@ -72,6 +72,8 @@ class DependencyInjection
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
 
+        $container->register('shopware_info', 'ShopwareCli\Services\ShopwareInfo');
+
         return $container;
     }
 }
