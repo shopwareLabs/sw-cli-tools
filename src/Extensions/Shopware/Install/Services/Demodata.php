@@ -21,7 +21,7 @@ class Demodata
     /** @var \ShopwareCli\Services\PathProvider\PathProvider */
     private $pathProvider;
 
-    private $demoUrl = 'http://releases.s3.shopware.com/demo_4.2.0.zip';
+    private $demoUrl = 'http://releases.s3.shopware.com/test_images.zip';
     /**
      * @var \ShopwareCli\Services\IoService
      */
