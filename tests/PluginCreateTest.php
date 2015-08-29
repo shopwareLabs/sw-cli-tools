@@ -119,12 +119,10 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
      */
     public function testPluginGenerator()
     {
-
         foreach ($this->fileProvider as $name => $provider) {
             $config = $this->getConfigObject();
             $config->$provider['config'] = true;
             $config->backendModel = 'Shopware\CustomModels\SwagTest\Test';
-
 
             $ioAdapter = new Dummy();
             $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
@@ -132,10 +130,25 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
 
             $generator->run();
 
+            // Test, if the file provider files, do exist
             foreach ($provider['files'] as $file) {
                 $this->assertTrue(
                     in_array($file, array_keys($ioAdapter->getFiles())),
                     "{$file} not found in generated files"
+                );
+            }
+
+            $allFileProviderFiles = array_reduce(array_column($this->fileProvider, 'files'), function($a, $b) {
+                $a = $a ?: [];
+                $b = $b ?: [];
+                return array_merge($a, $b);
+            });
+
+            // Test, if existing files are defined by a file provider
+            foreach (array_keys($ioAdapter->getFiles()) as $file) {
+                $this->assertTrue(
+                    in_array($file, $allFileProviderFiles),
+                    "{$file} is not defined by any file provider"
                 );
             }
         }
