@@ -5,8 +5,15 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
+/**
+ * Class DefaultFileProvider returns the default files, always needed for a plugin
+ * @package Shopware\PluginCreator\Services\TemplateFileProvider
+ */
 class DefaultFileProvider implements FileProviderInterface
 {
+    /**
+     * @inheritdoc
+     */
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
         return array(

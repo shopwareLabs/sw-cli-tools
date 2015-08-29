@@ -9,21 +9,18 @@ use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CreatePluginCommand extends BaseCommand
 {
-
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this
-            ->setName('plugin:create')
-            ->setDescription('Creates a new plugin.')
+        $this->setName('plugin:create')->setDescription('Creates a new plugin.')
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
@@ -94,8 +91,35 @@ class CreatePluginCommand extends BaseCommand
             ->setHelp(<<<EOF
 The <info>%command.name%</info> creates a new plugin.
 EOF
-            );
-        ;
+            );;
+    }
+
+
+
+    public function interact(InputInterface $input, OutputInterface $output)
+    {
+        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
+        $dialog = $this->getHelperSet()->get('dialog');
+
+        $name = $input->getArgument('name');
+        $modelName = implode('', array_slice($this->upperToArray($name), 1));
+
+        $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+
+        $this->normalizeBooleanFields($input);
+
+        $backendModel = $input->getOption('backendModel');
+
+        // for backend / api the backendModel is mandatory
+        if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
+            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>): ', array($this, 'validateModel'), false, $defaultModel);
+            $input->setOption('backendModel', $modelName);
+        }
+
+        // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
+        if ($input->getOption('haveBackend') && strpos($input->getOption('backendModel'), 'Shopware\Models') === false) {
+            $input->setOption('haveModels', true);
+        }
     }
 
     /**
@@ -140,30 +164,20 @@ EOF
         $generator->run();
     }
 
-    public function interact(InputInterface $input, OutputInterface $output)
+    /**
+     * Check the plugin name - it needs to constist of two parts at least - the first one is the dev prefix
+     *
+     * @param $name
+     * @throws \InvalidArgumentException
+     */
+    protected function validateName($name)
     {
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
-
-        $name = $input->getArgument('name');
-        $modelName = implode('', array_slice( $this->upperToArray($name), 1));
-
-        $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
-
-        $this->normalizeBooleanFields($input);
-
-        $backendModel = $input->getOption('backendModel');
-
-        // for backend / api the backendModel is mandatory
-        if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>'.$defaultModel.'</comment>): ', array($this, 'validateModel'), false, $defaultModel);
-            $input->setOption('backendModel', $modelName);
+        $parts = $this->upperToArray($name);
+        if (count($parts) <= 1) {
+            throw new \InvalidArgumentException('Name must be in CamelCase and have at least two components. Don\'t forget you developer-prefix');
         }
 
-        // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
-        if ($input->getOption('haveBackend') && strpos($input->getOption('backendModel'), 'Shopware\Models') === false) {
-            $input->setOption('haveModels', true);
-        }
+        return $name;
     }
 
     /**
@@ -207,22 +221,6 @@ EOF
         }
 
         return $input;
-    }
-
-    /**
-     * Check the plugin name - it needs to constist of two parts at least - the first one is the dev prefix
-     *
-     * @param $name
-     * @throws \InvalidArgumentException
-     */
-    protected function validateName($name)
-    {
-        $parts = $this->upperToArray($name);
-        if (count($parts) <= 1) {
-            throw new \InvalidArgumentException('Name must be in CamelCase and have at least two components. Don\'t forget you developer-prefix');
-        }
-
-        return $name;
     }
 
     /**

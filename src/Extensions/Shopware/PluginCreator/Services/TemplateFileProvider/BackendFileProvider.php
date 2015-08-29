@@ -5,8 +5,15 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
+/**
+ * Class BackendFileProvider returns ExtJS backend files
+ * @package Shopware\PluginCreator\Services\TemplateFileProvider
+ */
 class BackendFileProvider implements FileProviderInterface
 {
+    /**
+     * @inheritdoc
+     */
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
         if (!$configuration->hasBackend) {

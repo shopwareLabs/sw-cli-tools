@@ -14,6 +14,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class PluginCreateTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Each fileProvider basically provides three infos:
+     *  * name (array key + "$FileProvider")
+     *  * config flag that will trigger this file provider
+     *  * array of files (key = source template, value = target file)
+     * @var array
+     */
     protected $fileProvider = [
         'Api' => [
             'config' => 'hasApi',
@@ -115,7 +122,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test a plugin with backend files
+     * Foreach file provider: Create a plugin which needs this file provider and check,
+     * if all required / pre-defined files actually exists.
      */
     public function testPluginGenerator()
     {
@@ -138,16 +146,19 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 );
             }
 
-            $allFileProviderFiles = array_reduce(array_column($this->fileProvider, 'files'), function($a, $b) {
-                $a = $a ?: [];
-                $b = $b ?: [];
-                return array_merge($a, $b);
-            });
+            // merge all provider files into one array
+            $allProviderFiles = array_reduce(
+                array_column($this->fileProvider, 'files'),
+                function ($a, $b) {
+                    $a = $a ?: [];
+                    $b = $b ?: [];
+                    return array_merge($a, $b);
+                });
 
             // Test, if existing files are defined by a file provider
             foreach (array_keys($ioAdapter->getFiles()) as $file) {
                 $this->assertTrue(
-                    in_array($file, $allFileProviderFiles),
+                    in_array($file, $allProviderFiles),
                     "{$file} is not defined by any file provider"
                 );
             }

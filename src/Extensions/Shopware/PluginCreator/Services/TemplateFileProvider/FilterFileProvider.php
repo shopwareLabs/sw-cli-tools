@@ -5,8 +5,15 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
+/**
+ * Class FilterFileProvider returns files needed for the frontend filter
+ * @package Shopware\PluginCreator\Services\TemplateFileProvider
+ */
 class FilterFileProvider implements FileProviderInterface
 {
+    /**
+     * @inheritdoc
+     */
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
         if (!$configuration->hasFilter) {

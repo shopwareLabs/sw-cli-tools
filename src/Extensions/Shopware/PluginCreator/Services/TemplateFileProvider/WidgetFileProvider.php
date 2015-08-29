@@ -5,8 +5,15 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
+/**
+ * Class WidgetFileProvider returns file for the ExtJS backend widget
+ * @package Shopware\PluginCreator\Services\TemplateFileProvider
+ */
 class WidgetFileProvider implements FileProviderInterface
 {
+    /**
+     * @inheritdoc
+     */
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
         if (!$configuration->hasWidget) {

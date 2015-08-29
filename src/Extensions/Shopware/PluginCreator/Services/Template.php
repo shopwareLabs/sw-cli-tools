@@ -3,7 +3,9 @@
 namespace Shopware\PluginCreator\Services;
 
 /**
- * Class Template
+ * Class Template is a very simple template system, which will make it easier,
+ * to separate view and controller logic
+ *
  * @package Shopware\PluginCreator\Services
  */
 class Template

@@ -5,8 +5,15 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
+/**
+ * Class FrontendFileProvider returns files related to the frontend controller / view
+ * @package Shopware\PluginCreator\Services\TemplateFileProvider
+ */
 class FrontendFileProvider implements FileProviderInterface
 {
+    /**
+     * @inheritdoc
+     */
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
         if (!$configuration->hasFrontend) {
