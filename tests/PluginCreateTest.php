@@ -129,7 +129,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($this->fileProvider as $name => $provider) {
             $config = $this->getConfigObject();
-            $config->$provider['config'] = true;
+            $configName = $provider['config'];
+            $config->$configName = true;
             $config->backendModel = 'Shopware\CustomModels\SwagTest\Test';
 
             $ioAdapter = new Dummy();
