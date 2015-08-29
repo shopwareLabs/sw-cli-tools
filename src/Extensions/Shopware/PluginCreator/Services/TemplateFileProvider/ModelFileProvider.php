@@ -1,0 +1,22 @@
+<?php
+
+namespace Shopware\PluginCreator\Services\TemplateFileProvider;
+
+use Shopware\PluginCreator\Services\NameGenerator;
+use Shopware\PluginCreator\Struct\Configuration;
+
+class ModelFileProvider implements FileProviderInterface
+{
+    public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
+    {
+        if (!$configuration->hasModels) {
+            return [];
+        }
+
+        return array(
+            "Models/Model.tpl" => "Models/{$configuration->name}/{$nameGenerator->camelCaseModel}.php",
+            "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
+        );
+    }
+
+}

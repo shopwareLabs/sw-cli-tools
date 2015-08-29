@@ -3,6 +3,17 @@
 namespace Shopware\PluginCreator\Services;
 
 use Shopware\PluginCreator\Services\IoAdapter\IoAdapter;
+use Shopware\PluginCreator\Services\TemplateFileProvider\ApiFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\BackendControllerFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\BackendFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\CommandFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\ControllerPathFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\DefaultFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FilterFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FrontendFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\ModelFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\WidgetFileProvider;
 use Shopware\PluginCreator\Struct\Configuration;
 
 class Generator
@@ -23,7 +34,7 @@ class Generator
      */
     private $nameGenerator;
     /**
-     * @var IoAdapter\IoAdapter
+     * @var IoAdapter
      */
     private $ioAdapter;
 
@@ -127,115 +138,33 @@ class Generator
     }
 
     /**
+     * @return FileProviderInterface[]
+     */
+    private function getTemplateFileProvider()
+    {
+        return [
+            new ApiFileProvider(),
+            new BackendControllerFileProvider(),
+            new BackendFileProvider(),
+            new CommandFileProvider(),
+            new ControllerPathFileProvider(),
+            new DefaultFileProvider(),
+            new FilterFileProvider(),
+            new FrontendFileProvider(),
+            new ModelFileProvider(),
+            new WidgetFileProvider()
+        ];
+    }
+
+    /**
      * Will step through all known template files, render and copy them to the configured destination
      */
     private function processTemplateFiles()
     {
-        /**
-         * These main files will always be created
-         */
-        $this->createFilesFromTemplate(array(
-            "Bootstrap.tpl" => "Bootstrap.php",
-            "Readme.tpl" => "Readme.md",
-            "LICENSE" => "LICENSE",
-            "plugin.tpl" => "plugin.json",
-            "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
-            "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
-            "tests/Test.tpl" => "tests/Test.php"
-        ));
-
-        /**
-         * ControllerPath subscriber needed for frontend, backend, api and widget controllers
-         */
-        if ($this->configuration->hasBackend || $this->configuration->hasFrontend || $this->configuration->hasWidget || $this->configuration->hasApi) {
-            $this->createFilesFromTemplate(array(
-                "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
-            ));
-        }
-
-        /**
-         * Creates the backend application and the controller
-         */
-        if ($this->configuration->hasBackend) {
-            $this->createFilesFromTemplate(array(
-                "Views/backend/application/app.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/app.js",
-                "Views/backend/application/controller/main.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/controller/main.js",
-                "Views/backend/application/model/main.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/model/main.js",
-                "Views/backend/application/store/main.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/store/main.js",
-                "Views/backend/application/view/detail/container.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/view/detail/container.js",
-                "Views/backend/application/view/detail/window.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/view/detail/window.js",
-                "Views/backend/application/view/list/list.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/view/list/list.js",
-                "Views/backend/application/view/list/window.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/view/list/window.js",
-
-            ));
-        }
-
-        /**
-         * Creates controller, if widget or backend is needed
-         */
-        if ($this->configuration->hasBackend || $this->configuration->hasWidget) {
-            $this->createFilesFromTemplate(array(
-                "Controllers/Backend.tpl" => "Controllers/Backend/{$this->configuration->name}.php"
-            ));
-        }
-
-        if ($this->configuration->hasWidget) {
-            $this->createFilesFromTemplate(array(
-                "Views/backend/widget/main.tpl" => "Views/backend/{$this->nameGenerator->under_score_js}/widgets/{$this->nameGenerator->under_score_js}.js",
-            ));
-            $this->createFilesFromTemplate(array(
-                "Snippets/backend/widget/labels.tpl" => "Snippets/backend/widget/labels.ini"
-            ));
-        }
-
-        if ($this->configuration->hasFrontend) {
-            $this->createFilesFromTemplate(array(
-                "Controllers/Frontend.tpl" => "Controllers/Frontend/{$this->configuration->name}.php",
-                "Views/frontend/plugin_name/index.tpl" => "Views/frontend/{$this->nameGenerator->under_score_js}/index.tpl"
-            ));
-
-        }
-
-        if ($this->configuration->hasApi) {
-            $this->createFilesFromTemplate(array(
-                "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$this->nameGenerator->camelCaseModel}.php",
-                "Controllers/Api.tpl" => "Controllers/Api/{$this->nameGenerator->camelCaseModel}.php",
-
-            ));
-
-        }
-
-        /**
-         * Creates the model
-         */
-        if ($this->configuration->hasModels) {
-            $this->createFilesFromTemplate(array(
-                "Models/Model.tpl" => "Models/{$this->configuration->name}/{$this->nameGenerator->camelCaseModel}.php",
-                "Models/Repository.tpl" => "Models/{$this->configuration->name}/Repository.php"
-            ));
-        }
-
-        /**
-         * Creates the command
-         */
-        if ($this->configuration->hasCommands) {
-            $this->createFilesFromTemplate(array(
-                "Commands/Command.tpl" => "Commands/{$this->nameGenerator->camelCaseModel}.php"
-            ));
-        }
-
-        /**
-         * Creates the condition / facets
-         */
-        if ($this->configuration->hasFilter) {
-            $this->createFilesFromTemplate(array(
-                "Components/SearchBundleDBAL/Condition/Condition.tpl" => "Components/SearchBundleDBAL/Condition/{$this->configuration->name}Condition.php",
-                "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/{$this->configuration->name}ConditionHandler.php",
-                "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/{$this->configuration->name}Facet.php",
-                "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/{$this->configuration->name}FacetHandler.php",
-                "Components/SearchBundleDBAL/CriteriaRequestHandler.tpl" => "Components/SearchBundleDBAL/{$this->configuration->name}CriteriaRequestHandler.php",
-                "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
-            ));
+        foreach ($this->getTemplateFileProvider() as $provider) {
+            $this->createFilesFromTemplate(
+                $provider->getFileMapping($this->configuration, $this->nameGenerator)
+            );
         }
     }
 
