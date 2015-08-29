@@ -223,6 +223,20 @@ class Generator
                 "Commands/Command.tpl" => "Commands/{$this->nameGenerator->camelCaseModel}.php"
             ));
         }
+
+        /**
+         * Creates the condition / facets
+         */
+        if ($this->configuration->hasFilter) {
+            $this->createFilesFromTemplate(array(
+                "Components/SearchBundleDBAL/Condition/Condition.tpl" => "Components/SearchBundleDBAL/Condition/{$this->configuration->name}Condition.php",
+                "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/{$this->configuration->name}ConditionHandler.php",
+                "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/{$this->configuration->name}Facet.php",
+                "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/{$this->configuration->name}FacetHandler.php",
+                "Components/SearchBundleDBAL/CriteriaRequestHandler.tpl" => "Components/SearchBundleDBAL/{$this->configuration->name}CriteriaRequestHandler.php",
+                "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
+            ));
+        }
     }
 
 }

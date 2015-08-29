@@ -5,11 +5,6 @@ namespace Shopware\<?= $configuration->name; ?>\Subscriber;
 
 class ControllerPath implements \Enlight\Event\SubscriberInterface
 {
-    /**
-     * @var \Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->name; ?>_Bootstrap
-     */
-    protected $bootstrap;
-
     public static function getSubscribedEvents()
     {
         return array(
@@ -21,17 +16,11 @@ class ControllerPath implements \Enlight\Event\SubscriberInterface
         );
     }
 
-    public function __construct(\Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->name; ?>_Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
-    }
 <?php if ($configuration->hasApi) { ?>
 
     public function getApiController<?= $names->camelCaseModel; ?>(\Enlight_Event_EventArgs $args)
     {
-        $this->bootstrap->registerCustomModels();
-
-        return $this->bootstrap->Path() . 'Controllers/Api/<?= $names->camelCaseModel; ?>.php';
+        return __DIR__ . '/../Controllers/Api/<?= $names->camelCaseModel; ?>.php';
     }
 <?php } ?>
 
@@ -45,19 +34,13 @@ class ControllerPath implements \Enlight\Event\SubscriberInterface
      */
     public function onGetControllerPathBackend(\Enlight_Event_EventArgs $args)
     {
-        $this->bootstrap->registerMyTemplateDir();
-        $this->bootstrap->registerMySnippets();
-
-        return $this->bootstrap->Path() . 'Controllers/Backend/<?= $configuration->name; ?>.php';
+        return __DIR__ . '/../Controllers/Backend/<?= $configuration->name; ?>.php';
     }
 <?php } ?>
 
 <?php if ($configuration->hasWidget) { ?>
     public function extendsBackendWidget(\Enlight_Event_EventArgs $args)
     {
-        $this->bootstrap->registerMyTemplateDir();
-        $this->bootstrap->registerMySnippets();
-
         /** @var \Enlight_Controller_Action $controller */
         $controller = $args->getSubject();
 
@@ -80,10 +63,7 @@ class ControllerPath implements \Enlight\Event\SubscriberInterface
      */
     public function onGetControllerPathFrontend(\Enlight_Event_EventArgs $args)
     {
-        $this->bootstrap->registerMyTemplateDir();
-        $this->bootstrap->registerMySnippets();
-
-        return $this->bootstrap->Path() . 'Controllers/Frontend/<?= $configuration->name; ?>.php';
+        return __DIR__ . '/../Controllers/Frontend/<?= $configuration->name; ?>.php';
     }
 <?php } ?>
 }

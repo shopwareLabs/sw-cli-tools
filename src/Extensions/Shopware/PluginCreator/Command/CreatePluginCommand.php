@@ -43,6 +43,12 @@ class CreatePluginCommand extends BaseCommand
                 'Do you want a backend application to be created? This will create the ExtJS structure and connect it to an existing or new model'
             )
             ->addOption(
+                'haveFilter',
+                null,
+                InputOption::VALUE_NONE,
+                'Do you want to generate front filters / facets / conditions?'
+            )
+            ->addOption(
                 'haveFrontend',
                 null,
                 InputOption::VALUE_NONE,
@@ -99,7 +105,7 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi') as $key) {
+        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter') as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -231,6 +237,7 @@ EOF
         $configuration->name = $input->getArgument('name');
         $configuration->namespace = $input->getOption('namespace');
         $configuration->hasFrontend = $input->getOption('haveFrontend');
+        $configuration->hasFilter = $input->getOption('haveFilter');
         $configuration->hasBackend = $input->getOption('haveBackend');
         $configuration->hasWidget = $input->getOption('haveWidget');
         $configuration->hasApi = $input->getOption('haveApi');

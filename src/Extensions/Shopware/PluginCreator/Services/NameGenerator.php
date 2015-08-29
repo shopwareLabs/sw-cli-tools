@@ -12,11 +12,17 @@ use Shopware\PluginCreator\Struct\Configuration;
  */
 class NameGenerator
 {
+    // e.g. swag
     public $developerPrefix;
+    // e.g. swag-promotion
     public $dash_js;
+    // e.g. swag_promotion
     public $under_score_js;
+    // e.g. promotion_test
     public $under_score_model;
+    // e.g. PromotionTest
     public $camelCaseModel;
+    // e.g.promotion
     public $backendModelAlias;
 
     /**

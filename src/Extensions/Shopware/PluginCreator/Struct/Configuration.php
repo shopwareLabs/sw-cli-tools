@@ -31,6 +31,8 @@ class Configuration extends Struct
     public $hasModels;
     // commands needed ?
     public $hasCommands;
+    // dbal facet / condition needed?
+    public $hasFilter;
 
     // model for the backend ($hasBackend)
     public $backendModel;

@@ -152,12 +152,18 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
         <?php if ($configuration->hasModels) { ?>
         $this->registerCustomModels();<?php } ?>
         <?php if ($configuration->hasApi) { ?>$this->registerApiComponent();<?php } ?>
+<?php if ($configuration->hasFrontend || $configuration->hasBackend || $configuration->hasWidget) { ?>
+        $this->registerMyTemplateDir();
+        $this->registerMySnippets();
+<?php } ?>
 
 
         $subscribers = array(
 <?php if ($configuration->hasFrontend || $configuration->hasBackend || $configuration->hasWidget || $configuration->hasApi) { ?>
-            new \Shopware\<?= $configuration->name; ?>\Subscriber\ControllerPath($this),
-<?php } ?>            new \Shopware\<?= $configuration->name; ?>\Subscriber\Frontend($this)
+            new \Shopware\<?= $configuration->name; ?>\Subscriber\ControllerPath(),
+<?php } ?><?php if ($configuration->hasFilter) { ?>
+new \Shopware\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
+<?php } ?>            new \Shopware\<?= $configuration->name; ?>\Subscriber\Frontend()
 
         );
 
