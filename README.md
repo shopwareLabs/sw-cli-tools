@@ -4,13 +4,14 @@
 [![Scrutinizer Score](https://img.shields.io/scrutinizer/g/shopwareLabs/sw-cli-tools.svg?style=flat-square)](https://scrutinizer-ci.com/g/shopwareLabs/sw-cli-tools)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-The shopware CLI tools are your console helpers for all kind of shopware tasks. They will allow you to:
+The shopware CLI tools are your console helpers for all kind of Shopware tasks. They will allow you to:
 
- * setup shopware from VCS
- * setup shopware from a release tag
+ * setup Shopware from VCS
+ * setup Shopware from a release tag
+ * create Shopware plugins
  * define a bunch of plugin repositories you use
  * install plugins from the repositories and activate them in shopware
- * zip plugins in the way the shopware store or the shopware plugin manager expect it to be
+ * zip plugins in the way the Shopware store or the Shopware plugin manager expect it to be
 
 The shopware CLI tools come with a slim extension interface, so you can extend it for your needs.
 
@@ -45,6 +46,7 @@ On your system at least the following packages needs to be available.
 * sw plugin:install
 * sw plugin:zip:dir
 * sw plugin:zip:vcs
+* sw plugin:create
 
 ## Using the Commands
 ### sw plugin:install
@@ -95,6 +97,25 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
     --name: backend username
     --mail: Mail of the backend user
     --language: backend language (e.g. de_DE or en_GB)
+
+### sw plugin:create
+Will create a Shopware plugin with all the boilerplate code.
+
+Valid options / arguments are:
+```
+--namespace[="..."]: Namespace of the plugin, default: Frontend
+--haveBackend: Generate a backend Controller + a simple ExtJS module
+--backendModel[="..."]: The name of the model for your backend application
+--haveFilter: Generate Condition/Facet/CriteriaRequestHandler in order to add a new filter in the frontend
+--haveFrontend: Generate a frontend controller
+--haveModels: Generate a simple doctrine model
+--haveCommands: Generate a console command
+--haveWidget: Generate a backend widget
+--haveApi: Generate an API resource + REST controller
+--licenseHeader[="..."]: Include a license header at the beginning of any file
+name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
+```
+
 
 The options will be read interactively, if not provided.
 The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
