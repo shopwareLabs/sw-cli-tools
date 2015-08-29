@@ -9,13 +9,13 @@ class WidgetFileProvider implements FileProviderInterface
 {
     public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
     {
-        if (!$configuration->hasFrontend) {
+        if (!$configuration->hasWidget) {
             return [];
         }
 
         return array(
-            "Controllers/Frontend.tpl" => "Controllers/Frontend/{$configuration->name}.php",
-            "Views/frontend/plugin_name/index.tpl" => "Views/frontend/{$nameGenerator->under_score_js}/index.tpl"
+            "Views/backend/widget/main.tpl" => "Views/backend/{$nameGenerator->under_score_js}/widgets/{$nameGenerator->under_score_js}.js",
+            "Snippets/backend/widget/labels.tpl" => "Snippets/backend/widget/labels.ini"
         );
     }
 

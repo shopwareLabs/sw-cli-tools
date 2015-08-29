@@ -129,7 +129,8 @@ class Generator
             new FilterFileProvider(),
             new FrontendFileProvider(),
             new ModelFileProvider(),
-            new WidgetFileProvider()
+            new WidgetFileProvider(),
+            new FrontendFileProvider()
         ];
     }
 
