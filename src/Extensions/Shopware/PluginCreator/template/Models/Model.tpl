@@ -23,7 +23,7 @@ class <?= $names->camelCaseModel; ?> extends ModelEntity
     private $id;
 
     /**
-     * @var strint $name
+     * @var string $name
      *
      * @ORM\Column(name="name", type="string", nullable=false)
      */
