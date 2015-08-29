@@ -21,7 +21,7 @@ class Demodata
     /** @var \ShopwareCli\Services\PathProvider\PathProvider */
     private $pathProvider;
 
-    private $demoUrl = 'http://releases.s3.shopware.com/demo_4.2.0.zip';
+    private $demoUrl = 'http://releases.s3.shopware.com/test_images.zip';
     /**
      * @var \ShopwareCli\Services\IoService
      */
@@ -49,11 +49,13 @@ class Demodata
             mkdir($assetDir);
         }
 
-        if (!file_exists(($assetDir . '/demo.zip'))) {
+        $targetFile = md5($this->demoUrl) . '_demo.zip';
+
+        if (!file_exists(($assetDir . '/' . $targetFile))) {
             $this->ioService->writeln("<info>Downloading demodata from shopware.de</info>");
-            $this->utilities->executeCommand("wget {$this->demoUrl} -O {$assetDir}/demo.zip");
+            $this->utilities->executeCommand("wget {$this->demoUrl} -O {$assetDir}/{$targetFile}");
             $this->ioService->writeln("<info>Unzipping demo data</info>");
-            $this->utilities->executeCommand("unzip -q {$assetDir}/demo.zip -d {$assetDir}");
+            $this->utilities->executeCommand("unzip -q {$assetDir}/{$targetFile} -d {$assetDir}");
         }
 
         // todo: This should be done in PHP

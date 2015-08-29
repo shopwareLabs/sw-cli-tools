@@ -31,8 +31,8 @@ class ShopwareInfo
     {
         $path = $this->normalizePath($path);
 
-        if (file_exists($path . 'log/.htaccess')) {
-            return $path . 'log';
+        if (file_exists($path . 'logs/.htaccess')) {
+            return $path . 'logs';
         }
 
         if (file_exists($path . 'var/log/.htaccess')) {
