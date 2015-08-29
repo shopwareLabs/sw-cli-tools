@@ -141,7 +141,7 @@ class Generator
     {
         foreach ($this->getTemplateFileProvider() as $provider) {
             $this->createFilesFromTemplate(
-                $provider->getFileMapping($this->configuration, $this->nameGenerator)
+                $provider->getFiles($this->configuration, $this->nameGenerator)
             );
         }
     }

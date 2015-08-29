@@ -20,5 +20,5 @@ interface FileProviderInterface
      * @return array Return an array of files (key = source, value = target). Return empty
      * array for NOOP
      */
-    public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator);
+    public function getFiles(Configuration $configuration, NameGenerator $nameGenerator);
 }

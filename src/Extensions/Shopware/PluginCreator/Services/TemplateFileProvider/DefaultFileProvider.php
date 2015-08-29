@@ -14,7 +14,7 @@ class DefaultFileProvider implements FileProviderInterface
     /**
      * @inheritdoc
      */
-    public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
+    public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
         return array(
             "Bootstrap.tpl" => "Bootstrap.php",

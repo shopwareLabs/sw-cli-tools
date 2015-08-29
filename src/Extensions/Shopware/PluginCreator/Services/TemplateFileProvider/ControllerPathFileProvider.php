@@ -14,7 +14,7 @@ class ControllerPathFileProvider implements FileProviderInterface
     /**
      * @inheritdoc
      */
-    public function getFileMapping(Configuration $configuration, NameGenerator $nameGenerator)
+    public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
         if ($configuration->hasBackend
             || $configuration->hasFrontend
