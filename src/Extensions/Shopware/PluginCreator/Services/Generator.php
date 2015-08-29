@@ -105,29 +105,6 @@ class Generator
     }
 
     /**
-     * Creates a given directory
-     *
-     * @param $path
-     * @param  bool              $throwExceptionIfExists
-     * @throws \RuntimeException
-     */
-    private function createDirectory($path, $throwExceptionIfExists = false)
-    {
-        if (file_exists($path)) {
-            if (!$throwExceptionIfExists) {
-                return;
-            }
-            throw new \RuntimeException("Could not create »{$path}«. Directory already exists");
-        }
-
-        $success = mkdir($path, 0777, true);
-
-        if (!$success) {
-            throw new \RuntimeException("Could not create »{$path}«. Check your directory permission");
-        }
-    }
-
-    /**
      * setup the template
      */
     private function configureTemplate()
