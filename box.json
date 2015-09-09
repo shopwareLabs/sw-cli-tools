@@ -35,6 +35,7 @@
                 "vendor/herrera-io/phar-update",
                 "vendor/herrera-io/version",
                 "vendor/dnoegel",
+                "vendor/ramsey",
                 "src"
             ]
         }
