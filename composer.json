@@ -12,7 +12,7 @@
         "symfony/process": "~2.5",
         "symfony/dependency-injection": "~2.5",
         "dnoegel/php-xdg-base-dir": "~0.1",
-        "shopware-ag/plugin-info": "dev-master",
+        "shopwarelabs/plugin-info": "dev-master",
         "kherge/amend": "3.*",
         "ramsey/array_column": "~1.1"
     },

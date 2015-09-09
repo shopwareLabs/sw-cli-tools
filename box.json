@@ -12,7 +12,7 @@
         "config.yaml.dist",
         "vendor/autoload.php",
         "vendor/herrera-io/phar-update/res/schema.json",
-        "vendor/shopware-ag/plugin-info/res/plugin-info-schema.json"
+        "vendor/shopwarelabs/plugin-info/res/plugin-info-schema.json"
     ],
     "finder": [
         {
@@ -20,7 +20,7 @@
             "exclude": ["tests"],
             "in": [
                 "vendor/composer",
-                "vendor/shopware-ag",
+                "vendor/shopwarelabs",
                 "vendor/justinrainbow",
                 "vendor/symfony/console",
                 "vendor/symfony/config",
