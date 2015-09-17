@@ -57,7 +57,7 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 
     public function install()
     {
-        if (!$this->assertVersionGreaterThen('4.3.0')) {
+        if (!$this->assertMinimumVersion('4.3.0')) {
             throw new \RuntimeException('At least Shopware 4.3.0 is required');
         }
 <?php if ($configuration->hasWidget) { ?>
