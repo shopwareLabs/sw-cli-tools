@@ -69,14 +69,14 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 
         $container->register('shopware-install.database', 'Shopware\Install\Services\Database')
             ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->addArgument(new Reference('process_executor'));
 
         $container->register('shopware-install.demodata', 'Shopware\Install\Services\Demodata')
-            ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('path_provider'))
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('shopware_info'));
-
+            ->addArgument(new Reference('shopware_info'))
+            ->addArgument(new Reference('process_executor'));
 
         $container->register('shopware_vcs_install_service', 'Shopware\Install\Services\Install\Vcs')
             ->addArgument(new Reference('shopware_checkout_service'))
