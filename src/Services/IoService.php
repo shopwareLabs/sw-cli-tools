@@ -4,6 +4,7 @@ namespace ShopwareCli\Services;
 
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -126,6 +127,28 @@ class IoService
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
         return $this->questionHelper->ask($this->input, $this->output, $question);
+    }
+
+    /**
+     * Creates a table
+     *
+     * @param array|null $headers
+     * @param array|null $results
+     * @return Table
+     */
+    public function createTable($headers = null, $results = null)
+    {
+        $tableObject = new Table($this->output);
+
+        if ($headers) {
+            $tableObject->setHeaders($headers);
+        }
+
+        if ($results) {
+            $tableObject->setRows($results);
+        }
+
+        return $tableObject;
     }
 
     /**
