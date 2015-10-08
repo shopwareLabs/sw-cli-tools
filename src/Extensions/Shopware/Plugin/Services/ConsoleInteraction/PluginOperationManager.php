@@ -74,11 +74,14 @@ class PluginOperationManager
      */
     public function searchAndOperate($names, $callback, $params)
     {
-
         foreach ($names as $name) {
             $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);
 
+            if ($count == 0) {
+                $plugins = $this->pluginProvider->getPluginsByRepositoryName($name);
+                $count = count($plugins);
+            }
             if ($count == 0) {
                 $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
 

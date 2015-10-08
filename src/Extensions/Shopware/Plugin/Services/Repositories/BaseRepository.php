@@ -82,4 +82,12 @@ abstract class BaseRepository implements RepositoryInterface
             || $exact && $searched == $actual
         );
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }
