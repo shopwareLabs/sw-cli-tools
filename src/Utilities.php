@@ -6,7 +6,6 @@ use ShopwareCli\Services\IoService;
 
 class Utilities
 {
-
     /**
      * @var Services\IoService
      */
@@ -26,7 +25,7 @@ class Utilities
      */
     public function isShopwareInstallation($path)
     {
-        return is_readable($path . '/shopware.php');
+        return is_readable($path.'/shopware.php');
     }
 
     /**
@@ -54,7 +53,7 @@ class Utilities
     /**
      * Shopware path validator - can be used in askAndValidate methods
      *
-     * @param  string            $shopwarePath
+     * @param  string $shopwarePath
      * @return string
      * @throws \RuntimeException
      */
@@ -72,46 +71,9 @@ class Utilities
     }
 
     /**
-     * This could / should be switched do symfony's process component
-     * Currently it seems to have issues with realtime output,
-     * so keeping "exec" for the time being
-     *
-     * @param  string            $cmd
-     * @param  bool              $mayFail
-     * @return string
-     * @throws \RuntimeException
-     *
-     * @deprecated Use the new ProcessExecutor instead
-     */
-    public function executeCommand($cmd, $mayFail = false)
-    {
-        $output = array();
-        $returnCode = 0;
-        exec($cmd, $output, $returnCode);
-
-        if (!$mayFail && $returnCode !== 0) {
-            throw new \RuntimeException(
-                sprintf("An exception occurred: %s", implode("\n", $output))
-            );
-        }
-
-        return implode("\n", $output) . "\n";
-    }
-
-    /**
-     * Clears the screen in the terminal
-     *
-     * @deprecated Replaced by \ShopwareCli\Services\IoService::cls()
-     */
-    public function cls()
-    {
-        system('clear');
-    }
-
-    /**
      * Changes a directory
      *
-     * @param  string            $path
+     * @param  string $path
      * @throws \RuntimeException
      */
     public function changeDir($path)

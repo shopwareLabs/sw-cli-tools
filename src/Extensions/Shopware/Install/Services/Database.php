@@ -3,6 +3,7 @@
 namespace Shopware\Install\Services;
 
 use ShopwareCli\Services\IoService;
+use ShopwareCli\Services\ProcessExecutor;
 use ShopwareCli\Utilities;
 
 /**
@@ -13,20 +14,36 @@ use ShopwareCli\Utilities;
  */
 class Database
 {
-    /** @var  Utilities */
+    /**
+     * @var  Utilities
+     */
     private $utilities;
 
-    /** @var  \PDO */
+    /**
+     * @var  \PDO
+     */
     private $connection;
+
     /**
      * @var \ShopwareCli\Services\IoService
      */
     private $ioService;
 
-    public function __construct(Utilities $utilities, IoService $ioService)
+    /**
+     * @var ProcessExecutor
+     */
+    private $processExecutor;
+
+    /**
+     * @param Utilities $utilities
+     * @param IoService $ioService
+     * @param ProcessExecutor $processExecutor
+     */
+    public function __construct(Utilities $utilities, IoService $ioService, ProcessExecutor $processExecutor)
     {
         $this->utilities = $utilities;
         $this->ioService = $ioService;
+        $this->processExecutor = $processExecutor;
     }
 
     private function createConnection($host, $username, $password)
@@ -112,7 +129,8 @@ EOF
         }
 
         $this->ioService->writeln("<info>Running build-unit</info>");
-        $this->utilities->executeCommand("ant -f {$buildXml} build-unit");
+        $command = sprintf('ant -f %s build-unit', $buildXml);
+        $this->processExecutor->execute($command);
     }
 
     /**

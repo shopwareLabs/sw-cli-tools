@@ -3,6 +3,7 @@
 namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Struct\Plugin;
+use ShopwareCli\Services\ProcessExecutor;
 use ShopwareCli\Utilities;
 
 /**
@@ -24,13 +25,20 @@ class Zip
     protected $utilities;
 
     /**
-     * @param Checkout  $checkout
-     * @param Utilities $utilities
+     * @var ProcessExecutor
      */
-    public function __construct(Checkout $checkout, Utilities $utilities)
+    private $processExecutor;
+
+    /**
+     * @param Checkout $checkout
+     * @param Utilities $utilities
+     * @param ProcessExecutor $processExecutor
+     */
+    public function __construct(Checkout $checkout, Utilities $utilities, ProcessExecutor $processExecutor)
     {
         $this->checkout = $checkout;
         $this->utilities = $utilities;
+        $this->processExecutor = $processExecutor;
     }
 
     /**
@@ -38,7 +46,7 @@ class Zip
      * @param        $path
      * @param        $zipTo
      * @param        $branch
-     * @param bool   $useHttp
+     * @param bool $useHttp
      *
      * @return string
      */
@@ -57,6 +65,6 @@ class Zip
      */
     public function zipDir($directory, $outputFile)
     {
-        $this->utilities->executeCommand("zip -r $outputFile $directory -x *.git*");
+        $this->processExecutor->execute("zip -r $outputFile $directory -x *.git*");
     }
 }

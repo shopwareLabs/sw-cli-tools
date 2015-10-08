@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand
 {
+    const MAIN_BRANCH = '5.0';
+
     /**
      * {@inheritdoc}
      */
@@ -90,7 +92,7 @@ EOF
 
         $branch = $this->askBranch($input, $ioService);
 
-        $suggestion = $this->suggestNameFromBranch($branch) ?: 'master';
+        $suggestion = $this->suggestNameFromBranch($branch) ?: self::MAIN_BRANCH;
 
         $installDir = $this->askInstallationDir($input, $ioService, $suggestion);
 
@@ -194,8 +196,9 @@ EOF
     {
         $branch = $input->getOption('branch');
         if (!$branch) {
-            $branch = $ioService->ask('Please provide the branch you want to install <master>: ');
-            $branch = trim($branch) ? $branch : 'master';
+            $branchSuggestion = self::MAIN_BRANCH;
+            $branch = $ioService->ask("Please provide the branch you want to install <{$branchSuggestion}>: ");
+            $branch = trim($branch) ? $branch : self::MAIN_BRANCH;
             $input->setOption('branch', $branch);
 
             return $branch;
