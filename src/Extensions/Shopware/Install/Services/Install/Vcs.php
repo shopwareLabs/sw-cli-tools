@@ -201,6 +201,5 @@ class Vcs
         );
 
         $this->database->runBuildScripts($installDir);
-
     }
 }

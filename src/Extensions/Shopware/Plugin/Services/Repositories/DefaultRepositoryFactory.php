@@ -14,7 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
  */
 class DefaultRepositoryFactory
 {
-
     /**
      * List of repositories the DefaultRepository will handle
      * @var array
@@ -108,5 +107,4 @@ class DefaultRepositoryFactory
 
         return $repo;
     }
-
 }

@@ -58,6 +58,6 @@ class ShopwareInfo
      */
     private function normalizePath($path)
     {
-        return rtrim($path , '/\\') . '/';
+        return rtrim($path, '/\\') . '/';
     }
 }

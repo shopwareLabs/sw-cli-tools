@@ -27,5 +27,4 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             new CreatePluginCommand()
         );
     }
-
 }

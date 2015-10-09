@@ -25,5 +25,4 @@ class FrontendFileProvider implements FileProviderInterface
             "Views/frontend/plugin_name/index.tpl" => "Views/frontend/{$nameGenerator->under_score_js}/index.tpl"
         );
     }
-
 }

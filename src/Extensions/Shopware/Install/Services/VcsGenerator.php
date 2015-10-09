@@ -52,6 +52,5 @@ EOF;
         $mappings = implode("\n", $mappings);
 
         file_put_contents($dir . '/vcs.xml', sprintf($this->templateVcsMapping, $mappings));
-
     }
 }

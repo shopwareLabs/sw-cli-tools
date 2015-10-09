@@ -91,7 +91,8 @@ class CreatePluginCommand extends BaseCommand
             ->setHelp(<<<EOF
 The <info>%command.name%</info> creates a new plugin.
 EOF
-            );;
+            );
+        ;
     }
 
 
@@ -261,5 +262,4 @@ EOF
 
         return "/**\n * " . $license . "\n */\n";
     }
-
 }

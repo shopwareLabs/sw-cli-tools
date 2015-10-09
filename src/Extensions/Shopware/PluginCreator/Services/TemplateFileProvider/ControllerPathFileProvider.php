@@ -28,5 +28,4 @@ class ControllerPathFileProvider implements FileProviderInterface
 
         return [];
     }
-
 }

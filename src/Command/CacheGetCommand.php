@@ -44,6 +44,5 @@ class CacheGetCommand extends BaseCommand
             $output->writeln("<question>{$key}</question>");
             $output->writeln($this->container->get('cache')->read($key));
         }
-
     }
 }

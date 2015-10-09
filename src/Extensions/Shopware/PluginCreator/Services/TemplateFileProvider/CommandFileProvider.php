@@ -24,5 +24,4 @@ class CommandFileProvider implements FileProviderInterface
             "Commands/Command.tpl" => "Commands/{$nameGenerator->camelCaseModel}.php"
         );
     }
-
 }
