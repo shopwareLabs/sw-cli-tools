@@ -13,7 +13,6 @@ use ShopwareCli\Services\PathProvider\PathProvider;
  */
 class GitIdentityEnvironment
 {
-
     protected $wrapperFileName = 'ssh-as.sh';
     protected $keyFileName = 'ssh.key';
 

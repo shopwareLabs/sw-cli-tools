@@ -176,7 +176,7 @@ class Release
      */
     private function lockInstaller($installDir)
     {
-        if (file_exists($installDir . '/recovery/install/data')){
+        if (file_exists($installDir . '/recovery/install/data')) {
             touch($installDir . '/recovery/install/data/install.lock');
         }
     }

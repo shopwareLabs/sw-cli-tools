@@ -74,7 +74,6 @@ class PluginOperationManager
      */
     public function searchAndOperate($names, $callback, $params)
     {
-
         foreach ($names as $name) {
             $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);

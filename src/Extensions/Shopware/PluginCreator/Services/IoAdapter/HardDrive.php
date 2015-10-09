@@ -21,7 +21,6 @@ class HardDrive implements IoAdapter
 
     public function createDirectory($path)
     {
-
         if ($this->exists($path)) {
             return;
         }

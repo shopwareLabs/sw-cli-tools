@@ -75,7 +75,6 @@ class ZipCommand extends BaseCommand
         }
 
         $interactionManager->operationLoop(array($this, 'doZip'), $params);
-
     }
 
     public function doZip($plugin, $params)

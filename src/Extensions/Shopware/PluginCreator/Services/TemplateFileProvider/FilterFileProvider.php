@@ -29,5 +29,4 @@ class FilterFileProvider implements FileProviderInterface
             "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
         );
     }
-
 }

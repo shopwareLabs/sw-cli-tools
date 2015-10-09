@@ -31,5 +31,4 @@ class BackendFileProvider implements FileProviderInterface
             "Views/backend/application/view/list/window.tpl" => "Views/backend/{$nameGenerator->under_score_js}/view/list/window.js",
         );
     }
-
 }

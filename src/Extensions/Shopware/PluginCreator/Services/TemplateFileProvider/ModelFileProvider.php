@@ -25,5 +25,4 @@ class ModelFileProvider implements FileProviderInterface
             "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
         );
     }
-
 }

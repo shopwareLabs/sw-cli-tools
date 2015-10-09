@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Tests;
+namespace ShopwareCli\tests;
 
 use Shopware\PluginCreator\Services\Generator;
 use Shopware\PluginCreator\Services\IoAdapter\Dummy;
@@ -164,6 +164,5 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 );
             }
         }
-
     }
 }

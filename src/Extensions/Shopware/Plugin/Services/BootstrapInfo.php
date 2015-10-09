@@ -29,7 +29,6 @@ class BootstrapInfo
         $info->name = $name;
 
         return $info;
-
     }
 
     /**

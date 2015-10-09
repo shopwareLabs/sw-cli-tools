@@ -14,7 +14,7 @@ class BitBucket extends BaseRepository
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
             if (!$this->doesMatch($plugin->name, $name, $exact)) {
-                unset ($plugins[$key]);
+                unset($plugins[$key]);
             }
         }
 

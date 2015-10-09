@@ -25,5 +25,4 @@ class WidgetFileProvider implements FileProviderInterface
             "Snippets/backend/widget/labels.tpl" => "Snippets/backend/widget/labels.ini"
         );
     }
-
 }

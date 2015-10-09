@@ -38,6 +38,4 @@ class Dummy implements IoAdapter
     {
         return $this->files;
     }
-
-
 }

@@ -26,5 +26,4 @@ class DefaultFileProvider implements FileProviderInterface
             "tests/Test.tpl" => "tests/Test.php"
         );
     }
-
 }

@@ -6,7 +6,6 @@ use ShopwareCli\Services\PathProvider\PathProvider;
 
 class File implements CacheInterface
 {
-
     protected $path;
     protected $info;
     /**
@@ -20,7 +19,6 @@ class File implements CacheInterface
         $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
 
         $this->info = $this->readTable();
-
     }
 
     public function write($key, $data, $valid)
@@ -62,7 +60,6 @@ class File implements CacheInterface
         $validTime = @$this->info[$key]['valid'];
 
         return time() - filectime($file) < $validTime;
-
     }
 
     public function clear()

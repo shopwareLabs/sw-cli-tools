@@ -24,5 +24,4 @@ class BackendControllerFileProvider implements FileProviderInterface
 
         return [];
     }
-
 }

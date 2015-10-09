@@ -22,7 +22,7 @@
  * our trademarks remain entirely with us.
  */
 
-namespace ShopwareCli\Tests;
+namespace ShopwareCli\tests;
 
 use ShopwareCli\ConfigFileCollector;
 

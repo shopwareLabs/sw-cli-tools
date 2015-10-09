@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
-
     /** @var  ContainerBuilder */
     protected $container;
 
@@ -94,7 +93,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             \ShopwareCli\Application::VERSION,
             false,
             false
-        )){
+        )) {
             echo "\nUpdated your archive. Please run again\n";
             exit(0);
         }
@@ -122,5 +121,4 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
         return $config['update']['checkOnStartup'];
     }
-
 }
