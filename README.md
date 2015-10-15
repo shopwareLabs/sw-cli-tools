@@ -2,7 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/shopwareLabs/sw-cli-tools/master.svg?style=flat-square)](https://travis-ci.org/shopwareLabs/sw-cli-tools)
 [![Scrutinizer Score](https://img.shields.io/scrutinizer/g/shopwareLabs/sw-cli-tools.svg?style=flat-square)](https://scrutinizer-ci.com/g/shopwareLabs/sw-cli-tools)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 The shopware CLI tools are your console helpers for all kind of Shopware tasks. They will allow you to:
 
