@@ -2,6 +2,7 @@
 
 namespace Shopware\Plugin\Command;
 
+use Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Command\BaseCommand;
 use Shopware\Plugin\Services\Install;
@@ -43,7 +44,7 @@ class InstallCommand extends BaseCommand
             ->addArgument(
                 'names',
                 InputArgument::IS_ARRAY,
-                'Name of the plugin to install'
+                'Name of the plugin to install, or the repository to filter by'
             )
             ->addOption(
                 'shopware-root',
@@ -99,6 +100,7 @@ class InstallCommand extends BaseCommand
             $this->shopwarePath = $shopwarePath;
         }
 
+        /** @var PluginOperationManager $interactionManager */
         $interactionManager = $this->container->get('plugin_operation_manager');
 
         $this->container->get('plugin_column_renderer')->setSmall($small);

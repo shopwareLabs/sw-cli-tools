@@ -79,6 +79,10 @@ class PluginOperationManager
             $count = count($plugins);
 
             if ($count == 0) {
+                $plugins = $this->pluginProvider->getPluginsByRepositoryName($name);
+                $count = count($plugins);
+            }
+            if ($count == 0) {
                 $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
 
                 return;

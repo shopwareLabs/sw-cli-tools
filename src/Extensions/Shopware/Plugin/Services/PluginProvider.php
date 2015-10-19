@@ -2,6 +2,7 @@
 
 namespace Shopware\Plugin\Services;
 
+use Shopware\Plugin\Services\Repositories\BaseRepository;
 use ShopwareCli\Config;
 use Shopware\Plugin\Services\Repositories\RepositoryInterface;
 use Shopware\Plugin\Struct\Plugin;
@@ -85,6 +86,24 @@ class PluginProvider
         $result = array();
         foreach ($this->repositories as $repo) {
             $result = array_merge($result, $repo->getPluginByName($name, $exact));
+        }
+
+        return $this->sortPlugins($result);
+    }
+
+    /**
+     * Query plugin repositories by $name and return the plugins contained in it
+     *
+     * @param  string   $name string  Repo name to search for
+     * @return Plugin[]
+     */
+    public function getPluginsByRepositoryName($name)
+    {
+        $result = array();
+        foreach ($this->repositories as $repo) {
+            if ($repo instanceof BaseRepository && stripos($repo->getName(), $name) !== false) {
+               $result = array_merge($result, $repo->getPlugins());
+            }
         }
 
         return $this->sortPlugins($result);
