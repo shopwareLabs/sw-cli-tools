@@ -50,6 +50,10 @@ class ConfigFileCollector
     {
         $files = array();
 
+        if (!is_dir($extensionPath)) {
+            return [];
+        }
+
         $iter = new DirectoryFilterIterator(new \DirectoryIterator($extensionPath));
         foreach ($iter as $vendorFileInfo) {
             $files = array_merge(

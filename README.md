@@ -162,3 +162,12 @@ Coding standard violations may be detected using php-cs-fixer:
 
     ./vendor/bin/php-cs-fixer fix -v --level=psr2 ./src
     ./vendor/bin/php-cs-fixer fix -v --level=psr2 ./tests
+
+# General hints
+## Timeouts
+If you are having a slow internet connection and e.g. git checkouts or tasks related to the `ProcessExecutor` fail
+with a timeout, you can increase the timeout by setting the environment variable `SW_TIMEOUT`:
+
+```
+SW_TIMEOUT=500 sw install:vcs
+```
