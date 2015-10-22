@@ -143,8 +143,6 @@ class Articles extends BaseResource
         $number = $this->config->getNumberArticles();
         $this->loadDataInfile = new LoadDataInfile();
 
-        $this->createProgressBar($number);
-
         $urls = $this->writerManager->createWriter('article_urls', 'csv');
 
         $articles = $this->writerManager->createWriter('articles', 'csv');
@@ -175,9 +173,25 @@ class Articles extends BaseResource
             $this->articleDetailsFlat = new \SplFixedArray($maxDetails);
         }
 
-        $numImagesPerArticle = 1;
-        $physicallyCreateEachImage = 0;
-        $baseName = "beach";
+        if (!$this->categoryResource->categoriesFlat) {
+            throw new \RuntimeException('Category resource not found');
+        }
+
+        $categoriesFlat = $this->categoryResource->categoriesFlat;
+        $validCategoryIds = array_filter(
+            array_keys($categoriesFlat),
+            function ($item) {
+                return $item >= 1000000;
+            }
+        );
+        $categoriesPerArticle = min(count($validCategoryIds), $this->config->getCategoriesPerArticle());
+        if (count($validCategoryIds) < $this->config->getCategoriesPerArticle()) {
+            $this->ioService->writeln(
+                '<comment>Number of categories per article will be lower than specified</comment>'
+            );
+        }
+
+        $this->createProgressBar($number);
 
         $images = array();
 
@@ -243,19 +257,11 @@ class Articles extends BaseResource
                 }
             }
 
-            // Categories
-            // For performance reason, the assigned categories are not random selected by SQL, but by PHP.
-            // This will probably assign some non-existing categories - we'll be able to clean up that with a
-            // simple sql statement at the end of the insert
-            for ($i = 1; $i <= $this->config->getCategoriesPerArticle(); $i++) {
-                $randCategoryId = rand(1000001, 1000001 + $this->config->getNumberCategories() * (0.8));
-                $articleCategories->write("{$id}, {$randCategoryId}");
+            shuffle($validCategoryIds);
+            for ($i = 0; $i < $categoriesPerArticle; $i++) {
+                $articleCategories->write("{$id}, {$validCategoryIds[$i]}");
 
-                if (!$this->categoryResource->categoriesFlat) {
-                    continue;
-                }
-
-                $categoryIds = $this->getCategoryPath($randCategoryId, $this->categoryResource->categoriesFlat);
+                $categoryIds = $this->getCategoryPath($validCategoryIds[$i], $categoriesFlat);
                 if (empty($categoryIds)) {
                     continue;
                 }
@@ -402,18 +408,6 @@ class Articles extends BaseResource
         }
 
         return $result;
-    }
-
-    /**
-     * Returns SQL that is executed after all inserts
-     * @return string
-     */
-    public function enableKeys()
-    {
-        $sql = "DELETE FROM s_articles_categories WHERE categoryID NOT IN (SELECT id FROM s_categories);";
-        $sql .= parent::enableKeys();
-
-        return $sql;
     }
 
     /**
