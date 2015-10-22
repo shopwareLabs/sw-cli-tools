@@ -23,11 +23,6 @@ abstract class BaseResource
     protected $tables = array();
 
     /**
-     * @var string
-     */
-    private $assetDir;
-
-    /**
      * @var Config
      */
     protected $config;
@@ -53,20 +48,17 @@ abstract class BaseResource
     protected $progressBar;
 
     /**
-     * @param $assetDir
      * @param Config $config
      * @param RandomDataProvider $generator
      * @param IoService $ioService
      * @param WriterManager $writerManager
      */
     public function __construct(
-        $assetDir,
         Config $config,
         RandomDataProvider $generator,
         IoService $ioService,
         WriterManager $writerManager
     ) {
-        $this->assetDir = $assetDir;
         $this->config = $config;
         $this->generator = $generator;
         $this->ioService = $ioService;
@@ -136,14 +128,6 @@ abstract class BaseResource
         }
 
         return implode("\n", $sql)."COMMIT;";
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAssetDir()
-    {
-        return $this->assetDir;
     }
 
     /**

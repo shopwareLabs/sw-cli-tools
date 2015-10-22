@@ -20,7 +20,6 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $this->container->register('generator_config', '\Shopware\DataGenerator\Struct\Config');
 
         $this->container->register('resource_loader', '\Shopware\DataGenerator\ResourceLoader')
-            ->addArgument($this->container->get('path_provider')->getExtensionPath() . '/Shopware/DataGenerator/assets')
             ->addArgument(new Reference('service_container'));
 
         $this->container->register('data_generator', '\Shopware\DataGenerator\DataGenerator')

@@ -9,11 +9,6 @@ use Symfony\Component\DependencyInjection\Container;
 class ResourceLoader
 {
     /**
-     * @var string
-     */
-    private $assetDir;
-
-    /**
      * @var BaseResource[]
      */
     private $resources;
@@ -22,9 +17,8 @@ class ResourceLoader
      */
     private $container;
 
-    public function __construct($assetDir, Container $container)
+    public function __construct(Container $container)
     {
-        $this->assetDir = $assetDir;
         $this->container = $container;
     }
 
@@ -37,7 +31,6 @@ class ResourceLoader
         if (!isset($this->resources[$type])) {
             $className = 'Shopware\DataGenerator\Resources\\' . ucfirst($type);
             $this->resources[$type] = new $className(
-                $this->assetDir,
                 $this->container->get('generator_config'),
                 $this->container->get('random_data_provider'),
                 $this->container->get('io_service'),

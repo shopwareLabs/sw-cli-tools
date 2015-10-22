@@ -419,9 +419,9 @@ class Articles extends BaseResource
      */
     private function copyImages($imageDir, $images, $thumbs, $useSmallImage)
     {
+        $assetsDir = ''; //TODO: implement real asset loading
         // Copy the images to media directory
-        $destination = $useSmallImage ? $this->getAssetDir().'/images/beach_small.jpg' : $this->getAssetDir(
-            ).'/images/beach.jpg';
+        $destination = $assetsDir.($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {
             $target = $imageDir."/".$imageName.".jpg";
             copy($destination, $target);
