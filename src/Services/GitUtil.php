@@ -10,8 +10,10 @@ class GitUtil
     /**
      * Number of seconds before the GitUtil will cancel an operation.
      * You might need to increase it at some point, if your checkout / database building takes too long
+     *
+     * @var int
      */
-    const DEFAULT_TIMEOUT = 180;
+    private $timeout;
 
     /**
      * @var OutputInterface
@@ -24,24 +26,28 @@ class GitUtil
 
     /**
      * @param OutputInterface $output
+     * @param GitIdentityEnvironment $gitEnv
+     * @param int $timeout
      */
-    public function __construct(OutputInterface $output, GitIdentityEnvironment $gitEnv)
+    public function __construct(OutputInterface $output, GitIdentityEnvironment $gitEnv, $timeout)
     {
+        $this->timeout = $timeout;
         $this->output = $output;
         $this->gitEnv = $gitEnv;
     }
 
+
     /**
-     * @param  string            $commandline
-     * @throws \RuntimeException
+     * @param  string $commandline
+     * @param int|null $timeout
      * @return string
      */
-    public function run($commandline)
+    public function run($commandline, $timeout = null)
     {
         $commandline = 'git ' . $commandline;
 
         $process = new Process($commandline, null, $this->gitEnv->getGitEnv());
-        $process->setTimeout(self::DEFAULT_TIMEOUT);
+        $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4
         $process->run(function ($type, $buffer) use ($output) {

@@ -9,8 +9,10 @@ class ProcessExecutor
     /**
      * Number of seconds before the ProcessExecutor will cancel an operation.
      * You might need to increase it at some point, if your checkout / database building takes too long
+     *
+     * @var int
      */
-    const DEFAULT_TIMEOUT = 180;
+    private $timeout;
 
     /**
      * @var OutputInterface
@@ -19,23 +21,25 @@ class ProcessExecutor
 
     /**
      * @param OutputInterface $output
+     * @param int $timeout
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, $timeout)
     {
+        $this->timeout = $timeout;
         $this->output = $output;
     }
 
     /**
-     * @param  string            $commandline
-     * @param  bool              $allowFailure
-     * @param  string            $cwd
-     * @throws \RuntimeException
+     * @param  string $commandline
+     * @param  string $cwd
+     * @param  bool $allowFailure
+     * @param int|null $timeout
      * @return int|null
      */
-    public function execute($commandline, $cwd = null, $allowFailure = false)
+    public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null)
     {
         $process = new Process($commandline, $cwd);
-        $process->setTimeout(self::DEFAULT_TIMEOUT);
+        $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4
         $process->run(function ($type, $buffer) use ($output) {

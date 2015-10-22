@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DependencyInjection
 {
+    const DEFAULT_PROCESS_TIMEOUT = 180;
     /**
      * @return ContainerBuilder
      */
@@ -27,7 +28,8 @@ class DependencyInjection
             ->addArgument(new Reference('question_helper'));
 
         $container->register('process_executor', 'ShopwareCli\Services\ProcessExecutor')
-            ->addArgument(new Reference('output_interface'));
+            ->addArgument(new Reference('output_interface'))
+            ->addArgument(getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
 
         $container->register('git_identity_environment', 'ShopwareCli\Services\GitIdentityEnvironment')
             ->addArgument(new Reference('path_provider'))
@@ -35,7 +37,8 @@ class DependencyInjection
 
         $container->register('git_util', 'ShopwareCli\Services\GitUtil')
                 ->addArgument(new Reference('output_interface'))
-                ->addArgument(new Reference('git_identity_environment'));
+                ->addArgument(new Reference('git_identity_environment'))
+                ->addArgument(getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
 
         $container->register('utilities', 'ShopwareCli\Utilities')
             ->addArgument(new Reference('io_service'));
