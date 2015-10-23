@@ -115,6 +115,14 @@ class WriterManager
     }
 
     /**
+     * Clears all writers
+     */
+    public function clear()
+    {
+        $this->writers = [];
+    }
+
+    /**
      * @param $defaultWriterType
      */
     public function setDefaultWriterType($defaultWriterType)

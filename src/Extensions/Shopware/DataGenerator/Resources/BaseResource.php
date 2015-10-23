@@ -110,13 +110,14 @@ abstract class BaseResource
             $sql[] = "TRUNCATE `{$table}`;";
             $sql[] = "ALTER TABLE `{$table}` DISABLE KEYS;";
         }
+        $sql[] = "COMMIT;";
 
-        return implode("\n", $sql)."COMMIT;";
+        return $sql;
     }
 
     /**
      * Generic cleanup method which re-enables keys for the tables
-     * @return string
+     * @return array
      */
     protected function enableKeys()
     {
@@ -126,8 +127,9 @@ abstract class BaseResource
             $sql[] = "ALTER TABLE `{$table}` ENABLE KEYS;";
             $sql[] = "SET unique_checks=1;";
         }
+        $sql[] = "COMMIT;";
 
-        return implode("\n", $sql)."COMMIT;";
+        return $sql;
     }
 
     /**
@@ -189,5 +191,6 @@ abstract class BaseResource
 
         $writer->write($this->enableKeys());
         $this->writerManager->flushAll();
+        $this->writerManager->clear();
     }
 }

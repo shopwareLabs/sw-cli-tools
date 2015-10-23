@@ -91,10 +91,10 @@ class Articles extends BaseResource
         $filterValues = $this->writerManager->createWriter('filter_values', 'csv');
         $filterRelations = $this->writerManager->createWriter('filter_relations', 'csv');
 
-        $filter->write(implode("\n", $filterGroupValues));
-        $filterOptions->write(implode("\n", $filterOptionValues));
-        $filterValues->write(implode("\n", $filterValueValues));
-        $filterRelations->write(implode("\n", $filterOptionGroupRelationValues));
+        $filter->write($filterGroupValues);
+        $filterOptions->write($filterOptionValues);
+        $filterValues->write($filterValueValues);
+        $filterRelations->write($filterOptionGroupRelationValues);
 
         $importWriter->write($this->loadDataInfile->get('s_filter', $filter->getFileName()));
         $importWriter->write($this->loadDataInfile->get('s_filter_options', $filterOptions->getFileName()));

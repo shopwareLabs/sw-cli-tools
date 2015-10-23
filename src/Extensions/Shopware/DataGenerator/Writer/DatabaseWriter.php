@@ -27,14 +27,15 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
-     * Returns an instance of a buffered writer
-     *
-     * @param $content
-     * @return BufferedFileWriter
+     * @inheritdoc
      */
     public function write($content)
     {
-        $this->data[] = $content;
+        if (!is_array($content)) {
+            $this->data[] = $content;
+        } else {
+            $this->data = array_merge($this->data, $content);
+        }
     }
 
     /**

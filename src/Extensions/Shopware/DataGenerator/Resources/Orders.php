@@ -98,7 +98,7 @@ class Orders extends BaseResource
         }
 
         $writer->write($this->createSQL($valueData));
-        $orderCSVWriter->write(implode("\n", $orderNumbers));
+        $orderCSVWriter->write($orderNumbers);
         $this->finishProgressBar();
     }
 
@@ -144,6 +144,6 @@ class Orders extends BaseResource
             ).";";
 
 
-        return implode("\n", $sql);
+        return $sql;
     }
 }

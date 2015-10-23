@@ -53,14 +53,17 @@ class BufferedFileWriter implements WriterInterface
     }
 
     /**
-     * Write a line to disc. If a buffer is configured, this might not happen immediately
-     *
-     * @param $content
+     * @inheritdoc
      */
     public function write($content)
     {
-        $this->buffer[] = $content;
-        $this->bufferCounter += 1;
+        if (!is_array($content)) {
+            $this->buffer[] = $content;
+            $this->bufferCounter += 1;
+        } else {
+            $this->buffer = array_merge($this->buffer, $content);
+            $this->bufferCounter += count($content);
+        }
         if ($this->bufferCounter >= $this->maxBufferSize) {
             $this->flush();
         }

@@ -19,7 +19,7 @@ interface WriterInterface
      * Writes data into the writer. Depending on the actual implementation,
      * the data might not be actually written until flush() is called
      *
-     * @param $content
+     * @param string|array $content
      */
     public function write($content);
 

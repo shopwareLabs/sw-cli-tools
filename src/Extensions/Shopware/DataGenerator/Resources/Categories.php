@@ -202,11 +202,10 @@ class Categories extends BaseResource
             "INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `left`, `right`, `level`, `added`, `changed`, `metakeywords`, `metadescription`, `cmsheadline`, `cmstext`, `template`, `noviewselect`, `active`, `blog`, `showfiltergroups`, `external`, `hidefilter`, `hidetop`, `mediaID`) VALUES %s ;",
             implode(",\n             ", $values)
         );
-        $urls = implode("\n", $categoryURLs)."\n";
 
         $this->finishProgressBar();
 
         $writer->write($categoryValues);
-        $categoryUrls->write($urls);
+        $categoryUrls->write($categoryURLs);
     }
 }
