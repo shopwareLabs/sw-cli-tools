@@ -64,7 +64,7 @@ class CreateDataCommand extends BaseCommand
                 'categoriesPerArticle',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Number of categories to assign to each article (not exact)',
+                'Number of categories to assign to each article',
                 null
             )
             ->addOption(
@@ -106,10 +106,22 @@ class CreateDataCommand extends BaseCommand
                 'installDir',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Your Shopware installation path.',
+                'Your Shopware installation path. If provided, data will be automatically injected into the configured database.',
                 ''
             )
-            ->setDescription('Create article demo sql');
+            ->setDescription('
+<info>Creates fake data for your Shopware installation.</info>
+
+<info>If executed from a Shopware installation, or if \'installDir\' is provided, the data will be automatically written into your Shopware database</info>
+<info>Otherwise, data will be exported to individual files in the \'<current dir>\\output\' folder</info>
+<info>You need to import wht .sql files in the order in which they are generated (see the command output)</info>
+
+<info>See the command options to know which data types can be generated</info>
+<info>Requires \'local-infile=1\' in your MySQL installation.</info>
+
+<comment>WARNING:</comment>
+<comment>This command is DESTRUCTIVE, and will replace existing data in your Shopware database. Do not run in production environments</comment>
+            ');
     }
 
     /**
