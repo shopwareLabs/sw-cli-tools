@@ -36,6 +36,7 @@
                 "vendor/herrera-io/version",
                 "vendor/dnoegel",
                 "vendor/ramsey",
+                "vendor/fzaninotto",
                 "src"
             ]
         }

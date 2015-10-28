@@ -14,7 +14,8 @@
         "dnoegel/php-xdg-base-dir": "~0.1",
         "shopwarelabs/plugin-info": "dev-master",
         "kherge/amend": "3.*",
-        "ramsey/array_column": "~1.1"
+        "ramsey/array_column": "~1.1",
+        "fzaninotto/faker": "^1.5"
     },
     "require-dev": {
         "ext-phar": "*",
