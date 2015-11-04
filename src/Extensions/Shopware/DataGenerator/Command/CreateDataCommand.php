@@ -109,15 +109,14 @@ class CreateDataCommand extends BaseCommand
                 'Your Shopware installation path. If provided, data will be automatically injected into the configured database.',
                 ''
             )
-            ->setDescription('
-<info>Creates fake data for your Shopware installation.</info>
+            ->setDescription('Creates fake data for your Shopware installation.
 
-<info>If executed from a Shopware installation, or if \'installDir\' is provided, the data will be automatically written into your Shopware database</info>
-<info>Otherwise, data will be exported to individual files in the \'<current dir>\\output\' folder</info>
-<info>You need to import wht .sql files in the order in which they are generated (see the command output)</info>
+If executed from a Shopware installation, or if \'installDir\' is provided, the data will be automatically written into your Shopware database
+Otherwise, data will be exported to individual files in the \'<current dir>\\output\' folder
+You need to import wht .sql files in the order in which they are generated (see the command output)
 
-<info>See the command options to know which data types can be generated</info>
-<info>Requires \'local-infile=1\' in your MySQL installation.</info>
+See the command options to know which data types can be generated
+Requires \'local-infile=1\' in your MySQL installation.
 
 <comment>WARNING:</comment>
 <comment>This command is DESTRUCTIVE, and will replace existing data in your Shopware database. Do not run in production environments</comment>
