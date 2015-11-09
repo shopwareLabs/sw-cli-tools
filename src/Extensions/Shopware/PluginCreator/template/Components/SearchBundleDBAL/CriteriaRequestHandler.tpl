@@ -3,7 +3,7 @@
 
 namespace Shopware\<?= $configuration->name; ?>\Components\SearchBundleDBAL;
 
-use \Enlight_Controller_Request_Request;
+use Enlight_Controller_Request_RequestHttp as Request;
 use Shopware\Bundle\SearchBundle\Criteria;
 use Shopware\Bundle\SearchBundle\CriteriaRequestHandlerInterface;
 use Shopware\Bundle\StoreFrontBundle\Struct\ShopContextInterface;
@@ -14,7 +14,7 @@ class <?= $configuration->name; ?>CriteriaRequestHandler implements CriteriaRequ
      * @inheritdoc
      */
     public function handleRequest(
-        Enlight_Controller_Request_Request $request,
+        Request $request,
         Criteria $criteria,
         ShopContextInterface $context
     ) {
