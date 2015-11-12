@@ -10,7 +10,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
     public function testCliToolGateway()
     {
         $output = new BufferedOutput();
-        $executor = new ProcessExecutor($output);
+        $executor = new ProcessExecutor($output, 60);
 
         $exitCode = $executor->execute('true');
         $this->assertEquals(0, $exitCode);
@@ -29,7 +29,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
     public function testFailedCommand()
     {
         $output = new BufferedOutput();
-        $executor = new ProcessExecutor($output);
+        $executor = new ProcessExecutor($output, 60);
 
         $executor->execute('false');
     }
@@ -37,7 +37,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
     public function testFailedCommand2()
     {
         $output = new BufferedOutput();
-        $executor = new ProcessExecutor($output);
+        $executor = new ProcessExecutor($output, 60);
 
         $expectedOutput = "ls: cannot access /no-such-file: No such file or directory\n";
         try {
@@ -56,7 +56,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
     public function testAllowFailingCmmand()
     {
         $output = new BufferedOutput();
-        $executor = new ProcessExecutor($output);
+        $executor = new ProcessExecutor($output, 60);
 
         $expectedOutput = "ls: cannot access /no-such-file: No such file or directory\n";
 
@@ -64,5 +64,19 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $exitCode);
         $this->assertEquals($expectedOutput, $output->fetch());
+    }
+
+    /**
+     * @group slow
+     * @expectedException \Symfony\Component\Process\Exception\ProcessTimedOutException
+     * @expectedExceptionMessage The process "sleep 2" exceeded the timeout of 1 seconds.
+     */
+    public function testTimeout()
+    {
+        $output = new BufferedOutput();
+        $executor = new ProcessExecutor($output, 1);
+
+
+        $executor->execute('sleep 2', null, true);
     }
 }
