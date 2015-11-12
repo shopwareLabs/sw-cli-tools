@@ -15,7 +15,9 @@ use ShopwareCli\Utilities;
  */
 class Checkout
 {
-    /** @var \ShopwareCli\Utilities  */
+    /**
+     * @var \ShopwareCli\Utilities
+     */
     protected $utilities;
 
     /**
@@ -80,7 +82,7 @@ class Checkout
 
         $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
         if (trim($output) === '') {
-            $this->ioService->writeln("Plugin '$pluginName' ist Up to date");
+            $this->ioService->writeln("Plugin '$pluginName' is up to date");
             if ($branch) {
                 $this->gitUtil->run("checkout {$branch}");
             }
@@ -88,7 +90,7 @@ class Checkout
             return;
         }
 
-        $this->ioService->writeln("Incomming Changes:");
+        $this->ioService->writeln("Incoming changes:");
         $this->ioService->writeln($output);
 
         $this->gitUtil->run("reset --hard HEAD");

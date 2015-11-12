@@ -15,7 +15,9 @@
         "shopwarelabs/plugin-info": "dev-master",
         "kherge/amend": "3.*",
         "ramsey/array_column": "~1.1",
-        "fzaninotto/faker": "^1.5"
+        "fzaninotto/faker": "^1.5",
+        "guzzlehttp/guzzle": "^5.3",
+        "piwik/ini": "^1.0"
     },
     "require-dev": {
         "ext-phar": "*",
