@@ -38,6 +38,11 @@
         }
     },
     "bin": ["bin/sw"],
+    "config": {
+        "platform": {
+            "php": "5.4"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
