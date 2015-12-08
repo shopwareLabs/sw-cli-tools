@@ -11,7 +11,7 @@ class ReleaseDownloader
     const DOWNLOAD_URL_TEMPLATE = 'http://releases.s3.shopware.com/install_%s.zip';
 
     const DOWNLOAD_URL_LATEST = 'http://install.s3.shopware.com/';
-    const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/release/install';
+    const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/releases/install';
 
     /**
      * @var string
@@ -34,12 +34,16 @@ class ReleaseDownloader
 
     /**
      * @param ProcessExecutor $processExecutor
-     * @param IoService       $ioService
-     * @param FileDownloader  $downloader
-     * @param string          $cachePath
+     * @param IoService $ioService
+     * @param FileDownloader $downloader
+     * @param string $cachePath
      */
-    public function __construct(ProcessExecutor $processExecutor, IoService $ioService, FileDownloader $downloader, $cachePath)
-    {
+    public function __construct(
+        ProcessExecutor $processExecutor,
+        IoService $ioService,
+        FileDownloader $downloader,
+        $cachePath
+    ) {
         $this->cachePath = $cachePath;
         $this->ioService = $ioService;
         $this->processExecutor = $processExecutor;
@@ -54,11 +58,7 @@ class ReleaseDownloader
      */
     public function downloadRelease($release, $installDir)
     {
-        if ($release == 'latest') {
-            $zipLocation = $this->downloadFromUpdateApi($release);
-        } else {
-            $zipLocation = $this->downloadFromUrl($release);
-        }
+        $zipLocation = $this->downloadFromUpdateApi($release);
 
         if (!is_dir($installDir)) {
             mkdir($installDir);
@@ -70,16 +70,21 @@ class ReleaseDownloader
     /**
      * New releases can be downloaded via the update api and provide a sha1 hash
      *
+     * @param $release
      * @return string
-     * @throws \RuntimeException
      */
-    private function downloadFromUpdateApi()
+    private function downloadFromUpdateApi($release)
     {
-        file_get_contents(self::DOWNLOAD_UPDATE_API);
+        $indexedReleases = $this->getIndexedReleasesList();
 
-        $content = json_decode(trim(file_get_contents(self::DOWNLOAD_UPDATE_API)), true);
-        if (empty($content)) {
-            throw new \RuntimeException("Could not get latest install package");
+        if (array_key_exists($release, $indexedReleases)) {
+            $content = $indexedReleases[$release];
+        } else {
+            if ($release == 'latest') {
+                $content = array_shift($indexedReleases);
+            } else {
+                throw new \RuntimeException(sprintf("Could not find release %s", $release));
+            }
         }
 
         $version = $content['version'];
@@ -97,7 +102,7 @@ class ReleaseDownloader
         $this->downloader->download($url, $target);
         $sha1Actual = sha1_file($target);
         if ($sha1 != $sha1Actual) {
-            throw new \RuntimeException("Hash missmatch");
+            throw new \RuntimeException("Hash mismatch");
         }
         copy($target, $cacheFilePath);
 
@@ -105,27 +110,24 @@ class ReleaseDownloader
     }
 
     /**
-     * Older releases needs to be installed directly via the s3 url
+     * Loads a list of the latest releases from the update API
+     * Returns them indexed by the Shopware version (e.g: 5.1.0)
      *
-     * @param  string $release
-     * @return string
+     * @return array
      */
-    private function downloadFromUrl($release)
+    private function getIndexedReleasesList()
     {
-        $url = $this->getDownloadUrl($release);
-        $target = $this->getTempFile();
-
-        $cacheFile = $this->getCacheFilePath($release);
-
-        if (!file_exists($cacheFile)) {
-            $this->ioService->writeln("<info>Downloading release {$release}</info>");
-            $this->downloader->download($url, $target);
-            copy($target, $cacheFile);
-        } else {
-            $this->ioService->writeln("<info>Reading cached release download for {$release}</info>");
+        $releases = json_decode(trim(file_get_contents(self::DOWNLOAD_UPDATE_API)), true);
+        if (empty($releases)) {
+            throw new \RuntimeException("Could not get releases list package");
         }
 
-        return $cacheFile;
+        $indexedReleases = [];
+        foreach ($releases as $release) {
+            $indexedReleases[$release['version']] = $release;
+        }
+
+        return $indexedReleases;
     }
 
     /**
@@ -136,7 +138,7 @@ class ReleaseDownloader
      */
     private function getCacheFilePath($release)
     {
-        return $this->cachePath . "/{$release}.zip";
+        return $this->cachePath."/{$release}.zip";
     }
 
     /**
@@ -146,21 +148,6 @@ class ReleaseDownloader
      */
     private function getTempFile()
     {
-        return sys_get_temp_dir() . '/' . uniqid('release_download');
-    }
-
-    /**
-     * get a release url for an older release
-     *
-     * @param  string $release
-     * @return string
-     */
-    private function getDownloadUrl($release)
-    {
-        if ($release == 'latest') {
-            return self::DOWNLOAD_URL_LATEST;
-        }
-
-        return sprintf(self::DOWNLOAD_URL_TEMPLATE, $release);
+        return sys_get_temp_dir().'/'.uniqid('release_download');
     }
 }
