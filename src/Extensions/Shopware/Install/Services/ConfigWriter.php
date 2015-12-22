@@ -33,6 +33,7 @@ db.name = %s
 db.host = %s
 db.user = %s
 db.password = %s
+db.port = %s
 
 EOF;
     /**
@@ -54,13 +55,13 @@ EOF;
         file_put_contents($installDir . '/config.php', $config);
     }
 
-    public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost)
+    public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost, $port = 3306)
     {
         $this->ioService->writeln("<info>Writing build.properties</info>");
 
         $shopPath = '/' . ltrim($shopPath, '/');
 
-        $config = sprintf($this->buildPropertiesTemplate, $shopHost, $shopPath, $dbName, $dbHost, $dbUser, $dbPassword);
+        $config = sprintf($this->buildPropertiesTemplate, $shopHost, $shopPath, $dbName, $dbHost, $dbUser, $dbPassword, $port);
 
         file_put_contents($installDir . '/build/build.properties', $config);
     }
