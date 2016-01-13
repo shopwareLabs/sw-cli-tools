@@ -19,24 +19,7 @@
             "name": "*.php",
             "exclude": ["tests"],
             "in": [
-                "vendor/composer",
-                "vendor/shopwarelabs",
-                "vendor/justinrainbow",
-                "vendor/symfony/console",
-                "vendor/symfony/config",
-                "vendor/symfony/dependency-injection",
-                "vendor/symfony/process",
-                "vendor/symfony/filesystem",
-                "vendor/symfony/yaml",
-                "vendor/seld/jsonlint",
-                "vendor/kherge/amend",
-                "vendor/justinrainbow/json-schema",
-                "vendor/herrera-io/json",
-                "vendor/herrera-io/phar-update",
-                "vendor/herrera-io/version",
-                "vendor/dnoegel",
-                "vendor/ramsey",
-                "vendor/fzaninotto",
+                "vendor",
                 "src"
             ]
         }
