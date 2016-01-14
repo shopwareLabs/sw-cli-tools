@@ -1,9 +1,17 @@
 config.cfg
-licenses.txt
 *config.yaml
 vendor/
 composer.phar
 php_errors.log
 .idea
-sw.phar
 
+box.json
+box.phar
+
+sw.phar
+sw.phar.pubkey
+sw.phar.version
+
+.travis/phar-private.pem
+.travis/build-key.pem
+.travis/secrets.tar
