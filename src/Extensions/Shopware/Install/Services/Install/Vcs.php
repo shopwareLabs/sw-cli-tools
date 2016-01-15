@@ -78,6 +78,10 @@ class Vcs
     public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null, $noDemoData = false)
     {
         $this->checkoutRepos($branch, $installDir, $httpUser);
+
+        // after the directory is created by git we can get the realpath
+        $installDir = realpath($installDir);
+
         $this->generateVcsMapping($installDir);
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
