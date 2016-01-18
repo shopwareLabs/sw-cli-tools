@@ -185,7 +185,8 @@ class Vcs
             $this->config['DatabaseConfig']['user'],
             $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host'],
+            $this->config['DatabaseConfig']['port'] ?: 3306
         );
     }
 
@@ -201,7 +202,8 @@ class Vcs
             $this->config['DatabaseConfig']['user'],
             $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host'],
+            $this->config['DatabaseConfig']['port'] ?: 3306
         );
 
         $this->database->runBuildScripts($installDir);

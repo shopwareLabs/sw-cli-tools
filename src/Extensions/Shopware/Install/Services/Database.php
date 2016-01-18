@@ -46,9 +46,9 @@ class Database
         $this->processExecutor = $processExecutor;
     }
 
-    private function createConnection($host, $username, $password)
+    private function createConnection($host, $username, $password, $port = 3306)
     {
-        $this->connection = new \PDO("mysql:host={$host};charset=utf8", $username, $password);
+        $this->connection = new \PDO("mysql:host={$host};charset=utf8;port={$port}", $username, $password);
         $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $this->connection;
@@ -67,7 +67,7 @@ class Database
     {
         $this->ioService->writeln("<info>Creating database $name</info>");
 
-        $this->createConnection($host, $user, $password)->query("CREATE DATABASE IF NOT EXISTS `{$name}`;");
+        $this->createConnection($host, $user, $password, $port)->query("CREATE DATABASE IF NOT EXISTS `{$name}`;");
         $this->getConnection()->query("use `{$name}`;");
     }
 

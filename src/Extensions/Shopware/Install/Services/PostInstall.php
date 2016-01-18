@@ -160,8 +160,9 @@ class PostInstall
         $username = $this->config['DatabaseConfig']['user'];
         $password = $this->config['DatabaseConfig']['pass'];
         $host = $this->config['DatabaseConfig']['host'];
+        $port = $this->config['DatabaseConfig']['port'] ?: 3306;
 
-        $connection = new \PDO("mysql:host={$host};charset=utf8", $username, $password);
+        $connection = new \PDO("mysql:host={$host};charset=utf8;port={$port}", $username, $password);
         $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $connection;

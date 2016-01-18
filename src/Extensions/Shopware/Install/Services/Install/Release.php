@@ -142,7 +142,8 @@ class Release
             $this->config['DatabaseConfig']['user'],
             $this->config['DatabaseConfig']['pass'],
             $database,
-            $this->config['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host'],
+            $this->config['DatabaseConfig']['port'] ?: 3306
         );
     }
 
@@ -157,7 +158,8 @@ class Release
             $this->config['DatabaseConfig']['user'],
             $this->config['DatabaseConfig']['pass'],
             $request->databaseName,
-            $this->config['DatabaseConfig']['host']
+            $this->config['DatabaseConfig']['host'],
+            $this->config['DatabaseConfig']['port'] ?: 3306
         );
         $this->database->importReleaseInstallDeltas($request->installDir);
         $this->database->createAdmin(
