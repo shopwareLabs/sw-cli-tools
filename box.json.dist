@@ -1,6 +1,6 @@
 {
-    "alias": "sw.phar",
     "chmod": "0755",
+    "alias": "sw.phar",
     "compactors": [
         "Herrera\\Box\\Compactor\\Json",
         "Herrera\\Box\\Compactor\\Php"
@@ -11,7 +11,6 @@
         "README.md",
         "config.yaml.dist",
         "vendor/autoload.php",
-        "vendor/herrera-io/phar-update/res/schema.json",
         "vendor/shopwarelabs/plugin-info/res/plugin-info-schema.json"
     ],
     "finder": [
@@ -25,6 +24,7 @@
         }
     ],
     "git-version": "package_version",
+    "intercept": true,
     "main": "bin/sw",
     "output": "sw.phar",
     "stub": true

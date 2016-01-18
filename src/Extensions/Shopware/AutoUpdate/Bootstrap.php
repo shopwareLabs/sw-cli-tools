@@ -2,11 +2,11 @@
 
 namespace Shopware\AutoUpdate;
 
+use Humbug\SelfUpdate\Updater;
+use Shopware\AutoUpdate\Command\RollbackCommand;
+use Shopware\AutoUpdate\Command\SelfUpdateCommand;
 use ShopwareCli\Application\ConsoleAwareExtension;
-use KevinGH\Amend\Command;
-use KevinGH\Amend\Helper;
 use ShopwareCli\Application\ContainerAwareExtension;
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -23,6 +23,21 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     /**
      * {@inheritdoc}
      */
+    public function setContainer(ContainerBuilder $container)
+    {
+        $this->container = $container;
+
+        if (!$this->isPharFile()) {
+            return;
+        }
+
+        $this->populateContainer($container);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public function getConsoleCommands()
     {
         if (!$this->isPharFile()) {
@@ -33,27 +48,37 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             $this->runUpdate();
         }
 
-        $manifest = $this->getManifestUrl();
-
-        $command = new Command('update');
-        $command->setManifestUri($manifest);
-
         return array(
-            $command
+            new SelfUpdateCommand($this->container->get('updater')),
+            new RollbackCommand($this->container->get('updater')),
         );
     }
 
     /**
      * @param ContainerBuilder $container
      */
-    public function setContainer(ContainerBuilder $container = null)
+    private function populateContainer($container)
     {
-        $this->container = $container;
-
-        if ($this->isPharFile()) {
-            $container->get('helper_set')->set(new Helper());
-        }
+        $container->set('updater', $this->createUpdater());
     }
+
+    /**
+     * @return Updater
+     */
+    private function createUpdater()
+    {
+        $config     = $this->container->get('config');
+        $pharUrl    = $config['update']['pharUrl'];
+        $versionUrl = $config['update']['vesionUrl'];
+        $verifyKey  = (bool)$config['update']['verifyPublicKey'];
+
+        $updater = new Updater(null, $verifyKey);
+        $updater->getStrategy()->setPharUrl($pharUrl);
+        $updater->getStrategy()->setVersionUrl($versionUrl);
+
+        return $updater;
+    }
+
 
     /**
      * Checks if script is run as phar archive and manifestUrl is available
@@ -62,11 +87,6 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
      */
     public function isPharFile()
     {
-        $config = $this->container->get('config');
-        if (!isset($config['update']['manifestUrl'])) {
-            return false;
-        }
-
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
 
         return strpos($toolPath, 'phar:') !== false ;
@@ -77,41 +97,29 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
      */
     private function runUpdate()
     {
-        /** @var $amend Helper */
-        $amend = $this->container->get('helper_set')->get('amend');
+        $updater = $this->container->get('updater');
 
         try {
-            $manager = $amend->getManager($this->getManifestUrl());
-        } catch (\Herrera\Json\Exception\FileException $e) {
-            echo "\nCould not download {$this->getManifestUrl()}\n";
+            $result = $updater->update();
+            if (!$result) {
+                return;
+            }
+
+            $new = $updater->getNewVersion();
+            $old = $updater->getOldVersion();
+
+            exit(sprintf(
+                "Updated from SHA-1 %s to SHA-1 %s. Please run again\n", $old, $new
+            ));
+        } catch (\Exception $e) {
             echo "\nCheck your connection\n";
-
-            return;
-        }
-
-        if ($manager->update(
-            \ShopwareCli\Application::VERSION,
-            false,
-            false
-        )) {
-            echo "\nUpdated your archive. Please run again\n";
-            exit(0);
+            exit(1);
         }
     }
 
     /**
-     * Get manifest url
-     *
-     * @return string
+     * @return bool
      */
-    private function getManifestUrl()
-    {
-        $config = $this->container->get('config');
-        $manifest = $config['update']['manifestUrl'];
-
-        return $manifest;
-    }
-
     private function checkUpdateOnRun()
     {
         $config = $this->container->get('config');

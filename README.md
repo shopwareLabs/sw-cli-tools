@@ -60,7 +60,7 @@ Valid options/arguments are:
     --branch branch to checkout out
     names1…nameN - names of plugins to install
 
-This command will automatically create a VCS mapping for phpstorm if .idea/vcs.xml can be found. You will need
+This command will automatically create a VCS mapping for phpstorm if `.idea/vcs.xml` can be found. You will need
 to refresh you config with File->Sychronize (Control+Alt+Y)
 
 ### sw plugin:zip:vcs
@@ -80,6 +80,7 @@ Will zip the given plugin directory. DIRECTORY must point to the directory where
 Checkout the latest shopware version from vcs (for development)
 
 Valid options/arguments are:
+
     --branch: The branch to checkout
     --databaseName: Name of the database to use
     --installDir: Where to install shopware
@@ -102,20 +103,17 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 Will create a Shopware plugin with all the boilerplate code.
 
 Valid options / arguments are:
-```
---namespace[="..."]: Namespace of the plugin, default: Frontend
---haveBackend: Generate a backend Controller + a simple ExtJS module
---backendModel[="..."]: The name of the model for your backend application
---haveFilter: Generate Condition/Facet/CriteriaRequestHandler in order to add a new filter in the frontend
---haveFrontend: Generate a frontend controller
---haveModels: Generate a simple doctrine model
---haveCommands: Generate a console command
---haveWidget: Generate a backend widget
---haveApi: Generate an API resource + REST controller
---licenseHeader[="..."]: Include a license header at the beginning of any file
-name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
-```
 
+    --namespace[="..."]: Namespace of the plugin, default: Frontend
+    --haveBackend: Generate a backend Controller + a simple ExtJS module
+    --backendModel[="..."]: The name of the model for your backend application
+    --haveFilter: Generate Condition/Facet/CriteriaRequestHandler in order to add a new filter in the frontend
+    --haveFrontend: Generate a frontend controller
+    --haveModels: Generate a simple doctrine model
+    --haveCommands: Generate a console command
+    --haveWidget: Generate a backend widget
+    --haveApi: Generate an API resource + REST controller
+    --licenseHeader[="..."]: Include a license header at the beginning of any file name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
 
 The options will be read interactively, if not provided.
 The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
@@ -124,16 +122,16 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 
 ## New Extensions
 
-Extensions are created in the "/home/USER/.config/sw-cli-tools/extensions" folder and consist of a vendor folder, the extension folder (with the extension's name) and a Bootstrap.php inside the extension folder. Additionally you can provide an own config.yaml inside the extension folder which will extend the default config.yaml.
+Extensions are created in the `/home/USER/.config/sw-cli-tools/extensions` folder and consist of a vendor folder, the extension folder (with the extension's name) and a `Bootstrap.php` inside the extension folder. Additionally you can provide an own `config.yaml` inside the extension folder which will extend the default `config.yaml`.
 
-The namespace of your extension bootstrap should be VENDOR_FOLDER\EXTENSION_FOLDER\Bootstrap.
+The namespace of your extension bootstrap should be `VENDOR_FOLDER\EXTENSION_FOLDER\Bootstrap`.
 
 ### Bootstrap
-The bootstrap is the main entry point of your extension. If it implements **ContainerAwareExtension**, it will get the container builder
+The bootstrap is the main entry point of your extension. If it implements `ContainerAwareExtension`, it will get the container builder
  of the application injected via setContainer. This way the container can be extended by your extension.
-Additionally the Bootstrap can implement **ConsoleAwareExtension**. If this is the case, the method "getConsoleCommands" will be
+Additionally the Bootstrap can implement `ConsoleAwareExtension`. If this is the case, the method "getConsoleCommands" will be
 called after creation - please return an array of console command instances here.
-Finally the extension will call the getRepositories method of extensions implementing **RepositoryAwareInterface will**
+Finally the extension will call the `getRepositories` method of extensions implementing `RepositoryAwareInterface`.
 
 ### Changing existing components
 
@@ -146,15 +144,15 @@ The SW cli tools make use of the XDG directory standard. Following directories a
     ~/.cache/sw-cli-tools: Here caches (like repo content) as well as release downloads are cached
     ~/.local/share/sw-cli-tools: Assets the demo data package are stored here
 
-If you changed some of these directories via XDG environment variables, those directories are used instead
+If you changed some of these directories via `XDG` environment variables, those directories are used instead
 
 # Configuration
-The configuration of the script is done in ~/.config/sw-cli-tools/config.yaml. If the file does not exist on your system, it is created after the first usage of the script.
+The configuration of the script is done in `~/.config/sw-cli-tools/config.yaml`. If the file does not exist on your system, it is created after the first usage of the script.
 
 # Building sw.phar
-For building the release packages (sw.phar) [box](https://github.com/kherge/php-box) is used:
+For building the release package (`sw.phar`) [box](http://box-project.github.io/box2/) is used.
+A new release is build autmatically for every push on the master branch by Travis CI (See `bin/deploy.sh`).
 
-    box build
 
 # Coding standard
 Coding standard for the project is [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
@@ -168,6 +166,4 @@ Coding standard violations may be detected using php-cs-fixer:
 If you are having a slow internet connection and e.g. git checkouts or tasks related to the `ProcessExecutor` fail
 with a timeout, you can increase the timeout by setting the environment variable `SW_TIMEOUT`:
 
-```
-SW_TIMEOUT=500 sw install:vcs
-```
+    SW_TIMEOUT=500 sw install:vcs

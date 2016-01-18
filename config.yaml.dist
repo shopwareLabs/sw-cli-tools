@@ -75,8 +75,9 @@ general:
   enableRepositoryColors: true
 
 update:
-  # Manifest url for internal updates
-  manifestUrl: https://github.com/shopwareLabs/sw-cli-tools/blob/master/manifest.json
+  pharUrl: https://shopwarelabs.github.io/sw-cli-tools/sw.phar
+  vesionUrl: https://shopwarelabs.github.io/sw-cli-tools/sw.phar.version
+  verifyPublicKey: false
   checkOnStartup: false
 
 ## the configured host will always be used
