@@ -195,11 +195,11 @@ class Categories extends BaseResource
             $categoryURLs[] = "/cat/index/sCategory/{$category['id']}";
 
             $name = isset($category['name']) ? $category['name'] : $this->generator->getRandomWord();
-            $values[] = "({$category['id']}, {$category['parent']}, '{$category['path']}', '{$name}', {$id}, {$category['left']}, {$category['right']}, {$category['level']},'2012-07-30 15:24:59', '2012-07-30 15:24:59', NULL, NULL, NULL,NULL, NULL, NULL, 1, 0, 0, NULL, 0, 0, 0)";
+            $values[] = "({$category['id']}, {$category['parent']}, '{$category['path']}', '{$name}', {$id}, {$category['left']}, {$category['right']}, {$category['level']},'2012-07-30 15:24:59', '2012-07-30 15:24:59', NULL, NULL, NULL,NULL, NULL, NULL, 1, 0, NULL, 0, 0, 0)";
         }
 
         $categoryValues = sprintf(
-            "INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `left`, `right`, `level`, `added`, `changed`, `metakeywords`, `metadescription`, `cmsheadline`, `cmstext`, `template`, `noviewselect`, `active`, `blog`, `showfiltergroups`, `external`, `hidefilter`, `hidetop`, `mediaID`) VALUES %s ;",
+            "INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `left`, `right`, `level`, `added`, `changed`, `metakeywords`, `metadescription`, `cmsheadline`, `cmstext`, `template`, `noviewselect`, `active`, `blog`, `external`, `hidefilter`, `hidetop`, `mediaID`) VALUES %s ;",
             implode(",\n             ", $values)
         );
 
