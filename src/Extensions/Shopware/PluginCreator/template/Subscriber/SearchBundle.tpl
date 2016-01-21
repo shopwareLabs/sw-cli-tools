@@ -1,12 +1,12 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Subscriber;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
 
-use Shopware\<?= $configuration->name; ?>\Components\SearchBundleDBAL;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL;
+use Enlight\Event\SubscriberInterface;
 
-
-class SearchBundle implements \Enlight\Event\SubscriberInterface
+class SearchBundle implements SubscriberInterface
 {
     public static function getSubscribedEvents()
     {

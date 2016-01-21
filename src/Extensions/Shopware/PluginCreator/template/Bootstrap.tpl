@@ -57,8 +57,8 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 
     public function install()
     {
-        if (!$this->assertMinimumVersion('4.3.0')) {
-            throw new \RuntimeException('At least Shopware 4.3.0 is required');
+        if (!$this->assertMinimumVersion('<?= $configuration->pluginConfig['minimumVersion']; ?>')) {
+            throw new \RuntimeException('At least Shopware <?= $configuration->pluginConfig['minimumVersion']; ?> is required');
         }
 <?php if ($configuration->hasWidget) { ?>
 
@@ -110,7 +110,7 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 
         // You can easily add more commands here
         return new \Doctrine\Common\Collections\ArrayCollection(array(
-            new \Shopware\<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>()
+            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>()
         ));
     }
 <?php } ?>
@@ -160,10 +160,10 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 
         $subscribers = array(
 <?php if ($configuration->hasFrontend || $configuration->hasBackend || $configuration->hasWidget || $configuration->hasApi) { ?>
-            new \Shopware\<?= $configuration->name; ?>\Subscriber\ControllerPath(),
+            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\ControllerPath(),
 <?php } ?><?php if ($configuration->hasFilter) { ?>
-new \Shopware\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
-<?php } ?>            new \Shopware\<?= $configuration->name; ?>\Subscriber\Frontend()
+new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
+<?php } ?>            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\Frontend()
 
         );
 
@@ -196,7 +196,7 @@ new \Shopware\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
     public function registerApiComponent()
     {
         $this->Application()->Loader()->registerNamespace(
-            'Shopware\Components',
+            '<?= $configuration->pluginConfig['namespace']; ?>\Components',
             $this->Path() . 'Components/'
         );
     }
@@ -205,7 +205,7 @@ new \Shopware\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
     public function registerMyComponents()
     {
         $this->Application()->Loader()->registerNamespace(
-            'Shopware\<?= $configuration->name; ?>',
+            '<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>',
             $this->Path()
         );
     }
