@@ -1,14 +1,16 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace   Shopware\CustomModels\<?= $configuration->name; ?>;
-use         Shopware\Components\Model\ModelRepository;
+namespace Shopware\CustomModels\<?= $configuration->name; ?>;
+
+use Shopware\Components\Model\ModelRepository;
 
 class Repository extends ModelRepository
 {
 
     /**
      * Returns an instance of the \Doctrine\ORM\Query object which selects a list of <?= $names->camelCaseModel; ?>
+
      *
      * @param null $filter
      * @param null $orderBy
@@ -44,5 +46,4 @@ class Repository extends ModelRepository
 
         return $builder;
     }
-
 }

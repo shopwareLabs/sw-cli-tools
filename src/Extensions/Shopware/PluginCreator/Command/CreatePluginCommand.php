@@ -7,7 +7,6 @@ use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,6 +14,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreatePluginCommand extends BaseCommand
 {
+    /**
+     * @return Config
+     */
+    protected function getConfig()
+    {
+        return $this->container->get('config');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -157,6 +164,7 @@ EOF
         }
 
         $configuration = $this->getConfigurationObject($input);
+        $configuration->pluginConfig = $this->getConfig()->offsetGet('PluginConfig');
 
         $generator = new Generator(
             new HardDrive(), $configuration, new NameGenerator($configuration), new Template()

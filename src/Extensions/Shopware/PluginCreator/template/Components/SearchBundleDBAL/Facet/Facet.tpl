@@ -1,7 +1,7 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
 
 use Shopware\Bundle\SearchBundle\FacetInterface;
 
@@ -18,7 +18,7 @@ class <?= $configuration->name; ?>Facet implements FacetInterface
     /**
      * @inheritdoc
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return get_object_vars($this);
     }

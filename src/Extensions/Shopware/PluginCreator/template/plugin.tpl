@@ -3,10 +3,10 @@
         "de": "<?= $configuration->name; ?>",
         "en": "<?= $configuration->name; ?>"
     },
-    "copyright": "(c) by Shopware AG",
-    "license": "proprietary",
-    "link": "http://store.shopware.com",
-    "author": "Shopware AG",
+    "copyright": "<?= $configuration->pluginConfig['copyright']; ?>",
+    "license": "<?= $configuration->pluginConfig['license']; ?>",
+    "link": "<?= $configuration->pluginConfig['link']; ?>",
+    "author": "<?= $configuration->pluginConfig['author']; ?>",
 
     "currentVersion": "1.0.0",
 
@@ -20,7 +20,7 @@
     },
 
     "compatibility": {
-        "minimumVersion": "4.3.0",
+        "minimumVersion": "<?= $configuration->pluginConfig['minimumVersion']; ?>",
         "maximumVersion": null,
         "blacklist": [
         ]

@@ -1,7 +1,7 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Commands;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Commands;
 
 use Shopware\Components\Model\ModelManager;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,7 +36,6 @@ class <?= $names->camelCaseModel; ?> extends ShopwareCommand
 The <info>%command.name%</info> implements a command.
 EOF
             );
-        ;
     }
 
     /**

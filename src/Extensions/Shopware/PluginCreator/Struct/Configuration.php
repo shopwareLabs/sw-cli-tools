@@ -14,6 +14,9 @@ class Configuration extends Struct
 {
     public $phpFileHeader = "<?php\n";
 
+    // the PluginConfig part from the config.yaml file
+    public $pluginConfig;
+
     // Name of the plugin: SwagMyPlugin
     public $name;
     // Namespace of the plugin: frontend / core / backend

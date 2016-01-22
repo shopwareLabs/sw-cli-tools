@@ -1,9 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Subscriber;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
 
-class ControllerPath implements \Enlight\Event\SubscriberInterface
+use Enlight\Event\SubscriberInterface;
+
+class ControllerPath implements SubscriberInterface
 {
     public static function getSubscribedEvents()
     {
@@ -44,7 +46,7 @@ class ControllerPath implements \Enlight\Event\SubscriberInterface
         /** @var \Enlight_Controller_Action $controller */
         $controller = $args->getSubject();
 
-        if ($controller->Request()->getActionName() != 'index') {
+        if ($controller->Request()->getActionName() !== 'index') {
             return;
         }
 

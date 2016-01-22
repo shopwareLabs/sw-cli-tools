@@ -1,7 +1,7 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
 
 use Shopware\Bundle\SearchBundle\Criteria;
 use Shopware\Bundle\SearchBundle\FacetInterface;
@@ -24,8 +24,10 @@ class <?= $configuration->name; ?>FacetHandler implements FacetHandlerInterface
 
     /**
      * @param QueryBuilderFactory $queryBuilderFactory
+     * @param \Shopware_Components_Snippet_Manager $snippetManager
      */
-    function __construct(QueryBuilderFactory $queryBuilderFactory, \Shopware_Components_Snippet_Manager $snippetManager)
+    public function __construct(QueryBuilderFactory $queryBuilderFactory, \Shopware_Components_Snippet_Manager
+$snippetManager)
     {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->snippetManager = $snippetManager;

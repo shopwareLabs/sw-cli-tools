@@ -1,9 +1,10 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace   Shopware\CustomModels\<?= $configuration->name; ?>;
-use         Shopware\Components\Model\ModelEntity,
-    Doctrine\ORM\Mapping AS ORM;
+namespace Shopware\CustomModels\<?= $configuration->name; ?>;
+
+use Shopware\Components\Model\ModelEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="s_plugin_<?= $names->under_score_model; ?>")

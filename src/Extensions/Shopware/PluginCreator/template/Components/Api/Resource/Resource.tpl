@@ -1,16 +1,24 @@
 <?= $configuration->phpFileHeader; ?>
 
-namespace Shopware\Components\Api\Resource;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\Components\Api\Resource;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Shopware\Components\Api\Exception as ApiException;
 use Shopware\Components\Model\QueryBuilder;
+use Shopware\Components\Api\Resource\Resource;
 
 class <?= $names->camelCaseModel; ?> extends Resource
 {
 
     /**
      * Return a list of entities
+     *
+     * @param $offset
+     * @param $limit
+     * @param $filter
+     * @param $sort
+     *
+     * @return array
      */
     public function getList($offset, $limit, $filter, $sort)
     {
@@ -40,6 +48,13 @@ class <?= $names->camelCaseModel; ?> extends Resource
 
     /**
      * Read the given entity $id
+     *
+     * @param $id
+     *
+     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+
+     * @throws ApiException\NotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getOne($id)
     {
@@ -60,12 +75,24 @@ class <?= $names->camelCaseModel; ?> extends Resource
 
     /**
      * Create a new entity with $data
+     *
+     * @param $data
+     *
+     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+
+     * @throws ApiException\NotFoundException
+     * @throws ApiException\OrmException
+     * @throws ApiException\ParameterMissingException
+     * @throws ApiException\ValidationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function create($data)
     {
         $data = $this->prepareData($data);
 
-        $model = new \<?= $configuration->backendModel; ?>();
+        $model = new \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>();
         $model->fromArray($data);
 
         $violations = $this->getManager()->validate($model);
@@ -83,6 +110,19 @@ class <?= $names->camelCaseModel; ?> extends Resource
 
     /**
      * Update a given entity $id with $data
+     *
+     * @param $id
+     * @param $data
+     *
+     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+
+     * @throws ApiException\NotFoundException
+     * @throws ApiException\OrmException
+     * @throws ApiException\ParameterMissingException
+     * @throws ApiException\ValidationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function update($id, $data)
     {
@@ -90,7 +130,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
             throw new ApiException\ParameterMissingException();
         }
 
-        /** @var $model \<?= $configuration->backendModel; ?> */
+        /** @var $model \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?> */
         $model = $this->getManager()->find('<?= $configuration->backendModel; ?>', $id);
 
         if (!$model) {
@@ -114,6 +154,17 @@ class <?= $names->camelCaseModel; ?> extends Resource
 
     /**
      * Delete the given entity
+     *
+     * @param $id
+     *
+     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+
+     * @throws ApiException\NotFoundException
+     * @throws ApiException\OrmException
+     * @throws ApiException\ParameterMissingException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function delete($id)
     {
@@ -121,7 +172,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
             throw new ApiException\ParameterMissingException();
         }
 
-        /** @var $model \<?= $configuration->backendModel; ?> */
+        /** @var $model \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?> */
         $model = $this->getManager()->find('<?= $configuration->backendModel; ?>', $id);
 
         if (!$model) {

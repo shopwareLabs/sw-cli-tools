@@ -1,9 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace Shopware\<?= $configuration->name; ?>\Subscriber;
+namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
 
-class Frontend implements \Enlight\Event\SubscriberInterface
+use Enlight\Event\SubscriberInterface;
+
+class Frontend implements SubscriberInterface
 {
     public static function getSubscribedEvents()
     {
