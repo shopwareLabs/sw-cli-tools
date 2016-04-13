@@ -4,6 +4,7 @@ namespace ShopwareCli\Application;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
 class DependencyInjection
@@ -12,9 +13,11 @@ class DependencyInjection
     /**
      * @return ContainerBuilder
      */
-    public static function createContainer()
+    public static function createContainer($rootDir)
     {
-        $container = new ContainerBuilder();
+        $container = new ContainerBuilder(
+            new ParameterBag(array('kernel.root_dir' => $rootDir))
+        );
 
         // synthetic services
         $container->setDefinition('autoloader', new Definition('Composer\Autoload\ClassLoader'))->setSynthetic(true);
@@ -74,6 +77,9 @@ class DependencyInjection
         $container->register('command_manager', 'ShopwareCli\Application\CommandManager')
             ->addArgument(new Reference('extension_manager'))
             ->addArgument(new Reference('service_container'));
+
+        $container->register('openssl_verifier', 'ShopwareCli\Services\OpenSSLVerifier')
+            ->addArgument('%kernel.root_dir%/Resources/public.key');
 
         $container->register('shopware_info', 'ShopwareCli\Services\ShopwareInfo');
 
