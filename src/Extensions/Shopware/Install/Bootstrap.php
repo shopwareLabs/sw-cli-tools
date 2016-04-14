@@ -57,6 +57,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('file_downloader'))
+            ->addArgument(new Reference('openssl_verifier'))
             ->addArgument($container->get('path_provider')->getCachePath());
 
         $container->register('shopware-install.vcs_generator', 'Shopware\Install\Services\VcsGenerator')

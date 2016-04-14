@@ -87,7 +87,8 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)
     {
-        $container = DependencyInjection::createContainer();
+        $rootDir = dirname(__DIR__);
+        $container = DependencyInjection::createContainer($rootDir);
 
         $questionHelper = $this->getHelperSet()->get('question');
 

@@ -2,14 +2,14 @@
 
 namespace Shopware\Install\Services;
 
+use GuzzleHttp\Client;
 use ShopwareCli\Services\FileDownloader;
 use ShopwareCli\Services\IoService;
+use ShopwareCli\Services\OpenSSLVerifier;
 use ShopwareCli\Services\ProcessExecutor;
 
 class ReleaseDownloader
 {
-    const DOWNLOAD_URL_TEMPLATE = 'http://releases.s3.shopware.com/install_%s.zip';
-
     const DOWNLOAD_URL_LATEST = 'http://install.s3.shopware.com/';
     const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/releases/install';
 
@@ -31,23 +31,30 @@ class ReleaseDownloader
      * @var FileDownloader
      */
     private $downloader;
+    /**
+     * @var OpenSSLVerifier
+     */
+    private $openSSLVerifier;
 
     /**
      * @param ProcessExecutor $processExecutor
      * @param IoService $ioService
      * @param FileDownloader $downloader
+     * @param OpenSSLVerifier $openSSLVerifier
      * @param string $cachePath
      */
     public function __construct(
         ProcessExecutor $processExecutor,
         IoService $ioService,
         FileDownloader $downloader,
+        OpenSSLVerifier $openSSLVerifier,
         $cachePath
     ) {
         $this->cachePath = $cachePath;
         $this->ioService = $ioService;
         $this->processExecutor = $processExecutor;
         $this->downloader = $downloader;
+        $this->openSSLVerifier = $openSSLVerifier;
     }
 
     /**
@@ -117,7 +124,18 @@ class ReleaseDownloader
      */
     private function getIndexedReleasesList()
     {
-        $releases = json_decode(trim(file_get_contents(self::DOWNLOAD_UPDATE_API)), true);
+        $client = new Client();
+
+        $response = $client->get(self::DOWNLOAD_UPDATE_API);
+        $signature = $response->getHeader('X-Shopware-Signature');
+
+        if ($this->openSSLVerifier->isSystemSupported()) {
+            if (!$this->openSSLVerifier->isValid($response->getBody(), $signature)) {
+                throw new \RuntimeException('API signature verification failed');
+            }
+        }
+
+        $releases = $response->json();
         if (empty($releases)) {
             throw new \RuntimeException("Could not get releases list package");
         }
