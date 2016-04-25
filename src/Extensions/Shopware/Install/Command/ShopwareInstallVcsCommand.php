@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand
 {
-    const MAIN_BRANCH = '5.0';
+    const MAIN_BRANCH = '5.1';
 
     /**
      * {@inheritdoc}
@@ -118,7 +118,7 @@ EOF
             return 'sw' . $result['number'];
         }
 
-        return $branch;
+        return str_replace('.', '', $branch);
     }
 
     /**
