@@ -25,7 +25,7 @@ Use at your own risk, there is no support for this tools.
 
 # Install
 
-Generally we recommend to use the sw.phar release files, you can download them to e.g. ~/bin/sw and add this directory to the $PATH of your local user.
+Generally we recommend to use the sw.phar release files, you can download them to e.g. ~/bin/sw and add this directory to the $PATH of your local user (download current build from http://shopwarelabs.github.io/sw-cli-tools/).
 
 If you want to use the development version of sw-cli-tools, you should checkout the repository and run `composer install` to download all dependencies
 
