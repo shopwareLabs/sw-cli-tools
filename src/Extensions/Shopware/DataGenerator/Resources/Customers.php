@@ -13,9 +13,9 @@ class Customers extends BaseResource
     protected $tables = array(
         "s_user",
         "s_user_attributes",
+        "s_user_addresses",
         "s_user_billingaddress",
         "s_user_billingaddress_attributes",
-        "s_user_debit",
         "s_user_shippingaddress",
         "s_user_shippingaddress_attributes"
     );
@@ -43,10 +43,8 @@ class Customers extends BaseResource
         $importCustomers = $this->writerManager->createWriter('customers', 'csv');
         $importCustomersAttributes = $this->writerManager->createWriter('customers_attributes', 'csv');
         $importCustomersBilling = $this->writerManager->createWriter('customers_billing', 'csv');
-        $importCustomersBillingAttributes = $this->writerManager->createWriter(
-            'customers_billing_attributes',
-            'csv'
-        );
+        $importCustomersAddresses = $this->writerManager->createWriter('customers_addresses', 'csv');
+        $importCustomersBillingAttributes = $this->writerManager->createWriter('customers_billing_attributes', 'csv');
 
 
         $this->createProgressBar($number);
@@ -61,7 +59,7 @@ class Customers extends BaseResource
             $sex = $customerCounter % 2 === 1 ? "mr" : "ms";
 
             $importCustomers->write(
-                "{$id},a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N"
+                "{$id},a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id}"
             );
             $importCustomersAttributes->write("{$id}");
             $importCustomersBillingAttributes->write("{$id}");
@@ -69,19 +67,27 @@ class Customers extends BaseResource
 
             $customerAttributeValues[] = "{$id}";
             $importCustomersBilling->write(
-                "{$id}, {$id}, , , {$sex}, {$customerNumber}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} ".rand(
+                "{$id}, {$id}, , , {$sex}, {$customerNumber}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
                     1,
                     500
-                )."' , ".rand(42000, 50000).", {$this->generator->getRandomCity()}, ".rand(
+                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, " . rand(
                     9999,
                     99999
-                ).", , 2, 0, , 1992-04-03"
+                ) . ", 2, 0, "
+            );
+
+            $zip = rand(42000, 50000);
+            $importCustomersAddresses->write(
+                "{$id}, {$id}, company, department, mr, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()}, {$zip}, {$this->generator->getRandomCity()}, 2, 0, ustid, phone,,,"
             );
         }
 
         $writer->write($this->loadDataInfile->get('s_user', $importCustomers->getFileName()));
         $writer->write(
             $this->loadDataInfile->get('s_user_attributes', $importCustomersAttributes->getFileName())
+        );
+        $writer->write(
+            $this->loadDataInfile->get('s_user_addresses', $importCustomersAddresses->getFileName())
         );
         $writer->write(
             $this->loadDataInfile->get('s_user_billingaddress', $importCustomersBilling->getFileName())

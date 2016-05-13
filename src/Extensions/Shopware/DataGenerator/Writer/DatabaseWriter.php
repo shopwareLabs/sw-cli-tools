@@ -49,7 +49,10 @@ class DatabaseWriter implements WriterInterface
         $connection->beginTransaction();
 
         foreach ($this->data as $query) {
-            $connection->query($query);
+            if (!$connection->query($query)) {
+                $info = implode(",", $connection->errorInfo());
+                throw new \Exception("Failed to execute $query\n\nCode: $info");
+            }
         }
 
         $connection->commit();
@@ -62,9 +65,10 @@ class DatabaseWriter implements WriterInterface
     private function connectToDatabase($config)
     {
         $connection = new PDO(
-            'mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['username'], $config['password'],
+            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
             array(
-                PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+                PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
+                PDO::ERRMODE_EXCEPTION => 1,
             )
         );
 

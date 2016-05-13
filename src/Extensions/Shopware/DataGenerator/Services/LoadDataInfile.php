@@ -115,8 +115,29 @@ class LoadDataInfile
             "pricegroupID",
             "internalcomment",
             "failedlogins",
-            "lockeduntil"
+            "lockeduntil",
+            "default_billing_address_id",
+            "default_shipping_address_id",
         ),
+        's_user_addresses' => [
+            'id',
+            'user_id',
+            'company',
+            'department',
+            'salutation',
+            'firstname',
+            'lastname',
+            'street',
+            'zipcode',
+            'city',
+            'country_id',
+            'state_id',
+            'ustid',
+            'phone',
+            'additional_address_line1',
+            'additional_address_line2',
+            'title',
+        ],
         's_user_attributes' => array("userID"),
         's_user_billingaddress' => array(
             "id",
@@ -131,11 +152,9 @@ class LoadDataInfile
             "zipcode",
             "city",
             "phone",
-            "fax",
             "countryID",
             "stateID",
-            "ustid",
-            "birthday"
+            "ustid"
         ),
         's_user_billingaddress_attributes' => array("billingID"),
         's_emarketing_vouchers' => array(
