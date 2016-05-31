@@ -47,6 +47,7 @@ On your system at least the following packages needs to be available.
 * sw plugin:zip:dir
 * sw plugin:zip:vcs
 * sw plugin:create
+* sw generate
 
 ## Using the Commands
 ### sw plugin:install
@@ -117,6 +118,35 @@ Valid options / arguments are:
 
 The options will be read interactively, if not provided.
 The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
+
+### sw generate
+Will generate data which can be used to fill the shop for e.g. load tests.
+
+!Warning! this command ist destructive
+
+Valid options / arguments are:
+
+     -a, --articles[=ARTICLES]                          Number of articles to create
+         --articleFilterGroups[=ARTICLEFILTERGROUPS]    Number article filter option groups to create
+         --articleFilterOptions[=ARTICLEFILTEROPTIONS]  Number article filter options to create
+         --articleFilterValues[=ARTICLEFILTERVALUES]    Number article filter values to create per each filter option
+     -o, --orders[=ORDERS]                              Number of orders to create
+     -c, --categories[=CATEGORIES]                      Number of categories to create
+         --categoriesPerArticle[=CATEGORIESPERARTICLE]  Number of categories to assign to each article
+     -e, --newsletter[=NEWSLETTER]                      Number of newsletter to create
+     -u, --customers[=CUSTOMERS]                        Number of customers to create
+         --vouchers[=VOUCHERS]                          Number of vouchers to create
+         --chunk-size[=CHUNK-SIZE]                      Chung size
+     -s, --seed[=SEED]                                  Random seed
+         --installDir[=INSTALLDIR]                      Your Shopware installation path. If provided, data will be automatically injected into the configured database. [default: ""]
+     -n, --no-interaction                               Do not ask any interactive question
+
+If executed from a Shopware installation, or if 'installDir' is provided, the data will
+be automatically written into your Shopware database.
+Otherwise, data will be exported to individual files in the '<current dir>\output' folder
+You need to import the .sql files in the order in which they are generated (see the command output)
+
+Requires 'local-infile=1' in your MySQL installation.
 
 # Extending the cli tools
 
