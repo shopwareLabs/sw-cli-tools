@@ -95,6 +95,7 @@ class LoadDataInfile
         's_articles_categories_ro' => array("articleID", "categoryID", "parentCategoryID"),
         's_user' => array(
             "id",
+            "customernumber",
             "password",
             "email",
             "active",
@@ -145,7 +146,6 @@ class LoadDataInfile
             "company",
             "department",
             "salutation",
-            "customernumber",
             "firstname",
             "lastname",
             "street",
