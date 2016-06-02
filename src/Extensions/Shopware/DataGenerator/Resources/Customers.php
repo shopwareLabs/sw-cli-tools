@@ -42,9 +42,11 @@ class Customers extends BaseResource
 
         $importCustomers = $this->writerManager->createWriter('customers', 'csv');
         $importCustomersAttributes = $this->writerManager->createWriter('customers_attributes', 'csv');
-        $importCustomersBilling = $this->writerManager->createWriter('customers_billing', 'csv');
         $importCustomersAddresses = $this->writerManager->createWriter('customers_addresses', 'csv');
+        $importCustomersBilling = $this->writerManager->createWriter('customers_billing', 'csv');
         $importCustomersBillingAttributes = $this->writerManager->createWriter('customers_billing_attributes', 'csv');
+        $importCustomersShipping = $this->writerManager->createWriter('customers_shipping', 'csv');
+        $importCustomersShippingAttributes = $this->writerManager->createWriter('customers_shipping_attributes', 'csv');
 
 
         $this->createProgressBar($number);
@@ -75,6 +77,12 @@ class Customers extends BaseResource
                     99999
                 ) . ", 2, 0, "
             );
+            $importCustomersShipping->write(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
+                    1,
+                    500
+                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
+            );
 
             $zip = rand(42000, 50000);
             $importCustomersAddresses->write(
@@ -93,9 +101,18 @@ class Customers extends BaseResource
             $this->loadDataInfile->get('s_user_billingaddress', $importCustomersBilling->getFileName())
         );
         $writer->write(
+            $this->loadDataInfile->get('s_user_shippingaddress', $importCustomersShipping->getFileName())
+        );
+        $writer->write(
             $this->loadDataInfile->get(
                 's_user_billingaddress_attributes',
                 $importCustomersBillingAttributes->getFileName()
+            )
+        );
+        $writer->write(
+            $this->loadDataInfile->get(
+                's_user_shippingaddress_attributes',
+                $importCustomersShippingAttributes->getFileName()
             )
         );
     }

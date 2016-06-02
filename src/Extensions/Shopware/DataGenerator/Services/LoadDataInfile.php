@@ -157,6 +157,21 @@ class LoadDataInfile
             "ustid"
         ),
         's_user_billingaddress_attributes' => array("billingID"),
+        's_user_shippingaddress' => array(
+            "id",
+            "userID",
+            "company",
+            "department",
+            "salutation",
+            "firstname",
+            "lastname",
+            "street",
+            "zipcode",
+            "city",
+            "countryID",
+            "stateID"
+        ),
+        's_user_shippingaddress_attributes' => array("shippingID"),
         's_emarketing_vouchers' => array(
             'id',
             'description',
