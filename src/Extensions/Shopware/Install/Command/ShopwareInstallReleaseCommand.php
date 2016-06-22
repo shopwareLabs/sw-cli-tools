@@ -24,69 +24,61 @@ class ShopwareInstallReleaseCommand extends BaseCommand
      */
     protected function configure()
     {
-        $this
-            ->setName('install:release')
+        $this->setName('install:release')
             ->setDescription('Allows setting up shopware from release package.')
-            ->addOption(
-                'release',
-                '-r',
-                InputOption::VALUE_REQUIRED,
-                'Release version. Default: Latest'
-            )
-            ->addOption(
-                'databaseName',
-                '-d',
-                InputOption::VALUE_OPTIONAL,
-                'Name of database'
-            )
-            ->addOption(
-                'installDir',
-                'i',
-                InputOption::VALUE_OPTIONAL,
-                'Install directory'
-            )
-            ->addOption(
-                'basePath',
-                'p',
-                InputOption::VALUE_OPTIONAL,
-                'base path of the shop'
-            )
-            ->addOption(
-                'username',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'User name of the backend user'
-            )
-            ->addOption(
-                'password',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'password name of the backend user'
-            )
-            ->addOption(
-                'name',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Full name of the backend user'
-            )
-            ->addOption(
-                'mail',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'email of the backend user'
-            )
-            ->addOption(
-                'language',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Language of the backend user. Currently only de_DE and en_GB are supported',
-                'de_DE'
-            )
             ->setHelp(
-<<<EOF
-            The <info>%command.name%</info> sets up shopware
+                <<<EOF
+                            The <info>%command.name%</info> sets up shopware
 EOF
-            )
+            );
+
+        $this->addInstallerOptions();
+        $this->addDbOptions();
+        $this->addShopOptions();
+        $this->addAdminOptions();
+    }
+
+    private function addInstallerOptions()
+    {
+        $this
+            ->addOption('release', 'r', InputOption::VALUE_REQUIRED, 'Release version. Default: Latest')
+            ->addOption('install-dir', 'i', InputOption::VALUE_OPTIONAL, 'Install directory');
+    }
+
+    private function addDbOptions()
+    {
+        $this
+            ->addOption('db-host', null, InputOption::VALUE_REQUIRED, 'Database host', 'localhost')
+            ->addOption('db-port', null, InputOption::VALUE_REQUIRED, 'Database port', '3306')
+            ->addOption('db-socket', null, InputOption::VALUE_REQUIRED, 'Database socket')
+            ->addOption('db-user', null, InputOption::VALUE_REQUIRED, 'Database user')
+            ->addOption('db-password', null, InputOption::VALUE_REQUIRED, 'Database password')
+            ->addOption('db-name', null, InputOption::VALUE_REQUIRED, 'Database name')
+            ->addOption('no-skip-import', null, InputOption::VALUE_NONE, 'Import database data even if a valid schema already exists')
+        ;
+    }
+
+    private function addShopOptions()
+    {
+        $this
+            ->addOption('shop-locale', null, InputOption::VALUE_REQUIRED, 'Shop locale', 'de_DE')
+            ->addOption('shop-host', null, InputOption::VALUE_REQUIRED, 'Shop host', 'localhost')
+            ->addOption('shop-path', 'p', InputOption::VALUE_REQUIRED, 'Shop path', '')
+            ->addOption('shop-name', null, InputOption::VALUE_REQUIRED, 'Shop name', 'Demo shop')
+            ->addOption('shop-email', null, InputOption::VALUE_REQUIRED, 'Shop email address', 'your.email@shop.com')
+            ->addOption('shop-currency', null, InputOption::VALUE_REQUIRED, 'Shop currency', 'EUR')
+        ;
+    }
+
+    private function addAdminOptions()
+    {
+        $this
+            ->addOption('skip-admin-creation', null, InputOption::VALUE_NONE, 'If provided, no admin user will be created.')
+            ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'Administrator username', 'demo')
+            ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'Administrator password', 'demo')
+            ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'Administrator email address', 'demo@demo.demo')
+            ->addOption('admin-locale', null, InputOption::VALUE_REQUIRED, 'Administrator locale', 'de_DE')
+            ->addOption('admin-name', null, InputOption::VALUE_REQUIRED, 'Administrator name', 'Demo user')
         ;
     }
 
@@ -96,15 +88,27 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $request = new InstallationRequest(array(
-            'username'     => $input->getOption('username'),
-            'password'     => $input->getOption('password'),
-            'name'         => $input->getOption('name'),
-            'mail'         => $input->getOption('mail'),
-            'language'     => $input->getOption('language'),
-            'release'      => $input->getOption('release'),
-            'installDir'   => trim($input->getOption('installDir'), '/'),
-            'basePath'     => $input->getOption('basePath'),
-            'databaseName' => $input->getOption('databaseName')
+            'release' => $input->getOption('release'),
+            'installDir' => $input->getOption('install-dir'),
+            'dbHost' => $input->getOption('db-host'),
+            'dbPort' => $input->getOption('db-port'),
+            'dbSocket' => $input->getOption('db-socket'),
+            'dbUser' => $input->getOption('db-user'),
+            'dbPassword' => $input->getOption('db-password'),
+            'dbName' => $input->getOption('db-name'),
+            'shopLocale' => $input->getOption('shop-locale'),
+            'shopHost' => $input->getOption('shop-host'),
+            'shopPath' => $input->getOption('shop-path'),
+            'shopName' => $input->getOption('shop-name'),
+            'shopEmail' => $input->getOption('shop-email'),
+            'shopCurrency' => $input->getOption('shop-currency'),
+            'adminUsername' => $input->getOption('admin-username'),
+            'adminPassword' => $input->getOption('admin-password'),
+            'adminEmail' => $input->getOption('admin-email'),
+            'adminLocale' => $input->getOption('admin-locale'),
+            'adminName' => $input->getOption('admin-name'),
+            'noSkipImport' => $input->getOption('no-skip-import'),
+            'skipAdminCreation' => $input->getOption('skip-admin-creation')
         ));
 
         /** @var \Shopware\Install\Services\Install\Release $installService */
@@ -133,9 +137,11 @@ EOF
 
         $suggestion = $installDir ?: $suggestion;
 
-        $this->askDatabaseName($input, $ioService, $suggestion);
-
         $this->askBasePath($input, $ioService, $suggestion);
+
+        $this->askDatabaseUser($input, $ioService);
+        $this->askDatabasePassword($input, $ioService);
+        $this->askDatabaseName($input, $ioService, $suggestion);
     }
 
     /**
@@ -172,9 +178,9 @@ EOF
      */
     protected function validateInput(InputInterface $input)
     {
-        $language = $input->getOption('language');
+        $language = $input->getOption('shop-locale');
         if (!in_array($language, array('en_GB', 'de_DE'))) {
-            throw new \RuntimeException("Invalid language: '$language'");
+            throw new \RuntimeException("Invalid locale: '$language'");
         }
     }
 
@@ -187,10 +193,10 @@ EOF
     private function askGenericOptions(InputInterface $input, IoService $ioService)
     {
         $required = array(
-            'username' => 'backend user name',
-            'password' => 'backend user password',
-            'name' => 'your full name',
-            'mail' => 'your email'
+            'admin-username' => 'backend user name',
+            'admin-password' => 'backend user password',
+            'admin-name' => 'your full name',
+            'admin-email' => 'your email'
         );
 
         $config = $this->getConfig();
@@ -226,7 +232,7 @@ EOF
     {
         $release = $input->getOption('release');
         if (!$release) {
-            $release = $ioService->ask('Please provide the release you want to install <latest>: ');
+            $release = $ioService->ask('Please provide the release you want to install [latest]: ');
             $release = trim($release) ? $release : 'latest';
             $input->setOption('release', $release);
 
@@ -245,13 +251,13 @@ EOF
      */
     private function askInstallationDirectory(InputInterface $input, IoService $ioService, $suggestion)
     {
-        $installDir = $input->getOption('installDir');
+        $installDir = $input->getOption('install-dir');
         if (!$installDir) {
             $installDir = $ioService->askAndValidate(
-                "Please provide the install directory <{$suggestion}>: ",
+                "Please provide the install directory [{$suggestion}]: ",
                 array($this, 'validateInstallDir')
             );
-            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
+            $input->setOption('install-dir', trim($installDir) ? $installDir : $suggestion);
 
             return $installDir;
         }
@@ -266,10 +272,10 @@ EOF
      */
     private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion)
     {
-        $databaseName = $input->getOption('databaseName');
+        $databaseName = $input->getOption('db-name');
         if (!$databaseName) {
-            $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
-            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
+            $databaseName = $ioService->ask("Please provide the database name you want to use [{$suggestion}]: ");
+            $input->setOption('db-name', trim($databaseName) ? $databaseName : $suggestion);
         }
     }
 
@@ -280,10 +286,37 @@ EOF
      */
     private function askBasePath(InputInterface $input, IoService $ioService, $suggestion)
     {
-        $basePath = $input->getOption('basePath');
+        $basePath = $input->getOption('shop-path');
         if (!$basePath) {
-            $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
-            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
+            $suggestion = '/' . ltrim($suggestion, '/');
+            $basePath = $ioService->ask("Please provide the shop base path you want to use [{$suggestion}]: ");
+            $input->setOption('shop-path', trim($basePath) ? $basePath : $suggestion);
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService $ioService
+     */
+    private function askDatabaseUser(InputInterface $input, IoService $ioService)
+    {
+        $databaseUser = $input->getOption('db-user');
+        if (!$databaseUser) {
+            $databaseUser = $ioService->ask("Please provide the database user: ");
+            $input->setOption('db-user', trim($databaseUser));
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param IoService $ioService
+     */
+    private function askDatabasePassword(InputInterface $input, IoService $ioService)
+    {
+        $databasePassword = $input->getOption('db-password');
+        if (!$databasePassword) {
+            $databasePassword = $ioService->ask("Please provide the database password: ");
+            $input->setOption('db-password', trim($databasePassword));
         }
     }
 }

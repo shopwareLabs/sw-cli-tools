@@ -3,14 +3,15 @@
 namespace Shopware\Install\Services\Install;
 
 use Shopware\Install\Services\PostInstall;
+use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Config;
 use Shopware\Install\Services\ReleaseDownloader;
-use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
 use Shopware\Install\Services\Database;
 use Shopware\Install\Services\Demodata;
 use ShopwareCli\Services\IoService;
+use ShopwareCli\Services\ProcessExecutor;
 
 /**
  * This install service will run all steps needed to setup shopware in the correct order
@@ -65,6 +66,11 @@ class Release
     private $postInstall;
 
     /**
+     * @var ProcessExecutor
+     */
+    private $processExecutor;
+
+    /**
      * @param ReleaseDownloader $releaseDownloader
      * @param Config $config
      * @param VcsGenerator $vcsGenerator
@@ -73,6 +79,7 @@ class Release
      * @param Demodata $demodata
      * @param IoService $ioService
      * @param PostInstall $postInstall
+     * @param ProcessExecutor $processExecutor
      */
     public function __construct(
         ReleaseDownloader $releaseDownloader,
@@ -82,16 +89,18 @@ class Release
         Database $database,
         Demodata $demodata,
         IoService $ioService,
-        PostInstall $postInstall
+        PostInstall $postInstall,
+        ProcessExecutor $processExecutor
     ) {
+        $this->releaseDownloader = $releaseDownloader;
         $this->config = $config;
         $this->vcsGenerator = $vcsGenerator;
         $this->configWriter = $configWriter;
         $this->database = $database;
-        $this->releaseDownloader = $releaseDownloader;
         $this->demodata = $demodata;
         $this->ioService = $ioService;
         $this->postInstall = $postInstall;
+        $this->processExecutor = $processExecutor;
     }
 
     /**
@@ -99,29 +108,41 @@ class Release
      */
     public function installShopware(InstallationRequest $request)
     {
-        $this->releaseDownloader->downloadRelease($request->release, $request->installDir);
+        $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
 
-        $this->generateVcsMapping($request->installDir);
-        $this->writeShopwareConfig($request->installDir, $request->databaseName);
-        $this->setupDatabase($request);
-        $this->lockInstaller($request->installDir);
+        if ($request->getRelease() === 'latest' || version_compare($request->getRelease(), '5.1.2', '>=')) {
+            $this->createDatabase($request);
+            $this->createShopwareConfig($request);
+            $this->runInstaller($request);
+        } else {
+            $this->generateVcsMapping($request->getInstallDir());
+            $this->createShopwareConfig($request);
+            $this->setupDatabase($request);
+            $this->lockInstaller($request->getInstallDir());
+        }
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
-        $this->postInstall->fixPermissions($request->installDir);
-        $this->postInstall->setupTheme($request->installDir);
-        $this->postInstall->importCustomDeltas($request->databaseName);
-        $this->postInstall->runCustomScripts($request->installDir);
+        $this->postInstall->fixPermissions($request->getInstallDir());
+        $this->postInstall->setupTheme($request->getInstallDir());
+        $this->postInstall->importCustomDeltas($request->getDbName());
+        $this->postInstall->runCustomScripts($request->getInstallDir());
 
-        $this->demodata->runLicenseImport($request->installDir);
+        $this->demodata->runLicenseImport($request->getInstallDir());
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
 
-    /**
-     * Generate the VCS mapping for phpstorm
-     *
-     * @param string $installDir
-     */
+    private function createDatabase(InstallationRequest $request)
+    {
+        $this->database->setup(
+            $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
+            $request->getDbPassword() ?: $this->config['DatabaseConfig']['pass'],
+            $request->getDbName(),
+            $request->getDbHost() ?: $this->config['DatabaseConfig']['host'],
+            $request->getDbPort() ?: $this->config['DatabaseConfig']['port'] ?: 3306
+        );
+    }
+
     private function generateVcsMapping($installDir)
     {
         $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
@@ -129,46 +150,74 @@ class Release
         }, $this->config['ShopwareInstallRepos']));
     }
 
-    /**
-     * Write shopware's config.php
-     *
-     * @param string $installDir
-     * @param string $database
-     */
-    private function writeShopwareConfig($installDir, $database)
+    private function runInstaller(InstallationRequest $request)
     {
-        $this->configWriter->writeConfigPhp(
-            $installDir,
-            $this->config['DatabaseConfig']['user'],
-            $this->config['DatabaseConfig']['pass'],
-            $database,
-            $this->config['DatabaseConfig']['host'],
-            $this->config['DatabaseConfig']['port'] ?: 3306
-        );
+        $delegateOptions = [
+            'dbHost', 'dbPort', 'dbSocket', 'dbUser', 'dbPassword', 'dbName',
+            'shopLocale', 'shopHost', 'shopPath', 'shopName', 'shopEmail', 'shopCurrency',
+            'adminUsername', 'adminPassword', 'adminEmail', 'adminLocale', 'adminName'
+        ];
+
+        $arguments = [];
+        foreach ($request->all() as $key => $value) {
+            if (!in_array($key, $delegateOptions)) {
+                continue;
+            }
+
+            $key = strtolower(preg_replace("/[A-Z]/", "-$0", $key));
+            $arguments[] = sprintf('--%s="%s"', $key, $value);
+        }
+
+        if ($request->getNoSkipImport()) {
+            $arguments[] = '--no-skip-import';
+        }
+
+        if ($request->getSkipAdminCreation()) {
+            $arguments[] = '--skip-admin-creation';
+        }
+
+        $arguments = join(" ", $arguments);
+
+        $this->processExecutor->execute("php {$request->getInstallDir()}/recovery/install/index.php {$arguments}");
     }
 
     /**
-     * Setup the database
+     * Write shopware's config.php
      *
      * @param InstallationRequest $request
      */
+    private function createShopwareConfig(InstallationRequest $request)
+    {
+        $this->configWriter->writeConfigPhp(
+            $request->getInstallDir(),
+            $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
+            $request->getDbPassword() ?: $this->config['DatabaseConfig']['pass'],
+            $request->getDbName(),
+            $request->getDbHost() ?: $this->config['DatabaseConfig']['host'],
+            $request->getDbPort() ?: $this->config['DatabaseConfig']['port'] ?: 3306
+        );
+    }
+
     private function setupDatabase(InstallationRequest $request)
     {
         $this->database->setup(
-            $this->config['DatabaseConfig']['user'],
-            $this->config['DatabaseConfig']['pass'],
-            $request->databaseName,
-            $this->config['DatabaseConfig']['host'],
-            $this->config['DatabaseConfig']['port'] ?: 3306
+            $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
+            $request->getDbPassword() ?: $this->config['DatabaseConfig']['pass'],
+            $request->getDbName(),
+            $request->getDbHost() ?: $this->config['DatabaseConfig']['host'],
+            $request->getDbPort() ?: $this->config['DatabaseConfig']['port'] ?: 3306
         );
-        $this->database->importReleaseInstallDeltas($request->installDir);
-        $this->database->createAdmin(
-            $request->username,
-            $request->name,
-            $request->name,
-            $request->language,
-            $request->password
-        );
+        $this->database->importReleaseInstallDeltas($request->getInstallDir());
+
+        if ($request->getSkipAdminCreation() !== true) {
+            $this->database->createAdmin(
+                $request->getAdminUsername(),
+                $request->getAdminName(),
+                $request->getAdminEmail(),
+                $request->getAdminLocale(),
+                $request->getAdminPassword()
+            );
+        }
     }
 
     /**
