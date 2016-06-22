@@ -10,6 +10,7 @@
         "LICENSE",
         "README.md",
         "config.yaml.dist",
+        "Resources/public.key",
         "vendor/autoload.php",
         "vendor/shopwarelabs/plugin-info/res/plugin-info-schema.json"
     ],
