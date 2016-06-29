@@ -89,7 +89,7 @@ class LoadDataInfile
         's_article_configurator_set_option_relations' => array("set_id", "option_id"),
         's_filter_articles' => array("articleID", "valueID"),
         's_filter' => array("id", "name", "position", "comparable", "sortmode"),
-        's_filter_options' => array("id", "name", "filterable", "default"),
+        's_filter_options' => array("id", "name", "filterable"),
         's_filter_values' => array("id", "optionID", "value", "position"),
         's_filter_relations' => array("groupID", "optionID", "position"),
         's_articles_categories_ro' => array("articleID", "categoryID", "parentCategoryID"),

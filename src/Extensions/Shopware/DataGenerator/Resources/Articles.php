@@ -76,7 +76,7 @@ class Articles extends BaseResource
 
             for ($o = 1; $o <= $filterOptions; $o++) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
-                $filterOptionValues[] = "$optionId, Option #{$o},  ".rand(0, 1).",";
+                $filterOptionValues[] = "$optionId, Option #{$o},  ".rand(0, 1);
                 $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
 
                 for ($v = 1; $v <= $filterValues; $v++) {
