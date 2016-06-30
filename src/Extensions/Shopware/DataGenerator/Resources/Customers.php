@@ -61,7 +61,7 @@ class Customers extends BaseResource
             $sex = $customerCounter % 2 === 1 ? "mr" : "ms";
 
             $importCustomers->write(
-                "{$id},{$customerNumber}, a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id}"
+                "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id}"
             );
             $importCustomersAttributes->write("{$id}");
             $importCustomersBillingAttributes->write("{$id}");
