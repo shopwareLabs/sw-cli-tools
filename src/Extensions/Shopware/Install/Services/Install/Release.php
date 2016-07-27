@@ -115,19 +115,19 @@ class Release
             $this->createShopwareConfig($request);
             $this->runInstaller($request);
         } else {
-            $this->generateVcsMapping($request->getInstallDir());
+            $this->generateVcsMapping($request->getAbsoluteInstallDir());
             $this->createShopwareConfig($request);
             $this->setupDatabase($request);
-            $this->lockInstaller($request->getInstallDir());
+            $this->lockInstaller($request->getAbsoluteInstallDir());
         }
 
         $this->ioService->writeln("<info>Running post release scripts</info>");
-        $this->postInstall->fixPermissions($request->getInstallDir());
-        $this->postInstall->setupTheme($request->getInstallDir());
+        $this->postInstall->fixPermissions($request->getAbsoluteInstallDir());
+        $this->postInstall->setupTheme($request->getAbsoluteInstallDir());
         $this->postInstall->importCustomDeltas($request->getDbName());
-        $this->postInstall->runCustomScripts($request->getInstallDir());
+        $this->postInstall->runCustomScripts($request->getAbsoluteInstallDir());
 
-        $this->demodata->runLicenseImport($request->getInstallDir());
+        $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
 
         $this->ioService->writeln("<info>Install completed</info>");
     }
@@ -178,7 +178,7 @@ class Release
 
         $arguments = join(" ", $arguments);
 
-        $this->processExecutor->execute("php {$request->getInstallDir()}/recovery/install/index.php {$arguments}");
+        $this->processExecutor->execute("php {$request->getAbsoluteInstallDir()}/recovery/install/index.php {$arguments}");
     }
 
     /**
@@ -189,7 +189,7 @@ class Release
     private function createShopwareConfig(InstallationRequest $request)
     {
         $this->configWriter->writeConfigPhp(
-            $request->getInstallDir(),
+            $request->getAbsoluteInstallDir(),
             $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
             $request->getDbPassword() ?: $this->config['DatabaseConfig']['pass'],
             $request->getDbName(),
@@ -207,7 +207,7 @@ class Release
             $request->getDbHost() ?: $this->config['DatabaseConfig']['host'],
             $request->getDbPort() ?: $this->config['DatabaseConfig']['port'] ?: 3306
         );
-        $this->database->importReleaseInstallDeltas($request->getInstallDir());
+        $this->database->importReleaseInstallDeltas($request->getAbsoluteInstallDir());
 
         if ($request->getSkipAdminCreation() !== true) {
             $this->database->createAdmin(

@@ -103,6 +103,14 @@ class InstallationRequest extends Struct
     /**
      * @return string
      */
+    public function getAbsoluteInstallDir()
+    {
+        return realpath($this->installDir);
+    }
+
+    /**
+     * @return string
+     */
     public function getDbHost()
     {
         return $this->dbHost;
