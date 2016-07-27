@@ -160,7 +160,7 @@ class Release
 
         $arguments = [];
         foreach ($request->all() as $key => $value) {
-            if (!in_array($key, $delegateOptions)) {
+            if (!in_array($key, $delegateOptions) || strlen($value) === 0) {
                 continue;
             }
 
