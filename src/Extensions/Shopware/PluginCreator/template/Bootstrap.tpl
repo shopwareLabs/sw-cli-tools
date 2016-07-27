@@ -73,7 +73,7 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
             'class' => 'sprite-application-block',
             'action' => 'Index',
             'active' => 1,
-            'parent' => $this->Menu()->findOneBy('label', 'Marketing')
+            'parent' => $this->Menu()->findOneBy(array('label' => 'Marketing'))
         ));
 <?php } ?>
 
