@@ -65,13 +65,15 @@ class ReleaseDownloader
      */
     public function downloadRelease($release, $installDir)
     {
+        $this->ioService->writeln("<info>Downloading release</info>");
         $zipLocation = $this->downloadFromUpdateApi($release);
 
         if (!is_dir($installDir)) {
             mkdir($installDir);
         }
 
-        $this->processExecutor->execute("unzip {$zipLocation} -d {$installDir}");
+        $this->ioService->writeln("<info>Unzipping archive</info>");
+        $this->processExecutor->execute("unzip -qq {$zipLocation} -d {$installDir}");
     }
 
     /**
@@ -96,7 +98,6 @@ class ReleaseDownloader
 
         $version = $content['version'];
         $url = $content['uri'];
-        $size = $content['size'];
         $sha1 = $content['sha1'];
 
         $target = $this->getTempFile();

@@ -91,14 +91,25 @@ The options will be read interactively, if not provided
 The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 
 ### sw install:release
-    --release: Release to install. Default: "latest". Possible are all shopware release versions like "4.2.0"
-    --databaseName: Name of the database to use
-    --basePath: Base path of the installation
-    --username: backend user name for login
-    --password: backend password for login
-    --name: backend username
-    --mail: Mail of the backend user
-    --language: backend language (e.g. de_DE or en_GB)
+    --release=RELEASE                Release version. Default: Latest. Possible are all shopware release versions like "4.2.0"
+    --install-dir[=INSTALL-DIR]      Install directory
+    --db-host=DB-HOST                Database host [default: "localhost"]
+    --db-port=DB-PORT                Database port [default: "3306"]
+    --db-socket=DB-SOCKET            Database socket
+    --db-user=DB-USER                Database user
+    --db-password=DB-PASSWORD        Database password
+    --db-name=DB-NAME                Database name
+    --shop-locale=SHOP-LOCALE        Shop locale [default: "de_DE"]
+    --shop-host=SHOP-HOST            Shop host [default: "localhost"]
+    --shop-path=SHOP-PATH            Shop path [default: "/"]
+    --shop-name=SHOP-NAME            Shop name [default: "Demo shop"]
+    --shop-email=SHOP-EMAIL          Shop email address [default: "your.email@shop.com"]
+    --shop-currency=SHOP-CURRENCY    Shop currency [default: "EUR"]
+    --admin-username=ADMIN-USERNAME  Administrator username [default: "demo"]
+    --admin-password=ADMIN-PASSWORD  Administrator password [default: "demo"]
+    --admin-email=ADMIN-EMAIL        Administrator email address [default: "demo@demo.demo"]
+    --admin-locale=ADMIN-LOCALE      Administrator locale [default: "de_DE"]
+    --admin-name=ADMIN-NAME          Administrator name [default: "Demo user"]
 
 ### sw plugin:create
 Will create a Shopware plugin with all the boilerplate code.
