@@ -42,7 +42,7 @@ EOF
     {
         $this
             ->addOption('release', 'r', InputOption::VALUE_REQUIRED, 'Release version. Default: Latest')
-            ->addOption('install-dir', 'i', InputOption::VALUE_OPTIONAL, 'Install directory');
+            ->addOption('install-dir', 'i', InputOption::VALUE_REQUIRED, 'Install directory');
     }
 
     private function addDbOptions()
