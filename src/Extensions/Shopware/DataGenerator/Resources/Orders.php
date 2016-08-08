@@ -91,11 +91,11 @@ class Orders extends BaseResource
             $totalPricePreTax = $totalPrice / 1.19;
 
             // Create faster inserts by using dummy data instead of INSERT..SELECTING the data from s_user_billingaddress/shippingaddress
-            $randomFirstName = $this->generator->getRandomFirstName();
-            $randomLastName = $this->generator->getRandomLastName();
-            $randomStreet = $this->generator->getRandomWord() . rand(1,500);
+            $randomFirstName = $this->escapeApostrophes($this->generator->getRandomFirstName());
+            $randomLastName = $this->escapeApostrophes($this->generator->getRandomLastName());
+            $randomStreet = $this->escapeApostrophes($this->generator->getRandomWord() . rand(1,500));
             $randomZip = rand(42000, 50000);
-            $randomCity = $this->generator->getRandomCity();
+            $randomCity = $this->escapeApostrophes($this->generator->getRandomCity());
             $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, '{$this->quote($faker->firstName)}', '{$this->quote($faker->lastName)}', '{$this->quote($faker->streetAddress)}', '{$this->quote($faker->postcode)}', '{$this->quote($faker->city)}', '', 2, 0 )";
             $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', '{$this->quote($faker->firstName)}', '{$this->quote($faker->lastName)}', '{$this->quote($faker->streetAddress)}', '{$this->quote($faker->postcode)}', '{$this->quote($faker->city)}', 2, 0)";
             $valueData['customerBillingAttributeValues'][] = "({$id}, {$id})";
@@ -144,6 +144,12 @@ class Orders extends BaseResource
         $orderCSVWriter->write($orderNumbers);
 
         $this->finishProgressBar();
+    }
+
+    private function escapeApostrophes($string){
+        $string = str_replace("'", "\\'", $string);
+        $string = str_replace("`", "\\`", $string);
+        return $string;
     }
 
     /**

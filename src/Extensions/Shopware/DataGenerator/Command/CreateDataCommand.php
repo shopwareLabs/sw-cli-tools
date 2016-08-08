@@ -322,7 +322,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $articleFilterValues,
         $chunkSize,
         $minVariants,
-        $maxVariants
+        $maxVariants,
         $generatorLocale
     ) {
         // Check some pre-conditions
