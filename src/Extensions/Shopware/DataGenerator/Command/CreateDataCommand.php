@@ -261,6 +261,9 @@ Requires \'local-infile=1\' in your MySQL installation.
             $writerManager->setDefaultWriterType('file');
         }
 
+        $config = $this->container->get('config');
+        $generatorLocale = empty($config['DataGenerator']['locale']) ? null : $config['DataGenerator']['locale'];
+
         $this->configureGenerator(
             $seed,
             $articles,
@@ -275,7 +278,8 @@ Requires \'local-infile=1\' in your MySQL installation.
             $articleFilterValues,
             $chunkSize,
             $articleMinVariants,
-            $articleMaxVariants
+            $articleMaxVariants,
+            $generatorLocale
         );
 
         foreach (['categories', 'articles', 'customers', 'orders', 'newsletter', 'vouchers'] as $type) {
@@ -302,6 +306,7 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param $chunkSize
      * @param $minVariants
      * @param $maxVariants
+     * @param $generatorLocale
      */
     protected function configureGenerator(
         $seed,
@@ -318,6 +323,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $chunkSize,
         $minVariants,
         $maxVariants
+        $generatorLocale
     ) {
         // Check some pre-conditions
         if ($articles > 0 && !$categories) {
@@ -341,6 +347,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $config->setArticleFilterOptions($articleFilterOptions);
         $config->setArticleFilterValues($articleFilterValues);
         $config->setSeed($seed);
+        $config->setGeneratorLocale($generatorLocale);
 
         $config->setOutputName('');
 

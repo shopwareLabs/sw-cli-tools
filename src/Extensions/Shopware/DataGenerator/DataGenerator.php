@@ -77,6 +77,11 @@ class DataGenerator
      */
     public function run()
     {
+        $locale = $this->config->getGeneratorLocale();
+        if(!empty($locale)){
+            $this->generator->setProviderLocale($locale);
+        }
+
         $this->initSeed($this->config->getSeed());
         $this->config->createOutputDir();
 

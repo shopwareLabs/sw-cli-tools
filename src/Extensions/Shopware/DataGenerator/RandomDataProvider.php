@@ -19,6 +19,18 @@ class RandomDataProvider
     }
 
     /**
+     * @param string|null $locale
+     */
+    public function setProviderLocale($locale)
+    {
+        if(empty($locale)){
+            $this->faker = Factory::create();
+        }else{
+            $this->faker = Factory::create($locale);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getRandomCity()
@@ -57,5 +69,13 @@ class RandomDataProvider
     public function getSentence($wordCount)
     {
         return $this->faker->sentence(max($wordCount, 1));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandomIpv4()
+    {
+        return $this->faker->ipv4;
     }
 }
