@@ -19,6 +19,7 @@ class Config
     protected $articleFilterGroups = 0;
     protected $articleFilterOptions = 0;
     protected $articleFilterValues = 0;
+    protected $generatorLocale = null;
 
     /**
      * Path of the image directory.
@@ -336,5 +337,21 @@ class Config
     public function getSeed()
     {
         return $this->seed;
+    }
+
+    /**
+     * @param string $generatorLocale
+     */
+    public function setGeneratorLocale($generatorLocale)
+    {
+        $this->generatorLocale = $generatorLocale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeneratorLocale()
+    {
+        return $this->generatorLocale;
     }
 }

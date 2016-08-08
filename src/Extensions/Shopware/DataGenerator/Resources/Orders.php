@@ -81,13 +81,18 @@ class Orders extends BaseResource
             $totalPricePreTax = $totalPrice / 1.19;
 
             // Create faster inserts by using dummy data instead of INSERT..SELECTING the data from s_user_billingaddress/shippingaddress
-            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', '', 2, 0 )";
-            $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', 2, 0)";
+            $randomFirstName = $this->generator->getRandomFirstName();
+            $randomLastName = $this->generator->getRandomLastName();
+            $randomStreet = $this->generator->getRandomWord() . rand(1,500);
+            $randomZip = rand(42000, 50000);
+            $randomCity = $this->generator->getRandomCity();
+            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, '{$randomFirstName}', '{$randomLastName}', '{$randomStreet}', '{$randomZip}', '{$randomCity}', 2, 0 )";
+            $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', '{$randomFirstName}', '{$randomLastName}', '{$randomStreet}', '{$randomZip}', '{$randomCity}', 2, 0)";
             $valueData['customerBillingAttributeValues'][] = "({$id}, {$id})";
 
             $cleared = rand(9, 21);
             $state = rand(0, 8);
-            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '2012-08-30 10:15:54', {$state}, {$cleared}, 4, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141')";
+            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '2012-08-30 10:15:54', {$state}, {$cleared}, 4, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '{$this->generator->getRandomIpv4()}')";
 
             for ($detailCounter = 1; $detailCounter <= $numArticles; $detailCounter++) {
                 $detailId = $this->getUniqueId('orderDetail');
