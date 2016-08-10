@@ -195,6 +195,8 @@ class Articles extends BaseResource
 
         $images = array();
 
+        $priceVariations = $this->generatePriceVariations($number);
+
         for ($articleCounter = 0; $articleCounter < $number; $articleCounter++) {
             $this->advanceProgressBar();
             $id = $this->getUniqueId('article');
@@ -312,11 +314,21 @@ class Articles extends BaseResource
                     $this->articleDetailsFlat[$articleDetailId] = "{$id}|sw-{$id}-{$i}|{$articleDetailId}";
                 }
                 $kind = $i === 1 ? 1 : 2;
+
+                $purchaseUnit = rand(0, 5);
+                $referenceUnit = rand($purchaseUnit, $purchaseUnit * 4);
+
                 $details->write(
-                    "{$articleDetailId}, {$id}, sw-{$id}-{$i}, , {$kind}, , 0, 1, 25, 0, 0.000, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 0.7000, 1.000, Flasche(n), 2012-06-13, 0, "
+                    "{$articleDetailId}, {$id},sw-{$id}-{$i}, , {$kind}, , 0, 1, 25, 0, 0.000, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, {$purchaseUnit}, {$referenceUnit}, Flasche(n), 2012-06-13, 0, "
                 );
-                $prices->write("EK, 1, beliebig, {$id}, {$articleDetailId}, 47.90 , 0, 0, 0 ");
-                $attributes->write("{$id}, {$articleDetailId}");
+
+                $index = rand(0, count($priceVariations) -1);
+                $variantPrices = $priceVariations[$index];
+
+                foreach ($variantPrices as $price) {
+                    $prices->write("EK,{$price['from']},{$price['to']},{$id},{$articleDetailId},{$price['price']}, 0, 0, 0 ");
+                    $attributes->write("{$id}, {$articleDetailId}");
+                }
 
                 // don't get a new id after the last detail
                 if ($i < $numberOfVariants) {
@@ -447,5 +459,35 @@ class Articles extends BaseResource
     public function setCategoryResource(Categories $categoryResource)
     {
         $this->categoryResource = $categoryResource;
+    }
+
+    private function generatePriceVariations($number)
+    {
+        $count = $number / 5;
+
+        $variations = [];
+
+        for ($v = 0; $v <= $count; $v++) {
+            $priceCount = rand(1, 5);
+            $to = 0;
+            
+            $price = rand(3, 2000);
+            for ($i = 1; $i <= $priceCount; $i++) {
+                $from = $to + 1;
+                $to = $from + rand(2, 4);
+                if ($i == $priceCount) {
+                    $to = 'beliebig';
+                }
+                $price = $price * ((100 - rand(10, 40))) / 100;
+
+                $variations[$v][] = [
+                    'from' => $from,
+                    'to' => $to,
+                    'price' => $price
+                ];
+            }
+        }
+
+        return $variations;
     }
 }
