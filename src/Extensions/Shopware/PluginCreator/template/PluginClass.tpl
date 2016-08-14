@@ -18,7 +18,7 @@ class <?= $configuration->name; ?> extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'Enlight_Controller_Front_StartDispatch' => 'onStartDispatch'
+            'Enlight_Controller_Front_DispatchLoopStartup' => 'onStartDispatch'
         ];
     }
 
