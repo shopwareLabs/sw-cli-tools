@@ -14,6 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreatePluginCommand extends BaseCommand
 {
+    const LEGACY_OPTION = 'legacy';
+
     /**
      * @return Config
      */
@@ -32,6 +34,12 @@ class CreatePluginCommand extends BaseCommand
                 'name',
                 InputArgument::REQUIRED,
                 'Prefixed name of the plugin to create. E.g: SwagAdvancedBasket'
+            )
+            ->addOption(
+                self::LEGACY_OPTION,
+                null,
+                InputOption::VALUE_NONE,
+                'Create a legacy Plugin for Shopware-version lower than 5.2'
             )
             ->addOption(
                 'namespace',
@@ -137,7 +145,7 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter') as $key) {
+        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION) as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -157,7 +165,10 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->validateName($input->getArgument('name'));
-        $this->validateNamespace($input->getOption('namespace'));
+
+        if ($input->getOption(self::LEGACY_OPTION)) {
+            $this->validateNamespace($input->getOption('namespace'));
+        }
 
         if ($input->getOption('backendModel') !== null) {
             $this->validateModel($input->getOption('backendModel'));
@@ -251,6 +262,7 @@ EOF
         $configuration->hasModels = $input->getOption('haveModels');
         $configuration->hasCommands = $input->getOption('haveCommands');
         $configuration->backendModel = $input->getOption('backendModel');
+        $configuration->isLegacyPlugin = $input->getOption(self::LEGACY_OPTION);
 
         $licenseHeader = $input->getOption('licenseHeader');
         if (!empty($licenseHeader) && file_exists($licenseHeader)) {

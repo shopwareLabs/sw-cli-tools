@@ -16,14 +16,28 @@ class DefaultFileProvider implements FileProviderInterface
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
-        return array(
-            "Bootstrap.tpl" => "Bootstrap.php",
+        $pluginClassName = "{$configuration->name}.php";
+
+        $defaultFiles = array(
+            "PluginClass.tpl" => $pluginClassName,
+            "plugin.xml.tpl" => "plugin.xml",
             "Readme.tpl" => "Readme.md",
             "LICENSE" => "LICENSE",
-            "plugin.tpl" => "plugin.json",
             "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
             "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
-            "tests/Test.tpl" => "tests/Test.php"
+            "tests/PluginTest.tpl" => "tests/PluginTest.php"
         );
+
+        if ($configuration->isLegacyPlugin) {
+            unset($defaultFiles["PluginClass.tpl"]);
+            unset($defaultFiles["plugin.xml.tpl"]);
+            unset($defaultFiles["tests/PluginTest.tpl"]);
+
+            $defaultFiles["Bootstrap.tpl"] = "Bootstrap.php";
+            $defaultFiles["plugin.tpl"] = "plugin.json";
+            $defaultFiles["tests/LegacyPluginTest.tpl"] = "tests/Test.php";
+        }
+
+        return $defaultFiles;
     }
 }

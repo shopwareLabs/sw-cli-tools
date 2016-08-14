@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Subscriber;
+<?php } ?>
 
 use Enlight\Event\SubscriberInterface;
 
