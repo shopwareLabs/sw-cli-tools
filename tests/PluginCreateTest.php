@@ -63,13 +63,13 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         'Default' => [
             'config' => 'hasBackend',
             'files' => [
-                "Bootstrap.tpl" => "Bootstrap.php",
+                "PluginClass.tpl" => "SwagTest.php",
                 "Readme.tpl" => "Readme.md",
                 "LICENSE" => "LICENSE",
-                "plugin.tpl" => "plugin.json",
+                "plugin.xml.tpl" => "plugin.xml",
                 "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
                 "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
-                "tests/Test.tpl" => "tests/Test.php"
+                "tests/PluginTest.tpl" => "tests/PluginTest.php"
             ]
         ],
         'Filter' => [
@@ -122,6 +122,19 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Config-Object for Legacy-Plugins
+     *
+     * @return Configuration
+     */
+    private function getLegacyConfigObject()
+    {
+        $config = $this->getConfigObject();
+        $config->isLegacyPlugin = true;
+
+        return $config;
+    }
+
+    /**
      * Foreach file provider: Create a plugin which needs this file provider and check,
      * if all required / pre-defined files actually exists.
      */
@@ -129,6 +142,61 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($this->fileProvider as $name => $provider) {
             $config = $this->getConfigObject();
+            $configName = $provider['config'];
+            $config->$configName = true;
+            $config->backendModel = 'SwagTest\Models\Test';
+
+            $ioAdapter = new Dummy();
+            $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
+            $generator->setOutputDirectory('');
+
+            $generator->run();
+
+            // Test, if the file provider files, do exist
+            foreach ($provider['files'] as $file) {
+                $this->assertTrue(
+                    in_array($file, array_keys($ioAdapter->getFiles())),
+                    "{$file} not found in generated files"
+                );
+            }
+
+            // merge all provider files into one array
+            $allProviderFiles = array_reduce(
+                array_column($this->fileProvider, 'files'),
+                function ($a, $b) {
+                    $a = $a ?: [];
+                    $b = $b ?: [];
+                    return array_merge($a, $b);
+                });
+
+            // Test, if existing files are defined by a file provider
+            foreach (array_keys($ioAdapter->getFiles()) as $file) {
+                $this->assertTrue(
+                    in_array($file, $allProviderFiles),
+                    "{$file} is not defined by any file provider"
+                );
+            }
+        }
+    }
+
+    /**
+     * Foreach file provider: Create a plugin which needs this file provider and check,
+     * if all required / pre-defined files actually exists.
+     */
+    public function testLegacyPluginGenerator()
+    {
+        $this->fileProvider["Default"]["files"] = [
+            "Bootstrap.tpl" => "Bootstrap.php",
+            "Readme.tpl" => "Readme.md",
+            "LICENSE" => "LICENSE",
+            "plugin.tpl" => "plugin.json",
+            "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
+            "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
+            "tests/LegacyPluginTest.tpl" => "tests/Test.php"
+        ];
+
+        foreach ($this->fileProvider as $name => $provider) {
+            $config = $this->getLegacyConfigObject();
             $configName = $provider['config'];
             $config->$configName = true;
             $config->backendModel = 'Shopware\CustomModels\SwagTest\Test';
