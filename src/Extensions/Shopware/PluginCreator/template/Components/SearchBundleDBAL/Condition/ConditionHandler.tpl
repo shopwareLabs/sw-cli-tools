@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Condition;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Components\SearchBundleDBAL\Condition;
+<?php } ?>
 
 use Shopware\Bundle\SearchBundle\ConditionInterface;
 use Shopware\Bundle\SearchBundleDBAL\ConditionHandlerInterface;

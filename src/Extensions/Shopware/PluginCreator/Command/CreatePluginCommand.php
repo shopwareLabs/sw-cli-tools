@@ -120,7 +120,11 @@ EOF
         $name = $input->getArgument('name');
         $modelName = implode('', array_slice($this->upperToArray($name), 1));
 
-        $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+        if ($input->getOption(self::LEGACY_OPTION)) {
+            $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+        } else {
+            $defaultModel = sprintf('%s\Models\%s', $name, $modelName);
+        }
 
         $this->normalizeBooleanFields($input);
 

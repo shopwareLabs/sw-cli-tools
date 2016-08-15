@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Components\SearchBundleDBAL;
+<?php } ?>
 
 use Enlight_Controller_Request_RequestHttp as Request;
 use Shopware\Bundle\SearchBundle\Criteria;

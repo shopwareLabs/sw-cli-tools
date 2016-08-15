@@ -3,7 +3,7 @@
 class Shopware_Controllers_Api_<?= $names->camelCaseModel; ?> extends Shopware_Controllers_Api_Rest
 {
     /**
-     * @var \<?= $configuration->pluginConfig['namespace']; ?>\Components\Api\Resource\<?= $configuration->backendModel; ?>
+     * @var \<?= $configuration->pluginConfig['namespace']; ?>\Components\Api\Resource\<?= $names->camelCaseModel; ?>
      */
     protected $resource = null;
 
