@@ -9,7 +9,6 @@ use Shopware\Components\Api\Resource\Resource;
 
 class <?= $names->camelCaseModel; ?> extends Resource
 {
-
     /**
      * Return a list of entities
      *
@@ -51,8 +50,9 @@ class <?= $names->camelCaseModel; ?> extends Resource
      *
      * @param $id
      *
-     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+     * @return \<?= $configuration->backendModel; ?>
 
+     *
      * @throws ApiException\NotFoundException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -78,8 +78,9 @@ class <?= $names->camelCaseModel; ?> extends Resource
      *
      * @param $data
      *
-     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+     * @return \<?= $configuration->backendModel; ?>
 
+     *
      * @throws ApiException\NotFoundException
      * @throws ApiException\OrmException
      * @throws ApiException\ParameterMissingException
@@ -91,8 +92,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
     public function create($data)
     {
         $data = $this->prepareData($data);
-
-        $model = new \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>();
+        $model = new \<?= $configuration->backendModel; ?>();
         $model->fromArray($data);
 
         $violations = $this->getManager()->validate($model);
@@ -105,7 +105,6 @@ class <?= $names->camelCaseModel; ?> extends Resource
         $this->flush();
 
         return $model;
-
     }
 
     /**
@@ -114,8 +113,9 @@ class <?= $names->camelCaseModel; ?> extends Resource
      * @param $id
      * @param $data
      *
-     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+     * @return \<?= $configuration->backendModel; ?>
 
+     *
      * @throws ApiException\NotFoundException
      * @throws ApiException\OrmException
      * @throws ApiException\ParameterMissingException
@@ -130,7 +130,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
             throw new ApiException\ParameterMissingException();
         }
 
-        /** @var $model \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?> */
+        /** @var $model \<?= $configuration->backendModel; ?> */
         $model = $this->getManager()->find('<?= $configuration->backendModel; ?>', $id);
 
         if (!$model) {
@@ -149,7 +149,6 @@ class <?= $names->camelCaseModel; ?> extends Resource
         $this->flush();
 
         return $model;
-
     }
 
     /**
@@ -157,8 +156,9 @@ class <?= $names->camelCaseModel; ?> extends Resource
      *
      * @param $id
      *
-     * @return \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?>
+     * @return \<?= $configuration->backendModel; ?>
 
+     *
      * @throws ApiException\NotFoundException
      * @throws ApiException\OrmException
      * @throws ApiException\ParameterMissingException
@@ -172,7 +172,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
             throw new ApiException\ParameterMissingException();
         }
 
-        /** @var $model \Shopware\CustomModels\<?= $configuration->name; ?>\<?= $configuration->backendModel; ?> */
+        /** @var $model \<?= $configuration->backendModel; ?> */
         $model = $this->getManager()->find('<?= $configuration->backendModel; ?>', $id);
 
         if (!$model) {
@@ -191,7 +191,6 @@ class <?= $names->camelCaseModel; ?> extends Resource
      */
     protected function prepareData($data)
     {
-
         return $data;
     }
 
