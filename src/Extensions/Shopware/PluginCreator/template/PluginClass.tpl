@@ -5,6 +5,10 @@ namespace <?= $configuration->name; ?>;
 
 use Shopware\Components\Plugin;
 use <?= $configuration->name; ?>\Subscriber\Frontend;
+<?php if ($configuration->hasCommands) { ?>
+use Shopware\Components\Console\Application;
+use <?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>;
+<?php } ?>
 use Enlight_Event_EventArgs;
 
 /**
@@ -37,4 +41,16 @@ class <?= $configuration->name; ?> extends Plugin
             $this->container->get('application')->Events()->addSubscriber($subscriber);
         }
     }
+
+<?php if ($configuration->hasCommands) { ?>
+    /**
+     * Register PluginCommands
+     *
+     * @param Application $application
+     */
+    public function registerCommands(Application $application)
+    {
+        $application->add(new <?= $names->camelCaseModel; ?>());
+    }
+<?php } ?>
 }
