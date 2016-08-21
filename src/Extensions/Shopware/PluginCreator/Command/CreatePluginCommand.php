@@ -39,7 +39,7 @@ class CreatePluginCommand extends BaseCommand
                 self::LEGACY_OPTION,
                 null,
                 InputOption::VALUE_NONE,
-                'Create a legacy Plugin for Shopware-version lower than 5.2'
+                'Create a legacy Plugin for Shopware versions lower than 5.2'
             )
             ->addOption(
                 'namespace',
