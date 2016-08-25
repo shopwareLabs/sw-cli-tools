@@ -69,7 +69,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 "plugin.xml.tpl" => "plugin.xml",
                 "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
                 "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
-                "tests/PluginTest.tpl" => "tests/PluginTest.php"
+                "tests/PluginTest.tpl" => "tests/PluginTest.php",
+                "Resources/services.xml.tpl" => "Resources/services.xml",
             ]
         ],
         'Filter' => [

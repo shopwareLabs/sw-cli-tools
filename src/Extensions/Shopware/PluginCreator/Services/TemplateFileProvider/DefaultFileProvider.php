@@ -25,13 +25,15 @@ class DefaultFileProvider implements FileProviderInterface
             "LICENSE" => "LICENSE",
             "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
             "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
-            "tests/PluginTest.tpl" => "tests/PluginTest.php"
+            "tests/PluginTest.tpl" => "tests/PluginTest.php",
+            "Resources/services.xml.tpl" => "Resources/services.xml",
         );
 
         if ($configuration->isLegacyPlugin) {
             unset($defaultFiles["PluginClass.tpl"]);
             unset($defaultFiles["plugin.xml.tpl"]);
             unset($defaultFiles["tests/PluginTest.tpl"]);
+            unset($defaultFiles["Resources/services.xml.tpl"]);
 
             $defaultFiles["Bootstrap.tpl"] = "Bootstrap.php";
             $defaultFiles["plugin.tpl"] = "plugin.json";
