@@ -6,11 +6,16 @@
 
     <services>
         <!-- @todo Add your services here -->
-
+<?php if ($configuration->hasCommands) { ?>
+        <service id="" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
+            <tag name="console.command" />
+        </service>
+<?php } else { ?>
         <!--
         <service id="your_plugin.example_service" class="YourPlugin\Example">
             <argument id="another_service" />
         </service>
         -->
+<?php } ?>
     </services>
 </container>
