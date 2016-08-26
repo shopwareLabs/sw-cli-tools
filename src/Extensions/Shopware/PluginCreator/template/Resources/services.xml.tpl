@@ -6,16 +6,14 @@
 
     <services>
         <!-- @todo Add your services here -->
+        <service id="<?= $names->under_score_js ?>.subscriber.frontend" class="<?= $configuration->name; ?>\Subscriber\Frontend">
+            <tag name="shopware.event_subscriber" />
+        </service>
 <?php if ($configuration->hasCommands) { ?>
+
         <service id="<?= $names->under_score_js ?>.commands.<?= $names->under_score_model ?>" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
             <tag name="console.command" />
         </service>
-<?php } else { ?>
-        <!--
-        <service id="your_plugin.example_service" class="YourPlugin\Example">
-            <argument id="another_service" />
-        </service>
-        -->
 <?php } ?>
     </services>
 </container>

@@ -4,7 +4,6 @@
 namespace <?= $configuration->name; ?>;
 
 use Shopware\Components\Plugin;
-use <?= $configuration->name; ?>\Subscriber\Frontend;
 <?php if ($configuration->hasCommands) { ?>
 use Shopware\Components\Console\Application;
 use <?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>;
@@ -33,9 +32,7 @@ class <?= $configuration->name; ?> extends Plugin
      */
     public function onStartDispatch(Enlight_Event_EventArgs $args)
     {
-        $subscribers = [
-            new Frontend(),
-        ];
+        $subscribers = [];
 
         foreach ($subscribers as $subscriber) {
             $this->container->get('application')->Events()->addSubscriber($subscriber);
