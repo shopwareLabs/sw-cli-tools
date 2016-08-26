@@ -7,7 +7,7 @@
     <services>
         <!-- @todo Add your services here -->
 <?php if ($configuration->hasCommands) { ?>
-        <service id="" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
+        <service id="<?= $names->under_score_js ?>.commands.<?= $names->under_score_model ?>" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
             <tag name="console.command" />
         </service>
 <?php } else { ?>
