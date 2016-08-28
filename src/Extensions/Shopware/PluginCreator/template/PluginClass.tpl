@@ -20,23 +20,10 @@ class <?= $configuration->name; ?> extends Plugin
      */
     public static function getSubscribedEvents()
     {
+        // @todo Add your your events here
         return [
-            'Enlight_Controller_Front_DispatchLoopStartup' => 'onStartDispatch'
+            // 'Enlight_Controller_Action_PostDispatchSecure_Frontend' => 'onFrontendPostDispatch',
         ];
-    }
-
-    /**
-     * This callback function is triggered at the very beginning of the dispatch process.
-     *
-     * @param Enlight_Event_EventArgs $args
-     */
-    public function onStartDispatch(Enlight_Event_EventArgs $args)
-    {
-        $subscribers = [];
-
-        foreach ($subscribers as $subscriber) {
-            $this->container->get('application')->Events()->addSubscriber($subscriber);
-        }
     }
 
 <?php if ($configuration->hasCommands) { ?>
