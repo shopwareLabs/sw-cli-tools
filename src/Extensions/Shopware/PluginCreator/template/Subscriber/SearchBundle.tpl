@@ -1,9 +1,13 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Subscriber;
+<?php } ?>
 
-use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL;
+use <?= $configuration->name; ?>\Components\SearchBundleDBAL;
 use Enlight\Event\SubscriberInterface;
 
 class SearchBundle implements SubscriberInterface

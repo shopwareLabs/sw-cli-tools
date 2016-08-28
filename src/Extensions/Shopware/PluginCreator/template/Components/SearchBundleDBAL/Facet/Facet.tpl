@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet;
+<?php } ?>
 
 use Shopware\Bundle\SearchBundle\FacetInterface;
 

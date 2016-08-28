@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace Shopware\CustomModels\<?= $configuration->name; ?>;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Models;
+<?php } ?>
 
 use Shopware\Components\Model\ModelRepository;
 

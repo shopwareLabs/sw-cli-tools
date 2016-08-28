@@ -12,6 +12,7 @@ use Shopware\PluginCreator\Services\TemplateFileProvider\DefaultFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FilterFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FrontendFileProvider;
+use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyDefaultFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\ModelFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\WidgetFileProvider;
 use Shopware\PluginCreator\Struct\Configuration;
@@ -119,18 +120,24 @@ class Generator
      */
     private function getTemplateFileProvider()
     {
+        $defaultFileProvider = new DefaultFileProvider();
+
+        if ($this->configuration->isLegacyPlugin) {
+            $defaultFileProvider =  new LegacyDefaultFileProvider();
+        }
+
         return [
             new ApiFileProvider(),
             new BackendControllerFileProvider(),
             new BackendFileProvider(),
             new CommandFileProvider(),
             new ControllerPathFileProvider(),
-            new DefaultFileProvider(),
             new FilterFileProvider(),
             new FrontendFileProvider(),
             new ModelFileProvider(),
             new WidgetFileProvider(),
-            new FrontendFileProvider()
+            new FrontendFileProvider(),
+            $defaultFileProvider,
         ];
     }
 

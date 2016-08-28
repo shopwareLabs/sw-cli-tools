@@ -116,6 +116,7 @@ Will create a Shopware plugin with all the boilerplate code.
 
 Valid options / arguments are:
 
+    --legacy: Create a legacy Plugin for Shopware versions lower than 5.2
     --namespace[="..."]: Namespace of the plugin, default: Frontend
     --haveBackend: Generate a backend Controller + a simple ExtJS module
     --backendModel[="..."]: The name of the model for your backend application

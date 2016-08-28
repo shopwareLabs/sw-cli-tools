@@ -1,7 +1,11 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->isLegacyPlugin) { ?>
 namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Commands;
+<?php } else { ?>
+namespace <?= $configuration->name; ?>\Commands;
+<?php } ?>
 
 use Shopware\Components\Model\ModelManager;
 use Symfony\Component\Console\Input\InputArgument;
