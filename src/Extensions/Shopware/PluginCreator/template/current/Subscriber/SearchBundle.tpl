@@ -1,11 +1,7 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-<?php if ($configuration->isLegacyPlugin) { ?>
-namespace <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber;
-<?php } else { ?>
 namespace <?= $configuration->name; ?>\Subscriber;
-<?php } ?>
 
 use <?= $configuration->name; ?>\Components\SearchBundleDBAL;
 use Enlight\Event\SubscriberInterface;
@@ -23,7 +19,7 @@ class SearchBundle implements SubscriberInterface
 
     public function registerFacetHandlers()
     {
-        return new SearchBundleDBAL\Facet\<?= $configuration->name; ?>FacetHandler(
+        return new \<?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet\<?= $configuration->name; ?>FacetHandler(
             Shopware()->Container()->get('shopware_searchdbal.dbal_query_builder_factory'),
             Shopware()->Container()->get('snippets')
         );
@@ -31,11 +27,11 @@ class SearchBundle implements SubscriberInterface
 
     public function registerConditionHandlers()
     {
-        return new SearchBundleDBAL\Condition\<?= $configuration->name; ?>ConditionHandler();
+        return new \<?= $configuration->name; ?>\Components\SearchBundleDBAL\Condition\<?= $configuration->name; ?>ConditionHandler();
     }
 
     public function registerRequestHandlers()
     {
-        return new SearchBundleDBAL\<?= $configuration->name; ?>CriteriaRequestHandler();
+        return new \<?= $configuration->name; ?>\Components\SearchBundleDBAL\<?= $configuration->name; ?>CriteriaRequestHandler();
     }
 }

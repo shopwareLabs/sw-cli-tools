@@ -20,9 +20,16 @@ class ModelFileProvider implements FileProviderInterface
             return [];
         }
 
+        if ($configuration->isLegacyPlugin) {
+            return array(
+                self::LEGACY_DIR . "Models/Model.tpl" => "Models/{$configuration->name}/{$nameGenerator->camelCaseModel}.php",
+                self::LEGACY_DIR . "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
+            );
+        }
+
         return array(
-            "Models/Model.tpl" => "Models/{$configuration->name}/{$nameGenerator->camelCaseModel}.php",
-            "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
+            self::CURRENT_DIR . "Models/Model.tpl" => "Models/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR . "Models/Repository.tpl" => "Models/Repository.php"
         );
     }
 }

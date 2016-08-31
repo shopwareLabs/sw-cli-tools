@@ -16,16 +16,22 @@ class ControllerPathFileProvider implements FileProviderInterface
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
-        if ($configuration->hasBackend
-            || $configuration->hasFrontend
-            || $configuration->hasWidget
-            || $configuration->hasApi
+        if (!$configuration->hasBackend
+            && !$configuration->hasFrontend
+            && !$configuration->hasWidget
+            && !$configuration->hasApi
         ) {
-            return array(
-                "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
-            );
+            return [];
         }
 
-        return [];
+        if ($configuration->isLegacyPlugin) {
+            return [
+                self::LEGACY_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
+            ];
+        }
+
+        return [
+            self::CURRENT_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
+        ];
     }
 }

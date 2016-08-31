@@ -14,6 +14,9 @@ use Shopware\PluginCreator\Struct\Configuration;
  */
 interface FileProviderInterface
 {
+    const CURRENT_DIR = "current/";
+    const LEGACY_DIR = "legacy/";
+
     /**
      * @param Configuration $configuration
      * @param NameGenerator $nameGenerator

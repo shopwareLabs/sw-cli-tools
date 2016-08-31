@@ -9,11 +9,25 @@
         <service id="<?= $names->under_score_js ?>.subscriber.frontend" class="<?= $configuration->name; ?>\Subscriber\Frontend">
             <tag name="shopware.event_subscriber" />
         </service>
+
+        <service id="<?= $names->under_score_js ?>.subscriber.controller_path" class="<?= $configuration->name; ?>\Subscriber\ControllerPath">
+            <argument type="service" id="service_container" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+<?php if ($configuration->hasFilter) { ?>
+
+        <service id="<?= $names->under_score_js ?>.subscriber.search_bundle" class="<?= $configuration->name; ?>\Subscriber\SearchBundle">
+            <tag name="shopware.event_subscriber" />
+        </service>
+<?php } ?>
+
 <?php if ($configuration->hasCommands) { ?>
 
         <service id="<?= $names->under_score_js ?>.commands.<?= $names->under_score_model ?>" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
             <tag name="console.command" />
         </service>
 <?php } ?>
+
     </services>
 </container>

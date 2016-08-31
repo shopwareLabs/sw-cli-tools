@@ -20,10 +20,25 @@ class ApiFileProvider implements FileProviderInterface
             return [];
         }
 
-        return array(
-            "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
-            "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
+        if ($configuration->isLegacyPlugin) {
+            return $this->getLegacyFiles($nameGenerator);
+        }
 
+        return array(
+            self::CURRENT_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
+        );
+    }
+
+    /**
+     * @param NameGenerator $nameGenerator
+     * @return array
+     */
+    private function getLegacyFiles(NameGenerator $nameGenerator)
+    {
+        return array(
+            self::LEGACY_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
+            self::LEGACY_DIR . "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 
+use Shopware\DataGenerator\Struct\Config;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Struct\Configuration;
 
@@ -16,12 +17,27 @@ class BackendControllerFileProvider implements FileProviderInterface
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
-        if ($configuration->hasBackend || $configuration->hasWidget) {
-            return array(
-                "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
-            );
+        if (!$configuration->hasBackend && !$configuration->hasWidget) {
+            return [];
         }
 
-        return [];
+        if ($configuration->isLegacyPlugin) {
+            return $this->getLegacyFiles($configuration);
+        }
+
+        return [
+            self::CURRENT_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
+        ];
+    }
+
+    /**
+     * @param Configuration $configuration
+     * @return array
+     */
+    private function getLegacyFiles(Configuration $configuration)
+    {
+        return [
+            self::LEGACY_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
+        ];
     }
 }
