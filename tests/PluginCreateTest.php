@@ -26,27 +26,27 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         'Api' => [
             'config' => 'hasApi',
             'files' => [
-                FileProviderInterface::LEGACY_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/Test.php",
-                FileProviderInterface::LEGACY_DIR . "Controllers/Api.tpl" => "Controllers/Api/Test.php"
+                FileProviderInterface::CURRENT_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/Test.php",
+                FileProviderInterface::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/Test.php"
             ]
         ],
         'BackendController' => [
             'config' => 'hasBackend',
             'files' => [
-                FileProviderInterface::LEGACY_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/SwagTest.php"
+                FileProviderInterface::CURRENT_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/SwagTest.php"
             ]
         ],
         'Backend' => [
             'config' => 'hasBackend',
             'files' => [
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/app.tpl" => "Resources/views/backend/swag_test/app.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/controller/main.tpl" => "Resources/views/backend/swag_test/controller/main.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/model/main.tpl" => "Resources/views/backend/swag_test/model/main.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/store/main.tpl" => "Resources/views/backend/swag_test/store/main.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/view/detail/container.tpl" => "Resources/views/backend/swag_test/view/detail/container.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/view/detail/window.tpl" => "Resources/views/backend/swag_test/view/detail/window.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/view/list/list.tpl" => "Resources/views/backend/swag_test/view/list/list.js",
-                FileProviderInterface::LEGACY_DIR . "Resources/views/backend/application/view/list/window.tpl" => "Resources/views/backend/swag_test/view/list/window.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/app.tpl" => "Resources/views/backend/swag_test/app.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/controller/main.tpl" => "Resources/views/backend/swag_test/controller/main.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/model/main.tpl" => "Resources/views/backend/swag_test/model/main.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/store/main.tpl" => "Resources/views/backend/swag_test/store/main.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/view/detail/container.tpl" => "Resources/views/backend/swag_test/view/detail/container.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/view/detail/window.tpl" => "Resources/views/backend/swag_test/view/detail/window.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/view/list/list.tpl" => "Resources/views/backend/swag_test/view/list/list.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/application/view/list/window.tpl" => "Resources/views/backend/swag_test/view/list/window.js",
             ]
         ],
         'Command' => [
@@ -110,6 +110,97 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         ],
     ];
 
+    /**
+     * @var array
+     */
+    protected $legacyFileProvider = [
+        'Api' => [
+            'config' => 'hasApi',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/Test.php",
+                FileProviderInterface::LEGACY_DIR . "Controllers/Api.tpl" => "Controllers/Api/Test.php"
+            ]
+        ],
+        'BackendController' => [
+            'config' => 'hasBackend',
+            'files' => [
+                "Controllers/Backend.tpl" => "Controllers/Backend/SwagTest.php"
+            ]
+        ],
+        'Backend' => [
+            'config' => 'hasBackend',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/app.tpl" => "Views/backend/swag_test/app.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/controller/main.tpl" => "Views/backend/swag_test/controller/main.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/model/main.tpl" => "Views/backend/swag_test/model/main.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/store/main.tpl" => "Views/backend/swag_test/store/main.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/view/detail/container.tpl" => "Views/backend/swag_test/view/detail/container.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/view/detail/window.tpl" => "Views/backend/swag_test/view/detail/window.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/view/list/list.tpl" => "Views/backend/swag_test/view/list/list.js",
+                FileProviderInterface::LEGACY_DIR . "Views/backend/application/view/list/window.tpl" => "Views/backend/swag_test/view/list/window.js",
+            ]
+        ],
+        'Command' => [
+            'config' => 'hasCommands',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Commands/Command.tpl" => "Commands/Test.php"
+            ]
+        ],
+        'ControllerPath' => [
+            'config' => 'hasBackend',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
+            ]
+        ],
+        'Default' => [
+            'config' => 'hasBackend',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Bootstrap.tpl" => "Bootstrap.php",
+                FileProviderInterface::LEGACY_DIR . "Readme.tpl" => "Readme.md",
+                FileProviderInterface::LEGACY_DIR . "LICENSE" => "LICENSE",
+                FileProviderInterface::LEGACY_DIR . "plugin.tpl" => "plugin.json",
+                FileProviderInterface::LEGACY_DIR . "Subscriber/Frontend.tpl" => "Subscriber/Frontend.php",
+                FileProviderInterface::LEGACY_DIR . "phpunit.xml.dist.tpl" => "phpunit.xml.dist",
+                FileProviderInterface::LEGACY_DIR . "tests/Test.tpl" => "tests/Test.php"
+            ]
+        ],
+        'Filter' => [
+            'config' => 'hasFilter',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Components/SearchBundleDBAL/Condition/Condition.tpl" => "Components/SearchBundleDBAL/Condition/SwagTestCondition.php",
+                FileProviderInterface::LEGACY_DIR . "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/SwagTestConditionHandler.php",
+                FileProviderInterface::LEGACY_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacet.php",
+                FileProviderInterface::LEGACY_DIR . "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacetHandler.php",
+                FileProviderInterface::LEGACY_DIR . "Components/SearchBundleDBAL/CriteriaRequestHandler.tpl" => "Components/SearchBundleDBAL/SwagTestCriteriaRequestHandler.php",
+                FileProviderInterface::LEGACY_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
+            ]
+        ],
+        'Frontend' => [
+            'config' => 'hasFrontend',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Controllers/Frontend.tpl" => "Controllers/Frontend/SwagTest.php",
+                FileProviderInterface::LEGACY_DIR . "Views/frontend/plugin_name/index.tpl" => "Views/frontend/swag_test/index.tpl"
+            ]
+        ],
+        'Model' => [
+            'config' => 'hasModels',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Models/Model.tpl" => "Models/SwagTest/Test.php",
+                FileProviderInterface::LEGACY_DIR . "Models/Repository.tpl" => "Models/SwagTest/Repository.php"
+            ]
+        ],
+        'Widget' => [
+            'config' => 'hasWidget',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . "Views/backend/widget/main.tpl" => "Views/backend/swag_test/widgets/swag_test.js",
+                FileProviderInterface::LEGACY_DIR . "Snippets/backend/widget/labels.tpl" => "Snippets/backend/widget/labels.ini"
+            ]
+        ],
+    ];
+
+    /**
+     * @return Configuration
+     */
     private function getConfigObject()
     {
         $config = new Configuration();
@@ -119,51 +210,10 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         $config->hasWidget = false;
         $config->hasFrontend = false;
         $config->hasCommands = false;
-        $config->hasModels = true;
+        $config->hasModels = false;
         $config->name = 'SwagTest';
 
         return $config;
-    }
-
-    public function testLegacyFileProvider()
-    {
-        foreach ($this->fileProvider as $name => $provider) {
-            $config = $this->getConfigObject();
-            $configName = $provider['config'];
-            $config->$configName = true;
-            $config->backendModel = 'SwagTest\Models\Test';
-
-            $ioAdapter = new Dummy();
-            $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
-            $generator->setOutputDirectory('');
-
-            $generator->run();
-
-            // Test, if the file provider files, do exist
-            foreach ($provider['files'] as $file) {
-                $this->assertTrue(
-                    in_array($file, array_keys($ioAdapter->getFiles())),
-                    "{$file} not found in generated files"
-                );
-            }
-
-            // merge all provider files into one array
-            $allProviderFiles = array_reduce(
-                array_column($this->fileProvider, 'files'),
-                function ($a, $b) {
-                    $a = $a ?: [];
-                    $b = $b ?: [];
-                    return array_merge($a, $b);
-                });
-
-            // Test, if existing files are defined by a file provider
-            foreach (array_keys($ioAdapter->getFiles()) as $file) {
-                $this->assertTrue(
-                    in_array($file, $allProviderFiles),
-                    "{$file} is not defined by any file provider"
-                );
-            }
-        }
     }
 
     /**
@@ -178,36 +228,61 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
             $config->$configName = true;
             $config->backendModel = 'SwagTest\Models\Test';
 
-            $ioAdapter = new Dummy();
-            $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
-            $generator->setOutputDirectory('');
+            $this->providerTest($config, $provider, $this->fileProvider);
+        }
+    }
 
-            $generator->run();
+    /**
+     * Test each file provider with legacy files.
+     */
+    public function testLegacyFileProvider()
+    {
+        foreach ($this->legacyFileProvider as $name => $provider) {
+            $config = $this->getConfigObject();
+            $config->isLegacyPlugin = true;
+            $configName = $provider['config'];
+            $config->$configName = true;
 
-            // Test, if the file provider files, do exist
-            foreach ($provider['files'] as $file) {
-                $this->assertTrue(
-                    in_array($file, array_keys($ioAdapter->getFiles())),
-                    "{$file} not found in generated files"
-                );
-            }
+            $this->providerTest($config, $provider, $this->legacyFileProvider);
+        }
+    }
 
-            // merge all provider files into one array
-            $allProviderFiles = array_reduce(
-                array_column($this->fileProvider, 'files'),
-                function ($a, $b) {
-                    $a = $a ?: [];
-                    $b = $b ?: [];
-                    return array_merge($a, $b);
-                });
+    /**
+     * @param Configuration $config
+     * @param array $provider
+     * @param array $fileProviders
+     */
+    private function providerTest(Configuration $config, array $provider, array $fileProviders)
+    {
+        $ioAdapter = new Dummy();
+        $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
+        $generator->setOutputDirectory('');
 
-            // Test, if existing files are defined by a file provider
-            foreach (array_keys($ioAdapter->getFiles()) as $file) {
-                $this->assertTrue(
-                    in_array($file, $allProviderFiles),
-                    "{$file} is not defined by any file provider"
-                );
-            }
+        $generator->run();
+
+        // Test, if the file provider files, do exist
+        foreach ($provider['files'] as $file) {
+            $this->assertTrue(
+                in_array($file, array_keys($ioAdapter->getFiles())),
+                "{$file} not found in generated files"
+            );
+        }
+
+        // merge all provider files into one array
+        $allProviderFiles = array_reduce(
+            array_column($fileProviders, 'files'),
+            function ($a, $b) {
+                $a = $a ?: [];
+                $b = $b ?: [];
+                return array_merge($a, $b);
+            });
+
+        // Test, if existing files are defined by a file provider
+        foreach (array_keys($ioAdapter->getFiles()) as $file) {
+            $this->assertTrue(
+                in_array($file, $allProviderFiles),
+                "{$file} is not defined by any file provider"
+            );
         }
     }
 }
