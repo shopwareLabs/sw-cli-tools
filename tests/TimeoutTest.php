@@ -4,7 +4,7 @@ class TimeoutTest extends PHPUnit_Framework_TestCase
 {
     public function getContainer()
     {
-        $di = \ShopwareCli\Application\DependencyInjection::createContainer();
+        $di = \ShopwareCli\Application\DependencyInjection::createContainer(__DIR__);
 
         $di->set('output_interface', new \Symfony\Component\Console\Output\NullOutput());
 

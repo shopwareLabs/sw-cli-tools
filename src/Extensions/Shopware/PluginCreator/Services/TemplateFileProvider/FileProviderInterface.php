@@ -14,7 +14,14 @@ use Shopware\PluginCreator\Struct\Configuration;
  */
 interface FileProviderInterface
 {
+    /**
+     * Directory which holds the file structure for the current plugin system.
+     */
     const CURRENT_DIR = "current/";
+
+    /**
+     * Directory which holds the legacy file structure.
+     */
     const LEGACY_DIR = "legacy/";
 
     /**

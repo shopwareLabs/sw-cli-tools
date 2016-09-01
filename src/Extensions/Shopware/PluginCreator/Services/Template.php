@@ -84,7 +84,7 @@ class Template
         }
     }
 
-    private function errorReporter($severity, $message, $filename, $lineno)
+    public function errorReporter($severity, $message, $filename, $lineno)
     {
         ob_clean();
         throw new \ErrorException($message . ': ' . $filename . ', line ' . $lineno, 0, $severity, $filename, $lineno);
