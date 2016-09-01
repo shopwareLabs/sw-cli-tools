@@ -39,7 +39,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
-        $expectedOutput = "ls: cannot access /no-such-file: No such file or directory\n";
+        $expectedOutput = "ls: cannot access '/no-such-file': No such file or directory\n";
         try {
             $executor->execute('LC_ALL=C ls /no-such-file');
         } catch (\Exception $e) {
@@ -53,12 +53,12 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
         $this->fail("Executor should throw exception on failed command");
     }
 
-    public function testAllowFailingCmmand()
+    public function testAllowFailingCommand()
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
-        $expectedOutput = "ls: cannot access /no-such-file: No such file or directory\n";
+        $expectedOutput = "ls: cannot access '/no-such-file': No such file or directory\n";
 
         $exitCode = $executor->execute('LC_ALL=C ls /no-such-file', null, true);
 
