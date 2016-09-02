@@ -27,7 +27,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
             'config' => 'hasApi',
             'files' => [
                 FileProviderInterface::CURRENT_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/Test.php",
-                FileProviderInterface::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/Test.php"
+                FileProviderInterface::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/Test.php",
+                FileProviderInterface::CURRENT_DIR . "Subscriber/ApiSubscriber.tpl" => "Subscriber/ApiSubscriber.php"
             ]
         ],
         'BackendController' => [
