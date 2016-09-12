@@ -1,8 +1,10 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
-namespace <?= $configuration->name; ?>\Components\SearchBundleDBAL;
+namespace <?= $configuration->name; ?>\Components\SearchBundle;
 
+use SwagTestFilter\Components\SearchBundleDBAL\Condition\<?= $configuration->name; ?>Condition;
+use SwagTestFilter\Components\SearchBundleDBAL\Facet\<?= $configuration->name; ?>Facet;
 use Enlight_Controller_Request_RequestHttp as Request;
 use Shopware\Bundle\SearchBundle\Criteria;
 use Shopware\Bundle\SearchBundle\CriteriaRequestHandlerInterface;
@@ -19,9 +21,9 @@ class <?= $configuration->name; ?>CriteriaRequestHandler implements CriteriaRequ
         ShopContextInterface $context
     ) {
         if ($request->has('<?= $names->under_score_js; ?>_condition')) {
-            $criteria->addCondition(new Condition\<?= $configuration->name; ?>Condition());
+            $criteria->addCondition(new <?= $configuration->name; ?>Condition());
         }
 
-        $criteria->addFacet(new Facet\<?= $configuration->name; ?>Facet());
+        $criteria->addFacet(new <?= $configuration->name; ?>Facet());
     }
 }

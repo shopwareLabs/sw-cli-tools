@@ -26,7 +26,7 @@ class FilterFileProvider implements FileProviderInterface
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/{$configuration->name}ConditionHandler.php",
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/{$configuration->name}Facet.php",
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/{$configuration->name}FacetHandler.php",
-            self::CURRENT_DIR . "Components/SearchBundleDBAL/CriteriaRequestHandler.tpl" => "Components/SearchBundleDBAL/{$configuration->name}CriteriaRequestHandler.php",
+            self::CURRENT_DIR . "Components/SearchBundle/CriteriaRequestHandler.tpl" => "Components/SearchBundle/{$configuration->name}CriteriaRequestHandler.php",
             self::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
         );
     }

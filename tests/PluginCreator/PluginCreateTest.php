@@ -85,7 +85,7 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/SwagTestConditionHandler.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacet.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacetHandler.php",
-                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/CriteriaRequestHandler.tpl" => "Components/SearchBundleDBAL/SwagTestCriteriaRequestHandler.php",
+                FileProviderInterface::CURRENT_DIR . "Components/SearchBundle/CriteriaRequestHandler.tpl" => "Components/SearchBundle/SwagTestCriteriaRequestHandler.php",
                 FileProviderInterface::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
             ]
         ],

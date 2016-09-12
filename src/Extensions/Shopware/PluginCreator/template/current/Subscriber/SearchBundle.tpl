@@ -32,6 +32,6 @@ class SearchBundle implements SubscriberInterface
 
     public function registerRequestHandlers()
     {
-        return new \<?= $configuration->name; ?>\Components\SearchBundleDBAL\<?= $configuration->name; ?>CriteriaRequestHandler();
+        return new \<?= $configuration->name; ?>\Components\SearchBundle\<?= $configuration->name; ?>CriteriaRequestHandler();
     }
 }
