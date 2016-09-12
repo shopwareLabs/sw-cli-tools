@@ -106,7 +106,7 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         'Widget' => [
             'config' => 'hasWidget',
             'files' => [
-                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/widget/main.tpl" => "Resources/views/backend/swag_test/widgets/swag_test.js",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/backend/widget/main.tpl" => "Resources/views/backend/widgets/swag_test.js",
                 FileProviderInterface::CURRENT_DIR . "Resources/snippets/backend/widget/labels.tpl" => "Resources/snippets/backend/widget/labels.ini",
                 FileProviderInterface::CURRENT_DIR . "Controllers/Backend/BackendWidget.tpl" => "Controllers/Backend/SwagTestWidget.php",
                 FileProviderInterface::CURRENT_DIR . "Subscriber/BackendWidget.tpl" => "Subscriber/BackendWidget.php",

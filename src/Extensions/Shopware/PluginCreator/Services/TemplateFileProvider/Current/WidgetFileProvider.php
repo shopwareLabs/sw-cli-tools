@@ -22,7 +22,7 @@ class WidgetFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Resources/views/backend/widget/main.tpl" => "Resources/views/backend/{$nameGenerator->under_score_js}/widgets/{$nameGenerator->under_score_js}.js",
+            self::CURRENT_DIR . "Resources/views/backend/widget/main.tpl" => "Resources/views/backend/widgets/{$nameGenerator->under_score_js}.js",
             self::CURRENT_DIR . "Subscriber/BackendWidget.tpl" => "Subscriber/BackendWidget.php",
             self::CURRENT_DIR . "Resources/snippets/backend/widget/labels.tpl" => "Resources/snippets/backend/widget/labels.ini",
             self::CURRENT_DIR . "Controllers/BackendWidget.tpl" => "Controllers/Backend/{$nameGenerator->backendWidgetController}.php"

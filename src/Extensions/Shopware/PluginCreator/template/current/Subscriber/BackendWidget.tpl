@@ -43,7 +43,7 @@ class BackendWidget implements SubscriberInterface
 
         $dir = $this->container->getParameter('<?= $names->under_score_js ?>.plugin_dir');
         $controller->View()->addTemplateDir($dir . '/Resources/views/');
-        $controller->View()->extendsTemplate('backend/<?= $names->under_score_js; ?>/widgets/<?= $names->under_score_js; ?>.js');
+        $controller->View()->extendsTemplate('backend/widgets/<?= $names->under_score_js; ?>.js');
     }
 
     /**
