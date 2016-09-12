@@ -7,6 +7,7 @@ use Shopware\PluginCreator\Services\IoAdapter\Dummy;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
+use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -258,7 +259,13 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     private function providerTest(Configuration $config, array $provider, array $fileProviders)
     {
         $ioAdapter = new Dummy();
-        $generator = new Generator($ioAdapter, $config, new NameGenerator($config), new Template());
+        $generator = new Generator(
+            $ioAdapter,
+            $config,
+            new NameGenerator($config),
+            new Template(),
+            new LegacyOptionFileProviderLoader($config->isLegacyPlugin)
+        );
         $generator->setOutputDirectory('');
 
         $generator->run();

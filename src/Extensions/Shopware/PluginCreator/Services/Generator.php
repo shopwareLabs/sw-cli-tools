@@ -10,6 +10,7 @@ use Shopware\PluginCreator\Services\TemplateFileProvider\CommandFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\ControllerPathFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\DefaultFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderLoaderInterface;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FilterFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FrontendFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
@@ -38,19 +39,30 @@ class Generator
      * @var IoAdapter
      */
     private $ioAdapter;
+    /**
+     * @var FileProviderLoaderInterface
+     */
+    private $fileProviderLoader;
 
     /**
-     * @param IoAdapter     $ioAdapter
+     * @param IoAdapter $ioAdapter
      * @param Configuration $configuration
      * @param NameGenerator $nameGenerator
-     * @param Template      $template
+     * @param Template $template
+     * @param FileProviderLoaderInterface $fileProviderLoader
      */
-    public function __construct(IoAdapter $ioAdapter, Configuration $configuration, NameGenerator $nameGenerator, Template $template)
-    {
+    public function __construct(
+        IoAdapter $ioAdapter,
+        Configuration $configuration,
+        NameGenerator $nameGenerator,
+        Template $template,
+        FileProviderLoaderInterface $fileProviderLoader
+    ) {
         $this->configuration = $configuration;
         $this->template = $template;
         $this->nameGenerator = $nameGenerator;
         $this->ioAdapter = $ioAdapter;
+        $this->fileProviderLoader = $fileProviderLoader;
     }
 
     /**
@@ -116,20 +128,11 @@ class Generator
     }
 
     /**
-     * @return FileProviderInterface[]
-     */
-    private function getTemplateFileProvider()
-    {
-        $legacyFileProviderLoader = new LegacyOptionFileProviderLoader($this->configuration->isLegacyPlugin);
-        return $legacyFileProviderLoader->load();
-    }
-
-    /**
      * Will step through all known template files, render and copy them to the configured destination
      */
     private function processTemplateFiles()
     {
-        foreach ($this->getTemplateFileProvider() as $provider) {
+        foreach ($this->fileProviderLoader->load() as $provider) {
             $this->createFilesFromTemplate(
                 $provider->getFiles($this->configuration, $this->nameGenerator)
             );

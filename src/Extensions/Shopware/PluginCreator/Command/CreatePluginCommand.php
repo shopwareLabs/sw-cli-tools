@@ -5,6 +5,7 @@ use Shopware\PluginCreator\Services\Generator;
 use Shopware\PluginCreator\Services\IoAdapter\HardDrive;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
+use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -182,7 +183,11 @@ EOF
         $configuration->pluginConfig = $this->getConfig()->offsetGet('PluginConfig');
 
         $generator = new Generator(
-            new HardDrive(), $configuration, new NameGenerator($configuration), new Template()
+            new HardDrive(),
+            $configuration,
+            new NameGenerator($configuration),
+            new Template(),
+            new LegacyOptionFileProviderLoader($configuration->isLegacyPlugin)
         );
 
         $generator->run();
