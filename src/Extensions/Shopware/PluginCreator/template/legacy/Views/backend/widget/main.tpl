@@ -53,7 +53,7 @@ Ext.define('Shopware.apps.<?= $configuration->name; ?>.widgets.<?= $configuratio
             ],
             proxy: {
                 type: 'ajax',
-                url: '{url controller=<?= $configuration->name; ?> action=loadBackendWidget}',
+                url: '{url controller=<?= $names->backendWidgetController; ?> action=loadBackendWidget}',
                 reader: {
                     type: 'json',
                     root: 'data'

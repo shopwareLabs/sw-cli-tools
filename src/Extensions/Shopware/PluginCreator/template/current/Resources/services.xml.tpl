@@ -12,8 +12,15 @@
         </service>
 <?php } ?>
 
-<?php if ($configuration->hasBackend || $configuration->hasFrontend || $configuration->hasWidget || $configuration->hasApi) { ?>
+<?php if ($configuration->hasBackend || $configuration->hasFrontend || $configuration->hasApi) { ?>
         <service id="<?= $names->under_score_js ?>.subscriber.controller_path" class="<?= $configuration->name; ?>\Subscriber\ControllerPath">
+            <argument type="service" id="service_container" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+<?php } ?>
+
+<?php if ($configuration->hasWidget) { ?>
+        <service id="<?= $names->under_score_js ?>.subscriber.backend_widget" class="<?= $configuration->name; ?>\Subscriber\BackendWidget">
             <argument type="service" id="service_container" />
             <tag name="shopware.event_subscriber" />
         </service>
