@@ -17,8 +17,6 @@ class DefaultFileProvider implements FileProviderInterface
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
-        $pluginClassName = "{$configuration->name}.php";
-
         return [
             self::LEGACY_DIR . "Readme.tpl" => "Readme.md",
             self::LEGACY_DIR . "LICENSE" => "LICENSE",
