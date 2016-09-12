@@ -38,7 +38,7 @@ class ApiSubscriber implements SubscriberInterface
      */
     public function onStartDispatch(\Enlight_Event_EventArgs $args)
     {
-        $this->container->get('application')->Loader()->registerNamespace(
+        $this->container->get('Loader')->registerNamespace(
             'Shopware\Components\Api',
             $this->container->getParameter('<?= $names->under_score_js ?>.plugin_dir') . 'Components/Api/'
         );
