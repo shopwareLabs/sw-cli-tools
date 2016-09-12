@@ -12,10 +12,12 @@
         </service>
 <?php } ?>
 
+<?php if ($configuration->hasBackend || $configuration->hasFrontend || $configuration->hasWidget || $configuration->hasApi) { ?>
         <service id="<?= $names->under_score_js ?>.subscriber.controller_path" class="<?= $configuration->name; ?>\Subscriber\ControllerPath">
             <argument type="service" id="service_container" />
             <tag name="shopware.event_subscriber" />
         </service>
+<?php } ?>
 
 <?php if ($configuration->hasFilter) { ?>
         <service id="<?= $names->under_score_js ?>.subscriber.search_bundle" class="<?= $configuration->name; ?>\Subscriber\SearchBundle">

@@ -23,7 +23,7 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
     }
 
     /**
-     * Loads all file providers based on the legacy option.
+     * Loads all file providers based on the --legacy option.
      *
      * @return FileProviderInterface[]
      */

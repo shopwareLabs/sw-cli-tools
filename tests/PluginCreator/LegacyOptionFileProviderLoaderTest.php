@@ -4,7 +4,7 @@ namespace ShopwareCli\tests\PluginCreater;
 
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 
-class FileProviderLoaderTest extends \PHPUnit_Framework_TestCase
+class LegacyOptionFileProviderLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLegacyLoad()
     {
