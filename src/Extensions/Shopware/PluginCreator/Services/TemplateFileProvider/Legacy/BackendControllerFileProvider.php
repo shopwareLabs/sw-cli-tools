@@ -1,9 +1,10 @@
 <?php
 
-namespace Shopware\PluginCreator\Services\TemplateFileProvider;
+namespace Shopware\PluginCreator\Services\TemplateFileProvider\Legacy;
 
 use Shopware\DataGenerator\Struct\Config;
 use Shopware\PluginCreator\Services\NameGenerator;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 /**
@@ -21,21 +22,6 @@ class BackendControllerFileProvider implements FileProviderInterface
             return [];
         }
 
-        if ($configuration->isLegacyPlugin) {
-            return $this->getLegacyFiles($configuration);
-        }
-
-        return [
-            self::CURRENT_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
-        ];
-    }
-
-    /**
-     * @param Configuration $configuration
-     * @return array
-     */
-    private function getLegacyFiles(Configuration $configuration)
-    {
         return [
             self::LEGACY_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
         ];

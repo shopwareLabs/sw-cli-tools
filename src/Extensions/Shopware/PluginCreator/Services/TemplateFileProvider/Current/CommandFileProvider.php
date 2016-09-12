@@ -1,8 +1,9 @@
 <?php
 
-namespace Shopware\PluginCreator\Services\TemplateFileProvider;
+namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
 use Shopware\PluginCreator\Services\NameGenerator;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 /**
@@ -18,12 +19,6 @@ class CommandFileProvider implements FileProviderInterface
     {
         if (!$configuration->hasCommands) {
             return [];
-        }
-
-        if ($configuration->isLegacyPlugin) {
-            return [
-                self::LEGACY_DIR . "Commands/Command.tpl" => "Commands/{$nameGenerator->camelCaseModel}.php"
-            ];
         }
 
         return [

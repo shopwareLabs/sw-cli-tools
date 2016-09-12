@@ -1,8 +1,9 @@
 <?php
 
-namespace Shopware\PluginCreator\Services\TemplateFileProvider;
+namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
 use Shopware\PluginCreator\Services\NameGenerator;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 /**
@@ -18,13 +19,6 @@ class ModelFileProvider implements FileProviderInterface
     {
         if (!$configuration->hasModels) {
             return [];
-        }
-
-        if ($configuration->isLegacyPlugin) {
-            return array(
-                self::LEGACY_DIR . "Models/Model.tpl" => "Models/{$configuration->name}/{$nameGenerator->camelCaseModel}.php",
-                self::LEGACY_DIR . "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
-            );
         }
 
         return array(

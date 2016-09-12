@@ -1,8 +1,9 @@
 <?php
 
-namespace Shopware\PluginCreator\Services\TemplateFileProvider;
+namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
 use Shopware\PluginCreator\Services\NameGenerator;
+use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 /**
@@ -22,12 +23,6 @@ class ControllerPathFileProvider implements FileProviderInterface
             && !$configuration->hasApi
         ) {
             return [];
-        }
-
-        if ($configuration->isLegacyPlugin) {
-            return [
-                self::LEGACY_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
-            ];
         }
 
         return [
