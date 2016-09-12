@@ -21,6 +21,7 @@ use Doctrine\ORM\Tools\SchemaTool;
  */
 class <?= $configuration->name; ?> extends Plugin
 {
+<?php if ($configuration->hasModels || $configuration->hasWidget) { ?>
     /**
      * Adds the widget to the database and creates the database schema.
      *
@@ -61,13 +62,14 @@ class <?= $configuration->name; ?> extends Plugin
 
         $widget = $repo->findOneBy([ 'name' => '<?= $names->under_score_js ?>' ]);
         $modelManager->remove($widget);
-    $modelManager->flush();
-    <?php } ?>
+        $modelManager->flush();
+<?php } ?>
 
 <?php if ($configuration->hasModels) { ?>
         $this->removeSchema();
 <?php } ?>
     }
+<?php } ?>
 
     /**
     * @param ContainerBuilder $container
