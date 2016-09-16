@@ -45,4 +45,7 @@ class Configuration extends Struct
 
     // is legacy-plugin ?
     public $isLegacyPlugin = false;
+
+    //Has an elastic search integration?
+    public $hasElasticSearch = false;
 }

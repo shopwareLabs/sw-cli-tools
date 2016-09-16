@@ -8,7 +8,7 @@ class LegacyOptionFileProviderLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLegacyLoad()
     {
-        $expectedProviderAmount = 10;
+        $expectedProviderAmount = 11;
         $isLegacy = true;
         $loader = new LegacyOptionFileProviderLoader($isLegacy);
 
@@ -19,9 +19,8 @@ class LegacyOptionFileProviderLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testCurrentLoad()
     {
-        $expectedProviderAmount = 10;
+        $expectedProviderAmount = 11;
         $isLegacy = false;
-
         $loader = new LegacyOptionFileProviderLoader($isLegacy);
 
         $result = $loader->load();

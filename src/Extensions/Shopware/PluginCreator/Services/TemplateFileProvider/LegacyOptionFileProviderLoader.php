@@ -50,7 +50,8 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
             new Legacy\FilterFileProvider(),
             new Legacy\FrontendFileProvider(),
             new Legacy\ModelFileProvider(),
-            new Legacy\WidgetFileProvider()
+            new Legacy\WidgetFileProvider(),
+            new Legacy\ElasticSearchProvider()
         ];
     }
 
@@ -69,7 +70,8 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
             new Current\FilterFileProvider(),
             new Current\FrontendFileProvider(),
             new Current\ModelFileProvider(),
-            new Current\WidgetFileProvider()
+            new Current\WidgetFileProvider(),
+            new Current\ElasticSearchProvider()
         ];
     }
 }

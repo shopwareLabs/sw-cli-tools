@@ -3,8 +3,9 @@
 
 namespace <?= $configuration->name; ?>\Components\SearchBundle;
 
-use SwagTestFilter\Components\SearchBundleDBAL\Condition\<?= $configuration->name; ?>Condition;
-use SwagTestFilter\Components\SearchBundleDBAL\Facet\<?= $configuration->name; ?>Facet;
+use <?= $configuration->name; ?>\Components\SearchBundleDBAL\Condition\<?= $configuration->name; ?>Condition;
+use <?= $configuration->name; ?>\Components\SearchBundleDBAL\Facet\<?= $configuration->name; ?>Facet;
+use <?= $configuration->name; ?>\Components\SearchBundleDBAL\Sorting\RandomSorting;
 use Enlight_Controller_Request_RequestHttp as Request;
 use Shopware\Bundle\SearchBundle\Criteria;
 use Shopware\Bundle\SearchBundle\CriteriaRequestHandlerInterface;
@@ -22,6 +23,10 @@ class <?= $configuration->name; ?>CriteriaRequestHandler implements CriteriaRequ
     ) {
         if ($request->has('<?= $names->under_score_js; ?>_condition')) {
             $criteria->addCondition(new <?= $configuration->name; ?>Condition());
+        }
+
+        if ($request->get('sSort') == '<?= $names->under_score_js; ?>_random') {
+            $criteria->addSorting(new RandomSorting());
         }
 
         $criteria->addFacet(new <?= $configuration->name; ?>Facet());

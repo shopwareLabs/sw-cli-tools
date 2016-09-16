@@ -1,6 +1,17 @@
 <?= $configuration->phpFileHeader; ?>
 <?= $configuration->licenseHeader; ?>
 
+<?php if ($configuration->hasElasticSearch) { ?>
+use Shopware\Components\Model\ModelManager;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\ESIndexingBundle\BlogDataIndexer;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\ESIndexingBundle\BlogMapping;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\ESIndexingBundle\BlogProvider;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\ESIndexingBundle\BlogSettings;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\ESIndexingBundle\BlogSynchronizer;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\SearchBundleES\BlogSearch;
+use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\ORMBacklogSubscriber;
+<?php } ?>
+
 /**
  * The Bootstrap class is the main entry point of any shopware plugin.
  *
@@ -91,6 +102,10 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 <?php } ?>
 <?php if ($configuration->hasModels) { ?>
 
+<?php if ($configuration->hasElasticSearch) { ?>
+        $this->subscribeElasticSearchEvents();
+<?php } ?>
+
         $this->updateSchema();
 <?php } ?>
 <?php if ($configuration->hasFrontend || $configuration->hasBackend) { ?>
@@ -99,8 +114,8 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
         return true;
 <?php } ?>
     }
-<?php if ($configuration->hasCommands) { ?>
 
+<?php if ($configuration->hasCommands) { ?>
     /**
      * Callback function of the console event subscriber. Register your console commands here.
      */
@@ -209,4 +224,71 @@ new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name;
             $this->Path()
         );
     }
+
+<?php if ($configuration->hasElasticSearch) { ?>
+    private function subscribeElasticSearchEvents()
+    {
+        $this->subscribeEvent('Enlight_Bootstrap_InitResource_<?= $names->under_score_js ?>_blog_search.blog_indexer', 'registerIndexerService');
+        $this->subscribeEvent('Shopware_ESIndexingBundle_Collect_Indexer', 'addIndexer');
+        $this->subscribeEvent('Shopware_ESIndexingBundle_Collect_Mapping', 'addMapping');
+        $this->subscribeEvent('Shopware_ESIndexingBundle_Collect_Synchronizer', 'addSynchronizer');
+        $this->subscribeEvent('Enlight_Controller_Front_StartDispatch', 'addBacklogSubscriber');
+        $this->subscribeEvent('Enlight_Bootstrap_AfterInitResource_shopware_search.product_search', 'decorateProductSearch');
+        $this->subscribeEvent('Shopware_ESIndexingBundle_Collect_Settings', 'addSettings');
+    }
+
+    public function addSettings()
+    {
+        return new BlogSettings();
+    }
+
+    public function registerIndexerService()
+    {
+        return new BlogDataIndexer(
+            $this->get('dbal_connection'),
+            $this->get('shopware_elastic_search.client'),
+            new BlogProvider($this->get('dbal_connection'))
+        );
+    }
+
+    public function addIndexer()
+    {
+        return $this->get('<?= $names->under_score_js ?>_blog_search.blog_indexer');
+    }
+
+    public function addMapping()
+    {
+        return new BlogMapping($this->get('shopware_elastic_search.field_mapping'));
+    }
+
+    public function addBacklogSubscriber()
+    {
+        $subscriber = new ORMBacklogSubscriber(Shopware()->Container());
+
+        /** @var ModelManager $entityManager */
+        $entityManager = $this->get('models');
+        $entityManager->getEventManager()->addEventSubscriber($subscriber);
+    }
+
+    public function addSynchronizer()
+    {
+        return new BlogSynchronizer(
+            $this->get('<?= $names->under_score_js ?>_blog_search.blog_indexer'),
+            $this->get('dbal_connection')
+        );
+    }
+
+    public function decorateProductSearch()
+    {
+        $service = new BlogSearch(
+            $this->get('shopware_elastic_search.client'),
+            $this->get('shopware_search.product_search'),
+            $this->get('shopware_elastic_search.index_factory')
+        );
+        Shopware()->Container()->set('shopware_search.product_search', $service);
+    }
+<?php } ?>
+
+
+
 }

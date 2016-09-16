@@ -2,10 +2,14 @@
 namespace Shopware\PluginCreator\Command;
 
 use Shopware\PluginCreator\Services\Generator;
+use Shopware\PluginCreator\Services\GeneratorFactory;
 use Shopware\PluginCreator\Services\IoAdapter\HardDrive;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -51,7 +55,7 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveBackend',
-                null,
+                'b',
                 InputOption::VALUE_NONE,
                 'Do you want a backend application to be created? This will create the ExtJS structure and connect it to an existing or new model'
             )
@@ -63,7 +67,7 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveFrontend',
-                null,
+                'f',
                 InputOption::VALUE_NONE,
                 'Do you need a frontend controller?'
             )
@@ -75,27 +79,33 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveModels',
-                null,
+                'm',
                 InputOption::VALUE_NONE,
                 'Do you want custom models to be created and registered?'
             )
             ->addOption(
                 'haveCommands',
-                null,
+                'c',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to be prepared for commands?'
             )
             ->addOption(
                 'haveWidget',
-                null,
+                'w',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to have a widget?'
             )
             ->addOption(
                 'haveApi',
-                null,
+                'a',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to have an api resource?'
+            )
+            ->addOption(
+                'haveElasticSearch',
+                'e',
+                InputOption::VALUE_NONE,
+                'Do you want your plugin to have an elastic search integration?'
             )
             ->addOption(
                 'licenseHeader',
@@ -182,13 +192,8 @@ EOF
         $configuration = $this->getConfigurationObject($input);
         $configuration->pluginConfig = $this->getConfig()->offsetGet('PluginConfig');
 
-        $generator = new Generator(
-            new HardDrive(),
-            $configuration,
-            new NameGenerator($configuration),
-            new Template(),
-            new LegacyOptionFileProviderLoader($configuration->isLegacyPlugin)
-        );
+        $generatorFactory = new GeneratorFactory();
+        $generator = $generatorFactory->create($configuration);
 
         $generator->run();
     }
@@ -271,6 +276,7 @@ EOF
         $configuration->hasModels = $input->getOption('haveModels');
         $configuration->hasCommands = $input->getOption('haveCommands');
         $configuration->backendModel = $input->getOption('backendModel');
+        $configuration->hasElasticSearch = $input->getOption('haveElasticSearch');
         $configuration->isLegacyPlugin = $input->getOption(self::LEGACY_OPTION);
 
         $licenseHeader = $input->getOption('licenseHeader');

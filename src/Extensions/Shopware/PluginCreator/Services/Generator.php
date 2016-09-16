@@ -16,33 +16,42 @@ use Shopware\PluginCreator\Services\TemplateFileProvider\FrontendFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 use Shopware\PluginCreator\Services\TemplateFileProvider\ModelFileProvider;
 use Shopware\PluginCreator\Services\TemplateFileProvider\WidgetFileProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\OutputDirectoryProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 class Generator
 {
     const TEMPLATE_DIRECTORY = 'template';
 
-    protected $outputDirectory = null;
     /**
      * @var Configuration
      */
     private $configuration;
+
     /**
      * @var Template
      */
     private $template;
+
     /**
      * @var NameGenerator
      */
     private $nameGenerator;
+
     /**
      * @var IoAdapter
      */
     private $ioAdapter;
+
     /**
      * @var FileProviderLoaderInterface
      */
     private $fileProviderLoader;
+
+    /**
+     * @var OutputDirectoryProviderInterface
+     */
+    private $outputDirectoryProvider;
 
     /**
      * @param IoAdapter $ioAdapter
@@ -50,39 +59,22 @@ class Generator
      * @param NameGenerator $nameGenerator
      * @param Template $template
      * @param FileProviderLoaderInterface $fileProviderLoader
+     * @param OutputDirectoryProviderInterface $outputDirectoryProvider
      */
     public function __construct(
         IoAdapter $ioAdapter,
         Configuration $configuration,
         NameGenerator $nameGenerator,
         Template $template,
-        FileProviderLoaderInterface $fileProviderLoader
+        FileProviderLoaderInterface $fileProviderLoader,
+        OutputDirectoryProviderInterface $outputDirectoryProvider
     ) {
         $this->configuration = $configuration;
         $this->template = $template;
         $this->nameGenerator = $nameGenerator;
         $this->ioAdapter = $ioAdapter;
         $this->fileProviderLoader = $fileProviderLoader;
-    }
-
-    /**
-     * Returns path where the plugin should be created
-     *
-     * @return string
-     */
-    public function getOutputDirectory()
-    {
-        if (is_null($this->outputDirectory)) {
-            $basePath = getcwd();
-            $this->outputDirectory = $basePath . '/' . $this->configuration->name . '/';
-        }
-
-        return $this->outputDirectory;
-    }
-
-    public function setOutputDirectory($path)
-    {
-        $this->outputDirectory = $path;
+        $this->outputDirectoryProvider = $outputDirectoryProvider;
     }
 
     /**
@@ -92,7 +84,7 @@ class Generator
     {
         $this->configureTemplate();
 
-        $path = $this->getOutputDirectory();
+        $path = $this->outputDirectoryProvider->getPath();
         if ($this->ioAdapter->exists($path)) {
             throw new \RuntimeException("Could not create »{$path}«. Directory already exists");
         }
@@ -111,9 +103,10 @@ class Generator
         foreach ($files as $from => $to) {
             $fileContent = $this->template->fetch($from);
 
-            $this->ioAdapter->createDirectory(dirname($this->getOutputDirectory() . $to));
+            $path = $this->outputDirectoryProvider->getPath();
+            $this->ioAdapter->createDirectory(dirname($path . $to));
 
-            $this->ioAdapter->createFile($this->getOutputDirectory() . $to, $fileContent);
+            $this->ioAdapter->createFile($path . $to, $fileContent);
         }
     }
 

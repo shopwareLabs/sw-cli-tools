@@ -8,6 +8,10 @@ use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\OutputDirectoryProviderInterface;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -86,7 +90,10 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacet.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacetHandler.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundle/CriteriaRequestHandler.tpl" => "Components/SearchBundle/SwagTestCriteriaRequestHandler.php",
-                FileProviderInterface::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php"
+                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/RandomSorting.tpl" => "Components/SearchBundleDBAL/Sorting/RandomSorting.php",
+                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/RandomSortingHandler.tpl" => "Components/SearchBundleDBAL/Sorting/RandomSortingHandler.php",
+                FileProviderInterface::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php",
+                FileProviderInterface::CURRENT_DIR . "Resources/views/frontend/listing/actions/action-sorting.tpl" => "Resources/views/frontend/listing/actions/action-sorting.tpl"
             ]
         ],
         'Frontend' => [
@@ -110,6 +117,19 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 FileProviderInterface::CURRENT_DIR . "Resources/snippets/backend/widget/labels.tpl" => "Resources/snippets/backend/widget/labels.ini",
                 FileProviderInterface::CURRENT_DIR . "Controllers/Backend/BackendWidget.tpl" => "Controllers/Backend/SwagTestWidget.php",
                 FileProviderInterface::CURRENT_DIR . "Subscriber/BackendWidget.tpl" => "Subscriber/BackendWidget.php",
+            ]
+        ],
+        'ElasticSearch' => [
+            'config' => 'hasElasticSearch',
+            'files' => [
+                FileProviderInterface::CURRENT_DIR . 'Subscriber/ORMBacklogSubscriber.php' => 'Subscriber/ORMBacklogSubscriber.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Struct/Blog.tpl' => 'Components/ESIndexingBundle/Struct/Blog.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogDataIndexer.tpl' => 'Components/ESIndexingBundle/BlogDataIndexer.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogMapping.tpl' => 'Components/ESIndexingBundle/BlogMapping.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogProvider.tpl' => 'Components/ESIndexingBundle/BlogProvider.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogSettings.tpl' => 'Components/ESIndexingBundle/BlogSettings.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogSynchronizer.tpl' => 'Components/ESIndexingBundle/BlogSynchronizer.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/SearchBundleES/BlogSearch.tpl' => 'Components/SearchBundleES/BlogSearch.php'
             ]
         ],
     ];
@@ -200,6 +220,19 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 FileProviderInterface::LEGACY_DIR . "Snippets/backend/widget/labels.tpl" => "Snippets/backend/widget/labels.ini"
             ]
         ],
+        'ElasticSearch' => [
+            'config' => 'hasElasticSearch',
+            'files' => [
+                FileProviderInterface::LEGACY_DIR . 'Subscriber/ORMBacklogSubscriber.php' => 'Subscriber/ORMBacklogSubscriber.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Struct/Blog.tpl' => 'Components/ESIndexingBundle/Struct/Blog.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogDataIndexer.tpl' => 'Components/ESIndexingBundle/BlogDataIndexer.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogMapping.tpl' => 'Components/ESIndexingBundle/BlogMapping.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogProvider.tpl' => 'Components/ESIndexingBundle/BlogProvider.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSettings.tpl' => 'Components/ESIndexingBundle/BlogSettings.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSynchronizer.tpl' => 'Components/ESIndexingBundle/BlogSynchronizer.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/SearchBundleES/BlogSearch.tpl' => 'Components/SearchBundleES/BlogSearch.php'
+            ]
+        ]
     ];
 
     /**
@@ -226,13 +259,20 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileProvider()
     {
+        $currentOutputDirectoryProvider = $this->getMockBuilder(CurrentOutputDirectoryProvider::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $currentOutputDirectoryProvider->method('getPath')
+            ->willReturn('');
+
         foreach ($this->fileProvider as $name => $provider) {
             $config = $this->getConfigObject();
             $configName = $provider['config'];
             $config->$configName = true;
             $config->backendModel = 'SwagTest\Models\Test';
 
-            $this->providerTest($config, $provider, $this->fileProvider);
+            $this->providerTest($config, $provider, $this->fileProvider, $currentOutputDirectoryProvider);
         }
     }
 
@@ -241,13 +281,21 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
      */
     public function testLegacyFileProvider()
     {
+        $legacyOutputDirectoryProvider = $this->getMockBuilder(LegacyOutputDirectoryProvider::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $legacyOutputDirectoryProvider->method('getPath')
+            ->willReturn('');
+
         foreach ($this->legacyFileProvider as $name => $provider) {
             $config = $this->getConfigObject();
             $config->isLegacyPlugin = true;
             $configName = $provider['config'];
             $config->$configName = true;
+            $config->namespace = 'Frontend';
 
-            $this->providerTest($config, $provider, $this->legacyFileProvider);
+            $this->providerTest($config, $provider, $this->legacyFileProvider, $legacyOutputDirectoryProvider);
         }
     }
 
@@ -255,18 +303,23 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
      * @param Configuration $config
      * @param array $provider
      * @param array $fileProviders
+     * @param OutputDirectoryProviderInterface $outputDirectoryProvider
      */
-    private function providerTest(Configuration $config, array $provider, array $fileProviders)
-    {
+    private function providerTest(
+        Configuration $config,
+        array $provider,
+        array $fileProviders,
+        OutputDirectoryProviderInterface $outputDirectoryProvider
+    ) {
         $ioAdapter = new Dummy();
         $generator = new Generator(
             $ioAdapter,
             $config,
             new NameGenerator($config),
             new Template(),
-            new LegacyOptionFileProviderLoader($config->isLegacyPlugin)
+            new LegacyOptionFileProviderLoader($config->isLegacyPlugin),
+            $outputDirectoryProvider
         );
-        $generator->setOutputDirectory('');
 
         $generator->run();
 
