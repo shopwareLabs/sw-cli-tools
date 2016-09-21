@@ -32,7 +32,7 @@
             <argument type="service" id="service_container"></argument>
         </service>
 
-        <service id="<?= $names->under_score_js; ?>.random_sorting.random_sorting" class="<?= $configuration->name; ?>\Components\SearchBundleDBAL\Sorting\RandomSortingHandler">
+        <service id="<?= $names->under_score_js; ?>.random_sorting.random_sorting" class="<?= $configuration->name; ?>\Components\SearchBundleDBAL\Sorting\SortingHandler">
             <tag name="sorting_handler_dbal"></tag>
         </service>
 <?php } ?>
@@ -46,47 +46,41 @@
 <?php } ?>
 
 <?php if ($configuration->hasCommands) { ?>
-
         <service id="<?= $names->under_score_js ?>.commands.<?= $names->under_score_model ?>" class="<?= $configuration->name; ?>\Commands\<?= $names->camelCaseModel; ?>">
             <tag name="console.command" />
         </service>
 <?php } ?>
 
 <?php if($configuration->hasElasticSearch) { ?>
-        <service id="<?= $names->under_score_js ?>.blog_search.blog_provider" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\BlogProvider">
+        <service id="<?= $names->under_score_js ?>.search.provider" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\Provider">
             <argument id="dbal_connection" type="service" />
         </service>
 
-        <service id="<?= $names->under_score_js ?>.data_indexer.blog" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\BlogDataIndexer">
+        <service id="<?= $names->under_score_js ?>.data_indexer.data_indexer" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\DataIndexer">
             <tag name="shopware_elastic_search.data_indexer" />
             <argument id="dbal_connection" type="service"/>
             <argument id="shopware_elastic_search.client" type="service"/>
-            <argument id="<?= $names->under_score_js ?>.blog_search.blog_provider" type="service"/>
+            <argument id="<?= $names->under_score_js ?>.search.rovider" type="service"/>
         </service>
 
-        <service id="<?= $names->under_score_js ?>.mapping.blog" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\BlogMapping">
+        <service id="<?= $names->under_score_js ?>.mapping.mapping" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\Mapping">
             <tag name="shopware_elastic_search.mapping" />
             <argument type="service" id="shopware_elastic_search.field_mapping" />
         </service>
 
-        <service id="<?= $names->under_score_js ?>.synchronizer.blog" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\BlogSynchronizer">
+        <service id="<?= $names->under_score_js ?>.synchronizer.synchronizer" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\Synchronizer">
             <tag name="shopware_elastic_search.synchronizer"/>
-            <argument type="service" id="<?= $names->under_score_js ?>.data_indexer.blog" />
+            <argument type="service" id="<?= $names->under_score_js ?>.data_indexer.data_indexer" />
             <argument type="service" id="dbal_connection" />
         </service>
 
-        <service id="<?= $names->under_score_js ?>.settings.blog" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\BlogSettings">
+        <service id="<?= $names->under_score_js ?>.settings.settings" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\Settings">
             <tag name="shopware_elastic_search.settings" />
-        </service>
-
-        <service id="<?= $names->under_score_js ?>.subscriber.orm_backlog" class="<?= $configuration->name; ?>\Subscriber\ORMBacklogSubscriber">
-            <tag name="doctrine.event_subscriber" />
-            <argument id="service_container" type="service"/>
         </service>
 
         <service
                 id="shopware_search.<?= $names->under_score_js ?>.product_search_decorator"
-                class="<?= $configuration->name; ?>\Components\SearchBundleES\BlogSearch"
+                class="<?= $configuration->name; ?>\Components\SearchBundleES\Search"
                 decorates="shopware_search.product_search"
                 public="false"
         >

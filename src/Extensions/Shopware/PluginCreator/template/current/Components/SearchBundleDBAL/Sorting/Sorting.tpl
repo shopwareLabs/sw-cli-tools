@@ -5,14 +5,13 @@ namespace <?= $configuration->name; ?>\Components\SearchBundleDBAL\Sorting;
 
 use Shopware\Bundle\SearchBundle\SortingInterface;
 
-class RandomSorting implements SortingInterface
+class Sorting implements SortingInterface
 {
     /**
      * @inheritdoc
      */
     public function getName()
     {
-        return '<?= $names->under_score_js; ?>_random';
     }
 
     /**

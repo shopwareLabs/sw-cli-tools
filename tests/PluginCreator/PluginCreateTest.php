@@ -90,8 +90,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacet.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/FacetHandler.tpl" => "Components/SearchBundleDBAL/Facet/SwagTestFacetHandler.php",
                 FileProviderInterface::CURRENT_DIR . "Components/SearchBundle/CriteriaRequestHandler.tpl" => "Components/SearchBundle/SwagTestCriteriaRequestHandler.php",
-                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/RandomSorting.tpl" => "Components/SearchBundleDBAL/Sorting/RandomSorting.php",
-                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/RandomSortingHandler.tpl" => "Components/SearchBundleDBAL/Sorting/RandomSortingHandler.php",
+                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/Sorting.tpl" => "Components/SearchBundleDBAL/Sorting/Sorting.php",
+                FileProviderInterface::CURRENT_DIR . "Components/SearchBundleDBAL/Sorting/SortingHandler.tpl" => "Components/SearchBundleDBAL/Sorting/SortingHandler.php",
                 FileProviderInterface::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php",
                 FileProviderInterface::CURRENT_DIR . "Resources/views/frontend/listing/actions/action-sorting.tpl" => "Resources/views/frontend/listing/actions/action-sorting.tpl"
             ]
@@ -122,14 +122,12 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         'ElasticSearch' => [
             'config' => 'hasElasticSearch',
             'files' => [
-                FileProviderInterface::CURRENT_DIR . 'Subscriber/ORMBacklogSubscriber.php' => 'Subscriber/ORMBacklogSubscriber.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Struct/Blog.tpl' => 'Components/ESIndexingBundle/Struct/Blog.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogDataIndexer.tpl' => 'Components/ESIndexingBundle/BlogDataIndexer.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogMapping.tpl' => 'Components/ESIndexingBundle/BlogMapping.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogProvider.tpl' => 'Components/ESIndexingBundle/BlogProvider.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogSettings.tpl' => 'Components/ESIndexingBundle/BlogSettings.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/BlogSynchronizer.tpl' => 'Components/ESIndexingBundle/BlogSynchronizer.php',
-                FileProviderInterface::CURRENT_DIR . 'Components/SearchBundleES/BlogSearch.tpl' => 'Components/SearchBundleES/BlogSearch.php'
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/DataIndexer.tpl' => 'Components/ESIndexingBundle/DataIndexer.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Mapping.tpl' => 'Components/ESIndexingBundle/Mapping.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Provider.tpl' => 'Components/ESIndexingBundle/Provider.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Settings.tpl' => 'Components/ESIndexingBundle/Settings.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/ESIndexingBundle/Synchronizer.tpl' => 'Components/ESIndexingBundle/Synchronizer.php',
+                FileProviderInterface::CURRENT_DIR . 'Components/SearchBundleES/Search.tpl' => 'Components/SearchBundleES/Search.php'
             ]
         ],
     ];
@@ -223,14 +221,12 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         'ElasticSearch' => [
             'config' => 'hasElasticSearch',
             'files' => [
-                FileProviderInterface::LEGACY_DIR . 'Subscriber/ORMBacklogSubscriber.php' => 'Subscriber/ORMBacklogSubscriber.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Struct/Blog.tpl' => 'Components/ESIndexingBundle/Struct/Blog.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogDataIndexer.tpl' => 'Components/ESIndexingBundle/BlogDataIndexer.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogMapping.tpl' => 'Components/ESIndexingBundle/BlogMapping.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogProvider.tpl' => 'Components/ESIndexingBundle/BlogProvider.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSettings.tpl' => 'Components/ESIndexingBundle/BlogSettings.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSynchronizer.tpl' => 'Components/ESIndexingBundle/BlogSynchronizer.php',
-                FileProviderInterface::LEGACY_DIR . 'Components/SearchBundleES/BlogSearch.tpl' => 'Components/SearchBundleES/BlogSearch.php'
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/DataIndexer.tpl' => 'Components/ESIndexingBundle/DataIndexer.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Mapping.tpl' => 'Components/ESIndexingBundle/Mapping.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Provider.tpl' => 'Components/ESIndexingBundle/Provider.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Settings.tpl' => 'Components/ESIndexingBundle/Settings.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/ESIndexingBundle/Synchronizer.tpl' => 'Components/ESIndexingBundle/Synchronizer.php',
+                FileProviderInterface::LEGACY_DIR . 'Components/SearchBundleES/Search.tpl' => 'Components/SearchBundleES/Search.php'
             ]
         ]
     ];

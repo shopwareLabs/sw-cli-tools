@@ -18,14 +18,12 @@ class ElasticSearchProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . 'Subscriber/ORMBacklogSubscriber.php' => 'Subscriber/ORMBacklogSubscriber.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/Struct/Blog.tpl' => 'Components/ESIndexingBundle/Struct/Blog.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/BlogDataIndexer.tpl' => 'Components/ESIndexingBundle/BlogDataIndexer.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/BlogMapping.tpl' => 'Components/ESIndexingBundle/BlogMapping.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/BlogProvider.tpl' => 'Components/ESIndexingBundle/BlogProvider.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSettings.tpl' => 'Components/ESIndexingBundle/BlogSettings.php',
-            self::LEGACY_DIR . 'Components/ESIndexingBundle/BlogSynchronizer.tpl' => 'Components/ESIndexingBundle/BlogSynchronizer.php',
-            self::LEGACY_DIR . 'Components/SearchBundleES/BlogSearch.tpl' => 'Components/SearchBundleES/BlogSearch.php'
+            self::LEGACY_DIR . 'Components/ESIndexingBundle/DataIndexer.tpl' => 'Components/ESIndexingBundle/DataIndexer.php',
+            self::LEGACY_DIR . 'Components/ESIndexingBundle/Mapping.tpl' => 'Components/ESIndexingBundle/Mapping.php',
+            self::LEGACY_DIR . 'Components/ESIndexingBundle/Provider.tpl' => 'Components/ESIndexingBundle/Provider.php',
+            self::LEGACY_DIR . 'Components/ESIndexingBundle/Settings.tpl' => 'Components/ESIndexingBundle/Settings.php',
+            self::LEGACY_DIR . 'Components/ESIndexingBundle/Synchronizer.tpl' => 'Components/ESIndexingBundle/Synchronizer.php',
+            self::LEGACY_DIR . 'Components/SearchBundleES/Search.tpl' => 'Components/SearchBundleES/Search.php'
         ];
     }
 }

@@ -7,7 +7,7 @@ use Shopware\Bundle\ESIndexingBundle\FieldMappingInterface;
 use Shopware\Bundle\ESIndexingBundle\MappingInterface;
 use Shopware\Bundle\StoreFrontBundle\Struct\Shop;
 
-class BlogMapping implements MappingInterface
+class Mapping implements MappingInterface
 {
     /**
      * @var FieldMappingInterface
@@ -27,7 +27,6 @@ class BlogMapping implements MappingInterface
      */
     public function getType()
     {
-        return 'blog';
     }
 
     /**
@@ -36,16 +35,5 @@ class BlogMapping implements MappingInterface
      */
     public function get(Shop $shop)
     {
-        return [
-            'properties' => [
-                'id' => ['type' => 'long'],
-                'title' => $this->fieldMapping->getLanguageField($shop),
-                'shortDescription' => $this->fieldMapping->getLanguageField($shop),
-                'longDescription' => $this->fieldMapping->getLanguageField($shop),
-                'metaTitle' => $this->fieldMapping->getLanguageField($shop),
-                'metaKeywords' => $this->fieldMapping->getLanguageField($shop),
-                'metaDescription' => $this->fieldMapping->getLanguageField($shop)
-            ]
-        ];
     }
 }
