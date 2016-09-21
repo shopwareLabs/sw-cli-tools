@@ -42,4 +42,10 @@ class Configuration extends Struct
     // license header
     public $licenseHeader;
     public $licenseHeaderPlain;
+
+    // is legacy-plugin ?
+    public $isLegacyPlugin = false;
+
+    //Has an elastic search integration?
+    public $hasElasticSearch = false;
 }

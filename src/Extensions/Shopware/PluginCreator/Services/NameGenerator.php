@@ -24,6 +24,8 @@ class NameGenerator
     public $camelCaseModel;
     // e.g.promotion
     public $backendModelAlias;
+    // e.g. SwagTestWidget
+    public $backendWidgetController;
 
     /**
      * @var \Shopware\PluginCreator\Struct\Configuration
@@ -52,6 +54,7 @@ class NameGenerator
         $this->under_score_js = strtolower(implode('_', $parts));
         $this->dash_js = strtolower(implode('-', $parts));
         $this->developerPrefix = $parts[0];
+        $this->backendWidgetController = $this->configuration->name . 'Widget';
     }
 
     /**

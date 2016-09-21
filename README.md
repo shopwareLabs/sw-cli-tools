@@ -112,20 +112,22 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
     --admin-name=ADMIN-NAME          Administrator name [default: "Demo user"]
 
 ### sw plugin:create
-Will create a Shopware plugin with all the boilerplate code.
+Will create a Shopware plugin with all the boilerplate code. If the command will be executed from the shopware root folder the plugins will be placed in the plugin folder, otherwise it will be created in the same directory.
 
 Valid options / arguments are:
 
+    --legacy: Create a legacy Plugin for Shopware versions lower than 5.2
     --namespace[="..."]: Namespace of the plugin, default: Frontend
     --haveBackend: Generate a backend Controller + a simple ExtJS module
     --backendModel[="..."]: The name of the model for your backend application
     --haveFilter: Generate Condition/Facet/CriteriaRequestHandler in order to add a new filter in the frontend
-    --haveFrontend: Generate a frontend controller
-    --haveModels: Generate a simple doctrine model
-    --haveCommands: Generate a console command
-    --haveWidget: Generate a backend widget
-    --haveApi: Generate an API resource + REST controller
+    --haveFrontend | -f: Generate a frontend controller
+    --haveModels | -m: Generate a simple doctrine model
+    --haveCommands | -c: Generate a console command
+    --haveWidget | -w: Generate a backend widget
+    --haveApi | -a: Generate an API resource + REST controller
     --licenseHeader[="..."]: Include a license header at the beginning of any file name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
+    --haveElasticSearch | -e: Generate ElasticSearch blueprint classes and an example of a decorator for the product number search.
 
 The options will be read interactively, if not provided.
 The database credentials are configured in ~/.config/sw-cli-tools/config.yaml

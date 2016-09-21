@@ -15,6 +15,16 @@ use Shopware\PluginCreator\Struct\Configuration;
 interface FileProviderInterface
 {
     /**
+     * Directory which holds the file structure for the current plugin system.
+     */
+    const CURRENT_DIR = "current/";
+
+    /**
+     * Directory which holds the legacy file structure.
+     */
+    const LEGACY_DIR = "legacy/";
+
+    /**
      * @param Configuration $configuration
      * @param NameGenerator $nameGenerator
      * @return array Return an array of files (key = source, value = target). Return empty

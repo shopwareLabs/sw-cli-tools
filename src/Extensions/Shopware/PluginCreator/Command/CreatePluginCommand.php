@@ -2,9 +2,14 @@
 namespace Shopware\PluginCreator\Command;
 
 use Shopware\PluginCreator\Services\Generator;
+use Shopware\PluginCreator\Services\GeneratorFactory;
 use Shopware\PluginCreator\Services\IoAdapter\HardDrive;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
+use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreatePluginCommand extends BaseCommand
 {
+    const LEGACY_OPTION = 'legacy';
+
     /**
      * @return Config
      */
@@ -34,6 +41,12 @@ class CreatePluginCommand extends BaseCommand
                 'Prefixed name of the plugin to create. E.g: SwagAdvancedBasket'
             )
             ->addOption(
+                self::LEGACY_OPTION,
+                null,
+                InputOption::VALUE_NONE,
+                'Create a legacy Plugin for Shopware versions lower than 5.2'
+            )
+            ->addOption(
                 'namespace',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -42,7 +55,7 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveBackend',
-                null,
+                'b',
                 InputOption::VALUE_NONE,
                 'Do you want a backend application to be created? This will create the ExtJS structure and connect it to an existing or new model'
             )
@@ -54,7 +67,7 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveFrontend',
-                null,
+                'f',
                 InputOption::VALUE_NONE,
                 'Do you need a frontend controller?'
             )
@@ -66,27 +79,33 @@ class CreatePluginCommand extends BaseCommand
             )
             ->addOption(
                 'haveModels',
-                null,
+                'm',
                 InputOption::VALUE_NONE,
                 'Do you want custom models to be created and registered?'
             )
             ->addOption(
                 'haveCommands',
-                null,
+                'c',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to be prepared for commands?'
             )
             ->addOption(
                 'haveWidget',
-                null,
+                'w',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to have a widget?'
             )
             ->addOption(
                 'haveApi',
-                null,
+                'a',
                 InputOption::VALUE_NONE,
                 'Do you want your plugin to have an api resource?'
+            )
+            ->addOption(
+                'haveElasticSearch',
+                'e',
+                InputOption::VALUE_NONE,
+                'Do you want your plugin to have an elastic search integration?'
             )
             ->addOption(
                 'licenseHeader',
@@ -112,7 +131,11 @@ EOF
         $name = $input->getArgument('name');
         $modelName = implode('', array_slice($this->upperToArray($name), 1));
 
-        $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+        if ($input->getOption(self::LEGACY_OPTION)) {
+            $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+        } else {
+            $defaultModel = sprintf('%s\Models\%s', $name, $modelName);
+        }
 
         $this->normalizeBooleanFields($input);
 
@@ -137,7 +160,7 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter') as $key) {
+        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION) as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -157,7 +180,10 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->validateName($input->getArgument('name'));
-        $this->validateNamespace($input->getOption('namespace'));
+
+        if ($input->getOption(self::LEGACY_OPTION)) {
+            $this->validateNamespace($input->getOption('namespace'));
+        }
 
         if ($input->getOption('backendModel') !== null) {
             $this->validateModel($input->getOption('backendModel'));
@@ -166,9 +192,8 @@ EOF
         $configuration = $this->getConfigurationObject($input);
         $configuration->pluginConfig = $this->getConfig()->offsetGet('PluginConfig');
 
-        $generator = new Generator(
-            new HardDrive(), $configuration, new NameGenerator($configuration), new Template()
-        );
+        $generatorFactory = new GeneratorFactory();
+        $generator = $generatorFactory->create($configuration);
 
         $generator->run();
     }
@@ -251,6 +276,8 @@ EOF
         $configuration->hasModels = $input->getOption('haveModels');
         $configuration->hasCommands = $input->getOption('haveCommands');
         $configuration->backendModel = $input->getOption('backendModel');
+        $configuration->hasElasticSearch = $input->getOption('haveElasticSearch');
+        $configuration->isLegacyPlugin = $input->getOption(self::LEGACY_OPTION);
 
         $licenseHeader = $input->getOption('licenseHeader');
         if (!empty($licenseHeader) && file_exists($licenseHeader)) {
