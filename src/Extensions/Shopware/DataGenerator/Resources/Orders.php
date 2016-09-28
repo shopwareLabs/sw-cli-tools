@@ -81,7 +81,7 @@ class Orders extends BaseResource
             $totalPricePreTax = $totalPrice / 1.19;
 
             // Create faster inserts by using dummy data instead of INSERT..SELECTING the data from s_user_billingaddress/shippingaddress
-            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', '', '', 2, 0 )";
+            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', '', 2, 0 )";
             $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', 2, 0)";
             $valueData['customerBillingAttributeValues'][] = "({$id}, {$id})";
 
@@ -122,7 +122,7 @@ class Orders extends BaseResource
             ".implode(",", $valueData['orderDetailValues']).";";
 
         $sql[] = "
-            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `fax`, `countryID`, `stateID`) VALUES ".implode(
+            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES ".implode(
                 " , ",
                 $valueData['customerBillingValues']
             ).";";
