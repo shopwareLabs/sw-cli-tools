@@ -50,8 +50,10 @@ class ZipLocalCommand extends BaseCommand
      */
     public function validatePluginDir($dir)
     {
-        if (!file_exists($dir . '/Bootstrap.php')) {
-            throw new \RuntimeException("Could not find Bootstrap.php in $dir");
+        $fileName = basename($dir);
+
+        if (!file_exists($dir . '/Bootstrap.php') && !file_exists($dir . '/' . $fileName . '.php')) {
+            throw new \RuntimeException("Could not find Bootstrap.php or $fileName.php in $dir");
         }
     }
 
@@ -60,18 +62,33 @@ class ZipLocalCommand extends BaseCommand
      */
     public function doZip($pluginDirectory)
     {
-        /** @var PluginBootstrap $info */
-        $info = $this->container->get('bootstrap_info')->analyze($pluginDirectory . '/Bootstrap.php');
+        if (file_exists($pluginDirectory . '/Bootstrap.php')) {
+            /** @var PluginBootstrap $info */
+            $info = $this->container->get('bootstrap_info')->analyze($pluginDirectory . '/Bootstrap.php');
 
-        $outputFile = $this->getZipDir() . '/' . $info->name . '.zip';
-        $tempDir = $this->getTempDir();
-        $sourceDir = $tempDir . '/' . $info->module . '/' . $info->name;
-        mkdir($sourceDir, 0777, true);
+            $outputFile = $this->getZipDir() . '/' . $info->name . '.zip';
+            $tempDir = $this->getTempDir();
+            $sourceDir = $tempDir . '/' . $info->module . '/' . $info->name;
+            mkdir($sourceDir, 0777, true);
 
-        $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
-        $this->container->get('utilities')->changeDir($tempDir);
+            $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
+            $this->container->get('utilities')->changeDir($tempDir);
 
-        $this->container->get('zip_service')->zipDir($info->module . '/' . $info->name, $outputFile);
+            $this->container->get('zip_service')->zipDir($info->module . '/' . $info->name, $outputFile);
+        } else {
+            $pluginName = basename($pluginDirectory);
+            $outputFile = $this->getZipDir() . '/' . $pluginName . '.zip';
+
+            $tempDir = $this->getTempDir();
+            $sourceDir = $tempDir . '/' . $pluginName;
+            mkdir($sourceDir, 0777, true);
+
+            $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
+            $this->container->get('utilities')->changeDir($tempDir);
+
+            $this->container->get('zip_service')->zipDir($pluginName, $outputFile);
+        }
+
         $this->container->get('io_service')->writeln("<info>Created file $outputFile</info>");
     }
 
