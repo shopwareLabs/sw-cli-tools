@@ -6,7 +6,8 @@ interface RootDetectorInterface
 {
     /**
      * @param string $path
-     * @return boolean
+     *
+     * @return bool
      */
     public function isRoot($path);
 }

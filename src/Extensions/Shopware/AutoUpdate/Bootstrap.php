@@ -13,11 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Provides self update capability
  *
  * Class Bootstrap
- * @package Shopware\AutoUpdate
  */
 class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
-    /** @var  ContainerBuilder */
+    /** @var ContainerBuilder */
     protected $container;
 
     /**
@@ -41,17 +40,17 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     public function getConsoleCommands()
     {
         if (!$this->isPharFile()) {
-            return array();
+            return [];
         }
 
         if ($this->checkUpdateOnRun()) {
             $this->runUpdate();
         }
 
-        return array(
+        return [
             new SelfUpdateCommand($this->container->get('updater')),
             new RollbackCommand($this->container->get('updater')),
-        );
+        ];
     }
 
     /**
@@ -67,10 +66,10 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
      */
     private function createUpdater()
     {
-        $config     = $this->container->get('config');
-        $pharUrl    = $config['update']['pharUrl'];
+        $config = $this->container->get('config');
+        $pharUrl = $config['update']['pharUrl'];
         $versionUrl = $config['update']['vesionUrl'];
-        $verifyKey  = (bool)$config['update']['verifyPublicKey'];
+        $verifyKey = (bool)$config['update']['verifyPublicKey'];
 
         $updater = new Updater(null, $verifyKey);
         $updater->getStrategy()->setPharUrl($pharUrl);

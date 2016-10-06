@@ -6,7 +6,6 @@ use PDO;
 
 /**
  * Class ShopwareWriter
- * @package Shopware\DataGenerator\Writer
  */
 class DatabaseWriter implements WriterInterface
 {
@@ -27,7 +26,7 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($content)
     {
@@ -50,7 +49,7 @@ class DatabaseWriter implements WriterInterface
 
         foreach ($this->data as $query) {
             if (!$connection->query($query)) {
-                $info = implode(",", $connection->errorInfo());
+                $info = implode(',', $connection->errorInfo());
                 throw new \Exception("Failed to execute $query\n\nCode: $info");
             }
         }
@@ -60,23 +59,24 @@ class DatabaseWriter implements WriterInterface
 
     /**
      * @param $config
+     *
      * @return PDO
      */
     private function connectToDatabase($config)
     {
         $connection = new PDO(
-            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
-            array(
+            'mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['username'], $config['password'],
+            [
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
-                PDO::ERRMODE_EXCEPTION => 1,
-            )
+                PDO::ERRMODE_EXCEPTION       => 1,
+            ]
         );
 
         return $connection;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {

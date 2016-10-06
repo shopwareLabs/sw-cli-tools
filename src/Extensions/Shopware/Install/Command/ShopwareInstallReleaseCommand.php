@@ -27,7 +27,7 @@ class ShopwareInstallReleaseCommand extends BaseCommand
         $this->setName('install:release')
             ->setDescription('Allows setting up shopware from release package.')
             ->setHelp(
-                <<<EOF
+                <<<'EOF'
                             The <info>%command.name%</info> sets up shopware
 EOF
             );
@@ -87,29 +87,29 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $request = new InstallationRequest(array(
-            'release' => $input->getOption('release'),
-            'installDir' => $input->getOption('install-dir'),
-            'dbHost' => $input->getOption('db-host'),
-            'dbPort' => $input->getOption('db-port'),
-            'dbSocket' => $input->getOption('db-socket'),
-            'dbUser' => $input->getOption('db-user'),
-            'dbPassword' => $input->getOption('db-password'),
-            'dbName' => $input->getOption('db-name'),
-            'shopLocale' => $input->getOption('shop-locale'),
-            'shopHost' => $input->getOption('shop-host'),
-            'shopPath' => $input->getOption('shop-path'),
-            'shopName' => $input->getOption('shop-name'),
-            'shopEmail' => $input->getOption('shop-email'),
-            'shopCurrency' => $input->getOption('shop-currency'),
-            'adminUsername' => $input->getOption('admin-username'),
-            'adminPassword' => $input->getOption('admin-password'),
-            'adminEmail' => $input->getOption('admin-email'),
-            'adminLocale' => $input->getOption('admin-locale'),
-            'adminName' => $input->getOption('admin-name'),
-            'noSkipImport' => $input->getOption('no-skip-import'),
+        $request = new InstallationRequest([
+            'release'           => $input->getOption('release'),
+            'installDir'        => $input->getOption('install-dir'),
+            'dbHost'            => $input->getOption('db-host'),
+            'dbPort'            => $input->getOption('db-port'),
+            'dbSocket'          => $input->getOption('db-socket'),
+            'dbUser'            => $input->getOption('db-user'),
+            'dbPassword'        => $input->getOption('db-password'),
+            'dbName'            => $input->getOption('db-name'),
+            'shopLocale'        => $input->getOption('shop-locale'),
+            'shopHost'          => $input->getOption('shop-host'),
+            'shopPath'          => $input->getOption('shop-path'),
+            'shopName'          => $input->getOption('shop-name'),
+            'shopEmail'         => $input->getOption('shop-email'),
+            'shopCurrency'      => $input->getOption('shop-currency'),
+            'adminUsername'     => $input->getOption('admin-username'),
+            'adminPassword'     => $input->getOption('admin-password'),
+            'adminEmail'        => $input->getOption('admin-email'),
+            'adminLocale'       => $input->getOption('admin-locale'),
+            'adminName'         => $input->getOption('admin-name'),
+            'noSkipImport'      => $input->getOption('no-skip-import'),
             'skipAdminCreation' => $input->getOption('skip-admin-creation')
-        ));
+        ]);
 
         /** @var \Shopware\Install\Services\Install\Release $installService */
         $installService = $this->container->get('shopware_release_install_service');
@@ -146,13 +146,15 @@ EOF
 
     /**
      * @param  string            $input
-     * @return string
+     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function genericValidator($input)
     {
         if (empty($input)) {
-            throw new \RuntimeException("Field may not be empty");
+            throw new \RuntimeException('Field may not be empty');
         }
 
         return $input;
@@ -160,8 +162,10 @@ EOF
 
     /**
      * @param  string            $path
-     * @return string
+     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function validateInstallDir($path)
     {
@@ -174,12 +178,13 @@ EOF
 
     /**
      * @param  InputInterface    $input
+     *
      * @throws \RuntimeException
      */
     protected function validateInput(InputInterface $input)
     {
         $language = $input->getOption('shop-locale');
-        if (!in_array($language, array('en_GB', 'de_DE'))) {
+        if (!in_array($language, ['en_GB', 'de_DE'])) {
             throw new \RuntimeException("Invalid locale: '$language'");
         }
     }
@@ -192,12 +197,12 @@ EOF
      */
     private function askGenericOptions(InputInterface $input, IoService $ioService)
     {
-        $required = array(
+        $required = [
             'admin-username' => 'backend user name',
             'admin-password' => 'backend user password',
-            'admin-name' => 'your full name',
-            'admin-email' => 'your email'
-        );
+            'admin-name'     => 'your full name',
+            'admin-email'    => 'your email'
+        ];
 
         $config = $this->getConfig();
 
@@ -216,7 +221,7 @@ EOF
             //
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
-                array($this, 'genericValidator')
+                [$this, 'genericValidator']
             );
             $input->setOption($field, $fieldData);
         }
@@ -255,7 +260,7 @@ EOF
         if (!$installDir) {
             $installDir = $ioService->askAndValidate(
                 "Please provide the install directory [{$suggestion}]: ",
-                array($this, 'validateInstallDir')
+                [$this, 'validateInstallDir']
             );
             $input->setOption('install-dir', trim($installDir) ? $installDir : $suggestion);
 
@@ -288,7 +293,7 @@ EOF
     {
         $basePath = $input->getOption('shop-path');
         if (!$basePath) {
-            $suggestion = '/' . ltrim($suggestion, '/');
+            $suggestion = '/'.ltrim($suggestion, '/');
             $basePath = $ioService->ask("Please provide the shop base path you want to use [{$suggestion}]: ");
             $input->setOption('shop-path', trim($basePath) ? $basePath : $suggestion);
         }
@@ -302,7 +307,7 @@ EOF
     {
         $databaseUser = $input->getOption('db-user');
         if (!$databaseUser) {
-            $databaseUser = $ioService->ask("Please provide the database user: ");
+            $databaseUser = $ioService->ask('Please provide the database user: ');
             $input->setOption('db-user', trim($databaseUser));
         }
     }
@@ -315,7 +320,7 @@ EOF
     {
         $databasePassword = $input->getOption('db-password');
         if (!$databasePassword) {
-            $databasePassword = $ioService->ask("Please provide the database password: ");
+            $databasePassword = $ioService->ask('Please provide the database password: ');
             $input->setOption('db-password', trim($databasePassword));
         }
     }

@@ -31,13 +31,14 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
      * @param RootDetectorInterface $rootDetector
      * @param string $name
      * @param string $namespace
+     *
      * @throws \Exception
      */
     public function __construct(RootDetectorInterface $rootDetector, $name, $namespace)
     {
         if (!$this->isValidNamespace($namespace) && strlen($namespace)) {
             throw new \Exception(
-                sprintf("Invalid namespace given: %s", $namespace)
+                sprintf('Invalid namespace given: %s', $namespace)
             );
         }
 
@@ -52,14 +53,15 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
     public function getPath()
     {
         if ($this->rootDetector->isRoot($this->getCwd())) {
-            return $this->getCwd() . '/' . self::LEGACY_PLUGIN_DIR . '/' . $this->namespace . '/' . $this->name . '/';
+            return $this->getCwd().'/'.self::LEGACY_PLUGIN_DIR.'/'.$this->namespace.'/'.$this->name.'/';
         }
 
-        return $this->getCwd() . '/' . $this->name . '/';
+        return $this->getCwd().'/'.$this->name.'/';
     }
 
     /**
      * @param string $namespace
+     *
      * @return bool
      */
     private function isValidNamespace($namespace)

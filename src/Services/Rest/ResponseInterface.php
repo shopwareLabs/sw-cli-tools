@@ -15,7 +15,7 @@ interface ResponseInterface
     /**
      * Returns the http response code
      *
-     * @return integer
+     * @return int
      */
     public function getCode();
 

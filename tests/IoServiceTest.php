@@ -28,7 +28,7 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
         $SUT->cls();
 
         $this->assertEquals(
-            chr(27) . "[2J". chr(27) . "[1;1H",
+            chr(27).'[2J'.chr(27).'[1;1H',
             $this->output->fetch()
         );
     }
@@ -52,7 +52,7 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
      */
     private function createSUT()
     {
-        $this->input = $input = new ArrayInput(array());
+        $this->input = $input = new ArrayInput([]);
         $this->output = $output = new BufferedOutput();
         $questionHelper = new QuestionHelper();
 

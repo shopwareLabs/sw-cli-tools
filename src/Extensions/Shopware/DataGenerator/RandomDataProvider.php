@@ -9,6 +9,7 @@ class RandomDataProvider
 {
     /**
      * Fake data generator
+     *
      * @var Generator
      */
     protected $faker;
@@ -52,6 +53,7 @@ class RandomDataProvider
 
     /**
      * @param int $wordCount
+     *
      * @return string
      */
     public function getSentence($wordCount)

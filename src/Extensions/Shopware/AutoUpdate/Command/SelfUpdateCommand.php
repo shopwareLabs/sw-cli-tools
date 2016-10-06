@@ -51,7 +51,7 @@ class SelfUpdateCommand extends BaseCommand
 
             return 0;
         } catch (\Exception $e) {
-            $output->writeln("Unable to update. Please check your connection");
+            $output->writeln('Unable to update. Please check your connection');
             $this->printException($output, $e);
 
             return 1;

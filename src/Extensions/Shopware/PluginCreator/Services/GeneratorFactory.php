@@ -11,12 +11,12 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class GeneratorFactory
- * @package Shopware\PluginCreator\Services
  */
 class GeneratorFactory
 {
     /**
      * @param Configuration $configuration
+     *
      * @return Generator
      */
     public function create(Configuration $configuration)
@@ -36,6 +36,7 @@ class GeneratorFactory
 
     /**
      * @param Configuration $configuration
+     *
      * @return CurrentOutputDirectoryProvider|LegacyOutputDirectoryProvider
      */
     private function getOutputDirectoryProvider(Configuration $configuration)

@@ -16,7 +16,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * Install a plugin
  *
  * Class InstallCommand
- * @package ShopwareCli\Command
  */
 class InstallCommand extends BaseCommand
 {
@@ -105,18 +104,18 @@ class InstallCommand extends BaseCommand
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
 
-        $params = array('checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp);
+        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp];
 
         if (!empty($names)) {
             if (!$checkout) {
                 $params['activate'] = $this->askActivatePluginQuestion();
             }
-            $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
+            $interactionManager->searchAndOperate($names, [$this, 'doInstall'], $params);
 
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doInstall'), $params);
+        $interactionManager->operationLoop([$this, 'doInstall'], $params);
     }
 
     /**
@@ -156,6 +155,7 @@ class InstallCommand extends BaseCommand
     /**
      * @param $plugin
      * @param $params
+     *
      * @return mixed
      */
     private function install($plugin, &$params)
@@ -163,7 +163,7 @@ class InstallCommand extends BaseCommand
         if (!isset($params['activate'])) {
             $params['activate'] = $this->askActivatePluginQuestion();
         }
-        $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
+        $this->container->get('utilities')->changeDir($this->getShopwarePath().'/engine/Shopware/Plugins/Local/');
 
         $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch'], $params['useHttp']);
     }
@@ -171,19 +171,20 @@ class InstallCommand extends BaseCommand
     /**
      * @param $plugin Plugin
      * @param $params
+     *
      * @return mixed
      */
     private function checkout($plugin, &$params)
     {
         $url = $params['useHttp'] ? $plugin->cloneUrlHttp : $plugin->cloneUrlSsh;
 
-        $destination = strtolower($plugin->module . '_' . $plugin->name);
-        $path = realpath('.') . '/' . $destination;
+        $destination = strtolower($plugin->module.'_'.$plugin->name);
+        $path = realpath('.').'/'.$destination;
         $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
 
-        $repo        = escapeshellarg($url);
-        $branch      = $params['branch'] ? escapeshellarg($params['branch']) : null;
-        $destination = escapeshellarg('./' . $destination);
+        $repo = escapeshellarg($url);
+        $branch = $params['branch'] ? escapeshellarg($params['branch']) : null;
+        $destination = escapeshellarg('./'.$destination);
 
         $branchArg = $branch ? "-b {$branch}" : '';
 

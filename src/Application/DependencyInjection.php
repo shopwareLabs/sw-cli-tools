@@ -16,7 +16,7 @@ class DependencyInjection
     public static function createContainer($rootDir)
     {
         $container = new ContainerBuilder(
-            new ParameterBag(array('kernel.root_dir' => $rootDir))
+            new ParameterBag(['kernel.root_dir' => $rootDir])
         );
 
         // synthetic services

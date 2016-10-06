@@ -104,9 +104,9 @@ class Generator
             $fileContent = $this->template->fetch($from);
 
             $path = $this->outputDirectoryProvider->getPath();
-            $this->ioAdapter->createDirectory(dirname($path . $to));
+            $this->ioAdapter->createDirectory(dirname($path.$to));
 
-            $this->ioAdapter->createFile($path . $to, $fileContent);
+            $this->ioAdapter->createFile($path.$to, $fileContent);
         }
     }
 
@@ -117,7 +117,7 @@ class Generator
     {
         $this->template->assign('configuration', $this->configuration);
         $this->template->assign('names', $this->nameGenerator);
-        $this->template->setTemplatePath(dirname(__DIR__) . '/' . self::TEMPLATE_DIRECTORY);
+        $this->template->setTemplatePath(dirname(__DIR__).'/'.self::TEMPLATE_DIRECTORY);
     }
 
     /**

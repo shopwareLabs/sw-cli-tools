@@ -9,7 +9,6 @@ use ShopwareCli\Services\IoService;
  * The checkout service will checkout a given repo with a given branch to a given destination
  *
  * Class Checkout
- * @package Shopware\Install\Services
  */
 class Checkout
 {
@@ -42,8 +41,8 @@ class Checkout
     {
         $this->ioService->writeln("<info>Checkout out $repo to $destination</info>");
 
-        $repo        = escapeshellarg($repo);
-        $branch      = escapeshellarg($branch);
+        $repo = escapeshellarg($repo);
+        $branch = escapeshellarg($branch);
         $destination = escapeshellarg($destination);
 
         $this->gitUtil->run(

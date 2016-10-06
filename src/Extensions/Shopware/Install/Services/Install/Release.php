@@ -17,7 +17,6 @@ use ShopwareCli\Services\ProcessExecutor;
  * This install service will run all steps needed to setup shopware in the correct order
  *
  * Class Release
- * @package Shopware\Install\Services\Install
  */
 class Release
 {
@@ -121,7 +120,7 @@ class Release
             $this->lockInstaller($request->getAbsoluteInstallDir());
         }
 
-        $this->ioService->writeln("<info>Running post release scripts</info>");
+        $this->ioService->writeln('<info>Running post release scripts</info>');
         $this->postInstall->fixPermissions($request->getAbsoluteInstallDir());
         $this->postInstall->setupTheme($request->getAbsoluteInstallDir());
         $this->postInstall->importCustomDeltas($request->getDbName());
@@ -129,7 +128,7 @@ class Release
 
         $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
 
-        $this->ioService->writeln("<info>Install completed</info>");
+        $this->ioService->writeln('<info>Install completed</info>');
     }
 
     private function createDatabase(InstallationRequest $request)
@@ -164,7 +163,7 @@ class Release
                 continue;
             }
 
-            $key = strtolower(preg_replace("/[A-Z]/", "-$0", $key));
+            $key = strtolower(preg_replace('/[A-Z]/', '-$0', $key));
             $arguments[] = sprintf('--%s="%s"', $key, $value);
         }
 
@@ -176,7 +175,7 @@ class Release
             $arguments[] = '--skip-admin-creation';
         }
 
-        $arguments = join(" ", $arguments);
+        $arguments = join(' ', $arguments);
 
         $this->processExecutor->execute("php {$request->getAbsoluteInstallDir()}/recovery/install/index.php {$arguments}");
     }
@@ -227,8 +226,8 @@ class Release
      */
     private function lockInstaller($installDir)
     {
-        if (file_exists($installDir . '/recovery/install/data')) {
-            touch($installDir . '/recovery/install/data/install.lock');
+        if (file_exists($installDir.'/recovery/install/data')) {
+            touch($installDir.'/recovery/install/data/install.lock');
         }
     }
 }

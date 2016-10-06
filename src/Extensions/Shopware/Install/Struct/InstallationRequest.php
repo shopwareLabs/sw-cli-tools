@@ -72,7 +72,7 @@ class InstallationRequest extends Struct
     /**
      * @param array $values
      */
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         foreach ($values as $name => $value) {
             $this->$name = $value;

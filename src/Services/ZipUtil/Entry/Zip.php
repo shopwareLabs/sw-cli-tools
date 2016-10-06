@@ -6,7 +6,6 @@ use ZipArchive;
 
 /**
  * Class ZipArchive
- * @package ShopwareCli\Services\ZipUtil\Entry
  */
 class Zip
 {

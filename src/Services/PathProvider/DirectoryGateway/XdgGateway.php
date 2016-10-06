@@ -24,7 +24,7 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     public function getAssetsDir()
     {
-        return $this->xdg->getHomeDataDir() . '/sw-cli-tools/assets';
+        return $this->xdg->getHomeDataDir().'/sw-cli-tools/assets';
     }
 
     /**
@@ -32,7 +32,7 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     public function getExtensionDir()
     {
-        return $this->xdg->getHomeConfigDir() . '/sw-cli-tools/extensions';
+        return $this->xdg->getHomeConfigDir().'/sw-cli-tools/extensions';
     }
 
     /**
@@ -40,7 +40,7 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     public function getCacheDir()
     {
-        return $this->xdg->getHomeCacheDir() . '/sw-cli-tools';
+        return $this->xdg->getHomeCacheDir().'/sw-cli-tools';
     }
 
     /**
@@ -48,7 +48,7 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     public function getConfigDir()
     {
-        return $this->xdg->getHomeConfigDir() . '/sw-cli-tools';
+        return $this->xdg->getHomeConfigDir().'/sw-cli-tools';
     }
 
     /**

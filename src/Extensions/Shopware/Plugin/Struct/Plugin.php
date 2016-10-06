@@ -8,7 +8,6 @@ use ShopwareCli\Struct;
  * Shopware plugin struct
  *
  * Class Plugin
- * @package Shopware\Plugin\Struct
  */
 class Plugin extends Struct
 {

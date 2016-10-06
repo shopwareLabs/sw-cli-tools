@@ -8,7 +8,6 @@ use ShopwareCli\Struct;
  * Shopware plugin struct
  *
  * Class Plugin
- * @package Shopware\Plugin\Struct
  */
 class DisplayPlugin extends Struct
 {
@@ -20,17 +19,18 @@ class DisplayPlugin extends Struct
 
     /**
      * @param  Plugin  $plugin
-     * @param  integer $index
+     * @param  int $index
+     *
      * @return static
      */
     public static function createFromPluginAndIndex(Plugin $plugin, $index)
     {
-        return new static(array(
+        return new static([
             'index'      => $index,
             'name'       => $plugin->name,
             'module'     => $plugin->module,
             'repoType'   => $plugin->repoType,
             'repository' => $plugin->repository,
-        ));
+        ]);
     }
 }

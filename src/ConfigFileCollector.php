@@ -25,10 +25,10 @@ class ConfigFileCollector
      */
     public function collectConfigFiles()
     {
-        $files = array();
+        $files = [];
 
         // Load user file first. Its config values cannot be overwritten
-        $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
+        $userConfig = $this->pathProvider->getConfigPath().'/config.yaml';
         if (file_exists($userConfig)) {
             $files[] = $userConfig;
         }
@@ -37,18 +37,19 @@ class ConfigFileCollector
         $files = array_merge($files, $this->iterateVendors($extensionPath));
         
         // Load config.yaml.dist as latest - this way the fallback config options are defined
-        $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
+        $files[] = $this->pathProvider->getCliToolPath().'/config.yaml.dist';
 
         return $files;
     }
 
     /**
      * @param  string   $extensionPath
+     *
      * @return string[]
      */
     private function iterateVendors($extensionPath)
     {
-        $files = array();
+        $files = [];
 
         if (!is_dir($extensionPath)) {
             return [];
@@ -67,15 +68,16 @@ class ConfigFileCollector
 
     /**
      * @param  string   $vendorPath
+     *
      * @return string[]
      */
     private function iterateExtensions($vendorPath)
     {
-        $files = array();
+        $files = [];
 
         $iter = new DirectoryFilterIterator(new \DirectoryIterator($vendorPath));
         foreach ($iter as $extensionFileInfo) {
-            $file = $extensionFileInfo->getPathname() . '/config.yaml';
+            $file = $extensionFileInfo->getPathname().'/config.yaml';
             if (file_exists($file)) {
                 $files[] = $file;
             }

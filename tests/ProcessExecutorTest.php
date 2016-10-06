@@ -50,7 +50,7 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $this->fail("Executor should throw exception on failed command");
+        $this->fail('Executor should throw exception on failed command');
     }
 
     public function testAllowFailingCommand()

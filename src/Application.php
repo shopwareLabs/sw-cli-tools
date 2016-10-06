@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Main application of the cli tools
  *
  * Class Application
- * @package ShopwareCli
  */
 class Application extends \Symfony\Component\Console\Application
 {
@@ -83,6 +82,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @param  InputInterface   $input
      * @param  OutputInterface  $output
+     *
      * @return ContainerBuilder
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)
@@ -108,15 +108,15 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function checkDirectories()
     {
-        /** @var  $pathProvider PathProvider */
+        /** @var $pathProvider PathProvider */
         $pathProvider = $this->container->get('path_provider');
 
-        foreach (array(
+        foreach ([
             $pathProvider->getAssetsPath(),
             $pathProvider->getCachePath(),
             $pathProvider->getExtensionPath(),
             $pathProvider->getConfigPath()
-         ) as $dir) {
+         ] as $dir) {
             if (is_dir($dir)) {
                 continue;
             }
@@ -137,7 +137,7 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function loadExtensions($noExtensions)
     {
-        $paths = array($this->container->get('path_provider')->getCliToolPath() . '/src/Extensions');
+        $paths = [$this->container->get('path_provider')->getCliToolPath().'/src/Extensions'];
 
         if (!$noExtensions) {
             $paths[] = $this->container->get('path_provider')->getExtensionPath();

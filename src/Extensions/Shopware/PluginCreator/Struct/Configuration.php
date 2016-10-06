@@ -8,7 +8,6 @@ use ShopwareCli\Struct;
  * The config struct stores all info needed to create the plugin
  *
  * Class Configuration
- * @package Shopware\PluginCreator\Struct
  */
 class Configuration extends Struct
 {

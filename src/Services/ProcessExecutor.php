@@ -34,6 +34,7 @@ class ProcessExecutor
      * @param  string $cwd
      * @param  bool $allowFailure
      * @param int|null $timeout
+     *
      * @return int|null
      */
     public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null)
@@ -47,7 +48,7 @@ class ProcessExecutor
         });
 
         if (!$allowFailure && !$process->isSuccessful()) {
-            throw new \RuntimeException("Command failed. Error Output:\n\n" . $process->getErrorOutput(), $process->getExitCode());
+            throw new \RuntimeException("Command failed. Error Output:\n\n".$process->getErrorOutput(), $process->getExitCode());
         }
 
         return $process->getExitCode();

@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Read the internal CLI cache. Used for e.g. plugin repos
  *
  * Class CacheGetCommand
- * @package ShopwareCli\Command
  */
 class CacheGetCommand extends BaseCommand
 {

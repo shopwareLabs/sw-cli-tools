@@ -9,12 +9,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class BackendControllerFileProvider returns files for the backend controller
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class BackendControllerFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -23,7 +22,7 @@ class BackendControllerFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
+            self::CURRENT_DIR.'Controllers/Backend.tpl' => "Controllers/Backend/{$configuration->name}.php"
         ];
     }
 }

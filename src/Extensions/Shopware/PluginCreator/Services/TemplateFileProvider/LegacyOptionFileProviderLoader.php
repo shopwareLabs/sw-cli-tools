@@ -5,18 +5,19 @@ namespace Shopware\PluginCreator\Services\TemplateFileProvider;
 class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $isLegacy;
 
     /**
-     * @param boolean $isLegacy
+     * @param bool $isLegacy
+     *
      * @throws \Exception
      */
     public function __construct($isLegacy)
     {
         if (!is_bool($isLegacy)) {
-            throw new \Exception('Boolean expected, got ' . gettype($isLegacy));
+            throw new \Exception('Boolean expected, got '.gettype($isLegacy));
         }
 
         $this->isLegacy = $isLegacy;

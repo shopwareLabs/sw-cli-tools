@@ -10,28 +10,28 @@ class Articles extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
-        "s_media",
-        "s_articles",
-        "s_articles_img",
-        "s_articles_prices",
-        "s_articles_details",
-        "s_articles_attributes",
-        "s_articles_categories",
-        "s_articles_categories_ro",
-        "s_article_configurator_sets",
-        "s_article_configurator_options",
-        "s_article_configurator_groups",
-        "s_article_configurator_option_relations",
-        "s_article_configurator_set_group_relations",
-        "s_article_configurator_set_option_relations",
-        "s_filter",
-        "s_filter_articles",
-        "s_filter_attributes",
-        "s_filter_options",
-        "s_filter_values",
-        "s_filter_relations",
-    );
+    protected $tables = [
+        's_media',
+        's_articles',
+        's_articles_img',
+        's_articles_prices',
+        's_articles_details',
+        's_articles_attributes',
+        's_articles_categories',
+        's_articles_categories_ro',
+        's_article_configurator_sets',
+        's_article_configurator_options',
+        's_article_configurator_groups',
+        's_article_configurator_option_relations',
+        's_article_configurator_set_group_relations',
+        's_article_configurator_set_option_relations',
+        's_filter',
+        's_filter_articles',
+        's_filter_attributes',
+        's_filter_options',
+        's_filter_values',
+        's_filter_relations',
+    ];
 
     /**
      * @var LoadDataInfile
@@ -58,21 +58,22 @@ class Articles extends BaseResource
 
     /**
      * Generates SQL which creates filter groups, options and values
+     *
      * @param WriterInterface $importWriter
      */
     protected function createFilterGroupSQL(WriterInterface $importWriter)
     {
-        $filterGroupValues = array();
-        $filterOptionValues = array();
-        $filterValueValues = array();
-        $filterOptionGroupRelationValues = array();
+        $filterGroupValues = [];
+        $filterOptionValues = [];
+        $filterValueValues = [];
+        $filterOptionGroupRelationValues = [];
 
         $filterGroups = $this->config->getArticleFilterGroups();
         $filterOptions = $this->config->getArticleFilterOptions();
         $filterValues = $this->config->getArticleFilterValues();
 
         for ($groupId = 1; $groupId <= $filterGroups; $groupId++) {
-            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).", ".rand(0, 1);
+            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).', '.rand(0, 1);
 
             for ($o = 1; $o <= $filterOptions; $o++) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
@@ -104,25 +105,27 @@ class Articles extends BaseResource
 
     /**
      * Helper function which creates a cartesian product
+     *
      * @param $arrays
+     *
      * @return array
      */
     private function createCartesianProduct($arrays)
     {
-        $cartesian = array();
+        $cartesian = [];
         $dims = array_reverse($arrays);
 
         foreach ($dims as $dimName => $dim) {
-            $buf = array();
+            $buf = [];
 
             foreach ($dim as $val) {
-                $buf[] = array($dimName => $val);
+                $buf[] = [$dimName => $val];
             }
 
             if (!count($cartesian)) {
                 $cartesian = $buf;
             } else {
-                $tmp = array();
+                $tmp = [];
                 foreach ($buf as $elBuf) {
                     foreach ($cartesian as $elAp) {
                         $tmp[] = array_merge($elBuf, $elAp);
@@ -136,7 +139,7 @@ class Articles extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -193,7 +196,7 @@ class Articles extends BaseResource
 
         $this->createProgressBar($number);
 
-        $images = array();
+        $images = [];
 
         $priceVariations = $this->generatePriceVariations($number);
 
@@ -207,9 +210,9 @@ class Articles extends BaseResource
 
             // Get the id of the first articleDetail in advance on order to set the main_detail_id properly
             $articleDetailId = $this->getUniqueId('articleDetail');
-            $detailIDs = array($articleDetailId);
+            $detailIDs = [$articleDetailId];
 
-            $configuratorSetId = $createConfigurator === 1 ? $id : "NULL";
+            $configuratorSetId = $createConfigurator === 1 ? $id : 'NULL';
             $numberOfVariants = $createConfigurator === 1 ? rand(
                 $this->config->getMinVariants(),
                 $this->config->getMaxVariants()
@@ -221,18 +224,18 @@ class Articles extends BaseResource
                 $numberOfVariants = $numberOfOptions * $numberGroups;
             }
 
-            #
-            # Configurator
-            #
+            //
+            // Configurator
+            //
             if ($createConfigurator) {
                 $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id})");
                 // Create configurator groups and options
-                $groups = array();
-                $options = array();
+                $groups = [];
+                $options = [];
                 for ($g = 1; $g <= $numberGroups; $g++) {
                     $groupId = $this->getUniqueId('group');
                     $configuratorGroups->write("{$groupId}, Configurator-Group #{$groupId}, NULL, {$g}");
-                    $groups[$groupId] = array();
+                    $groups[$groupId] = [];
                     // Create options for this group
                     for ($o = 1; $o <= $numberOfOptions; $o++) {
                         $optionId = $this->getUniqueId('option');
@@ -275,7 +278,7 @@ class Articles extends BaseResource
             }
 
             if ($this->config->getCreateImages()) {
-                throw new \Exception("Not implemented, yet");
+                throw new \Exception('Not implemented, yet');
                 // Images
                 for ($i = 1; $i <= $numImagesPerArticle; $i++) {
                     $mediaId = $this->getUniqueId('media');
@@ -301,9 +304,9 @@ class Articles extends BaseResource
                 }
             }
 
-            #
-            # Article / -details
-            #
+            //
+            // Article / -details
+            //
             $articles->write(
                 "{$id}, 2, {$this->generator->getSentence(3)}, SHORT DESCRIPTION, LONG DESCRIPTION, NULL, 2012-08-15, 1, 1, 20, 0, , 2012-08-30 16:57:00, 1, 0, {$filterGroupId}, 0, 0, 0, , 0, {$articleDetailId}, NULL, NULL, {$configuratorSetId}"
             );
@@ -398,6 +401,7 @@ class Articles extends BaseResource
     /**
      * @param $id
      * @param $categories
+     *
      * @return array
      */
     private function getCategoryPath($id, $categories)
@@ -424,6 +428,7 @@ class Articles extends BaseResource
 
     /**
      * Copies the default image for each article
+     *
      * @param $imageDir
      * @param $images
      * @param $thumbs
@@ -435,11 +440,11 @@ class Articles extends BaseResource
         // Copy the images to media directory
         $destination = $assetsDir.($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {
-            $target = $imageDir."/".$imageName.".jpg";
+            $target = $imageDir.'/'.$imageName.'.jpg';
             copy($destination, $target);
 
             foreach ($thumbs as $size) {
-                $target = $imageDir."/thumbnail/".$imageName."_".$size.".jpg";
+                $target = $imageDir.'/thumbnail/'.$imageName.'_'.$size.'.jpg';
                 copy($destination, $target);
             }
         }
@@ -481,8 +486,8 @@ class Articles extends BaseResource
                 $price = $price * ((100 - rand(10, 40))) / 100;
 
                 $variations[$v][] = [
-                    'from' => $from,
-                    'to' => $to,
+                    'from'  => $from,
+                    'to'    => $to,
                     'price' => $price
                 ];
             }

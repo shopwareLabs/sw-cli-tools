@@ -31,11 +31,10 @@ class RunCliCommand extends BaseCommand
                 'arguments for your shopare command'
             )
             ->setHelp(
-<<<EOF
+<<<'EOF'
 The <info>%command.name%</info> command allows you to trigger shopware cli commands from any subdirectory.
 EOF
             );
-        ;
     }
 
     /**
@@ -56,6 +55,7 @@ EOF
     /**
      * @param  string    $shopwarePath
      * @param  IoService $ioService
+     *
      * @return string
      */
     public function getValidShopwarePath($shopwarePath, IoService $ioService)
@@ -71,8 +71,8 @@ EOF
         } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
 
         return $ioService->askAndValidate(
-            "Path to your Shopware installation: ",
-            array($this->container->get('utilities'), 'validateShopwarePath')
+            'Path to your Shopware installation: ',
+            [$this->container->get('utilities'), 'validateShopwarePath']
         );
     }
 }

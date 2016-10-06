@@ -10,11 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * The BaseCommand takes care of the container
  *
  * Class BaseCommand
- * @package ShopwareCli\Command
  */
 abstract class BaseCommand extends Command implements ContainerAwareInterface
 {
-    /** @var  ContainerInterface */
+    /** @var ContainerInterface */
     protected $container;
 
     /**

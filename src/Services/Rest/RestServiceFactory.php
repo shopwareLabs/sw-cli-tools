@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Factory for cache decorated rest services
  *
  * Class RestServiceFactory
- * @package ShopwareCli\Services\Services\Rest
  */
 class RestServiceFactory
 {
@@ -31,6 +30,7 @@ class RestServiceFactory
      * @param  string        $username
      * @param  string        $password
      * @param  int           $cacheTime
+     *
      * @return RestInterface
      */
     public function factory($baseUrl, $username = null, $password = null, $cacheTime = 3600)

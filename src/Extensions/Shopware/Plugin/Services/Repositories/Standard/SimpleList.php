@@ -11,11 +11,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * servers (e.g. local, github, bitbucket, stash…)
  *
  * Class SimpleList
- * @package Shopware\Plugin\Services\Repositories
  */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {
-    /** @var  ContainerInterface */
+    /** @var ContainerInterface */
     protected $container;
 
     public function setContainer(ContainerInterface $container = null)
@@ -45,10 +44,10 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
     {
         $config = $this->container->get('config');
         if (!isset($config['repositories']['SimpleList'])) {
-            return array();
+            return [];
         }
 
-        $plugins = array();
+        $plugins = [];
         foreach ($config['repositories']['SimpleList']['repositories'] as $repositoryName => $repository) {
             foreach ($repository['plugins'] as $name => $cloneUrls) {
                 $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['http'], $name);

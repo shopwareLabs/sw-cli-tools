@@ -10,17 +10,17 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
  * Step through the config file, lookup needed repositories and create them
  *
  * Class DefaultRepositoryFactory
- * @package Shopware\Plugin\Services\Repositories
  */
 class DefaultRepositoryFactory
 {
     /**
      * List of repositories the DefaultRepository will handle
+     *
      * @var array
      */
-    private $supportedRepositories = array('GitHub', 'Stash', 'BitBucket', 'SimpleList');
+    private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList'];
 
-    private $defaultRepositories = array();
+    private $defaultRepositories = [];
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container
@@ -81,7 +81,7 @@ class DefaultRepositoryFactory
 
             $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
-            $this->defaultRepositories[] =  $this->createRepository($name, $type, $repoConfig, $restClient);
+            $this->defaultRepositories[] = $this->createRepository($name, $type, $repoConfig, $restClient);
         }
     }
 
@@ -90,11 +90,12 @@ class DefaultRepositoryFactory
      * @param $type
      * @param $repoConfig
      * @param $restClient
+     *
      * @return BaseRepository
      */
     private function createRepository($name, $type, $repoConfig, $restClient)
     {
-        $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
+        $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\'.$type;
         $repo = new $className(
             isset($repoConfig['url']) ? $repoConfig['url'] : '',
             $name,

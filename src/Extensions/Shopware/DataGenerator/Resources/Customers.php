@@ -10,21 +10,22 @@ class Customers extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
-        "s_user",
-        "s_user_attributes",
-        "s_user_addresses",
-        "s_user_billingaddress",
-        "s_user_billingaddress_attributes",
-        "s_user_shippingaddress",
-        "s_user_shippingaddress_attributes"
-    );
+    protected $tables = [
+        's_user',
+        's_user_attributes',
+        's_user_addresses',
+        's_user_billingaddress',
+        's_user_billingaddress_attributes',
+        's_user_shippingaddress',
+        's_user_shippingaddress_attributes'
+    ];
 
     /**
      * Stores the used ids for SQL inserts
+     *
      * @var array
      */
-    protected $ids = array();
+    protected $ids = [];
 
     /**
      * @var LoadDataInfile
@@ -32,7 +33,7 @@ class Customers extends BaseResource
     private $loadDataInfile;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -57,8 +58,8 @@ class Customers extends BaseResource
             $id = $this->getUniqueId('customer');
             $customerNumber = $this->getUniqueId('customerNumber');
 
-            $group = $customerCounter % 2 === 1 ? "EK" : "H";
-            $sex = $customerCounter % 2 === 1 ? "mr" : "ms";
+            $group = $customerCounter % 2 === 1 ? 'EK' : 'H';
+            $sex = $customerCounter % 2 === 1 ? 'mr' : 'ms';
 
             $importCustomers->write(
                 "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id}"
@@ -69,19 +70,19 @@ class Customers extends BaseResource
 
             $customerAttributeValues[] = "{$id}";
             $importCustomersBilling->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} ".rand(
                     1,
                     500
-                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, " . rand(
+                )."' , ".rand(42000, 50000).", {$this->generator->getRandomCity()}, ".rand(
                     9999,
                     99999
-                ) . ", 2, 0, "
+                ).', 2, 0, '
             );
             $importCustomersShipping->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} ".rand(
                     1,
                     500
-                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
+                )."' , ".rand(42000, 50000).", {$this->generator->getRandomCity()}, 2, 0"
             );
 
             $zip = rand(42000, 50000);

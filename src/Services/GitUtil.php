@@ -40,11 +40,12 @@ class GitUtil
     /**
      * @param  string $commandline
      * @param int|null $timeout
+     *
      * @return string
      */
     public function run($commandline, $timeout = null)
     {
-        $commandline = 'git ' . $commandline;
+        $commandline = 'git '.$commandline;
 
         $process = new Process($commandline, null, $this->gitEnv->getGitEnv());
         $process->setTimeout($timeout ?: $this->timeout);
@@ -55,7 +56,7 @@ class GitUtil
         });
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException("Command failed. Error Output:\n\n" . $process->getErrorOutput(), $process->getExitCode());
+            throw new \RuntimeException("Command failed. Error Output:\n\n".$process->getErrorOutput(), $process->getExitCode());
         }
 
         return $process->getOutput();

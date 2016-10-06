@@ -13,14 +13,15 @@ abstract class BaseResource
 {
     /**
      * Stores the used ids for SQL inserts
+     *
      * @var array
      */
-    protected $ids = array();
+    protected $ids = [];
 
     /**
      * Tables a resource owns.
      */
-    protected $tables = array();
+    protected $tables = [];
 
     /**
      * @var Config
@@ -67,7 +68,9 @@ abstract class BaseResource
 
     /**
      * Helper function which manages ids for a given type
+     *
      * @param $type
+     *
      * @return int
      */
     protected function getUniqueId($type)
@@ -85,6 +88,7 @@ abstract class BaseResource
 
     /**
      * @param null $field
+     *
      * @return array
      */
     public function getIds($field = null)
@@ -101,33 +105,34 @@ abstract class BaseResource
      */
     protected function prepareTables()
     {
-        $sql = array(
-            "SET foreign_key_checks=0;",
-            "SET unique_checks=0;"
-        );
+        $sql = [
+            'SET foreign_key_checks=0;',
+            'SET unique_checks=0;'
+        ];
 
         foreach ($this->tables as $table) {
             $sql[] = "TRUNCATE `{$table}`;";
             $sql[] = "ALTER TABLE `{$table}` DISABLE KEYS;";
         }
-        $sql[] = "COMMIT;";
+        $sql[] = 'COMMIT;';
 
         return $sql;
     }
 
     /**
      * Generic cleanup method which re-enables keys for the tables
+     *
      * @return array
      */
     protected function enableKeys()
     {
-        $sql = array();
+        $sql = [];
 
         foreach ($this->tables as $table) {
             $sql[] = "ALTER TABLE `{$table}` ENABLE KEYS;";
-            $sql[] = "SET unique_checks=1;";
+            $sql[] = 'SET unique_checks=1;';
         }
-        $sql[] = "COMMIT;";
+        $sql[] = 'COMMIT;';
 
         return $sql;
     }
@@ -170,6 +175,7 @@ abstract class BaseResource
      * All writers are automatically flushed once the data creation ends
      *
      * @param WriterInterface $writer
+     *
      * @return mixed
      */
     abstract public function create(WriterInterface $writer);
@@ -187,7 +193,7 @@ abstract class BaseResource
         $writer->write($this->prepareTables());
 
         $this->create($writer);
-        $this->ioService->writeln("");
+        $this->ioService->writeln('');
 
         $writer->write($this->enableKeys());
         $this->writerManager->flushAll();

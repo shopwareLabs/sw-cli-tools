@@ -9,7 +9,6 @@ use Shopware\Plugin\Struct\Plugin;
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml
  *
  * Class Install
- * @package Shopware\Plugin\Services
  */
 class Install
 {
@@ -44,16 +43,14 @@ class Install
     {
         $pluginName = $plugin->name;
 
-        $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch, $useHttp);
+        $this->checkout->checkout($plugin, $shopwarePath.'/engine/Shopware/Plugins/Local/', $branch, $useHttp);
 
         if ($inputActivate) {
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
+            $this->ioService->writeln(exec($shopwarePath.'/bin/console sw:plugin:refresh'));
+            $this->ioService->writeln(exec($shopwarePath.'/bin/console sw:plugin:install --activate '.$pluginName));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath);
-
-        return;
     }
 
     /**
@@ -62,8 +59,8 @@ class Install
      */
     public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {
-        $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
-        $pluginDestPath = $plugin->module . "/" . $plugin->name;
+        $vcsMappingFile = $shopwarePath.'/.idea/vcs.xml';
+        $pluginDestPath = $plugin->module.'/'.$plugin->name;
 
         if (!file_exists($vcsMappingFile)) {
             return;
@@ -78,7 +75,7 @@ class Install
             }
         }
 
-        $mappingDirectory = '$PROJECT_DIR$/engine/Shopware/Plugins/Local/' . $pluginDestPath;
+        $mappingDirectory = '$PROJECT_DIR$/engine/Shopware/Plugins/Local/'.$pluginDestPath;
 
         // mapping needs to be created
         $newMapping = $xml->component->addChild('mapping');
@@ -92,10 +89,11 @@ class Install
      * Normalize directory strings to make them comparable
      *
      * @param $string
+     *
      * @return string
      */
     private function normalize($string)
     {
-        return strtolower(str_replace(array('/', '\\'), '-', $string));
+        return strtolower(str_replace(['/', '\\'], '-', $string));
     }
 }

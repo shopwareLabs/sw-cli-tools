@@ -6,7 +6,6 @@ namespace Shopware\DataGenerator\Writer;
  * Buffered file writer which will only write to disc every X writes
  *
  * Class BufferedFileWriter
- * @package Shopware\DataGenerator\Writer
  */
 class BufferedFileWriter implements WriterInterface
 {
@@ -18,7 +17,7 @@ class BufferedFileWriter implements WriterInterface
     /**
      * @var array
      */
-    protected $buffer = array();
+    protected $buffer = [];
 
     /**
      * @var int
@@ -53,7 +52,7 @@ class BufferedFileWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($content)
     {
@@ -78,13 +77,13 @@ class BufferedFileWriter implements WriterInterface
             return;
         }
 
-        fputs($this->fileHandle, implode("\n", $this->buffer) . "\n");
-        $this->buffer = array();
+        fputs($this->fileHandle, implode("\n", $this->buffer)."\n");
+        $this->buffer = [];
         $this->bufferCounter = 0;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {

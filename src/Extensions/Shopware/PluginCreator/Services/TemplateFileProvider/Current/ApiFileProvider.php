@@ -8,12 +8,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class ApiFileProvider returns files required for the API
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class ApiFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -21,10 +20,10 @@ class ApiFileProvider implements FileProviderInterface
             return [];
         }
 
-        return array(
-            self::CURRENT_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . "Subscriber/ApiSubscriber.tpl" => "Subscriber/ApiSubscriber.php"
-        );
+        return [
+            self::CURRENT_DIR.'Components/Api/Resource/Resource.tpl' => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR.'Controllers/Api.tpl'                  => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR.'Subscriber/ApiSubscriber.tpl'         => 'Subscriber/ApiSubscriber.php'
+        ];
     }
 }

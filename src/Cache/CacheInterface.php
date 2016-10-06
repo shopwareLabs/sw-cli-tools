@@ -7,9 +7,9 @@ interface CacheInterface
     /**
      * @param string  $key
      * @param string  $data
-     * @param integer $valid
+     * @param int $valid
      *
-     * @return boolean
+     * @return bool
      */
     public function write($key, $data, $valid);
 
@@ -26,7 +26,7 @@ interface CacheInterface
     public function delete($key);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function exists($key);
 

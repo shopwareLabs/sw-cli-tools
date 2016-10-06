@@ -8,7 +8,6 @@ use ShopwareCli\Services\Rest\RestInterface;
  * RestClient based on CURL
  *
  * Class RestClient
- * @package ShopwareCli\Services\Rest\Curl
  */
 class RestClient implements RestInterface
 {
@@ -22,12 +21,12 @@ class RestClient implements RestInterface
     /**
      * @var array
      */
-    protected $validMethods = array(
+    protected $validMethods = [
         self::METHOD_GET,
         self::METHOD_PUT,
         self::METHOD_POST,
         self::METHOD_DELETE
-    );
+    ];
 
     /**
      * @var string
@@ -44,22 +43,23 @@ class RestClient implements RestInterface
      * @param  string|null $username
      * @param  string|null $apiKey
      * @param  array       $curlOptions
+     *
      * @throws \Exception
      */
-    public function __construct($apiUrl, $username = "", $apiKey = "", $curlOptions = array())
+    public function __construct($apiUrl, $username = '', $apiKey = '', $curlOptions = [])
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL given');
         }
 
-        $this->apiUrl = rtrim($apiUrl, '/') . '/';
+        $this->apiUrl = rtrim($apiUrl, '/').'/';
 
         //Initializes the cURL instance
         $this->cURL = curl_init();
         curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
         if ($username != '' && $apiKey != '') {
-            curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
+            curl_setopt($this->cURL, CURLOPT_USERPWD, $username.':'.$apiKey);
         }
         curl_setopt($this->cURL, CURLOPT_USERAGENT, self::USER_AGENT);
 
@@ -73,15 +73,17 @@ class RestClient implements RestInterface
      * @param  string     $method
      * @param  array      $parameters
      * @param  array      $headers
-     * @return Response
+     *
      * @throws \Exception
+     *
+     * @return Response
      */
-    public function call($url, $method = self::METHOD_GET, $parameters = array(), $headers = array())
+    public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])
     {
         if (!in_array($method, $this->validMethods)) {
-            throw new \Exception('Invalid HTTP method: ' . $method);
+            throw new \Exception('Invalid HTTP method: '.$method);
         }
-        $url = $this->apiUrl . $url;
+        $url = $this->apiUrl.$url;
 
         $dataString = json_encode($parameters);
         curl_setopt($this->cURL, CURLOPT_URL, $url);
@@ -89,9 +91,9 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
 
         $headers = array_merge(
-            array(
+            [
                 'Content-Type: application/json; charset=utf-8',
-            ),
+            ],
             $headers
         );
 
@@ -104,7 +106,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function get($url, $parameters = array(), $headers = array())
+    public function get($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_GET, $parameters, $headers);
     }
@@ -112,7 +114,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function post($url, $parameters = array(), $headers = array())
+    public function post($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_POST, $parameters, $headers);
     }
@@ -120,7 +122,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function put($url, $parameters = array(), $headers = array())
+    public function put($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_PUT, $parameters, $headers);
     }
@@ -128,7 +130,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($url, $parameters = array(), $headers = array())
+    public function delete($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_DELETE, $parameters, $headers);
     }

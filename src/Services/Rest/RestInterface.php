@@ -6,7 +6,6 @@ namespace ShopwareCli\Services\Rest;
  * General interfaces for REST classes
  *
  * Class RestInterface
- * @package ShopwareCli\Rest
  */
 interface RestInterface
 {
@@ -16,9 +15,10 @@ interface RestInterface
      * @param  string            $url
      * @param  array             $parameters
      * @param  array             $headers
+     *
      * @return ResponseInterface
      */
-    public function get($url, $parameters = array(), $headers = array());
+    public function get($url, $parameters = [], $headers = []);
 
     /**
      * Perform a HTTP POST request
@@ -26,9 +26,10 @@ interface RestInterface
      * @param  string            $url
      * @param  array             $parameters
      * @param  array             $headers
+     *
      * @return ResponseInterface
      */
-    public function post($url, $parameters = array(), $headers = array());
+    public function post($url, $parameters = [], $headers = []);
 
     /**
      * Perform a HTTP PUT request
@@ -36,9 +37,10 @@ interface RestInterface
      * @param  string            $url
      * @param  array             $parameters
      * @param  array             $headers
+     *
      * @return ResponseInterface
      */
-    public function put($url, $parameters = array(), $headers = array());
+    public function put($url, $parameters = [], $headers = []);
 
     /**
      * Perform a HTTP DELETE request
@@ -46,7 +48,8 @@ interface RestInterface
      * @param  string            $url
      * @param  array             $parameters
      * @param  array             $headers
+     *
      * @return ResponseInterface
      */
-    public function delete($url, $parameters = array(), $headers = array());
+    public function delete($url, $parameters = [], $headers = []);
 }

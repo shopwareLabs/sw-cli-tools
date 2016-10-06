@@ -8,7 +8,6 @@ use Shopware\Plugin\Struct\PluginBootstrap;
  * Extract info from a shopware plugin bootstrap
  *
  * Class BootstrapInfo
- * @package Shopware\Plugin\Services
  */
 class BootstrapInfo
 {
@@ -16,6 +15,7 @@ class BootstrapInfo
      * Analyze a bootstrap file and return a PluginBootstrap struct
      *
      * @param $bootstrapFile
+     *
      * @return PluginBootstrap
      */
     public function analyze($bootstrapFile)
@@ -35,18 +35,20 @@ class BootstrapInfo
      * Return name and namespace from a plugin by regex-ing the class name
      *
      * @param  string            $content
-     * @return string[]
+     *
      * @throws \RuntimeException
+     *
+     * @return string[]
      */
     private function analyzeClass($content)
     {
         $pattern = '#.*Shopware_Plugins_(?P<namespace>[a-zA-Z0-9]+)_(?P<name>[a-zA-Z0-9]+)_Bootstrap.*#';
-        $matches = array();
+        $matches = [];
         preg_match($pattern, $content, $matches);
         if (empty($matches)) {
             throw new \RuntimeException('Could not analyze bootstrap');
         }
 
-        return array($matches['namespace'], $matches['name']);
+        return [$matches['namespace'], $matches['name']];
     }
 }

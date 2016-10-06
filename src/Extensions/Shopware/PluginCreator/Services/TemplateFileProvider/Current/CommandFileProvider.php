@@ -8,12 +8,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class CommandFileProvider returns files required for the CLI command
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class CommandFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -22,7 +21,7 @@ class CommandFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Commands/Command.tpl" => "Commands/{$nameGenerator->camelCaseModel}.php"
+            self::CURRENT_DIR.'Commands/Command.tpl' => "Commands/{$nameGenerator->camelCaseModel}.php"
         ];
     }
 }
