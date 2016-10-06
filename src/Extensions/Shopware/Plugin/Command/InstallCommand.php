@@ -75,6 +75,12 @@ class InstallCommand extends BaseCommand
                 '-b',
                 InputOption::VALUE_OPTIONAL,
                 'Checkout the given branch'
+            )
+            ->addOption(
+                'activate',
+                'a',
+                InputOption::VALUE_OPTIONAL,
+                'No activation question. Set to 1 to activate all plugins, set to 0 to deactivate all plugins'
             );
     }
 
@@ -89,6 +95,11 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
         $checkout = $input->getOption('checkout');
+
+        $activate = null;
+        if ($input->hasOption('activate')) {
+            $activate = ($input->getOption('activate') == 1);
+        }
 
         if (!$shopwarePath) {
             $shopwarePath = null;
@@ -107,8 +118,12 @@ class InstallCommand extends BaseCommand
 
         $params = array('checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp);
 
+        if ($activate !== null) {
+            $params['activate'] = $activate;
+        }
+
         if (!empty($names)) {
-            if (!$checkout) {
+            if (!$checkout && $activate !== null) {
                 $params['activate'] = $this->askActivatePluginQuestion();
             }
             $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
