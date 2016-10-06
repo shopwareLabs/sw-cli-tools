@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "212c37dec2739e69f01907bb60ebb9f8",
-    "content-hash": "ec0ea086df714a9ef107626ea051c700",
+    "hash": "5c3cf392b48ef8a1160c20d90c73e5fb",
+    "content-hash": "f8076273d445d30c34941bbc0b7897d8",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1116,7 +1116,7 @@
             "time": "2015-06-14 21:17:01"
         },
         {
-            "name": "fabpot/php-cs-fixer",
+            "name": "friendsofphp/php-cs-fixer",
             "version": "v1.12.2",
             "source": {
                 "type": "git",
@@ -1171,7 +1171,6 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "abandoned": "friendsofphp/php-cs-fixer",
             "time": "2016-09-27 07:57:59"
         },
         {
