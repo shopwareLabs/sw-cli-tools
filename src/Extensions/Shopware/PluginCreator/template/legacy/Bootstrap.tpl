@@ -20,7 +20,7 @@ use <?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; 
  *   - creating attributes
  *   - creating database tables
  *   You need to return "true" or array('success' => true, 'invalidateCache' => array()) in order to let the installation
- *   be successfull
+ *   be successful
  *
  * - update: Triggered when the user updates the plugin. You will get passes the former version of the plugin as param
  *   In order to let the update be successful, return "true"
@@ -158,14 +158,14 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
     /**
      * This callback function is triggered at the very beginning of the dispatch process and allows
      * us to register additional events on the fly. This way you won't ever need to reinstall you
-     * plugin for new events - any event and hook can simply be registerend in the event subscribers
+     * plugin for new events - any event and hook can simply be registered in the event subscribers
      */
     public function onStartDispatch(Enlight_Event_EventArgs $args)
     {
         $this->registerMyComponents();
-        <?php if ($configuration->hasModels) { ?>
+<?php if ($configuration->hasModels) { ?>
         $this->registerCustomModels();<?php } ?>
-        <?php if ($configuration->hasApi) { ?>$this->registerApiComponent();<?php } ?>
+<?php if ($configuration->hasApi) { ?>$this->registerApiComponent();<?php } ?>
 <?php if ($configuration->hasFrontend || $configuration->hasBackend || $configuration->hasWidget) { ?>
         $this->registerMyTemplateDir();
         $this->registerMySnippets();
@@ -176,9 +176,9 @@ class Shopware_Plugins_<?= $configuration->namespace; ?>_<?= $configuration->nam
 <?php if ($configuration->hasFrontend || $configuration->hasBackend || $configuration->hasWidget || $configuration->hasApi) { ?>
             new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\ControllerPath(),
 <?php } ?><?php if ($configuration->hasFilter) { ?>
-new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
-<?php } ?>            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\Frontend()
-
+            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\SearchBundle(),
+<?php } ?>
+            new \<?= $configuration->pluginConfig['namespace']; ?>\<?= $configuration->name; ?>\Subscriber\Frontend()
         );
 
         foreach ($subscribers as $subscriber) {
