@@ -21,6 +21,7 @@ class Utilities
      * (by checking for shopware.php)
      *
      * @param  string $path
+     *
      * @return bool
      */
     public function isShopwareInstallation($path)
@@ -32,6 +33,7 @@ class Utilities
      * Ask for a valid shopware path until the user enters it
      *
      * @param  string $shopwarePath
+     *
      * @return string
      */
     public function getValidShopwarePath($shopwarePath = null)
@@ -45,8 +47,8 @@ class Utilities
         }
 
         return $this->ioService->askAndValidate(
-            "Path to your Shopware installation: ",
-            array($this, 'validateShopwarePath')
+            'Path to your Shopware installation: ',
+            [$this, 'validateShopwarePath']
         );
     }
 
@@ -54,8 +56,10 @@ class Utilities
      * Shopware path validator - can be used in askAndValidate methods
      *
      * @param  string $shopwarePath
-     * @return string
+     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function validateShopwarePath($shopwarePath)
     {
@@ -74,6 +78,7 @@ class Utilities
      * Changes a directory
      *
      * @param  string $path
+     *
      * @throws \RuntimeException
      */
     public function changeDir($path)

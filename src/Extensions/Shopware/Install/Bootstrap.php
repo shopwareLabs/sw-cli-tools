@@ -14,7 +14,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * This plugin will install/setup shopware in a development version
  *
  * Class Bootstrap
- * @package Shopware\Install
  */
 class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 {
@@ -31,11 +30,11 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
      */
     public function getConsoleCommands()
     {
-        return array(
+        return [
             new ShopwareInstallVcsCommand(),
             new ShopwareInstallReleaseCommand(),
             new ShopwareClearCacheCommand()
-        );
+        ];
     }
 
     /**

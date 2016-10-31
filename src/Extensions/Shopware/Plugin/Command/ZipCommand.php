@@ -12,7 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Zip a plugin
  *
  * Class ZipCommand
- * @package ShopwareCli\Command
  */
 class ZipCommand extends BaseCommand
 {
@@ -66,15 +65,15 @@ class ZipCommand extends BaseCommand
         $this->container->get('plugin_column_renderer')->setSmall($small);
         $interactionManager = $this->container->get('plugin_operation_manager');
 
-        $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
+        $params = ['output' => $output, 'branch' => $branch, 'useHttp' => $useHttp];
 
         if (!empty($names)) {
-            $interactionManager->searchAndOperate($names, array($this, 'doZip'), $params);
+            $interactionManager->searchAndOperate($names, [$this, 'doZip'], $params);
 
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doZip'), $params);
+        $interactionManager->operationLoop([$this, 'doZip'], $params);
     }
 
     public function doZip($plugin, $params)
@@ -85,7 +84,7 @@ class ZipCommand extends BaseCommand
     protected function getTempDir()
     {
         $tempDirectory = sys_get_temp_dir();
-        $tempDirectory .= '/plugin-inst-' . uniqid();
+        $tempDirectory .= '/plugin-inst-'.uniqid();
         mkdir($tempDirectory, 0777, true);
 
         $this->container->get('utilities')->changeDir($tempDirectory);

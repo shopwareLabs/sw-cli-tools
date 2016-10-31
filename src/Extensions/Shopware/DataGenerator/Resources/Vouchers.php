@@ -15,12 +15,12 @@ class Vouchers extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
-        "s_emarketing_vouchers",
-        "s_emarketing_vouchers_attributes",
-        "s_emarketing_vouchers_cashed",
-        "s_emarketing_voucher_codes",
-    );
+    protected $tables = [
+        's_emarketing_vouchers',
+        's_emarketing_vouchers_attributes',
+        's_emarketing_vouchers_cashed',
+        's_emarketing_voucher_codes',
+    ];
 
     /**
      * @var LoadDataInfile
@@ -28,7 +28,7 @@ class Vouchers extends BaseResource
     private $loadDataInfile;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {

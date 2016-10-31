@@ -5,12 +5,10 @@ namespace Shopware\PluginCreator\Services;
 /**
  * Class Template is a very simple template system, which will make it easier,
  * to separate view and controller logic
- *
- * @package Shopware\PluginCreator\Services
  */
 class Template
 {
-    private $_templateVars = array();
+    private $_templateVars = [];
 
     private $_path = '';
 
@@ -21,7 +19,7 @@ class Template
      */
     public function setTemplatePath($path)
     {
-        $this->_path = rtrim($path, '/') . '/';
+        $this->_path = rtrim($path, '/').'/';
     }
 
     /**
@@ -39,6 +37,7 @@ class Template
      * Render the given template and return the result
      *
      * @param $_template
+     *
      * @return string
      */
     public function fetch($_template)
@@ -64,6 +63,7 @@ class Template
      *
      * @param $_template
      * @param  bool   $return
+     *
      * @return string
      */
     private function doRender($_template, $return = false)
@@ -76,8 +76,8 @@ class Template
         if ($return) {
             ob_start();
         }
-        $old = set_error_handler(array($this, 'errorReporter'));
-        include $this->_path . $_template;
+        $old = set_error_handler([$this, 'errorReporter']);
+        include $this->_path.$_template;
         set_error_handler($old);
         if ($return) {
             return ob_get_clean();
@@ -87,6 +87,6 @@ class Template
     public function errorReporter($severity, $message, $filename, $lineno)
     {
         ob_clean();
-        throw new \ErrorException($message . ': ' . $filename . ', line ' . $lineno, 0, $severity, $filename, $lineno);
+        throw new \ErrorException($message.': '.$filename.', line '.$lineno, 0, $severity, $filename, $lineno);
     }
 }

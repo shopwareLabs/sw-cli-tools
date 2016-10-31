@@ -56,11 +56,10 @@ class ShopwareInstallVcsCommand extends BaseCommand
                 'If set, the demo data will not be installed'
             )
             ->setHelp(
-<<<EOF
+<<<'EOF'
 The <info>%command.name%</info> sets up shopware
 EOF
             );
-        ;
     }
 
     /**
@@ -106,16 +105,17 @@ EOF
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
      *
      * @param  string $branch
+     *
      * @return string
      */
     private function suggestNameFromBranch($branch)
     {
-        $result = array();
+        $result = [];
         $pattern = '#sw-(?P<number>.+?)/(?P<target>.+?)/.*#i';
         preg_match($pattern, $branch, $result);
 
         if (isset($result['number'])) {
-            return 'sw' . $result['number'];
+            return 'sw'.$result['number'];
         }
 
         return str_replace('.', '', $branch);
@@ -123,7 +123,9 @@ EOF
 
     /**
      * @param  string            $path
+     *
      * @throws \RuntimeException
+     *
      * @return string
      */
     public function validateInstallDir($path)
@@ -148,7 +150,7 @@ EOF
         if (!$installDir) {
             $installDir = $ioService->askAndValidate(
                 "Please provide the install directory <{$suggestion}>: ",
-                array($this, 'validateInstallDir')
+                [$this, 'validateInstallDir']
             );
             $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
 

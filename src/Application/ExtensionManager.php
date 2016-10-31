@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * e.g. github
  *
  * Class ExtensionManager
- * @package ShopwareCli\Application
  */
 class ExtensionManager
 {
@@ -78,8 +77,8 @@ class ExtensionManager
                 continue;
             }
 
-            if (!file_exists($extensionPath->getPathname() . "/Bootstrap.php")) {
-                throw new \RuntimeException(sprintf("Could not find Bootstrap.php in %s", $extensionPath->getPathname()));
+            if (!file_exists($extensionPath->getPathname().'/Bootstrap.php')) {
+                throw new \RuntimeException(sprintf('Could not find Bootstrap.php in %s', $extensionPath->getPathname()));
             }
 
             $extensionName = $extensionPath->getBasename();
@@ -109,7 +108,7 @@ class ExtensionManager
      */
     private function registerExtensionNamespace($path, $namespace)
     {
-        $namespace = rtrim($namespace, '\\') . '\\';
+        $namespace = rtrim($namespace, '\\').'\\';
         $this->autoLoader->addPsr4($namespace, $path);
     }
 
@@ -117,6 +116,7 @@ class ExtensionManager
      * Instantiates a extension
      *
      * @param $className
+     *
      * @return object
      */
     public function bootstrapExtension($className)
@@ -154,6 +154,7 @@ class ExtensionManager
      * Returns the plugin queried by name
      *
      * @param $name
+     *
      * @return object
      */
     public function getExtension($name)

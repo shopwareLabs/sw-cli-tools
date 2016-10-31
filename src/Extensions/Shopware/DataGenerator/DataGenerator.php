@@ -21,6 +21,7 @@ class DataGenerator
 
     /**
      * References the generator class
+     *
      * @var RandomDataProvider
      */
     public $generator;
@@ -60,6 +61,7 @@ class DataGenerator
 
     /**
      * Init the random number generator with a specific seed.
+     *
      * @param $seed
      */
     protected function initSeed($seed)
@@ -73,7 +75,6 @@ class DataGenerator
      * Triggers the actual sql creation methods of the resource
      *
      * For performance and memory reasons, different methods for data creation are provided
-     *
      */
     public function run()
     {

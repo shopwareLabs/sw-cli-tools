@@ -4,6 +4,7 @@ vendor/
 composer.phar
 php_errors.log
 .idea
+.php_cs.cache
 
 box.json
 box.phar

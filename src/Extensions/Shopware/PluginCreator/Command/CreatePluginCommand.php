@@ -114,11 +114,10 @@ class CreatePluginCommand extends BaseCommand
                 'File with your desired license header',
                 ''
             )
-            ->setHelp(<<<EOF
+            ->setHelp(<<<'EOF'
 The <info>%command.name%</info> creates a new plugin.
 EOF
             );
-        ;
     }
 
 
@@ -143,7 +142,7 @@ EOF
 
         // for backend / api the backendModel is mandatory
         if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>): ', array($this, 'validateModel'), false, $defaultModel);
+            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>'.$defaultModel.'</comment>): ', [$this, 'validateModel'], false, $defaultModel);
             $input->setOption('backendModel', $modelName);
         }
 
@@ -160,7 +159,7 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION) as $key) {
+        foreach (['haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION] as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -202,6 +201,7 @@ EOF
      * Check the plugin name - it needs to constist of two parts at least - the first one is the dev prefix
      *
      * @param $name
+     *
      * @throws \InvalidArgumentException
      */
     protected function validateName($name)
@@ -218,6 +218,7 @@ EOF
      * Split "SwagTestPlugin" into array("Swag", "Test", "Plugin")
      *
      * @param $input
+     *
      * @return array
      */
     public function upperToArray($input)
@@ -229,12 +230,14 @@ EOF
      * Make sure the namespace is one of core, backend, frontend
      *
      * @param $input
-     * @return mixed
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public function validateNamespace($input)
     {
-        if (!in_array(strtolower($input), array('frontend', 'core', 'backend'))) {
+        if (!in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
             throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
         }
 
@@ -245,8 +248,10 @@ EOF
      * Check the entered model (check might be somewhat more sufisticated)
      *
      * @param $input
-     * @return mixed
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public function validateModel($input)
     {
@@ -261,6 +266,7 @@ EOF
      * Populate a configuration object by the input interface
      *
      * @param  InputInterface $input
+     *
      * @return Configuration
      */
     protected function getConfigurationObject(InputInterface $input)
@@ -295,6 +301,6 @@ EOF
     {
         $license = str_replace("\n", "\n * ", trim($license));
 
-        return "/**\n * " . $license . "\n */\n";
+        return "/**\n * ".$license."\n */\n";
     }
 }

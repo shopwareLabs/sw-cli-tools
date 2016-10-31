@@ -8,11 +8,10 @@ use ShopwareCli\Services\IoService;
  * creates the phpstorm vcs mapping file
  *
  * Class VcsGenerator
- * @package Shopware\Install\Services
  */
 class VcsGenerator
 {
-    protected $templateVcsMapping = <<<EOF
+    protected $templateVcsMapping = <<<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
     <component name="VcsDirectoryMappings">
@@ -34,14 +33,14 @@ EOF;
 
     public function createVcsMapping($installDir, $paths)
     {
-        $this->ioService->writeln("<info>Generating VCS mapping</info>");
+        $this->ioService->writeln('<info>Generating VCS mapping</info>');
 
         $dir = $installDir.'/.idea';
         if (!is_dir($dir)) {
             mkdir($dir);
         }
 
-        $mappings = array();
+        $mappings = [];
         foreach ($paths as $path) {
             if ($path == '/') {
                 $path = '';
@@ -51,6 +50,6 @@ EOF;
 
         $mappings = implode("\n", $mappings);
 
-        file_put_contents($dir . '/vcs.xml', sprintf($this->templateVcsMapping, $mappings));
+        file_put_contents($dir.'/vcs.xml', sprintf($this->templateVcsMapping, $mappings));
     }
 }

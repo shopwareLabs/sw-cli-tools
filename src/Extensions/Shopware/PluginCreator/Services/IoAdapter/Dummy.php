@@ -6,14 +6,14 @@ namespace Shopware\PluginCreator\Services\IoAdapter;
  * Dummy IoAdapter will collect all files in memory
  *
  * Class Dummy
- * @package Shopware\PluginCreator\Services\IoAdapter
  */
 class Dummy implements IoAdapter
 {
-    protected $files = array();
+    protected $files = [];
 
     /**
      * @param $path
+     *
      * @return bool
      */
     public function exists($path)

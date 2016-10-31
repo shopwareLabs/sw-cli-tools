@@ -7,14 +7,13 @@ use ShopwareCli\Services\IoService;
 
 /**
  * Class WriterManager
- * @package Shopware\DataGenerator\Writer
  */
 class WriterManager
 {
     /**
      * @var WriterInterface[]
      */
-    private $writers = array();
+    private $writers = [];
 
     /**
      * @var
@@ -57,6 +56,7 @@ class WriterManager
      * @param $resourceKey
      * @param $type
      * @param null $writerType
+     *
      * @return WriterInterface
      */
     public function createWriter($resourceKey, $type = null, $writerType = null)
@@ -91,7 +91,7 @@ class WriterManager
      */
     public function flushAll()
     {
-        $this->ioService->writeln("Flushing data...");
+        $this->ioService->writeln('Flushing data...');
 
         $compare = function ($a, $b) {
             if ($a->getPriority() == $b->getPriority()) {
@@ -109,8 +109,8 @@ class WriterManager
         }
 
         if ($this->displayImportMessage == true) {
-            $this->ioService->writeln("Done. Please import SQLs using something like this:");
-            $this->ioService->writeln("mysql --local-infile -uroot -proot DATABASE < FILE.sql");
+            $this->ioService->writeln('Done. Please import SQLs using something like this:');
+            $this->ioService->writeln('mysql --local-infile -uroot -proot DATABASE < FILE.sql');
         }
     }
 

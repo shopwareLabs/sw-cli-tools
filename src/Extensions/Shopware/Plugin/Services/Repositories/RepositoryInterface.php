@@ -8,7 +8,6 @@ use Shopware\Plugin\Struct\Plugin;
  * Interface for repository classes
  *
  * Class RepositoryInterface
- * @package ShopwareCli\Plugin
  */
 interface RepositoryInterface
 {

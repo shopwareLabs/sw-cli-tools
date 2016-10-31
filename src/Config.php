@@ -8,7 +8,6 @@ use Symfony\Component\Yaml\Yaml;
  * Simple config object for the config.yaml file
  *
  * Class Config
- * @package ShopwareCli
  */
 class Config implements \ArrayAccess
 {
@@ -32,11 +31,12 @@ class Config implements \ArrayAccess
      * Merge all given config.yaml files
      *
      * @param  string[] $paths
+     *
      * @return string
      */
     private function getMergedConfigs($paths)
     {
-        $content = array();
+        $content = [];
 
         foreach ($paths as $path) {
             $content[] = file_get_contents($path);

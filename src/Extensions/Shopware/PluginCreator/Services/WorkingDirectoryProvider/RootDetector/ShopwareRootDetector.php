@@ -18,6 +18,7 @@ class ShopwareRootDetector implements RootDetectorInterface
 
     /**
      * @param string $path
+     *
      * @return bool
      */
     public function isRoot($path)
@@ -30,12 +31,13 @@ class ShopwareRootDetector implements RootDetectorInterface
 
     /**
      * @param string $path
+     *
      * @return bool
      */
     private function validateDirectories($path)
     {
         foreach (self::DIRECTORIES as $directory) {
-            if (!is_dir($path . $directory)) {
+            if (!is_dir($path.$directory)) {
                 return false;
             }
         }
@@ -44,12 +46,13 @@ class ShopwareRootDetector implements RootDetectorInterface
 
     /**
      * @param string $path
+     *
      * @return bool
      */
     private function validateFiles($path)
     {
         foreach (self::FILES as $file) {
-            if (!file_exists($path . $file)) {
+            if (!file_exists($path.$file)) {
                 return false;
             }
         }

@@ -28,7 +28,7 @@ use ShopwareCli\ConfigFileCollector;
 
 /**
  * @category  Shopware
- * @package   ShopwareCli\Tests
+ *
  * @copyright Copyright (c) shopware AG (http://www.shopware.de)
  */
 class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
@@ -56,11 +56,11 @@ class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
         $SUT = new ConfigFileCollector($pathProvider);
         $result = $SUT->collectConfigFiles();
 
-        $expectedResults = array(
-            $testDir . '/VendorA/ExtB/config.yaml',
-            $testDir . '/VendorC/ExtA/config.yaml',
-            $testDir . '/config.yaml.dist',
-        );
+        $expectedResults = [
+            $testDir.'/VendorA/ExtB/config.yaml',
+            $testDir.'/VendorC/ExtA/config.yaml',
+            $testDir.'/config.yaml.dist',
+        ];
 
         foreach ($expectedResults as $expectedResult) {
             $this->assertContains($expectedResult, $result);

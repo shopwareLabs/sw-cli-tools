@@ -12,8 +12,8 @@ class Bootstrap implements ConsoleAwareExtension
      */
     public function getConsoleCommands()
     {
-        return array(
+        return [
             new RunCliCommand()
-        );
+        ];
     }
 }

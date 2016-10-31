@@ -54,15 +54,15 @@ class PostInstall
         $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getCacheDir($directory));
         $this->processExecutor->execute($command, null, true);
 
-        if (file_exists($directory . '/web')) {
+        if (file_exists($directory.'/web')) {
             $command = sprintf('chmod 0777 -R "%s"', $directory.'/web');
             $this->processExecutor->execute($command, null, true);
         }
 
-        $command = sprintf('chmod +x  "%s"', $directory . '/bin/console');
+        $command = sprintf('chmod +x  "%s"', $directory.'/bin/console');
         $this->processExecutor->execute($command, null, true);
 
-        $command = sprintf('chmod +x  "%s"', $this->shopwareInfo->getCacheDir($directory) . '/clear_cache.sh');
+        $command = sprintf('chmod +x  "%s"', $this->shopwareInfo->getCacheDir($directory).'/clear_cache.sh');
         $this->processExecutor->execute($command, null, true);
 
         $this->setUser($directory);
@@ -76,7 +76,7 @@ class PostInstall
      */
     public function setupTheme($directory)
     {
-        if (!file_exists($directory . '/themes')) {
+        if (!file_exists($directory.'/themes')) {
             return;
         }
 
@@ -91,6 +91,7 @@ class PostInstall
      * Import custom deltas
      *
      * @param $database
+     *
      * @throws \RuntimeException
      */
     public function importCustomDeltas($database)

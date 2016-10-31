@@ -15,26 +15,25 @@ use ShopwareCli\Services\IoService;
  * This install service will run all steps needed to setup shopware in the correct order
  *
  * Class Vcs
- * @package Shopware\Install\Services\Install
  */
 class Vcs
 {
-    /** @var  Checkout */
+    /** @var Checkout */
     protected $checkout;
 
     /** @var Config */
     protected $config;
 
-    /** @var  VcsGenerator */
+    /** @var VcsGenerator */
     protected $vcsGenerator;
 
-    /** @var  ConfigWriter */
+    /** @var ConfigWriter */
     protected $configWriter;
 
-    /** @var  Database */
+    /** @var Database */
     protected $database;
 
-    /** @var  Demodata */
+    /** @var Demodata */
     protected $demoData;
     /**
      * @var \ShopwareCli\Services\IoService
@@ -91,25 +90,26 @@ class Vcs
             $this->demoData->setup($installDir);
         }
 
-        $this->ioService->writeln("<info>Running post release scripts</info>");
+        $this->ioService->writeln('<info>Running post release scripts</info>');
         $this->postInstall->fixPermissions($installDir);
         $this->postInstall->importCustomDeltas($database);
         $this->postInstall->runCustomScripts($installDir);
         $this->postInstall->fixShopHost($database);
 
-        $this->ioService->writeln("<info>Install completed</info>");
+        $this->ioService->writeln('<info>Install completed</info>');
     }
 
     private function getDestinationPath($installDir, $destination)
     {
-        return $installDir . $destination;
+        return $installDir.$destination;
     }
 
     /**
      * Enforce a configured core repository
      *
-     * @return mixed
      * @throws \RuntimeException
+     *
+     * @return mixed
      */
     private function checkCoreConfig()
     {

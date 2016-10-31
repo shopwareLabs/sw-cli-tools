@@ -30,7 +30,7 @@ class CliToolGateway implements DirectoryGatewayInterface
      */
     public function getCacheDir()
     {
-        return $this->getBasePath() . '/cache';
+        return $this->getBasePath().'/cache';
     }
 
     /**
@@ -38,7 +38,7 @@ class CliToolGateway implements DirectoryGatewayInterface
      */
     public function getAssetsDir()
     {
-        return $this->getBasePath() . '/assets';
+        return $this->getBasePath().'/assets';
     }
 
     /**
@@ -46,7 +46,7 @@ class CliToolGateway implements DirectoryGatewayInterface
      */
     public function getExtensionDir()
     {
-        return $this->getBasePath() . '/extensions';
+        return $this->getBasePath().'/extensions';
     }
 
     /**

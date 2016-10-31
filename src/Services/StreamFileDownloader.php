@@ -3,7 +3,6 @@ namespace ShopwareCli\Services;
 
 /**
  * Class FileDownloader
- * @package ShopwareCli\Services
  */
 class StreamFileDownloader implements FileDownloader
 {
@@ -25,16 +24,17 @@ class StreamFileDownloader implements FileDownloader
     /**
      * @param  string            $sourceUrl
      * @param  string            $destination
+     *
      * @throws \RuntimeException
      */
     public function download($sourceUrl, $destination)
     {
-        if (false === $readHandle = fopen($sourceUrl, "rb")) {
+        if (false === $readHandle = fopen($sourceUrl, 'rb')) {
             throw new \RuntimeException(sprintf("Could not open URL '%s'.", $sourceUrl));
         }
 
-        if (false === $writeHandle = fopen($destination, "wb")) {
-            throw new \RuntimeException(sprintf("Could not write file: %s.", $destination));
+        if (false === $writeHandle = fopen($destination, 'wb')) {
+            throw new \RuntimeException(sprintf('Could not write file: %s.', $destination));
         }
 
         $length = $this->getContentLengthFromStream($readHandle);
@@ -61,6 +61,7 @@ class StreamFileDownloader implements FileDownloader
 
     /**
      * @param  resource $readHandle
+     *
      * @return int
      */
     private function getContentLengthFromStream($readHandle)

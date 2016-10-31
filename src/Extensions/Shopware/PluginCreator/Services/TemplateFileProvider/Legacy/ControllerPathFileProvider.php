@@ -8,12 +8,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class ControllerPathFileProvider returns the ControllerPath subscriber if needed
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class ControllerPathFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -26,7 +25,7 @@ class ControllerPathFileProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
+            self::LEGACY_DIR.'Subscriber/ControllerPath.tpl' => 'Subscriber/ControllerPath.php',
         ];
     }
 }

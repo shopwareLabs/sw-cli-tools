@@ -12,7 +12,6 @@ use Symfony\Component\Console\Question\Question;
  * Will trigger the PluginColumnRenderer until an valid answer was made. Will then return the corresponding plugin/answer
  *
  * Class PluginInputVerificator
- * @package ShopwareCli\Command\Services
  */
 class PluginInputVerificator
 {
@@ -52,9 +51,10 @@ class PluginInputVerificator
      *
      * @param  Plugin[] $plugins
      * @param  string[] $allowedAnswers
+     *
      * @return string
      */
-    public function selectPlugin($plugins, $allowedAnswers = array('all'))
+    public function selectPlugin($plugins, $allowedAnswers = ['all'])
     {
         while (true) {
             system('clear');
@@ -92,8 +92,9 @@ class PluginInputVerificator
     /**
      * Format the question for the user
      *
-     * @param  integer  $count
+     * @param  int  $count
      * @param  string[] $allowedAnswers
+     *
      * @return string
      */
     private function formatQuestion($count, $allowedAnswers)
@@ -122,12 +123,13 @@ class PluginInputVerificator
      * Will return false if not or the numbers from the range as an array
      *
      * @param  string     $userInput
+     *
      * @return array|bool
      */
     private function getPluginRange($userInput)
     {
         $pattern = '#(?P<from>[0-9]+)-(?P<to>[0-9]+)#';
-        $matches = array();
+        $matches = [];
 
         preg_match($pattern, $userInput, $matches);
 

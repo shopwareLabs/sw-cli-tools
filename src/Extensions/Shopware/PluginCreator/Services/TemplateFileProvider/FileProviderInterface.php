@@ -9,24 +9,23 @@ use Shopware\PluginCreator\Struct\Configuration;
  * Interface FileProviderInterface defines a FileProvider that is able to return a list
  * of files for the template engine to process. Every FileProvider covers one specific case,
  * so that it probably will check "Configuration", if it is required at all.
- *
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 interface FileProviderInterface
 {
     /**
      * Directory which holds the file structure for the current plugin system.
      */
-    const CURRENT_DIR = "current/";
+    const CURRENT_DIR = 'current/';
 
     /**
      * Directory which holds the legacy file structure.
      */
-    const LEGACY_DIR = "legacy/";
+    const LEGACY_DIR = 'legacy/';
 
     /**
      * @param Configuration $configuration
      * @param NameGenerator $nameGenerator
+     *
      * @return array Return an array of files (key = source, value = target). Return empty
      * array for NOOP
      */

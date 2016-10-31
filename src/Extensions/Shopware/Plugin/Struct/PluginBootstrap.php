@@ -8,7 +8,6 @@ use ShopwareCli\Struct;
  * Shopware plugin bootstrap struct
  *
  * Class PluginBootstrap
- * @package Shopware\Plugin\Struct
  */
 class PluginBootstrap extends Struct
 {

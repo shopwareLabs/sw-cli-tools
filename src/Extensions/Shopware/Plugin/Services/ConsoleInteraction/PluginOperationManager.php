@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Works via callback you can pass in order to get notified about the selected plugins
  *
  * Class PluginOperationManager
- * @package ShopwareCli\Command\Services
  */
 class PluginOperationManager
 {
@@ -96,7 +95,7 @@ class PluginOperationManager
                 return;
             }
 
-            $response = $this->pluginSelector->selectPlugin($plugins, array('all'));
+            $response = $this->pluginSelector->selectPlugin($plugins, ['all']);
             $plugins = $this->getPluginsFromResponse($response, $plugins);
 
             foreach ($plugins as $plugin) {
@@ -112,7 +111,7 @@ class PluginOperationManager
      */
     private function executeMethodCallback($subject, $callback, $params)
     {
-        call_user_func_array($callback, array($subject, &$params));
+        call_user_func_array($callback, [$subject, &$params]);
     }
 
     /**
@@ -120,12 +119,13 @@ class PluginOperationManager
      *
      * @param $response
      * @param  Plugin[] $plugins
+     *
      * @return array
      */
     private function getPluginsFromResponse($response, $plugins)
     {
         if ($response instanceof Plugin) {
-            return array($response);
+            return [$response];
         } elseif (is_array($response)) {
             return $response;
         } elseif ($response == 'all') {
@@ -143,7 +143,7 @@ class PluginOperationManager
     {
         $plugins = $this->pluginProvider->getPlugins();
         while (true) {
-            $response = $this->pluginSelector->selectPlugin($plugins, array('all', 'exit'));
+            $response = $this->pluginSelector->selectPlugin($plugins, ['all', 'exit']);
 
             if ($response == 'exit') {
                 return;

@@ -38,16 +38,16 @@ class RollbackCommand extends BaseCommand
         try {
             $result = $this->updater->rollback();
             if (!$result) {
-                $output->writeln("Rollback failed!");
+                $output->writeln('Rollback failed!');
                 return 1;
             }
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
-            $output->writeln("Unable to rollback");
+            $output->writeln('Unable to rollback');
             return 1;
         }
 
-        $output->writeln("Rollback successful");
+        $output->writeln('Rollback successful');
         return 0;
     }
 }

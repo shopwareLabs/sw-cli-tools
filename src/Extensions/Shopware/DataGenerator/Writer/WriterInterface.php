@@ -6,7 +6,6 @@ namespace Shopware\DataGenerator\Writer;
  * Generic write interface to abstract file operations
  *
  * Interface WriterInterface
- * @package Shopware\DataGenerator\Writer
  */
 interface WriterInterface
 {

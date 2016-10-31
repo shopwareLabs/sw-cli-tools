@@ -29,15 +29,15 @@ class BitBucket extends BaseRepository
         echo "Reading BitBucket repo {$this->name}\n";
         $content = $this->restService->get($this->repository)->getResult();
 
-        $plugins = array();
+        $plugins = [];
         foreach ($content['values'] as $repo) {
-            $cloneUrls = array();
+            $cloneUrls = [];
 
             foreach ($repo['links']['clone'] as $cloneUrl) {
                 $cloneUrls[$cloneUrl['name']] = $cloneUrl['href'];
             }
 
-            $cloneUrls['https'] = str_replace("shopwareAG@", "", $cloneUrls['https']);
+            $cloneUrls['https'] = str_replace('shopwareAG@', '', $cloneUrls['https']);
 
             $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['https'], $repo['name']);
         }

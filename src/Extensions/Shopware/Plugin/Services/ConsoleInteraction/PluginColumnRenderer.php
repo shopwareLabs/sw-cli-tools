@@ -11,7 +11,6 @@ use Shopware\Plugin\Struct\Plugin;
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
  *
  * Class PluginColumnRenderer
- * @package ShopwareCli\Command\Services
  */
 class PluginColumnRenderer
 {
@@ -41,7 +40,7 @@ class PluginColumnRenderer
     }
 
     /**
-     * @param boolean $isSmall
+     * @param bool $isSmall
      */
     public function setSmall($isSmall)
     {
@@ -63,7 +62,7 @@ class PluginColumnRenderer
         }
 
         $displayPlugins = $this->createDisplayPlugins($allPlugins);
-        $pluginColumns  = $this->createPluginColumns($displayPlugins, $columns);
+        $pluginColumns = $this->createPluginColumns($displayPlugins, $columns);
 
         $this->printLegend($displayPlugins);
         $this->printColumns($pluginColumns);
@@ -71,11 +70,12 @@ class PluginColumnRenderer
 
     /**
      * @param  Plugin[]        $plugins
+     *
      * @return DisplayPlugin[]
      */
     private function createDisplayPlugins($plugins)
     {
-        $displayPlugins = array();
+        $displayPlugins = [];
         foreach ($plugins as $key => $plugin) {
             $displayPlugins[] = DisplayPlugin::createFromPluginAndIndex($plugin, $key + 1);
         }
@@ -86,12 +86,13 @@ class PluginColumnRenderer
     /**
      * @param  DisplayPlugin[] $plugins
      * @param  int             $columns
+     *
      * @return array
      */
     private function createPluginColumns($plugins, $columns)
     {
         $length = count($plugins);
-        $pluginColumns = array();
+        $pluginColumns = [];
 
         $pluginsPerColumn = ceil($length / $columns);
         // Build columns and prepare unshift plugin of each column
@@ -111,10 +112,10 @@ class PluginColumnRenderer
     private function printColumns($pluginColumns)
     {
         $columnCount = count($pluginColumns);
-        $rowCount    = count($pluginColumns[0]) -1;
+        $rowCount = count($pluginColumns[0]) -1;
 
         foreach (range(0, $rowCount) as $row) {
-            $currentRow = array();
+            $currentRow = [];
             foreach (range(0, $columnCount -1) as $column) {
                 if (isset($pluginColumns[$column][$row])) {
                     $currentRow[] = $pluginColumns[$column][$row];
@@ -138,7 +139,7 @@ class PluginColumnRenderer
             $spacer = '                   ';
         }
 
-        $columns = array();
+        $columns = [];
 
         foreach ($row as $plugin) {
             $mask = $this->getMaskForPlugin($plugin, $baseMask);
@@ -147,7 +148,7 @@ class PluginColumnRenderer
         }
 
         $this->ioService->write(implode($columns, $spacer));
-        $this->ioService->writeln("");
+        $this->ioService->writeln('');
     }
 
     /**
@@ -161,12 +162,12 @@ class PluginColumnRenderer
             return;
         }
 
-        $repos = array();
+        $repos = [];
         foreach ($plugins as $plugin) {
-            $repos[$plugin->repoType . '(' . $plugin->repository . ')'] = $this->getColorForPlugin($plugin);
+            $repos[$plugin->repoType.'('.$plugin->repository.')'] = $this->getColorForPlugin($plugin);
         }
 
-        $output = array();
+        $output = [];
         foreach ($repos as $name => $color) {
             $color = $color ?: 'white';
 
@@ -174,7 +175,7 @@ class PluginColumnRenderer
         }
 
         $this->ioService->writeln('Legend:');
-        $this->ioService->writeln(implode(', ', $output) . "\n");
+        $this->ioService->writeln(implode(', ', $output)."\n");
     }
 
     /**
@@ -182,6 +183,7 @@ class PluginColumnRenderer
      *
      * @param  DisplayPlugin $plugin
      * @param  string        $baseMask
+     *
      * @return string
      */
     private function getMaskForPlugin(DisplayPlugin $plugin, $baseMask)
@@ -201,17 +203,19 @@ class PluginColumnRenderer
 
     /**
      * @param  DisplayPlugin $plugin
+     *
      * @return string
      */
     private function formatPlugin(DisplayPlugin $plugin)
     {
-        return $this->formatModuleName($plugin) . '/' . $plugin->name;
+        return $this->formatModuleName($plugin).'/'.$plugin->name;
     }
 
     /**
      * Format the module name - in "small" mode, only the first char is shown (F/B/C)
      *
      * @param  DisplayPlugin $plugin
+     *
      * @return string
      */
     private function formatModuleName(DisplayPlugin $plugin)
@@ -227,6 +231,7 @@ class PluginColumnRenderer
      * Get the configured color for the given plugin's repository
      *
      * @param  DisplayPlugin $plugin
+     *
      * @return string
      */
     private function getColorForPlugin(DisplayPlugin $plugin)

@@ -11,7 +11,7 @@ class CurrentOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCurrentPath()
     {
-        $expectedPath = getcwd() . '/custom/plugins/' . self::PLUGIN_NAME . '/';
+        $expectedPath = getcwd().'/custom/plugins/'.self::PLUGIN_NAME.'/';
 
         $shopwareRootDetectorStub = $this->getMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')
@@ -26,7 +26,7 @@ class CurrentOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPathIfNotExecutedFromShopwareRootFolder()
     {
-        $expectedPath = getcwd() . '/' . self::PLUGIN_NAME . '/';
+        $expectedPath = getcwd().'/'.self::PLUGIN_NAME.'/';
 
         $shopwareRootDetectorStub = $this->getMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')

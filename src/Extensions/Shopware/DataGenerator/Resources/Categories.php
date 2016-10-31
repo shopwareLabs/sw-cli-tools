@@ -13,13 +13,15 @@ class Categories extends BaseResource
 
     /**
      * The array with the categories that are going to be created
+     *
      * @var
      */
-    public $categoriesFlat = array();
+    public $categoriesFlat = [];
 
     /**
      * The number of categories which have been created
      * Used in order to not create too many categories
+     *
      * @var
      */
     protected $categoriesSum;
@@ -34,6 +36,7 @@ class Categories extends BaseResource
      * @param int|null $parentCategory
      * @param int $depth
      * @param array|null $leftNeighbour
+     *
      * @return array
      */
     private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null)
@@ -58,38 +61,38 @@ class Categories extends BaseResource
         // Create the german language category on the first call
         if (!$parentCategory) {
             $id = 3;
-            $thisCategory = array(
-                "id" => 3,
-                "parent" => 1,
-                'path' => '',
-                "name" => 'Deutsch',
-                "level" => 1,
-                "position" => 0,
-                "left" => 2,
-                "right" => 887,
-                "children" => array()
-            );
+            $thisCategory = [
+                'id'       => 3,
+                'parent'   => 1,
+                'path'     => '',
+                'name'     => 'Deutsch',
+                'level'    => 1,
+                'position' => 0,
+                'left'     => 2,
+                'right'    => 887,
+                'children' => []
+            ];
         } else {
             if ($categoriesPerChild < 1) {
-                $id = $this->getUniqueId("finalCats");
+                $id = $this->getUniqueId('finalCats');
             } else {
-                $id = $this->getUniqueId("category");
+                $id = $this->getUniqueId('category');
             }
             $this->categoriesFlat[$id] = null;
 
             $path = $this->buildPath($parentCategory['id']);
             $path = '|'.implode('|', $path).'|';
 
-            $this->categoriesFlat[$id] = array(
-                "id" => $id,
-                "parent" => $parentCategory['id'],
-                'path' => $path,
-                "level" => ($depth + 1),
-                "left" => $left,
-                "right" => ($left + 1),
-                "position" => 0,
-                "children" => array()
-            );
+            $this->categoriesFlat[$id] = [
+                'id'       => $id,
+                'parent'   => $parentCategory['id'],
+                'path'     => $path,
+                'level'    => ($depth + 1),
+                'left'     => $left,
+                'right'    => ($left + 1),
+                'position' => 0,
+                'children' => []
+            ];
             $thisCategory = $this->categoriesFlat[$id];
         }
 
@@ -118,6 +121,7 @@ class Categories extends BaseResource
      * Builds path for the given category
      *
      * @param $id
+     *
      * @return array
      */
     private function buildPath($id)
@@ -140,7 +144,7 @@ class Categories extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUniqueId($type)
     {
@@ -157,7 +161,7 @@ class Categories extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -173,23 +177,23 @@ class Categories extends BaseResource
         $this->categoriesFlat[3] = null;
         $germanCategory = $this->buildNestedTree($this->config->getNumberCategories());
 
-        $thisCategory = array(
-            "id" => 1,
-            "parent" => 'NULL',
-            'path' => '',
-            "name" => 'Root',
-            "level" => 0,
-            "position" => 0,
-            "left" => 1,
-            "right" => $germanCategory['right'] + 1,
-            "children" => array($germanCategory)
-        );
+        $thisCategory = [
+            'id'       => 1,
+            'parent'   => 'NULL',
+            'path'     => '',
+            'name'     => 'Root',
+            'level'    => 0,
+            'position' => 0,
+            'left'     => 1,
+            'right'    => $germanCategory['right'] + 1,
+            'children' => [$germanCategory]
+        ];
         $this->categoriesFlat[1] = $thisCategory;
 
         $categoryUrls = $this->writerManager->createWriter('categories', 'csv');
 
-        $categoryURLs = array();
-        $values = array();
+        $categoryURLs = [];
+        $values = [];
         foreach ($this->categoriesFlat as $id => $category) {
             $this->advanceProgressBar();
             $categoryURLs[] = "/cat/index/sCategory/{$category['id']}";
@@ -199,7 +203,7 @@ class Categories extends BaseResource
         }
 
         $categoryValues = sprintf(
-            "INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;",
+            'INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;',
             implode(",\n             ", $values)
         );
 

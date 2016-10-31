@@ -6,6 +6,7 @@ class Config
 {
     /**
      * Default values
+     *
      * @var
      */
     protected $numberArticles = 0;
@@ -21,6 +22,7 @@ class Config
 
     /**
      * Path of the image directory
+     *
      * @var
      */
     protected $imageDir;
@@ -37,12 +39,14 @@ class Config
 
     /**
      * Number of variants each configurator article will have at least
+     *
      * @var int
      */
     protected $minVariants;
 
     /**
      * Number of variants each configurator article will have at most
+     *
      * @var
      */
     protected $maxVariants;
@@ -57,12 +61,14 @@ class Config
     /**
      * Seed used to init the random generator
      * Using a default seed here, so usually you will get reproducible random numbers
+     *
      * @var int
      */
     protected $seed;
 
     /**
      * Number of values per insert
+     *
      * @var int
      */
     protected $chunkSize;
@@ -176,7 +182,7 @@ class Config
             return;
         }
         if (is_string($thumbnailSizes)) {
-            $thumbnailSizes = explode(",", $thumbnailSizes);
+            $thumbnailSizes = explode(',', $thumbnailSizes);
         }
         $this->thumbnailSizes = $thumbnailSizes;
     }
@@ -255,7 +261,7 @@ class Config
      */
     public function setImageDir($imageDir)
     {
-        $dir = $imageDir."/"."thumbnail";
+        $dir = $imageDir.'/'.'thumbnail';
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }

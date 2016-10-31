@@ -34,9 +34,9 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
     public function getPath()
     {
         if ($this->rootDetector->isRoot($this->getCwd())) {
-            return $this->getCwd() . '/' . self::CURRENT_PLUGIN_DIR . '/' . $this->name . '/';
+            return $this->getCwd().'/'.self::CURRENT_PLUGIN_DIR.'/'.$this->name.'/';
         }
-        return $this->getCwd() . '/' . $this->name . '/';
+        return $this->getCwd().'/'.$this->name.'/';
     }
 
     /**

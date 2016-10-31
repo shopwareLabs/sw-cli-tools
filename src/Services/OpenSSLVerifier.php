@@ -13,7 +13,7 @@ class OpenSSLVerifier
     {
         if (!is_readable($publicKey)) {
             throw new \InvalidArgumentException(sprintf(
-                "Public keyfile (%s) not readable",
+                'Public keyfile (%s) not readable',
                 $publicKey
             ));
         }
@@ -32,8 +32,10 @@ class OpenSSLVerifier
     /**
      * @param string $message
      * @param string $signature
-     * @return bool
+     *
      * @throws \RuntimeException
+     *
+     * @return bool
      */
     public function isValid($message, $signature)
     {
@@ -60,7 +62,5 @@ class OpenSSLVerifier
             while ($errors[] = openssl_error_string());
             throw new \RuntimeException(sprintf("Error during private key read: \n%s", implode("\n", $errors)));
         }
-
-
     }
 }

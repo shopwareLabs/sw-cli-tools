@@ -12,7 +12,6 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * Class IoService
- * @package ShopwareCli\Services
  */
 class IoService
 {
@@ -78,6 +77,7 @@ class IoService
 
     /**
      * Return true if output is ver verbose (or debug)
+     *
      * @return bool
      */
     public function isVeryVerbose()
@@ -120,6 +120,7 @@ class IoService
      *
      * @param  string|Question $question
      * @param  null            $default
+     *
      * @return string
      */
     public function ask($question, $default = null)
@@ -134,6 +135,7 @@ class IoService
      *
      * @param array|null $headers
      * @param array|null $results
+     *
      * @return Table
      */
     public function createTable($headers = null, $results = null)
@@ -156,6 +158,7 @@ class IoService
      *
      * @param  string|Question $question
      * @param  null            $default
+     *
      * @return string
      */
     public function askConfirmation($question, $default = null)
@@ -194,6 +197,7 @@ class IoService
 
     /**
      * @param  int         $max Maximum steps (0 if unknown)
+     *
      * @return ProgressBar
      */
     public function createProgressBar($max = 0)
@@ -211,7 +215,7 @@ class IoService
         }
 
         // http://en.wikipedia.org/wiki/ANSI_escape_code
-        $this->output->write(chr(27) . "[2J"); // ED – Erase Display
-        $this->output->write(chr(27) . "[1;1H"); // CUP – Set Cursor Position to upper left
+        $this->output->write(chr(27).'[2J'); // ED – Erase Display
+        $this->output->write(chr(27).'[1;1H'); // CUP – Set Cursor Position to upper left
     }
 }

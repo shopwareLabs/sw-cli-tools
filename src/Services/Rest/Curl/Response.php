@@ -10,7 +10,6 @@ use ShopwareCli\Services\Rest\ResponseInterface;
  * as well as the decoded result object
  *
  * Class Response
- * @package ShopwareCli\Services\Rest\Curl
  */
 class Response implements ResponseInterface
 {

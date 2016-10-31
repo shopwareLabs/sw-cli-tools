@@ -4,7 +4,7 @@ use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\Shopwa
 
 class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_ROOT = __DIR__ . '/testroot';
+    const TEST_ROOT = __DIR__.'/testroot';
 
     /**
      * @var ShopwareRootDetector
@@ -20,11 +20,11 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
-            rmdir(self::TEST_ROOT . $directory);
+            rmdir(self::TEST_ROOT.$directory);
         }
 
         foreach (ShopwareRootDetector::FILES as $file) {
-            unlink(self::TEST_ROOT . $file);
+            unlink(self::TEST_ROOT.$file);
         }
         rmdir(self::TEST_ROOT);
     }
@@ -45,11 +45,11 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
     {
         mkdir(self::TEST_ROOT);
         foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
-            mkdir(self::TEST_ROOT . $directory);
+            mkdir(self::TEST_ROOT.$directory);
         }
 
         foreach (ShopwareRootDetector::FILES as $file) {
-            file_put_contents(self::TEST_ROOT . $file, 'test');
+            file_put_contents(self::TEST_ROOT.$file, 'test');
         }
     }
 }

@@ -24,12 +24,13 @@ class ResourceLoader
 
     /**
      * @param $type
+     *
      * @return BaseResource
      */
     public function getResource($type)
     {
         if (!isset($this->resources[$type])) {
-            $className = 'Shopware\DataGenerator\Resources\\' . ucfirst($type);
+            $className = 'Shopware\DataGenerator\Resources\\'.ucfirst($type);
             $this->resources[$type] = new $className(
                 $this->container->get('generator_config'),
                 $this->container->get('random_data_provider'),

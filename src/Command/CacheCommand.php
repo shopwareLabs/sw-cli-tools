@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Clear the *internal* cache of the CLI tools (used for e.g. plugin repos)
  *
  * Class CacheCommand
- * @package ShopwareCli\Command
  */
 class CacheCommand extends BaseCommand
 {

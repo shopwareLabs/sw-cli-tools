@@ -6,10 +6,7 @@ use ShopwareCli\Config;
 use ShopwareCli\Services\PathProvider\PathProvider;
 
 /**
- *
- *
  * Class GitIdentityEnvironment
- * @package ShopwareCli\Services
  */
 class GitIdentityEnvironment
 {
@@ -42,8 +39,9 @@ EOF;
      * Will return the path to the custom SSH key. Will return null if no
      * custom key is configured
      *
-     * @return null|string
      * @throws \RuntimeException
+     *
+     * @return null|string
      */
     private function getCustomKey()
     {
@@ -56,14 +54,14 @@ EOF;
             return $keyPath;
         }
 
-        $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
+        $packageKey = $this->pathProvider->getCliToolPath().'/assets/ssh.key';
 
         if (!file_exists($packageKey)) {
             return false;
         }
 
-        $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
-        $sshKeyFile = $dir . $this->keyFileName;
+        $dir = $this->pathProvider->getRuntimeDir().'/sw-cli-tools/';
+        $sshKeyFile = $dir.$this->keyFileName;
 
         if (file_exists($sshKeyFile) || $this->writeSshKey($dir, $packageKey)) {
             return $sshKeyFile;
@@ -82,7 +80,7 @@ EOF;
             mkdir($dir, 0700, true);
         }
 
-        $filename = $dir . $this->keyFileName;
+        $filename = $dir.$this->keyFileName;
         file_put_contents($filename, file_get_contents($sshKeyFile));
         chmod($filename, 0700);
 
@@ -92,14 +90,15 @@ EOF;
     /**
      * Return path of the git wrapper file. If it doesn't exist, it will be created
      *
-     * @return string
      * @throws \RuntimeException
+     *
+     * @return string
      */
     private function getGitWrapper()
     {
-        $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
+        $dir = $this->pathProvider->getRuntimeDir().'/sw-cli-tools/';
 
-        $wrapperFile = $dir . $this->wrapperFileName;
+        $wrapperFile = $dir.$this->wrapperFileName;
 
         if (file_exists($wrapperFile) || $this->writeGitSshWrapper($dir)) {
             return $wrapperFile;
@@ -112,6 +111,7 @@ EOF;
      * Create git wrapper file
      *
      * @param  string $dir
+     *
      * @return bool
      */
     private function writeGitSshWrapper($dir)
@@ -120,7 +120,7 @@ EOF;
             mkdir($dir, 0700, true);
         }
 
-        $filename = $dir . $this->wrapperFileName;
+        $filename = $dir.$this->wrapperFileName;
         file_put_contents($filename, $this->sshAliasTemplate);
         chmod($filename, 0700);
 
@@ -139,9 +139,9 @@ EOF;
             return null;
         }
 
-        return array(
+        return [
             'SSH_KEYFILE' => $this->getCustomKey(),
-            'GIT_SSH' => $this->getGitWrapper()
-        );
+            'GIT_SSH'     => $this->getGitWrapper()
+        ];
     }
 }

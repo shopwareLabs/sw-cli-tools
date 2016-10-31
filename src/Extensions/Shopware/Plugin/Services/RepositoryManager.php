@@ -10,7 +10,6 @@ use Shopware\Plugin\RepositoryAwareExtension;
  * Collect default and plugin repositories
  *
  * Class RepositoryManager
- * @package ShopwareCli\Application
  */
 class RepositoryManager
 {
@@ -49,7 +48,7 @@ class RepositoryManager
      */
     private function collectPluginRepositories()
     {
-        $repositories = array();
+        $repositories = [];
 
         foreach ($this->extensionManager->getExtensions() as $plugin) {
             if ($plugin instanceof RepositoryAwareExtension) {

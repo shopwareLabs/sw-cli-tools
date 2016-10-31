@@ -8,7 +8,6 @@ use Shopware\PluginCreator\Struct\Configuration;
  * The name generator generates useful names for controller, variables and views depending on the configuration object
  *
  * Class NameGenerator
- * @package Shopware\PluginCreator\Services
  */
 class NameGenerator
 {
@@ -54,7 +53,7 @@ class NameGenerator
         $this->under_score_js = strtolower(implode('_', $parts));
         $this->dash_js = strtolower(implode('-', $parts));
         $this->developerPrefix = $parts[0];
-        $this->backendWidgetController = $this->configuration->name . 'Widget';
+        $this->backendWidgetController = $this->configuration->name.'Widget';
     }
 
     /**
@@ -93,6 +92,7 @@ class NameGenerator
      * Splits a given string by upper case characters
      *
      * @param $input
+     *
      * @return array
      */
     public function upperToArray($input)
