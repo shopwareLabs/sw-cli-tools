@@ -20,6 +20,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class InstallCommand extends BaseCommand
 {
+    const NEW_SYSTEM = 'newSystem';
+
     /**
      * @var string
      */
@@ -71,6 +73,12 @@ class InstallCommand extends BaseCommand
                 'Checkout into current directory. No shopware checks, no subdirectory creation'
             )
             ->addOption(
+                'newSystem',
+                null,
+                InputOption::VALUE_NONE,
+                'Checkout a plugin with the new plugin structure'
+            )
+            ->addOption(
                 'branch',
                 '-b',
                 InputOption::VALUE_OPTIONAL,
@@ -89,6 +97,7 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
         $checkout = $input->getOption('checkout');
+        $newSystem = $input->getOption('newSystem');
 
         if (!$shopwarePath) {
             $shopwarePath = null;
@@ -105,18 +114,18 @@ class InstallCommand extends BaseCommand
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
 
-        $params = array('checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp);
+        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp, 'newSystem' => $newSystem];
 
         if (!empty($names)) {
             if (!$checkout) {
                 $params['activate'] = $this->askActivatePluginQuestion();
             }
-            $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
+            $interactionManager->searchAndOperate($names, [$this, 'doInstall'], $params);
 
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doInstall'), $params);
+        $interactionManager->operationLoop([$this, 'doInstall'], $params);
     }
 
     /**
@@ -163,9 +172,21 @@ class InstallCommand extends BaseCommand
         if (!isset($params['activate'])) {
             $params['activate'] = $this->askActivatePluginQuestion();
         }
-        $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
 
-        $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch'], $params['useHttp']);
+        if ($params['newSystem']) {
+            $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/custom/plugins/');
+        } else {
+            $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
+        }
+
+        $this->getInstallService()->install(
+            $plugin,
+            $this->getShopwarePath(),
+            $params['activate'],
+            $params['branch'],
+            $params['useHttp'],
+            $params['newSystem']
+        );
     }
 
     /**
@@ -179,6 +200,7 @@ class InstallCommand extends BaseCommand
 
         $destination = strtolower($plugin->module . '_' . $plugin->name);
         $path = realpath('.') . '/' . $destination;
+        $this->container->get('io_service')->writeln($path);
         $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
 
         $repo        = escapeshellarg($url);

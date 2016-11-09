@@ -44,11 +44,12 @@ class Checkout
 
     /**
      * @param Plugin $plugin
-     * @param string $path
-     * @param string $branch
-     * @param bool   $useHttp
+     * @param $path
+     * @param null $branch
+     * @param bool $useHttp
+     * @param bool $newSystem
      */
-    public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
+    public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false, $newSystem = false)
     {
         if ($useHttp) {
             $cloneUrl = $plugin->cloneUrlHttp;
@@ -56,7 +57,12 @@ class Checkout
             $cloneUrl = $plugin->cloneUrlSsh;
         }
         $pluginName = $plugin->name;
-        $destPath = $plugin->module . "/" . $plugin->name;
+        if ($newSystem) {
+            $destPath = $plugin->name;
+        } else {
+            $destPath = $plugin->module . "/" . $plugin->name;
+        }
+
         $absPath = $path . '/' . $destPath;
 
         if (is_dir($absPath)) {

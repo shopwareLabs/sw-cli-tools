@@ -35,16 +35,33 @@ class Install
 
     /**
      * @param Plugin $plugin
-     * @param string $shopwarePath
-     * @param bool   $inputActivate
+     * @param $shopwarePath
+     * @param bool $inputActivate
      * @param string $branch
-     * @param bool   $useHttp
+     * @param bool $useHttp
+     * @param bool $newSystem
      */
-    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
+    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false, $newSystem = false)
     {
         $pluginName = $plugin->name;
 
-        $this->checkout->checkout($plugin, $shopwarePath . '/engine/Shopware/Plugins/Local/', $branch, $useHttp);
+        if ($newSystem) {
+            $this->checkout->checkout(
+                $plugin,
+                $shopwarePath . '/custom/plugins/',
+                $branch,
+                $useHttp,
+                $newSystem
+            );
+        } else {
+            $this->checkout->checkout(
+                $plugin,
+                $shopwarePath . '/engine/Shopware/Plugins/Local/',
+                $branch,
+                $useHttp,
+                $newSystem
+            );
+        }
 
         if ($inputActivate) {
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
