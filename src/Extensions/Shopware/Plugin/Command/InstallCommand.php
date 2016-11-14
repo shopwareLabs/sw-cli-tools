@@ -105,18 +105,18 @@ class InstallCommand extends BaseCommand
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
 
-        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp];
+        $params = array('checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp);
 
         if (!empty($names)) {
             if (!$checkout) {
                 $params['activate'] = $this->askActivatePluginQuestion();
             }
-            $interactionManager->searchAndOperate($names, [$this, 'doInstall'], $params);
+            $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
 
             return;
         }
 
-        $interactionManager->operationLoop([$this, 'doInstall'], $params);
+        $interactionManager->operationLoop(array($this, 'doInstall'), $params);
     }
 
     /**
@@ -186,7 +186,6 @@ class InstallCommand extends BaseCommand
 
         $destination = strtolower($plugin->module . '_' . $plugin->name);
         $path = realpath('.') . '/' . $destination;
-        $this->container->get('io_service')->writeln($path);
         $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
 
         $repo        = escapeshellarg($url);

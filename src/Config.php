@@ -36,7 +36,7 @@ class Config implements \ArrayAccess
      */
     private function getMergedConfigs($paths)
     {
-        $content = [];
+        $content = array();
 
         foreach ($paths as $path) {
             $content[] = file_get_contents($path);
@@ -53,7 +53,7 @@ class Config implements \ArrayAccess
         return $this->configArray['repositories'];
     }
 
-    /**<
+    /**
      * @param mixed $offset
      *
      * @return bool

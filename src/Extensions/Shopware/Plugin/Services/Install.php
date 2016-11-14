@@ -35,7 +35,7 @@ class Install
 
     /**
      * @param Plugin $plugin
-     * @param $shopwarePath
+     * @param string $shopwarePath
      * @param bool $inputActivate
      * @param string $branch
      * @param bool $useHttp
@@ -64,23 +64,23 @@ class Install
     }
 
     /**
-     * @param $plugin
-     * @param $shopwarePath
+     * @param Plugin $plugin
+     * @param string $shopwarePath
      */
-    public function checkForNewStructure($plugin, $shopwarePath)
+    private function checkForNewStructure(Plugin $plugin, $shopwarePath)
     {
         $path = $shopwarePath . '/engine/Shopware/Plugins/Local/';
         $pluginName = $plugin->name;
 
-        $destPath = $plugin->module . "/" . $pluginName;
+        $destPath = $plugin->module . '/' . $pluginName;
 
         $absPath = $path . '/' . $destPath;
 
-        if (file_exists($absPath . "/Bootstrap.php")) {
+        if (file_exists($absPath . '/Bootstrap.php')) {
             return;
         }
 
-        rename($absPath, $shopwarePath . "/custom/plugins/" . $pluginName);
+        rename($absPath, $shopwarePath . '/custom/plugins/' . $pluginName);
     }
 
     /**

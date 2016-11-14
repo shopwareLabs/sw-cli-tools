@@ -44,8 +44,8 @@ class Checkout
 
     /**
      * @param Plugin $plugin
-     * @param $path
-     * @param null $branch
+     * @param string $path
+     * @param string $branch
      * @param bool $useHttp
      */
     public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
