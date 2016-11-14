@@ -20,8 +20,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class InstallCommand extends BaseCommand
 {
-    const NEW_SYSTEM = 'newSystem';
-
     /**
      * @var string
      */
@@ -73,12 +71,6 @@ class InstallCommand extends BaseCommand
                 'Checkout into current directory. No shopware checks, no subdirectory creation'
             )
             ->addOption(
-                'newSystem',
-                null,
-                InputOption::VALUE_NONE,
-                'Checkout a plugin with the new plugin structure'
-            )
-            ->addOption(
                 'branch',
                 '-b',
                 InputOption::VALUE_OPTIONAL,
@@ -97,7 +89,6 @@ class InstallCommand extends BaseCommand
         $branch = $input->getOption('branch');
         $shopwarePath = $input->getOption('shopware-root');
         $checkout = $input->getOption('checkout');
-        $newSystem = $input->getOption('newSystem');
 
         if (!$shopwarePath) {
             $shopwarePath = null;
@@ -114,7 +105,7 @@ class InstallCommand extends BaseCommand
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
 
-        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp, 'newSystem' => $newSystem];
+        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp];
 
         if (!empty($names)) {
             if (!$checkout) {
@@ -173,19 +164,14 @@ class InstallCommand extends BaseCommand
             $params['activate'] = $this->askActivatePluginQuestion();
         }
 
-        if ($params['newSystem']) {
-            $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/custom/plugins/');
-        } else {
-            $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
-        }
+        $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
 
         $this->getInstallService()->install(
             $plugin,
             $this->getShopwarePath(),
             $params['activate'],
             $params['branch'],
-            $params['useHttp'],
-            $params['newSystem']
+            $params['useHttp']
         );
     }
 

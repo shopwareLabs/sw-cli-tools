@@ -39,29 +39,19 @@ class Install
      * @param bool $inputActivate
      * @param string $branch
      * @param bool $useHttp
-     * @param bool $newSystem
      */
-    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false, $newSystem = false)
+    public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
         $pluginName = $plugin->name;
 
-        if ($newSystem) {
-            $this->checkout->checkout(
-                $plugin,
-                $shopwarePath . '/custom/plugins/',
-                $branch,
-                $useHttp,
-                $newSystem
-            );
-        } else {
-            $this->checkout->checkout(
-                $plugin,
-                $shopwarePath . '/engine/Shopware/Plugins/Local/',
-                $branch,
-                $useHttp,
-                $newSystem
-            );
-        }
+        $this->checkout->checkout(
+            $plugin,
+            $shopwarePath . '/engine/Shopware/Plugins/Local/',
+            $branch,
+            $useHttp
+        );
+
+        $this->checkForNewStructure($plugin, $shopwarePath);
 
         if ($inputActivate) {
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
@@ -71,6 +61,26 @@ class Install
         $this->addPluginVcsMapping($plugin, $shopwarePath);
 
         return;
+    }
+
+    /**
+     * @param $plugin
+     * @param $shopwarePath
+     */
+    public function checkForNewStructure($plugin, $shopwarePath)
+    {
+        $path = $shopwarePath . '/engine/Shopware/Plugins/Local/';
+        $pluginName = $plugin->name;
+
+        $destPath = $plugin->module . "/" . $pluginName;
+
+        $absPath = $path . '/' . $destPath;
+
+        if (file_exists($absPath . "/Bootstrap.php")) {
+            return;
+        }
+
+        rename($absPath, $shopwarePath . "/custom/plugins/" . $pluginName);
     }
 
     /**
