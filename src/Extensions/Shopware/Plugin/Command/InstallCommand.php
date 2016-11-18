@@ -163,9 +163,16 @@ class InstallCommand extends BaseCommand
         if (!isset($params['activate'])) {
             $params['activate'] = $this->askActivatePluginQuestion();
         }
+
         $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
 
-        $this->getInstallService()->install($plugin, $this->getShopwarePath(), $params['activate'], $params['branch'], $params['useHttp']);
+        $this->getInstallService()->install(
+            $plugin,
+            $this->getShopwarePath(),
+            $params['activate'],
+            $params['branch'],
+            $params['useHttp']
+        );
     }
 
     /**

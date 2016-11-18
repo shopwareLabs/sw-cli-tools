@@ -46,7 +46,7 @@ class Checkout
      * @param Plugin $plugin
      * @param string $path
      * @param string $branch
-     * @param bool   $useHttp
+     * @param bool $useHttp
      */
     public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
     {
@@ -57,6 +57,7 @@ class Checkout
         }
         $pluginName = $plugin->name;
         $destPath = $plugin->module . "/" . $plugin->name;
+
         $absPath = $path . '/' . $destPath;
 
         if (is_dir($absPath)) {
