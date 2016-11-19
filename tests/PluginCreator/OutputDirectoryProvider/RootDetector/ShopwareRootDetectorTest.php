@@ -19,11 +19,11 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
+        foreach ($this->getShopwareDirectories() as $directory) {
             rmdir(self::TEST_ROOT . $directory);
         }
 
-        foreach (ShopwareRootDetector::FILES as $file) {
+        foreach ($this->getShopwareFiles() as $file) {
             unlink(self::TEST_ROOT . $file);
         }
         rmdir(self::TEST_ROOT);
@@ -44,12 +44,36 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
     private function createRootFolder()
     {
         mkdir(self::TEST_ROOT);
-        foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
+        foreach ($this->getShopwareDirectories() as $directory) {
             mkdir(self::TEST_ROOT . $directory);
         }
 
-        foreach (ShopwareRootDetector::FILES as $file) {
+        foreach ($this->getShopwareFiles() as $file) {
             file_put_contents(self::TEST_ROOT . $file, 'test');
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getShopwareDirectories()
+    {
+        return [
+            '/engine',
+            '/var',
+            '/bin',
+            '/vendor',
+            '/files'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getShopwareFiles()
+    {
+        return [
+            '/shopware.php'
+        ];
     }
 }
