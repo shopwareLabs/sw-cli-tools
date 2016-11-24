@@ -143,6 +143,9 @@ Requires \'local-infile=1\' in your MySQL installation.
         $this->askConfigOptions($input, 'articles');
         $this->askConfigOptions($input, 'categories');
         $this->askConfigOptions($input, 'categoriesPerArticle', 'categories per article');
+        $this->askConfigOptions($input, 'articleFilterGroups');
+        $this->askConfigOptions($input, 'articleFilterOptions');
+        $this->askConfigOptions($input, 'articleFilterValues');
         $this->askConfigOptions($input, 'orders');
         $this->askConfigOptions($input, 'newsletter');
         $this->askConfigOptions($input, 'customers');
