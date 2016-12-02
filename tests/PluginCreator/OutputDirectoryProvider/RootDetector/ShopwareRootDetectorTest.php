@@ -4,7 +4,10 @@ use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\Shopwa
 
 class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
 {
-    const TEST_ROOT = __DIR__ . '/testroot';
+    private static function getTestRoot()
+    {
+        return __DIR__ . '/testroot';
+    }
 
     /**
      * @var ShopwareRootDetector
@@ -20,18 +23,18 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
-            rmdir(self::TEST_ROOT . $directory);
+            rmdir(self::getTestRoot() . $directory);
         }
 
         foreach (ShopwareRootDetector::FILES as $file) {
-            unlink(self::TEST_ROOT . $file);
+            unlink(self::getTestRoot() . $file);
         }
-        rmdir(self::TEST_ROOT);
+        rmdir(self::getTestRoot());
     }
 
     public function testPathIsShopwareRoot()
     {
-        $return = $this->SUT->isRoot(self::TEST_ROOT);
+        $return = $this->SUT->isRoot(self::getTestRoot());
         $this->assertTrue($return);
     }
 
@@ -43,13 +46,13 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
 
     private function createRootFolder()
     {
-        mkdir(self::TEST_ROOT);
+        mkdir(self::getTestRoot());
         foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
-            mkdir(self::TEST_ROOT . $directory);
+            mkdir(self::getTestRoot() . $directory);
         }
 
         foreach (ShopwareRootDetector::FILES as $file) {
-            file_put_contents(self::TEST_ROOT . $file, 'test');
+            file_put_contents(self::getTestRoot() . $file, 'test');
         }
     }
 }
