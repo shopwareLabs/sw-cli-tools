@@ -22,11 +22,11 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
+        foreach (ShopwareRootDetector::getDirectories() as $directory) {
             rmdir(self::getTestRoot() . $directory);
         }
 
-        foreach (ShopwareRootDetector::FILES as $file) {
+        foreach (ShopwareRootDetector::getFiles() as $file) {
             unlink(self::getTestRoot() . $file);
         }
         rmdir(self::getTestRoot());
@@ -47,11 +47,11 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
     private function createRootFolder()
     {
         mkdir(self::getTestRoot());
-        foreach (ShopwareRootDetector::DIRECTORIES as $directory) {
+        foreach (ShopwareRootDetector::getDirectories() as $directory) {
             mkdir(self::getTestRoot() . $directory);
         }
 
-        foreach (ShopwareRootDetector::FILES as $file) {
+        foreach (ShopwareRootDetector::getFiles() as $file) {
             file_put_contents(self::getTestRoot() . $file, 'test');
         }
     }

@@ -7,7 +7,7 @@ class ShopwareRootDetector implements RootDetectorInterface
     /**
      * @return array
      */
-    private static function getDirectories()
+    public static function getDirectories()
     {
         return [
             '/engine',
@@ -21,7 +21,7 @@ class ShopwareRootDetector implements RootDetectorInterface
     /**
      * @return array
      */
-    private static function getFiles()
+    public static function getFiles()
     {
         return [
             '/shopware.php'
