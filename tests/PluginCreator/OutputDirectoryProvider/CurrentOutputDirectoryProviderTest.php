@@ -3,7 +3,6 @@
 namespace ShopwareCli\tests\PluginCreator\OutputDirectoryProvider;
 
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
-use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 
 class CurrentOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +12,7 @@ class CurrentOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPath = getcwd() . '/custom/plugins/' . self::PLUGIN_NAME . '/';
 
-        $shopwareRootDetectorStub = $this->getMock(ShopwareRootDetector::class);
+        $shopwareRootDetectorStub = $this->getMock('Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector');
         $shopwareRootDetectorStub->method('isRoot')
             ->willReturn(true);
 
@@ -28,7 +27,7 @@ class CurrentOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
     {
         $expectedPath = getcwd() . '/' . self::PLUGIN_NAME . '/';
 
-        $shopwareRootDetectorStub = $this->getMock(ShopwareRootDetector::class);
+        $shopwareRootDetectorStub = $this->getMock('Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector');
         $shopwareRootDetectorStub->method('isRoot')
             ->willReturn(false);
 
