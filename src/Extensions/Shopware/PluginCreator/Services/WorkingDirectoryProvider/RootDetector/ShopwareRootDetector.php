@@ -4,17 +4,29 @@ namespace Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector;
 
 class ShopwareRootDetector implements RootDetectorInterface
 {
-    const DIRECTORIES = [
-        '/engine',
-        '/var',
-        '/bin',
-        '/vendor',
-        '/files'
-    ];
+    /**
+     * @return array
+     */
+    private static function getDirectories()
+    {
+        return [
+            '/engine',
+            '/var',
+            '/bin',
+            '/vendor',
+            '/files'
+        ];
+    }
 
-    const FILES = [
-        '/shopware.php'
-    ];
+    /**
+     * @return array
+     */
+    private static function getFiles()
+    {
+        return [
+            '/shopware.php'
+        ];
+    }
 
     /**
      * @param string $path
@@ -25,6 +37,7 @@ class ShopwareRootDetector implements RootDetectorInterface
         if ($this->validateDirectories($path) && $this->validateFiles($path)) {
             return true;
         }
+
         return false;
     }
 
@@ -34,11 +47,12 @@ class ShopwareRootDetector implements RootDetectorInterface
      */
     private function validateDirectories($path)
     {
-        foreach (self::DIRECTORIES as $directory) {
+        foreach (self::getDirectories() as $directory) {
             if (!is_dir($path . $directory)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -48,11 +62,12 @@ class ShopwareRootDetector implements RootDetectorInterface
      */
     private function validateFiles($path)
     {
-        foreach (self::FILES as $file) {
+        foreach (self::getFiles() as $file) {
             if (!file_exists($path . $file)) {
                 return false;
             }
         }
+
         return true;
     }
 }
