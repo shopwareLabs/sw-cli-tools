@@ -42,7 +42,7 @@
     "bin": ["bin/sw"],
     "config": {
         "platform": {
-            "php": "5.4"
+            "php": "5.5"
         }
     },
     "extra": {
