@@ -39,13 +39,13 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
-        $expectedOutput = "ls: cannot access '/no-such-file': No such file or directory\n";
+        $expectedOutput = "No such file or directory\n";
         try {
             $executor->execute('LC_ALL=C ls /no-such-file');
         } catch (\Exception $e) {
             $this->assertEquals(2, $e->getCode());
             $this->assertContains($expectedOutput, $e->getMessage());
-            $this->assertEquals($expectedOutput, $output->fetch());
+            $this->assertContains($expectedOutput, $output->fetch());
 
             return;
         }
@@ -58,12 +58,12 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
-        $expectedOutput = "ls: cannot access '/no-such-file': No such file or directory\n";
+        $expectedOutput = "No such file or directory\n";
 
         $exitCode = $executor->execute('LC_ALL=C ls /no-such-file', null, true);
 
         $this->assertEquals(2, $exitCode);
-        $this->assertEquals($expectedOutput, $output->fetch());
+        $this->assertContains($expectedOutput, $output->fetch());
     }
 
     /**
