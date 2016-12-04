@@ -60,7 +60,5 @@ class OpenSSLVerifier
             while ($errors[] = openssl_error_string());
             throw new \RuntimeException(sprintf("Error during private key read: \n%s", implode("\n", $errors)));
         }
-
-
     }
 }

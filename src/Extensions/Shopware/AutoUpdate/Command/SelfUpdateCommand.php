@@ -65,7 +65,7 @@ class SelfUpdateCommand extends BaseCommand
     protected function printException(OutputInterface $output, \Exception $exception)
     {
         do {
-            $output->writeln(sprintf('(%d) %s in %s:%d:', $exception->getCode(), $exception->getMessage(),            $exception->getFile(), $exception->getLine()));
+            $output->writeln(sprintf('(%d) %s in %s:%d:', $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine()));
             $trace = $exception->getTraceAsString();
             $trace = preg_replace('/^/m', '    ', $trace);
             $trace = preg_replace("/(\r?\n)/s", PHP_EOL, $trace);
