@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "ext-curl": "*",
         "symfony/console": "~2.8",
         "symfony/config": "~2.8",
@@ -22,7 +22,7 @@
     "require-dev": {
         "ext-phar": "*",
         "phpunit/phpunit": "@stable",
-        "fabpot/php-cs-fixer": "^1.10"
+        "friendsofphp/php-cs-fixer": "^2.0"
     },
     "scripts": {
         "post-install-cmd": "ln -sf ../../hooks/pre-commit .git/hooks/pre-commit",
