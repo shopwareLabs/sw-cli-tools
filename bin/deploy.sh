@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Decrypt Secrets
+openssl aes-256-cbc -K $encrypted_22aba2995326_key -iv $encrypted_22aba2995326_iv -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+
 # Unpack secrets
 tar xvf .travis/secrets.tar -C .travis
 
