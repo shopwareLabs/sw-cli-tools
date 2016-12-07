@@ -10,7 +10,7 @@ class Customers extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
+    protected $tables = [
         "s_user",
         "s_user_attributes",
         "s_user_addresses",
@@ -18,13 +18,13 @@ class Customers extends BaseResource
         "s_user_billingaddress_attributes",
         "s_user_shippingaddress",
         "s_user_shippingaddress_attributes"
-    );
+    ];
 
     /**
      * Stores the used ids for SQL inserts
      * @var array
      */
-    protected $ids = array();
+    protected $ids = [];
 
     /**
      * @var LoadDataInfile

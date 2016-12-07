@@ -26,7 +26,7 @@ class File implements CacheInterface
         $file = $this->path . $key;
         $success = file_put_contents($file, $data);
 
-        $this->info[$key] = array('valid' => $valid);
+        $this->info[$key] = ['valid' => $valid];
         $this->writeTable($key, $valid);
 
         return $success !== false;
@@ -91,7 +91,7 @@ class File implements CacheInterface
         }
 
         if (!$content) {
-            $content = array();
+            $content = [];
         } else {
             $content = json_decode($content, true);
         }

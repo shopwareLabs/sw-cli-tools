@@ -25,7 +25,7 @@ class ConfigFileCollector
      */
     public function collectConfigFiles()
     {
-        $files = array();
+        $files = [];
 
         // Load user file first. Its config values cannot be overwritten
         $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
@@ -48,7 +48,7 @@ class ConfigFileCollector
      */
     private function iterateVendors($extensionPath)
     {
-        $files = array();
+        $files = [];
 
         if (!is_dir($extensionPath)) {
             return [];
@@ -71,7 +71,7 @@ class ConfigFileCollector
      */
     private function iterateExtensions($vendorPath)
     {
-        $files = array();
+        $files = [];
 
         $iter = new DirectoryFilterIterator(new \DirectoryIterator($vendorPath));
         foreach ($iter as $extensionFileInfo) {

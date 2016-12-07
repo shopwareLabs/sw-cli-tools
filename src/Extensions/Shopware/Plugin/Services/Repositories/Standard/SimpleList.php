@@ -45,10 +45,10 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
     {
         $config = $this->container->get('config');
         if (!isset($config['repositories']['SimpleList'])) {
-            return array();
+            return [];
         }
 
-        $plugins = array();
+        $plugins = [];
         foreach ($config['repositories']['SimpleList']['repositories'] as $repositoryName => $repository) {
             foreach ($repository['plugins'] as $name => $cloneUrls) {
                 $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['http'], $name);

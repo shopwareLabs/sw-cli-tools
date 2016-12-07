@@ -15,12 +15,12 @@ abstract class BaseResource
      * Stores the used ids for SQL inserts
      * @var array
      */
-    protected $ids = array();
+    protected $ids = [];
 
     /**
      * Tables a resource owns.
      */
-    protected $tables = array();
+    protected $tables = [];
 
     /**
      * @var Config
@@ -101,10 +101,10 @@ abstract class BaseResource
      */
     protected function prepareTables()
     {
-        $sql = array(
+        $sql = [
             "SET foreign_key_checks=0;",
             "SET unique_checks=0;"
-        );
+        ];
 
         foreach ($this->tables as $table) {
             $sql[] = "TRUNCATE `{$table}`;";
@@ -121,7 +121,7 @@ abstract class BaseResource
      */
     protected function enableKeys()
     {
-        $sql = array();
+        $sql = [];
 
         foreach ($this->tables as $table) {
             $sql[] = "ALTER TABLE `{$table}` ENABLE KEYS;";

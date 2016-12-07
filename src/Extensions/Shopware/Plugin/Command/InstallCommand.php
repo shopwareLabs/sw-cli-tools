@@ -105,18 +105,18 @@ class InstallCommand extends BaseCommand
 
         $this->container->get('plugin_column_renderer')->setSmall($small);
 
-        $params = array('checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp);
+        $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp];
 
         if (!empty($names)) {
             if (!$checkout) {
                 $params['activate'] = $this->askActivatePluginQuestion();
             }
-            $interactionManager->searchAndOperate($names, array($this, 'doInstall'), $params);
+            $interactionManager->searchAndOperate($names, [$this, 'doInstall'], $params);
 
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doInstall'), $params);
+        $interactionManager->operationLoop([$this, 'doInstall'], $params);
     }
 
     /**

@@ -41,17 +41,17 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     public function getConsoleCommands()
     {
         if (!$this->isPharFile()) {
-            return array();
+            return [];
         }
 
         if ($this->checkUpdateOnRun()) {
             $this->runUpdate();
         }
 
-        return array(
+        return [
             new SelfUpdateCommand($this->container->get('updater')),
             new RollbackCommand($this->container->get('updater')),
-        );
+        ];
     }
 
     /**

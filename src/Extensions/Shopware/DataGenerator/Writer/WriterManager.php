@@ -14,7 +14,7 @@ class WriterManager
     /**
      * @var WriterInterface[]
      */
-    private $writers = array();
+    private $writers = [];
 
     /**
      * @var

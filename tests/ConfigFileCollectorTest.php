@@ -56,11 +56,11 @@ class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
         $SUT = new ConfigFileCollector($pathProvider);
         $result = $SUT->collectConfigFiles();
 
-        $expectedResults = array(
+        $expectedResults = [
             $testDir . '/VendorA/ExtB/config.yaml',
             $testDir . '/VendorC/ExtA/config.yaml',
             $testDir . '/config.yaml.dist',
-        );
+        ];
 
         foreach ($expectedResults as $expectedResult) {
             $this->assertContains($expectedResult, $result);

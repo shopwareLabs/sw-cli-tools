@@ -66,15 +66,15 @@ class ZipCommand extends BaseCommand
         $this->container->get('plugin_column_renderer')->setSmall($small);
         $interactionManager = $this->container->get('plugin_operation_manager');
 
-        $params = array('output' => $output, 'branch' => $branch, 'useHttp' => $useHttp);
+        $params = ['output' => $output, 'branch' => $branch, 'useHttp' => $useHttp];
 
         if (!empty($names)) {
-            $interactionManager->searchAndOperate($names, array($this, 'doZip'), $params);
+            $interactionManager->searchAndOperate($names, [$this, 'doZip'], $params);
 
             return;
         }
 
-        $interactionManager->operationLoop(array($this, 'doZip'), $params);
+        $interactionManager->operationLoop([$this, 'doZip'], $params);
     }
 
     public function doZip($plugin, $params)

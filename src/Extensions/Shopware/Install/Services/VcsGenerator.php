@@ -41,7 +41,7 @@ EOF;
             mkdir($dir);
         }
 
-        $mappings = array();
+        $mappings = [];
         foreach ($paths as $path) {
             if ($path == '/') {
                 $path = '';

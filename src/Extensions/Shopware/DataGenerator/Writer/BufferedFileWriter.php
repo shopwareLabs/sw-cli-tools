@@ -18,7 +18,7 @@ class BufferedFileWriter implements WriterInterface
     /**
      * @var array
      */
-    protected $buffer = array();
+    protected $buffer = [];
 
     /**
      * @var int
@@ -79,7 +79,7 @@ class BufferedFileWriter implements WriterInterface
         }
 
         fputs($this->fileHandle, implode("\n", $this->buffer) . "\n");
-        $this->buffer = array();
+        $this->buffer = [];
         $this->bufferCounter = 0;
     }
 

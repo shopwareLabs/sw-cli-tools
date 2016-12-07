@@ -160,7 +160,7 @@ EOF
         $this->ioService->writeln("<info>Creating admin user $user</info>");
 
         $fetchLanguageId = $this->getConnection()->prepare("SELECT id FROM s_core_locales WHERE locale = ?");
-        $fetchLanguageId->execute(array($language));
+        $fetchLanguageId->execute([$language]);
         $fetchLanguageId = $fetchLanguageId->fetchColumn();
 
         $authTableVersion = $this->getConnection()->prepare("SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411");
@@ -192,13 +192,13 @@ EOF;
         }
 
         $prepareStatement = $this->getConnection()->prepare($query);
-        $prepareStatement->execute(array(
+        $prepareStatement->execute([
             $user,
             $this->saltPassword($password),
             $fetchLanguageId,
             $name,
             $mail
-        ));
+        ]);
 
         return true;
     }

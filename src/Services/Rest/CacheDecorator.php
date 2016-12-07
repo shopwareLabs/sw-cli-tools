@@ -42,17 +42,17 @@ class CacheDecorator implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function get($url, $parameters = array(), $headers = array())
+    public function get($url, $parameters = [], $headers = [])
     {
         $cacheKey = $url . json_encode($parameters) . json_encode($headers);
 
-        return $this->callCached('get', sha1($cacheKey), $url, $parameters = array(), $headers = array());
+        return $this->callCached('get', sha1($cacheKey), $url, $parameters = [], $headers = []);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function post($url, $parameters = array(), $headers = array())
+    public function post($url, $parameters = [], $headers = [])
     {
         return $this->decorate->post($url, $parameters, $headers);
     }
@@ -60,7 +60,7 @@ class CacheDecorator implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function put($url, $parameters = array(), $headers = array())
+    public function put($url, $parameters = [], $headers = [])
     {
         return $this->decorate->put($url, $parameters, $headers);
     }
@@ -68,7 +68,7 @@ class CacheDecorator implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($url, $parameters = array(), $headers = array())
+    public function delete($url, $parameters = [], $headers = [])
     {
         return $this->decorate->delete($url, $parameters, $headers);
     }
@@ -81,15 +81,15 @@ class CacheDecorator implements RestInterface
      * @param  array      $headers
      * @return bool|mixed
      */
-    public function callCached($call, $key, $url, $parameters = array(), $headers = array())
+    public function callCached($call, $key, $url, $parameters = [], $headers = [])
     {
         /** @var $response ResponseInterface */
         if (!$this->cacheProvider || $this->cacheTime == 0) {
-            $response = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
+            $response = call_user_func([$this->decorate, $call], $url, $parameters, $headers);
         } else {
             $response = $this->cacheProvider->read($key);
             if ($response === false) {
-                $response = call_user_func(array($this->decorate, $call), $url, $parameters, $headers);
+                $response = call_user_func([$this->decorate, $call], $url, $parameters, $headers);
                 if ($response === false) {
                     return false;
                 }

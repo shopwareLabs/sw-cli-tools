@@ -15,7 +15,7 @@ class Categories extends BaseResource
      * The array with the categories that are going to be created
      * @var
      */
-    public $categoriesFlat = array();
+    public $categoriesFlat = [];
 
     /**
      * The number of categories which have been created
@@ -58,7 +58,7 @@ class Categories extends BaseResource
         // Create the german language category on the first call
         if (!$parentCategory) {
             $id = 3;
-            $thisCategory = array(
+            $thisCategory = [
                 "id" => 3,
                 "parent" => 1,
                 'path' => '',
@@ -67,8 +67,8 @@ class Categories extends BaseResource
                 "position" => 0,
                 "left" => 2,
                 "right" => 887,
-                "children" => array()
-            );
+                "children" => []
+            ];
         } else {
             if ($categoriesPerChild < 1) {
                 $id = $this->getUniqueId("finalCats");
@@ -80,7 +80,7 @@ class Categories extends BaseResource
             $path = $this->buildPath($parentCategory['id']);
             $path = '|'.implode('|', $path).'|';
 
-            $this->categoriesFlat[$id] = array(
+            $this->categoriesFlat[$id] = [
                 "id" => $id,
                 "parent" => $parentCategory['id'],
                 'path' => $path,
@@ -88,8 +88,8 @@ class Categories extends BaseResource
                 "left" => $left,
                 "right" => ($left + 1),
                 "position" => 0,
-                "children" => array()
-            );
+                "children" => []
+            ];
             $thisCategory = $this->categoriesFlat[$id];
         }
 
@@ -173,7 +173,7 @@ class Categories extends BaseResource
         $this->categoriesFlat[3] = null;
         $germanCategory = $this->buildNestedTree($this->config->getNumberCategories());
 
-        $thisCategory = array(
+        $thisCategory = [
             "id" => 1,
             "parent" => 'NULL',
             'path' => '',
@@ -182,14 +182,14 @@ class Categories extends BaseResource
             "position" => 0,
             "left" => 1,
             "right" => $germanCategory['right'] + 1,
-            "children" => array($germanCategory)
-        );
+            "children" => [$germanCategory]
+        ];
         $this->categoriesFlat[1] = $thisCategory;
 
         $categoryUrls = $this->writerManager->createWriter('categories', 'csv');
 
-        $categoryURLs = array();
-        $values = array();
+        $categoryURLs = [];
+        $values = [];
         foreach ($this->categoriesFlat as $id => $category) {
             $this->advanceProgressBar();
             $categoryURLs[] = "/cat/index/sCategory/{$category['id']}";

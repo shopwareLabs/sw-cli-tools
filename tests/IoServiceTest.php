@@ -52,7 +52,7 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
      */
     private function createSUT()
     {
-        $this->input = $input = new ArrayInput(array());
+        $this->input = $input = new ArrayInput([]);
         $this->output = $output = new BufferedOutput();
         $questionHelper = new QuestionHelper();
 

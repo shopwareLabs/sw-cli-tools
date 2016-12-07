@@ -72,7 +72,7 @@ EOF
 
         return $ioService->askAndValidate(
             "Path to your Shopware installation: ",
-            array($this->container->get('utilities'), 'validateShopwarePath')
+            [$this->container->get('utilities'), 'validateShopwarePath']
         );
     }
 }

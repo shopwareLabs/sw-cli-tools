@@ -34,7 +34,7 @@ class GitHub extends BaseRepository
         echo "Reading Shopware repo {$this->name}\n";
         $content = $this->restService->get($this->repository)->getResult();
 
-        $plugins = array();
+        $plugins = [];
         foreach ($content as $repo) {
             $plugins[] = $this->createPlugin($repo['ssh_url'], $repo['clone_url'], $repo['name']);
         }

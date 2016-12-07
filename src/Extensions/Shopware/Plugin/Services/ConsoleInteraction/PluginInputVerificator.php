@@ -54,7 +54,7 @@ class PluginInputVerificator
      * @param  string[] $allowedAnswers
      * @return string
      */
-    public function selectPlugin($plugins, $allowedAnswers = array('all'))
+    public function selectPlugin($plugins, $allowedAnswers = ['all'])
     {
         while (true) {
             system('clear');
@@ -127,7 +127,7 @@ class PluginInputVerificator
     private function getPluginRange($userInput)
     {
         $pattern = '#(?P<from>[0-9]+)-(?P<to>[0-9]+)#';
-        $matches = array();
+        $matches = [];
 
         preg_match($pattern, $userInput, $matches);
 

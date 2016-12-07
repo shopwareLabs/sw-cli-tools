@@ -21,7 +21,7 @@ class FilterFileProvider implements FileProviderInterface
             return [];
         }
 
-        return array(
+        return [
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Condition/Condition.tpl" => "Components/SearchBundleDBAL/Condition/{$configuration->name}Condition.php",
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Condition/ConditionHandler.tpl" => "Components/SearchBundleDBAL/Condition/{$configuration->name}ConditionHandler.php",
             self::CURRENT_DIR . "Components/SearchBundleDBAL/Facet/Facet.tpl" => "Components/SearchBundleDBAL/Facet/{$configuration->name}Facet.php",
@@ -31,6 +31,6 @@ class FilterFileProvider implements FileProviderInterface
             self::CURRENT_DIR . "Components/SearchBundle/CriteriaRequestHandler.tpl" => "Components/SearchBundle/{$configuration->name}CriteriaRequestHandler.php",
             self::CURRENT_DIR . "Subscriber/SearchBundle.tpl" => "Subscriber/SearchBundle.php",
             self::CURRENT_DIR . "Resources/views/frontend/listing/actions/action-sorting.tpl" => "Resources/views/frontend/listing/actions/action-sorting.tpl"
-        );
+        ];
     }
 }

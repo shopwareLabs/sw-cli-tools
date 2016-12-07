@@ -10,8 +10,8 @@ namespace Shopware\DataGenerator\Services;
  */
 class LoadDataInfile
 {
-    protected $mappings = array(
-        's_articles' => array(
+    protected $mappings = [
+        's_articles' => [
             "id",
             "supplierID",
             "name",
@@ -37,8 +37,8 @@ class LoadDataInfile
             "available_from",
             "available_to",
             "configurator_set_id"
-        ),
-        's_articles_details' => array(
+        ],
+        's_articles_details' => [
             "id",
             "articleID",
             "ordernumber",
@@ -65,8 +65,8 @@ class LoadDataInfile
             "releasedate",
             "shippingfree",
             "shippingtime"
-        ),
-        's_articles_prices' => array(
+        ],
+        's_articles_prices' => [
             "pricegroup",
             "from",
             "to",
@@ -76,24 +76,24 @@ class LoadDataInfile
             "pseudoprice",
             "baseprice",
             "percent"
-        ),
-        's_articles_categories' => array("articleID", "categoryID"),
-        's_media' => array("id", "albumID", "name", "path", "type", "extension", "created"),
-        's_articles_img' => array("articleID", "img", "main", "extension", "media_id"),
-        's_articles_attributes' => array("articleID", "articledetailsID"),
-        's_article_configurator_sets' => array("id", "name"),
-        's_article_configurator_option_relations' => array("article_id", "option_id"),
-        's_article_configurator_groups' => array("id", "name", "description", "position"),
-        's_article_configurator_options' => array("id", "group_id", "name", "position"),
-        's_article_configurator_set_group_relations' => array("set_id", "group_id"),
-        's_article_configurator_set_option_relations' => array("set_id", "option_id"),
-        's_filter_articles' => array("articleID", "valueID"),
-        's_filter' => array("id", "name", "position", "comparable", "sortmode"),
-        's_filter_options' => array("id", "name", "filterable"),
-        's_filter_values' => array("id", "optionID", "value", "position"),
-        's_filter_relations' => array("groupID", "optionID", "position"),
-        's_articles_categories_ro' => array("articleID", "categoryID", "parentCategoryID"),
-        's_user' => array(
+        ],
+        's_articles_categories' => ["articleID", "categoryID"],
+        's_media' => ["id", "albumID", "name", "path", "type", "extension", "created"],
+        's_articles_img' => ["articleID", "img", "main", "extension", "media_id"],
+        's_articles_attributes' => ["articleID", "articledetailsID"],
+        's_article_configurator_sets' => ["id", "name"],
+        's_article_configurator_option_relations' => ["article_id", "option_id"],
+        's_article_configurator_groups' => ["id", "name", "description", "position"],
+        's_article_configurator_options' => ["id", "group_id", "name", "position"],
+        's_article_configurator_set_group_relations' => ["set_id", "group_id"],
+        's_article_configurator_set_option_relations' => ["set_id", "option_id"],
+        's_filter_articles' => ["articleID", "valueID"],
+        's_filter' => ["id", "name", "position", "comparable", "sortmode"],
+        's_filter_options' => ["id", "name", "filterable"],
+        's_filter_values' => ["id", "optionID", "value", "position"],
+        's_filter_relations' => ["groupID", "optionID", "position"],
+        's_articles_categories_ro' => ["articleID", "categoryID", "parentCategoryID"],
+        's_user' => [
             "id",
             "customernumber",
             "password",
@@ -119,7 +119,7 @@ class LoadDataInfile
             "lockeduntil",
             "default_billing_address_id",
             "default_shipping_address_id",
-        ),
+        ],
         's_user_addresses' => [
             'id',
             'user_id',
@@ -139,8 +139,8 @@ class LoadDataInfile
             'additional_address_line2',
             'title',
         ],
-        's_user_attributes' => array("userID"),
-        's_user_billingaddress' => array(
+        's_user_attributes' => ["userID"],
+        's_user_billingaddress' => [
             "id",
             "userID",
             "company",
@@ -155,9 +155,9 @@ class LoadDataInfile
             "countryID",
             "stateID",
             "ustid"
-        ),
-        's_user_billingaddress_attributes' => array("billingID"),
-        's_user_shippingaddress' => array(
+        ],
+        's_user_billingaddress_attributes' => ["billingID"],
+        's_user_shippingaddress' => [
             "id",
             "userID",
             "company",
@@ -170,9 +170,9 @@ class LoadDataInfile
             "city",
             "countryID",
             "stateID"
-        ),
-        's_user_shippingaddress_attributes' => array("shippingID"),
-        's_emarketing_vouchers' => array(
+        ],
+        's_user_shippingaddress_attributes' => ["shippingID"],
+        's_emarketing_vouchers' => [
             'id',
             'description',
             'vouchercode',
@@ -186,10 +186,10 @@ class LoadDataInfile
             'numorder',
             'customergroup',
             'taxconfig'
-        ),
-        's_emarketing_vouchers_attributes' => array('voucherID'),
-        's_emarketing_voucher_codes' => array('voucherID', 'userID', 'code', 'cashed')
-    );
+        ],
+        's_emarketing_vouchers_attributes' => ['voucherID'],
+        's_emarketing_voucher_codes' => ['voucherID', 'userID', 'code', 'cashed']
+    ];
 
 
     /**

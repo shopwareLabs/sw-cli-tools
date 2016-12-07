@@ -123,6 +123,6 @@ class Install
      */
     private function normalize($string)
     {
-        return strtolower(str_replace(array('/', '\\'), '-', $string));
+        return strtolower(str_replace(['/', '\\'], '-', $string));
     }
 }

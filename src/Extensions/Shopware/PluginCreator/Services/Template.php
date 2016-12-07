@@ -10,7 +10,7 @@ namespace Shopware\PluginCreator\Services;
  */
 class Template
 {
-    private $_templateVars = array();
+    private $_templateVars = [];
 
     private $_path = '';
 
@@ -76,7 +76,7 @@ class Template
         if ($return) {
             ob_start();
         }
-        $old = set_error_handler(array($this, 'errorReporter'));
+        $old = set_error_handler([$this, 'errorReporter']);
         include $this->_path . $_template;
         set_error_handler($old);
         if ($return) {

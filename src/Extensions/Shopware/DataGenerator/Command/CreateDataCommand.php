@@ -166,7 +166,7 @@ Requires \'local-infile=1\' in your MySQL installation.
 
         $optionValue = $ioService->askAndValidate(
             "Please provide the value for {$optionHumanName}, use 0 or leave empty to skip: ",
-            array($this, 'validateInt')
+            [$this, 'validateInt']
         );
         $input->setOption($optionName, trim($optionValue) ? $optionValue : null);
     }
@@ -247,7 +247,7 @@ Requires \'local-infile=1\' in your MySQL installation.
             $chunkSize
         );
 
-        foreach (array('categories', 'articles', 'customers', 'orders', 'newsletter', 'vouchers') as $type) {
+        foreach (['categories', 'articles', 'customers', 'orders', 'newsletter', 'vouchers'] as $type) {
             if ($$type > 0) {
                 $output->writeln("Creating {$type}");
                 $generator->setType($type);

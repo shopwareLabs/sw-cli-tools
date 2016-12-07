@@ -139,9 +139,9 @@ EOF;
             return null;
         }
 
-        return array(
+        return [
             'SSH_KEYFILE' => $this->getCustomKey(),
             'GIT_SSH' => $this->getGitWrapper()
-        );
+        ];
     }
 }

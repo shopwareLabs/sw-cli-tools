@@ -21,9 +21,9 @@ class ModelFileProvider implements FileProviderInterface
             return [];
         }
 
-        return array(
+        return [
             self::LEGACY_DIR . "Models/Model.tpl" => "Models/{$configuration->name}/{$nameGenerator->camelCaseModel}.php",
             self::LEGACY_DIR . "Models/Repository.tpl" => "Models/{$configuration->name}/Repository.php"
-        );
+        ];
     }
 }

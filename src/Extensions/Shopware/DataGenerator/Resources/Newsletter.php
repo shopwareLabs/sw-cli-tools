@@ -6,7 +6,7 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 
 class Newsletter extends BaseResource
 {
-    protected $tables = array(
+    protected $tables = [
         "s_campaigns_articles",
         "s_campaigns_banner",
         "s_campaigns_containers",
@@ -20,7 +20,7 @@ class Newsletter extends BaseResource
         "s_campaigns_positions",
         "s_campaigns_sender",
         "s_campaigns_templates"
-    );
+    ];
 
     /**
      * @inheritdoc
@@ -30,7 +30,7 @@ class Newsletter extends BaseResource
         $number = $this->config->getNumberNewsletter();
         $this->createProgressBar($number);
 
-        $addressValues = array();
+        $addressValues = [];
         for ($i = 0; $i < $number; $i++) {
             $this->advanceProgressBar();
             $addressId = $this->getUniqueId('addressId');
@@ -52,10 +52,10 @@ class Newsletter extends BaseResource
         );
 
         // Groups assigned to the newsletter
-        $groups = array(
-            array("EK" => 0, "H" => 0),
-            array(1 => 0)
-        );
+        $groups = [
+            ["EK" => 0, "H" => 0],
+            [1 => 0]
+        ];
         $groups = serialize($groups);
 
         // The actual newsletter

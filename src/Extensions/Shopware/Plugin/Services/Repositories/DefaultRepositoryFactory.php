@@ -18,9 +18,9 @@ class DefaultRepositoryFactory
      * List of repositories the DefaultRepository will handle
      * @var array
      */
-    private $supportedRepositories = array('GitHub', 'Stash', 'BitBucket', 'SimpleList');
+    private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList'];
 
-    private $defaultRepositories = array();
+    private $defaultRepositories = [];
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container

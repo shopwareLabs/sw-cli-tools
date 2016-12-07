@@ -40,9 +40,9 @@ class Stash extends BaseRepository
             );
         }
 
-        $plugins = array();
+        $plugins = [];
         foreach ($content['values'] as $repo) {
-            $urls = array();
+            $urls = [];
             foreach ($repo['links']['clone'] as $clone) {
                 $clone['href'] = str_replace("stashadmin@", "", $clone['href']);
                 $urls[$clone['name']] = $clone['href'];

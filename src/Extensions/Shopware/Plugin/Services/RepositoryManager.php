@@ -49,7 +49,7 @@ class RepositoryManager
      */
     private function collectPluginRepositories()
     {
-        $repositories = array();
+        $repositories = [];
 
         foreach ($this->extensionManager->getExtensions() as $plugin) {
             if ($plugin instanceof RepositoryAwareExtension) {

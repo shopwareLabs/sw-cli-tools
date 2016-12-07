@@ -41,12 +41,12 @@ class BootstrapInfo
     private function analyzeClass($content)
     {
         $pattern = '#.*Shopware_Plugins_(?P<namespace>[a-zA-Z0-9]+)_(?P<name>[a-zA-Z0-9]+)_Bootstrap.*#';
-        $matches = array();
+        $matches = [];
         preg_match($pattern, $content, $matches);
         if (empty($matches)) {
             throw new \RuntimeException('Could not analyze bootstrap');
         }
 
-        return array($matches['namespace'], $matches['name']);
+        return [$matches['namespace'], $matches['name']];
     }
 }

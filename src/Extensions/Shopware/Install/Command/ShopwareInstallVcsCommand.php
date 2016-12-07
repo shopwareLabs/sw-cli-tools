@@ -110,7 +110,7 @@ EOF
      */
     private function suggestNameFromBranch($branch)
     {
-        $result = array();
+        $result = [];
         $pattern = '#sw-(?P<number>.+?)/(?P<target>.+?)/.*#i';
         preg_match($pattern, $branch, $result);
 
@@ -148,7 +148,7 @@ EOF
         if (!$installDir) {
             $installDir = $ioService->askAndValidate(
                 "Please provide the install directory <{$suggestion}>: ",
-                array($this, 'validateInstallDir')
+                [$this, 'validateInstallDir']
             );
             $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
 

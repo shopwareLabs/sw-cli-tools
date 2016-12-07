@@ -66,10 +66,10 @@ class DatabaseWriter implements WriterInterface
     {
         $connection = new PDO(
             'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
-            array(
+            [
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
                 PDO::ERRMODE_EXCEPTION => 1,
-            )
+            ]
         );
 
         return $connection;

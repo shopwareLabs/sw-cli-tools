@@ -25,12 +25,12 @@ class DisplayPlugin extends Struct
      */
     public static function createFromPluginAndIndex(Plugin $plugin, $index)
     {
-        return new static(array(
+        return new static([
             'index'      => $index,
             'name'       => $plugin->name,
             'module'     => $plugin->module,
             'repoType'   => $plugin->repoType,
             'repository' => $plugin->repository,
-        ));
+        ]);
     }
 }

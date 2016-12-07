@@ -22,12 +22,12 @@ class RestClient implements RestInterface
     /**
      * @var array
      */
-    protected $validMethods = array(
+    protected $validMethods = [
         self::METHOD_GET,
         self::METHOD_PUT,
         self::METHOD_POST,
         self::METHOD_DELETE
-    );
+    ];
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class RestClient implements RestInterface
      * @param  array       $curlOptions
      * @throws \Exception
      */
-    public function __construct($apiUrl, $username = "", $apiKey = "", $curlOptions = array())
+    public function __construct($apiUrl, $username = "", $apiKey = "", $curlOptions = [])
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL given');
@@ -76,7 +76,7 @@ class RestClient implements RestInterface
      * @return Response
      * @throws \Exception
      */
-    public function call($url, $method = self::METHOD_GET, $parameters = array(), $headers = array())
+    public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])
     {
         if (!in_array($method, $this->validMethods)) {
             throw new \Exception('Invalid HTTP method: ' . $method);
@@ -89,9 +89,9 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
 
         $headers = array_merge(
-            array(
+            [
                 'Content-Type: application/json; charset=utf-8',
-            ),
+            ],
             $headers
         );
 
@@ -104,7 +104,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function get($url, $parameters = array(), $headers = array())
+    public function get($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_GET, $parameters, $headers);
     }
@@ -112,7 +112,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function post($url, $parameters = array(), $headers = array())
+    public function post($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_POST, $parameters, $headers);
     }
@@ -120,7 +120,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function put($url, $parameters = array(), $headers = array())
+    public function put($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_PUT, $parameters, $headers);
     }
@@ -128,7 +128,7 @@ class RestClient implements RestInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($url, $parameters = array(), $headers = array())
+    public function delete($url, $parameters = [], $headers = [])
     {
         return $this->call($url, self::METHOD_DELETE, $parameters, $headers);
     }

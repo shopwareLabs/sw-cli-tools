@@ -10,7 +10,7 @@ namespace Shopware\PluginCreator\Services\IoAdapter;
  */
 class Dummy implements IoAdapter
 {
-    protected $files = array();
+    protected $files = [];
 
     /**
      * @param $path

@@ -9,14 +9,14 @@ class Orders extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
+    protected $tables = [
         "s_order",
         "s_order_details",
         "s_order_billingaddress",
         "s_order_billingaddress_attributes",
         "s_order_shippingaddress",
         "s_order_shippingaddress_attributes"
-    );
+    ];
 
     /**
      * Number of article details available
@@ -54,18 +54,18 @@ class Orders extends BaseResource
         $this->ids['ordernumber'] = 1000;
 
 
-        $valueData = array(
-            'orderValues' => array(),
-            'orderDetailValues' => array(),
-            'customerBillingValues' => array(),
-            'customerShippingValues' => array(),
-            'customerBillingAttributeValues' => array(),
-        );
+        $valueData = [
+            'orderValues' => [],
+            'orderDetailValues' => [],
+            'customerBillingValues' => [],
+            'customerShippingValues' => [],
+            'customerBillingAttributeValues' => [],
+        ];
 
         $articleDetails = $this->articleResource->getArticleDetailsFlat();
 
         $totalNumberCustomers = $this->config->getNumberCustomers();
-        $orderNumbers = array();
+        $orderNumbers = [];
 
         for ($orderCounter = 0; $orderCounter < $number; $orderCounter++) {
             $id = $this->getUniqueId('order');
@@ -109,7 +109,7 @@ class Orders extends BaseResource
      */
     private function createSQL($valueData)
     {
-        $sql = array();
+        $sql = [];
 
         $sql[] = "
             INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr` ) VALUES ".implode(

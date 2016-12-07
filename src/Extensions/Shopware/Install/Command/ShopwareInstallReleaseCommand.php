@@ -87,7 +87,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $request = new InstallationRequest(array(
+        $request = new InstallationRequest([
             'release' => $input->getOption('release'),
             'installDir' => $input->getOption('install-dir'),
             'dbHost' => $input->getOption('db-host'),
@@ -109,7 +109,7 @@ EOF
             'adminName' => $input->getOption('admin-name'),
             'noSkipImport' => $input->getOption('no-skip-import'),
             'skipAdminCreation' => $input->getOption('skip-admin-creation')
-        ));
+        ]);
 
         /** @var \Shopware\Install\Services\Install\Release $installService */
         $installService = $this->container->get('shopware_release_install_service');
@@ -179,7 +179,7 @@ EOF
     protected function validateInput(InputInterface $input)
     {
         $language = $input->getOption('shop-locale');
-        if (!in_array($language, array('en_GB', 'de_DE'))) {
+        if (!in_array($language, ['en_GB', 'de_DE'])) {
             throw new \RuntimeException("Invalid locale: '$language'");
         }
     }
@@ -192,12 +192,12 @@ EOF
      */
     private function askGenericOptions(InputInterface $input, IoService $ioService)
     {
-        $required = array(
+        $required = [
             'admin-username' => 'backend user name',
             'admin-password' => 'backend user password',
             'admin-name' => 'your full name',
             'admin-email' => 'your email'
-        );
+        ];
 
         $config = $this->getConfig();
 
@@ -216,7 +216,7 @@ EOF
             //
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
-                array($this, 'genericValidator')
+                [$this, 'genericValidator']
             );
             $input->setOption($field, $fieldData);
         }
@@ -255,7 +255,7 @@ EOF
         if (!$installDir) {
             $installDir = $ioService->askAndValidate(
                 "Please provide the install directory [{$suggestion}]: ",
-                array($this, 'validateInstallDir')
+                [$this, 'validateInstallDir']
             );
             $input->setOption('install-dir', trim($installDir) ? $installDir : $suggestion);
 

@@ -51,7 +51,7 @@ class CommandManager
      */
     public function collectPluginCommands()
     {
-        $commands = array();
+        $commands = [];
 
         foreach ($this->extensionManager->getExtensions() as $plugin) {
             if ($plugin instanceof ConsoleAwareExtension) {
@@ -69,9 +69,9 @@ class CommandManager
      */
     private function getDefaultCommands()
     {
-        return array(
+        return [
             new Command\CacheCommand(),
             new Command\CacheGetCommand()
-        );
+        ];
     }
 }

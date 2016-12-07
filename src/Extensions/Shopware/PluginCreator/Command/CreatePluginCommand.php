@@ -143,7 +143,7 @@ EOF
 
         // for backend / api the backendModel is mandatory
         if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>): ', array($this, 'validateModel'), false, $defaultModel);
+            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>): ', [$this, 'validateModel'], false, $defaultModel);
             $input->setOption('backendModel', $modelName);
         }
 
@@ -160,7 +160,7 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (array('haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION) as $key) {
+        foreach (['haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION] as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -234,7 +234,7 @@ EOF
      */
     public function validateNamespace($input)
     {
-        if (!in_array(strtolower($input), array('frontend', 'core', 'backend'))) {
+        if (!in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
             throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
         }
 

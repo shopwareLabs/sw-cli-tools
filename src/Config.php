@@ -36,7 +36,7 @@ class Config implements \ArrayAccess
      */
     private function getMergedConfigs($paths)
     {
-        $content = array();
+        $content = [];
 
         foreach ($paths as $path) {
             $content[] = file_get_contents($path);

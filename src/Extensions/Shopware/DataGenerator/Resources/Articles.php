@@ -10,7 +10,7 @@ class Articles extends BaseResource
     /**
      * @var array
      */
-    protected $tables = array(
+    protected $tables = [
         "s_media",
         "s_articles",
         "s_articles_img",
@@ -31,7 +31,7 @@ class Articles extends BaseResource
         "s_filter_options",
         "s_filter_values",
         "s_filter_relations",
-    );
+    ];
 
     /**
      * @var LoadDataInfile
@@ -62,10 +62,10 @@ class Articles extends BaseResource
      */
     protected function createFilterGroupSQL(WriterInterface $importWriter)
     {
-        $filterGroupValues = array();
-        $filterOptionValues = array();
-        $filterValueValues = array();
-        $filterOptionGroupRelationValues = array();
+        $filterGroupValues = [];
+        $filterOptionValues = [];
+        $filterValueValues = [];
+        $filterOptionGroupRelationValues = [];
 
         $filterGroups = $this->config->getArticleFilterGroups();
         $filterOptions = $this->config->getArticleFilterOptions();
@@ -109,20 +109,20 @@ class Articles extends BaseResource
      */
     private function createCartesianProduct($arrays)
     {
-        $cartesian = array();
+        $cartesian = [];
         $dims = array_reverse($arrays);
 
         foreach ($dims as $dimName => $dim) {
-            $buf = array();
+            $buf = [];
 
             foreach ($dim as $val) {
-                $buf[] = array($dimName => $val);
+                $buf[] = [$dimName => $val];
             }
 
             if (!count($cartesian)) {
                 $cartesian = $buf;
             } else {
-                $tmp = array();
+                $tmp = [];
                 foreach ($buf as $elBuf) {
                     foreach ($cartesian as $elAp) {
                         $tmp[] = array_merge($elBuf, $elAp);
@@ -193,7 +193,7 @@ class Articles extends BaseResource
 
         $this->createProgressBar($number);
 
-        $images = array();
+        $images = [];
 
         $priceVariations = $this->generatePriceVariations($number);
 
@@ -207,7 +207,7 @@ class Articles extends BaseResource
 
             // Get the id of the first articleDetail in advance on order to set the main_detail_id properly
             $articleDetailId = $this->getUniqueId('articleDetail');
-            $detailIDs = array($articleDetailId);
+            $detailIDs = [$articleDetailId];
 
             $configuratorSetId = $createConfigurator === 1 ? $id : "NULL";
             $numberOfVariants = $createConfigurator === 1 ? rand(
@@ -221,18 +221,18 @@ class Articles extends BaseResource
                 $numberOfVariants = $numberOfOptions * $numberGroups;
             }
 
-            #
-            # Configurator
-            #
+            //
+            // Configurator
+            //
             if ($createConfigurator) {
                 $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id})");
                 // Create configurator groups and options
-                $groups = array();
-                $options = array();
+                $groups = [];
+                $options = [];
                 for ($g = 1; $g <= $numberGroups; $g++) {
                     $groupId = $this->getUniqueId('group');
                     $configuratorGroups->write("{$groupId}, Configurator-Group #{$groupId}, NULL, {$g}");
-                    $groups[$groupId] = array();
+                    $groups[$groupId] = [];
                     // Create options for this group
                     for ($o = 1; $o <= $numberOfOptions; $o++) {
                         $optionId = $this->getUniqueId('option');
@@ -301,9 +301,9 @@ class Articles extends BaseResource
                 }
             }
 
-            #
-            # Article / -details
-            #
+            //
+            // Article / -details
+            //
             $articles->write(
                 "{$id}, 2, {$this->generator->getSentence(3)}, SHORT DESCRIPTION, LONG DESCRIPTION, NULL, 2012-08-15, 1, 1, 20, 0, , 2012-08-30 16:57:00, 1, 0, {$filterGroupId}, 0, 0, 0, , 0, {$articleDetailId}, NULL, NULL, {$configuratorSetId}"
             );

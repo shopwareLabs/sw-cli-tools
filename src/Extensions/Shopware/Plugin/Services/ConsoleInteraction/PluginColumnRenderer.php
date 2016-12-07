@@ -75,7 +75,7 @@ class PluginColumnRenderer
      */
     private function createDisplayPlugins($plugins)
     {
-        $displayPlugins = array();
+        $displayPlugins = [];
         foreach ($plugins as $key => $plugin) {
             $displayPlugins[] = DisplayPlugin::createFromPluginAndIndex($plugin, $key + 1);
         }
@@ -91,7 +91,7 @@ class PluginColumnRenderer
     private function createPluginColumns($plugins, $columns)
     {
         $length = count($plugins);
-        $pluginColumns = array();
+        $pluginColumns = [];
 
         $pluginsPerColumn = ceil($length / $columns);
         // Build columns and prepare unshift plugin of each column
@@ -114,7 +114,7 @@ class PluginColumnRenderer
         $rowCount    = count($pluginColumns[0]) -1;
 
         foreach (range(0, $rowCount) as $row) {
-            $currentRow = array();
+            $currentRow = [];
             foreach (range(0, $columnCount -1) as $column) {
                 if (isset($pluginColumns[$column][$row])) {
                     $currentRow[] = $pluginColumns[$column][$row];
@@ -138,7 +138,7 @@ class PluginColumnRenderer
             $spacer = '                   ';
         }
 
-        $columns = array();
+        $columns = [];
 
         foreach ($row as $plugin) {
             $mask = $this->getMaskForPlugin($plugin, $baseMask);
@@ -161,12 +161,12 @@ class PluginColumnRenderer
             return;
         }
 
-        $repos = array();
+        $repos = [];
         foreach ($plugins as $plugin) {
             $repos[$plugin->repoType . '(' . $plugin->repository . ')'] = $this->getColorForPlugin($plugin);
         }
 
-        $output = array();
+        $output = [];
         foreach ($repos as $name => $color) {
             $color = $color ?: 'white';
 
