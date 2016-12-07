@@ -67,7 +67,7 @@ abstract class BaseResource
 
     /**
      * Helper function which manages ids for a given type
-     * @param $type
+     * @param string $type
      * @return int
      */
     protected function getUniqueId($type)
@@ -84,8 +84,8 @@ abstract class BaseResource
     }
 
     /**
-     * @param null $field
-     * @return array
+     * @param string $field
+     * @return integer
      */
     public function getIds($field = null)
     {
@@ -117,7 +117,7 @@ abstract class BaseResource
 
     /**
      * Generic cleanup method which re-enables keys for the tables
-     * @return array
+     * @return string[]
      */
     protected function enableKeys()
     {
@@ -133,7 +133,7 @@ abstract class BaseResource
     }
 
     /**
-     * @param $number
+     * @param integer $number
      */
     protected function createProgressBar($number)
     {

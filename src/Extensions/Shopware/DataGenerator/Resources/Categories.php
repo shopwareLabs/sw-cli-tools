@@ -141,6 +141,7 @@ class Categories extends BaseResource
 
     /**
      * @inheritdoc
+     * @param string $type
      */
     public function getUniqueId($type)
     {

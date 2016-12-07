@@ -54,8 +54,8 @@ class WriterManager
     }
 
     /**
-     * @param $resourceKey
-     * @param $type
+     * @param string $resourceKey
+     * @param string $type
      * @param null $writerType
      * @return WriterInterface
      */
