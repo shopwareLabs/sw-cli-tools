@@ -105,7 +105,7 @@ class Orders extends BaseResource
     /**
      * Constructs the actual inserts from the passed arrays
      * @param $valueData
-     * @return string
+     * @return string[]
      */
     private function createSQL($valueData)
     {

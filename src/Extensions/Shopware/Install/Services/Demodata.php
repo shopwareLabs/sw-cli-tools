@@ -82,6 +82,9 @@ class Demodata
         $this->processExecutor->execute("find " .$this->shopwareInfo->getCacheDir($installDir) ."  -type d -exec chmod 777 {} \;", true);
     }
 
+    /**
+     * @param string $installDir
+     */
     public function runLicenseImport($installDir)
     {
         if (file_exists("{$installDir}/bin/console")) {

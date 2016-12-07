@@ -427,7 +427,7 @@ class Articles extends BaseResource
      * @param $imageDir
      * @param $images
      * @param $thumbs
-     * @param $useSmallImage
+     * @param integer $useSmallImage
      */
     private function copyImages($imageDir, $images, $thumbs, $useSmallImage)
     {
@@ -461,6 +461,9 @@ class Articles extends BaseResource
         $this->categoryResource = $categoryResource;
     }
 
+    /**
+     * @param integer $number
+     */
     private function generatePriceVariations($number)
     {
         $count = $number / 5;

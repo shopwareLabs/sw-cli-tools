@@ -79,7 +79,7 @@ class ReleaseDownloader
     /**
      * New releases can be downloaded via the update api and provide a sha1 hash
      *
-     * @param $release
+     * @param string $release
      * @return string
      */
     private function downloadFromUpdateApi($release)

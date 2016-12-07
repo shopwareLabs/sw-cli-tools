@@ -17,7 +17,7 @@ class Template
     /**
      * Set the base path of the templates
      *
-     * @param $path
+     * @param string $path
      */
     public function setTemplatePath($path)
     {
@@ -27,7 +27,7 @@ class Template
     /**
      * Assign a variable to the template.
      *
-     * @param $name
+     * @param string $name
      * @param $value
      */
     public function assign($name, $value)

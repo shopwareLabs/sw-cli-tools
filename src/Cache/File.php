@@ -49,6 +49,9 @@ class File implements CacheInterface
         $this->writeTable();
     }
 
+    /**
+     * @param string $key
+     */
     public function exists($key)
     {
         $file = $this->path . $key;
