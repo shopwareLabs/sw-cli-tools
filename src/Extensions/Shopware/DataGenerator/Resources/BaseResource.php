@@ -12,7 +12,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 abstract class BaseResource
 {
     /**
-     * Stores the used ids for SQL inserts
+     * Stores the used ids for SQL inserts.
+     *
      * @var array
      */
     protected $ids = [];
@@ -48,10 +49,10 @@ abstract class BaseResource
     protected $progressBar;
 
     /**
-     * @param Config $config
+     * @param Config             $config
      * @param RandomDataProvider $generator
-     * @param IoService $ioService
-     * @param WriterManager $writerManager
+     * @param IoService          $ioService
+     * @param WriterManager      $writerManager
      */
     public function __construct(
         Config $config,
@@ -66,8 +67,10 @@ abstract class BaseResource
     }
 
     /**
-     * Helper function which manages ids for a given type
+     * Helper function which manages ids for a given type.
+     *
      * @param string $type
+     *
      * @return int
      */
     protected function getUniqueId($type)
@@ -85,7 +88,8 @@ abstract class BaseResource
 
     /**
      * @param string $field
-     * @return integer
+     *
+     * @return int
      */
     public function getIds($field = null)
     {
@@ -97,26 +101,28 @@ abstract class BaseResource
     }
 
     /**
-     * Generic setup method which will truncate tables of a resource and disables keys for that table temporarily
+     * Generic setup method which will truncate tables of a resource and disables keys for that table temporarily.
      */
     protected function prepareTables()
     {
         $sql = [
-            "SET foreign_key_checks=0;",
-            "SET unique_checks=0;"
+            'SET foreign_key_checks=0;',
+            'SET unique_checks=0;',
+            'SET @@session.sql_mode = ""',
         ];
 
         foreach ($this->tables as $table) {
             $sql[] = "TRUNCATE `{$table}`;";
             $sql[] = "ALTER TABLE `{$table}` DISABLE KEYS;";
         }
-        $sql[] = "COMMIT;";
+        $sql[] = 'COMMIT;';
 
         return $sql;
     }
 
     /**
-     * Generic cleanup method which re-enables keys for the tables
+     * Generic cleanup method which re-enables keys for the tables.
+     *
      * @return string[]
      */
     protected function enableKeys()
@@ -125,15 +131,15 @@ abstract class BaseResource
 
         foreach ($this->tables as $table) {
             $sql[] = "ALTER TABLE `{$table}` ENABLE KEYS;";
-            $sql[] = "SET unique_checks=1;";
+            $sql[] = 'SET unique_checks=1;';
         }
-        $sql[] = "COMMIT;";
+        $sql[] = 'COMMIT;';
 
         return $sql;
     }
 
     /**
-     * @param integer $number
+     * @param int $number
      */
     protected function createProgressBar($number)
     {
@@ -167,9 +173,10 @@ abstract class BaseResource
      * Creates the data associated with the current resource and writes it to the
      * provided writer
      * May create additional writers using the existing WriterManager
-     * All writers are automatically flushed once the data creation ends
+     * All writers are automatically flushed once the data creation ends.
      *
      * @param WriterInterface $writer
+     *
      * @return mixed
      */
     abstract public function create(WriterInterface $writer);
@@ -178,7 +185,7 @@ abstract class BaseResource
      * Initializes the main WriterInterface instance where the data will be written
      * Calls the create method
      * Flushes data at the end
-     * Handles pre and pos query handling (truncating, enable/disable foreign keys)
+     * Handles pre and pos query handling (truncating, enable/disable foreign keys).
      */
     final public function generateData()
     {
@@ -187,7 +194,7 @@ abstract class BaseResource
         $writer->write($this->prepareTables());
 
         $this->create($writer);
-        $this->ioService->writeln("");
+        $this->ioService->writeln('');
 
         $writer->write($this->enableKeys());
         $this->writerManager->flushAll();

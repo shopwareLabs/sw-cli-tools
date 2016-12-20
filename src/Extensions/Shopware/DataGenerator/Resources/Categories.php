@@ -12,14 +12,16 @@ class Categories extends BaseResource
     protected $tables = ['s_categories'];
 
     /**
-     * The array with the categories that are going to be created
+     * The array with the categories that are going to be created.
+     *
      * @var
      */
     public $categoriesFlat = [];
 
     /**
      * The number of categories which have been created
-     * Used in order to not create too many categories
+     * Used in order to not create too many categories.
+     *
      * @var
      */
     protected $categoriesSum;
@@ -30,10 +32,11 @@ class Categories extends BaseResource
     protected $total;
 
     /**
-     * @param int $number
-     * @param int|null $parentCategory
-     * @param int $depth
+     * @param int        $number
+     * @param int|null   $parentCategory
+     * @param int        $depth
      * @param array|null $leftNeighbour
+     *
      * @return array
      */
     private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null)
@@ -59,36 +62,36 @@ class Categories extends BaseResource
         if (!$parentCategory) {
             $id = 3;
             $thisCategory = [
-                "id" => 3,
-                "parent" => 1,
+                'id' => 3,
+                'parent' => 1,
                 'path' => '',
-                "name" => 'Deutsch',
-                "level" => 1,
-                "position" => 0,
-                "left" => 2,
-                "right" => 887,
-                "children" => []
+                'name' => 'Deutsch',
+                'level' => 1,
+                'position' => 0,
+                'left' => 2,
+                'right' => 887,
+                'children' => [],
             ];
         } else {
             if ($categoriesPerChild < 1) {
-                $id = $this->getUniqueId("finalCats");
+                $id = $this->getUniqueId('finalCats');
             } else {
-                $id = $this->getUniqueId("category");
+                $id = $this->getUniqueId('category');
             }
             $this->categoriesFlat[$id] = null;
 
             $path = $this->buildPath($parentCategory['id']);
-            $path = '|'.implode('|', $path).'|';
+            $path = '|' . implode('|', $path) . '|';
 
             $this->categoriesFlat[$id] = [
-                "id" => $id,
-                "parent" => $parentCategory['id'],
+                'id' => $id,
+                'parent' => $parentCategory['id'],
                 'path' => $path,
-                "level" => ($depth + 1),
-                "left" => $left,
-                "right" => ($left + 1),
-                "position" => 0,
-                "children" => []
+                'level' => ($depth + 1),
+                'left' => $left,
+                'right' => ($left + 1),
+                'position' => 0,
+                'children' => [],
             ];
             $thisCategory = $this->categoriesFlat[$id];
         }
@@ -100,7 +103,7 @@ class Categories extends BaseResource
         }
 
         $lastChild = null;
-        for ($c = 0; $c < $categoriesOnThisLevel; $c++) {
+        for ($c = 0; $c < $categoriesOnThisLevel; ++$c) {
             $lastChild = $this->buildNestedTree($categoriesPerChild, $thisCategory, ($depth + 1), $lastChild);
             $lastChild['position'] = $c;
             // we do not need the whole category tree
@@ -115,9 +118,10 @@ class Categories extends BaseResource
     }
 
     /**
-     * Builds path for the given category
+     * Builds path for the given category.
      *
      * @param $id
+     *
      * @return array
      */
     private function buildPath($id)
@@ -140,12 +144,13 @@ class Categories extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @param string $type
      */
     public function getUniqueId($type)
     {
-        $this->categoriesSum++;
+        ++$this->categoriesSum;
         if (empty($this->ids[$type])) {
             $this->ids[$type] = 1;
 
@@ -158,7 +163,7 @@ class Categories extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -175,15 +180,15 @@ class Categories extends BaseResource
         $germanCategory = $this->buildNestedTree($this->config->getNumberCategories());
 
         $thisCategory = [
-            "id" => 1,
-            "parent" => 'NULL',
+            'id' => 1,
+            'parent' => 'NULL',
             'path' => '',
-            "name" => 'Root',
-            "level" => 0,
-            "position" => 0,
-            "left" => 1,
-            "right" => $germanCategory['right'] + 1,
-            "children" => [$germanCategory]
+            'name' => 'Root',
+            'level' => 0,
+            'position' => 0,
+            'left' => 1,
+            'right' => $germanCategory['right'] + 1,
+            'children' => [$germanCategory],
         ];
         $this->categoriesFlat[1] = $thisCategory;
 
@@ -200,7 +205,7 @@ class Categories extends BaseResource
         }
 
         $categoryValues = sprintf(
-            "INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;",
+            'INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;',
             implode(",\n             ", $values)
         );
 
