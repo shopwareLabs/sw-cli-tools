@@ -56,7 +56,7 @@ class Checkout
             $cloneUrl = $plugin->cloneUrlSsh;
         }
         $pluginName = $plugin->name;
-        $destPath = $plugin->module . "/" . $plugin->name;
+        $destPath = $plugin->module . '/' . $plugin->name;
 
         $absPath = $path . '/' . $destPath;
 
@@ -76,12 +76,12 @@ class Checkout
      */
     private function updatePlugin($branch, $absPath, $pluginName)
     {
-        $this->ioService->writeln("Plugin is already installed");
+        $this->ioService->writeln('Plugin is already installed');
         $this->utilities->changeDir($absPath);
 
-        $this->gitUtil->run("fetch --progress origin");
+        $this->gitUtil->run('fetch --progress origin');
 
-        $output = $this->gitUtil->run("log HEAD..origin/master --oneline");
+        $output = $this->gitUtil->run('log HEAD..origin/master --oneline');
         if (trim($output) === '') {
             $this->ioService->writeln("Plugin '$pluginName' is up to date");
             if ($branch) {
@@ -91,11 +91,11 @@ class Checkout
             return;
         }
 
-        $this->ioService->writeln("Incoming changes:");
+        $this->ioService->writeln('Incoming changes:');
         $this->ioService->writeln($output);
 
-        $this->gitUtil->run("reset --hard HEAD");
-        $this->gitUtil->run("pull");
+        $this->gitUtil->run('reset --hard HEAD');
+        $this->gitUtil->run('pull');
         if ($branch) {
             // the CWD change is a fix for older versions of GIT which do not support the -C flag
             $cwd = getcwd();

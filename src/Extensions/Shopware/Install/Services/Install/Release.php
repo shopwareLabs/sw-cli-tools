@@ -2,14 +2,14 @@
 
 namespace Shopware\Install\Services\Install;
 
-use Shopware\Install\Services\PostInstall;
-use Shopware\Install\Services\VcsGenerator;
-use Shopware\Install\Struct\InstallationRequest;
-use ShopwareCli\Config;
-use Shopware\Install\Services\ReleaseDownloader;
 use Shopware\Install\Services\ConfigWriter;
 use Shopware\Install\Services\Database;
 use Shopware\Install\Services\Demodata;
+use Shopware\Install\Services\PostInstall;
+use Shopware\Install\Services\ReleaseDownloader;
+use Shopware\Install\Services\VcsGenerator;
+use Shopware\Install\Struct\InstallationRequest;
+use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\ProcessExecutor;
 
@@ -121,7 +121,7 @@ class Release
             $this->lockInstaller($request->getAbsoluteInstallDir());
         }
 
-        $this->ioService->writeln("<info>Running post release scripts</info>");
+        $this->ioService->writeln('<info>Running post release scripts</info>');
         $this->postInstall->fixPermissions($request->getAbsoluteInstallDir());
         $this->postInstall->setupTheme($request->getAbsoluteInstallDir());
         $this->postInstall->importCustomDeltas($request->getDbName());
@@ -129,7 +129,7 @@ class Release
 
         $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
 
-        $this->ioService->writeln("<info>Install completed</info>");
+        $this->ioService->writeln('<info>Install completed</info>');
     }
 
     private function createDatabase(InstallationRequest $request)
@@ -164,7 +164,7 @@ class Release
                 continue;
             }
 
-            $key = strtolower(preg_replace("/[A-Z]/", "-$0", $key));
+            $key = strtolower(preg_replace('/[A-Z]/', '-$0', $key));
             $arguments[] = sprintf('--%s="%s"', $key, $value);
         }
 
@@ -176,7 +176,7 @@ class Release
             $arguments[] = '--skip-admin-creation';
         }
 
-        $arguments = join(" ", $arguments);
+        $arguments = join(' ', $arguments);
 
         $this->processExecutor->execute("php {$request->getAbsoluteInstallDir()}/recovery/install/index.php {$arguments}");
     }

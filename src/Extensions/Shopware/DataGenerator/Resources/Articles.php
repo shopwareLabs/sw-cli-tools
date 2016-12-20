@@ -11,26 +11,26 @@ class Articles extends BaseResource
      * @var array
      */
     protected $tables = [
-        "s_media",
-        "s_articles",
-        "s_articles_img",
-        "s_articles_prices",
-        "s_articles_details",
-        "s_articles_attributes",
-        "s_articles_categories",
-        "s_articles_categories_ro",
-        "s_article_configurator_sets",
-        "s_article_configurator_options",
-        "s_article_configurator_groups",
-        "s_article_configurator_option_relations",
-        "s_article_configurator_set_group_relations",
-        "s_article_configurator_set_option_relations",
-        "s_filter",
-        "s_filter_articles",
-        "s_filter_attributes",
-        "s_filter_options",
-        "s_filter_values",
-        "s_filter_relations",
+        's_media',
+        's_articles',
+        's_articles_img',
+        's_articles_prices',
+        's_articles_details',
+        's_articles_attributes',
+        's_articles_categories',
+        's_articles_categories_ro',
+        's_article_configurator_sets',
+        's_article_configurator_options',
+        's_article_configurator_groups',
+        's_article_configurator_option_relations',
+        's_article_configurator_set_group_relations',
+        's_article_configurator_set_option_relations',
+        's_filter',
+        's_filter_articles',
+        's_filter_attributes',
+        's_filter_options',
+        's_filter_values',
+        's_filter_relations',
     ];
 
     /**
@@ -72,7 +72,7 @@ class Articles extends BaseResource
         $filterValues = $this->config->getArticleFilterValues();
 
         for ($groupId = 1; $groupId <= $filterGroups; $groupId++) {
-            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).", ".rand(0, 1);
+            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).', '.rand(0, 1);
 
             for ($o = 1; $o <= $filterOptions; $o++) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
@@ -209,7 +209,7 @@ class Articles extends BaseResource
             $articleDetailId = $this->getUniqueId('articleDetail');
             $detailIDs = [$articleDetailId];
 
-            $configuratorSetId = $createConfigurator === 1 ? $id : "NULL";
+            $configuratorSetId = $createConfigurator === 1 ? $id : 'NULL';
             $numberOfVariants = $createConfigurator === 1 ? rand(
                 $this->config->getMinVariants(),
                 $this->config->getMaxVariants()
@@ -275,7 +275,7 @@ class Articles extends BaseResource
             }
 
             if ($this->config->getCreateImages()) {
-                throw new \Exception("Not implemented, yet");
+                throw new \Exception('Not implemented, yet');
                 // Images
                 for ($i = 1; $i <= $numImagesPerArticle; $i++) {
                     $mediaId = $this->getUniqueId('media');
@@ -435,11 +435,11 @@ class Articles extends BaseResource
         // Copy the images to media directory
         $destination = $assetsDir.($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {
-            $target = $imageDir."/".$imageName.".jpg";
+            $target = $imageDir.'/'.$imageName.'.jpg';
             copy($destination, $target);
 
             foreach ($thumbs as $size) {
-                $target = $imageDir."/thumbnail/".$imageName."_".$size.".jpg";
+                $target = $imageDir.'/thumbnail/'.$imageName.'_'.$size.'.jpg';
                 copy($destination, $target);
             }
         }

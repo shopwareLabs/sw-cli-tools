@@ -13,7 +13,7 @@ class OpenSSLVerifier
     {
         if (!is_readable($publicKey)) {
             throw new \InvalidArgumentException(sprintf(
-                "Public keyfile (%s) not readable",
+                'Public keyfile (%s) not readable',
                 $publicKey
             ));
         }

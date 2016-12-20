@@ -22,8 +22,8 @@ class FrontendFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Controllers/Frontend.tpl" => "Controllers/Frontend/{$configuration->name}.php",
-            self::CURRENT_DIR . "Resources/views/frontend/plugin_name/index.tpl" => "Resources/views/frontend/{$nameGenerator->under_score_js}/index.tpl"
+            self::CURRENT_DIR . 'Controllers/Frontend.tpl' => "Controllers/Frontend/{$configuration->name}.php",
+            self::CURRENT_DIR . 'Resources/views/frontend/plugin_name/index.tpl' => "Resources/views/frontend/{$nameGenerator->under_score_js}/index.tpl"
         ];
     }
 }

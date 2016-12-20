@@ -45,6 +45,7 @@ class ExtensionManager
     /**
      * Read all available plugins
      *
+     * @param mixed $extensionDirs
      * @throws \RuntimeException
      */
     public function discoverExtensions($extensionDirs)
@@ -78,8 +79,8 @@ class ExtensionManager
                 continue;
             }
 
-            if (!file_exists($extensionPath->getPathname() . "/Bootstrap.php")) {
-                throw new \RuntimeException(sprintf("Could not find Bootstrap.php in %s", $extensionPath->getPathname()));
+            if (!file_exists($extensionPath->getPathname() . '/Bootstrap.php')) {
+                throw new \RuntimeException(sprintf('Could not find Bootstrap.php in %s', $extensionPath->getPathname()));
             }
 
             $extensionName = $extensionPath->getBasename();

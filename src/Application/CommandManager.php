@@ -3,8 +3,8 @@
 namespace ShopwareCli\Application;
 
 use ShopwareCli\Command;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CommandManager
 {

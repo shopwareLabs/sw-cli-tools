@@ -147,7 +147,7 @@ class PluginColumnRenderer
         }
 
         $this->ioService->write(implode($columns, $spacer));
-        $this->ioService->writeln("");
+        $this->ioService->writeln('');
     }
 
     /**

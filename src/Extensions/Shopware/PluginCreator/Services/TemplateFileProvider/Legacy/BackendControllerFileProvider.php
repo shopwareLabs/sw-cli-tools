@@ -23,7 +23,7 @@ class BackendControllerFileProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . "Controllers/Backend.tpl" => "Controllers/Backend/{$configuration->name}.php"
+            self::LEGACY_DIR . 'Controllers/Backend.tpl' => "Controllers/Backend/{$configuration->name}.php"
         ];
     }
 }

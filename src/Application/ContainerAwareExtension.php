@@ -8,7 +8,6 @@ interface ContainerAwareExtension
 {
     /**
      * @param  ContainerBuilder $container
-     * @return void
      */
     public function setContainer(ContainerBuilder $container);
 }

@@ -22,7 +22,7 @@ class CommandFileProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . "Commands/Command.tpl" => "Commands/{$nameGenerator->camelCaseModel}.php"
+            self::LEGACY_DIR . 'Commands/Command.tpl' => "Commands/{$nameGenerator->camelCaseModel}.php"
         ];
     }
 }

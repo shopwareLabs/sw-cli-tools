@@ -17,12 +17,12 @@ interface FileProviderInterface
     /**
      * Directory which holds the file structure for the current plugin system.
      */
-    const CURRENT_DIR = "current/";
+    const CURRENT_DIR = 'current/';
 
     /**
      * Directory which holds the legacy file structure.
      */
-    const LEGACY_DIR = "legacy/";
+    const LEGACY_DIR = 'legacy/';
 
     /**
      * @param Configuration $configuration

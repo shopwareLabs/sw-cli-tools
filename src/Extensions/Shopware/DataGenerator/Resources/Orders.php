@@ -10,12 +10,12 @@ class Orders extends BaseResource
      * @var array
      */
     protected $tables = [
-        "s_order",
-        "s_order_details",
-        "s_order_billingaddress",
-        "s_order_billingaddress_attributes",
-        "s_order_shippingaddress",
-        "s_order_shippingaddress_attributes"
+        's_order',
+        's_order_details',
+        's_order_billingaddress',
+        's_order_billingaddress_attributes',
+        's_order_shippingaddress',
+        's_order_shippingaddress_attributes'
     ];
 
     /**
@@ -111,37 +111,37 @@ class Orders extends BaseResource
     {
         $sql = [];
 
-        $sql[] = "
-            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr` ) VALUES ".implode(
+        $sql[] = '
+            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr` ) VALUES '.implode(
                 ",\n            ",
                 $valueData['orderValues']
-            ).";";
+            ).';';
 
-        $sql[] = "
+        $sql[] = '
             INSERT INTO `s_order_details` (`id`, `orderID`, `ordernumber`, `articleID`, `articleordernumber`, `price`, `quantity`, `name`, `status`, `shipped`, `shippedgroup`) VALUES
-            ".implode(",", $valueData['orderDetailValues']).";";
+            '.implode(',', $valueData['orderDetailValues']).';';
 
-        $sql[] = "
-            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES ".implode(
-                " , ",
+        $sql[] = '
+            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES '.implode(
+                ' , ',
                 $valueData['customerBillingValues']
-            ).";";
-        $sql[] = "
-            INSERT INTO `s_order_shippingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `countryID`, `stateID`) VALUES ".implode(
-                " , ",
+            ).';';
+        $sql[] = '
+            INSERT INTO `s_order_shippingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `countryID`, `stateID`) VALUES '.implode(
+                ' , ',
                 $valueData['customerShippingValues']
-            ).";";
+            ).';';
 
-        $sql[] = "
-            INSERT INTO `s_order_shippingaddress_attributes` (`id`, `shippingID`) VALUES ".implode(
-                ", ",
+        $sql[] = '
+            INSERT INTO `s_order_shippingaddress_attributes` (`id`, `shippingID`) VALUES '.implode(
+                ', ',
                 $valueData['customerBillingAttributeValues']
-            ).";";
-        $sql[] = "
-            INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES ".implode(
-                ", ",
+            ).';';
+        $sql[] = '
+            INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES '.implode(
+                ', ',
                 $valueData['customerBillingAttributeValues']
-            ).";";
+            ).';';
 
 
         return $sql;

@@ -34,7 +34,7 @@ EOF;
 
     public function createVcsMapping($installDir, $paths)
     {
-        $this->ioService->writeln("<info>Generating VCS mapping</info>");
+        $this->ioService->writeln('<info>Generating VCS mapping</info>');
 
         $dir = $installDir.'/.idea';
         if (!is_dir($dir)) {

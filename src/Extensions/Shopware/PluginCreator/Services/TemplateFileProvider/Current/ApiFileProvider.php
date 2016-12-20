@@ -22,9 +22,9 @@ class ApiFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . "Subscriber/ApiSubscriber.tpl" => "Subscriber/ApiSubscriber.php"
+            self::CURRENT_DIR . 'Components/Api/Resource/Resource.tpl' => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR . 'Controllers/Api.tpl' => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR . 'Subscriber/ApiSubscriber.tpl' => 'Subscriber/ApiSubscriber.php'
         ];
     }
 }

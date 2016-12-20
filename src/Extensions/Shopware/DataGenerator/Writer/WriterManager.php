@@ -91,7 +91,7 @@ class WriterManager
      */
     public function flushAll()
     {
-        $this->ioService->writeln("Flushing data...");
+        $this->ioService->writeln('Flushing data...');
 
         $compare = function ($a, $b) {
             if ($a->getPriority() == $b->getPriority()) {
@@ -109,8 +109,8 @@ class WriterManager
         }
 
         if ($this->displayImportMessage == true) {
-            $this->ioService->writeln("Done. Please import SQLs using something like this:");
-            $this->ioService->writeln("mysql --local-infile -uroot -proot DATABASE < FILE.sql");
+            $this->ioService->writeln('Done. Please import SQLs using something like this:');
+            $this->ioService->writeln('mysql --local-infile -uroot -proot DATABASE < FILE.sql');
         }
     }
 

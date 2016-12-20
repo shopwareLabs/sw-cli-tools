@@ -22,8 +22,8 @@ class ModelFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Models/Model.tpl" => "Models/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . "Models/Repository.tpl" => "Models/Repository.php"
+            self::CURRENT_DIR . 'Models/Model.tpl' => "Models/{$nameGenerator->camelCaseModel}.php",
+            self::CURRENT_DIR . 'Models/Repository.tpl' => 'Models/Repository.php'
         ];
     }
 }

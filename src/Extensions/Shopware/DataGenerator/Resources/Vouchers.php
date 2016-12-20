@@ -16,10 +16,10 @@ class Vouchers extends BaseResource
      * @var array
      */
     protected $tables = [
-        "s_emarketing_vouchers",
-        "s_emarketing_vouchers_attributes",
-        "s_emarketing_vouchers_cashed",
-        "s_emarketing_voucher_codes",
+        's_emarketing_vouchers',
+        's_emarketing_vouchers_attributes',
+        's_emarketing_vouchers_cashed',
+        's_emarketing_voucher_codes',
     ];
 
     /**

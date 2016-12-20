@@ -29,12 +29,12 @@ class StreamFileDownloader implements FileDownloader
      */
     public function download($sourceUrl, $destination)
     {
-        if (false === $readHandle = fopen($sourceUrl, "rb")) {
+        if (false === $readHandle = fopen($sourceUrl, 'rb')) {
             throw new \RuntimeException(sprintf("Could not open URL '%s'.", $sourceUrl));
         }
 
-        if (false === $writeHandle = fopen($destination, "wb")) {
-            throw new \RuntimeException(sprintf("Could not write file: %s.", $destination));
+        if (false === $writeHandle = fopen($destination, 'wb')) {
+            throw new \RuntimeException(sprintf('Could not write file: %s.', $destination));
         }
 
         $length = $this->getContentLengthFromStream($readHandle);

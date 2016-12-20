@@ -24,7 +24,7 @@ return PhpCsFixer\Config::create()
         'combine_consecutive_unsets' => true,
         'hash_to_slash_comment' => true,
         'linebreak_after_opening_tag' => true,
-        //'single_quote' => true,
+        'single_quote' => true,
         'short_scalar_cast' => true,
     ])
     ->setFinder($finder)

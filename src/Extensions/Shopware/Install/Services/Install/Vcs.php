@@ -2,13 +2,13 @@
 
 namespace Shopware\Install\Services\Install;
 
-use Shopware\Install\Services\PostInstall;
-use ShopwareCli\Config;
 use Shopware\Install\Services\Checkout;
-use Shopware\Install\Services\VcsGenerator;
 use Shopware\Install\Services\ConfigWriter;
 use Shopware\Install\Services\Database;
 use Shopware\Install\Services\Demodata;
+use Shopware\Install\Services\PostInstall;
+use Shopware\Install\Services\VcsGenerator;
+use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
 
 /**
@@ -91,13 +91,13 @@ class Vcs
             $this->demoData->setup($installDir);
         }
 
-        $this->ioService->writeln("<info>Running post release scripts</info>");
+        $this->ioService->writeln('<info>Running post release scripts</info>');
         $this->postInstall->fixPermissions($installDir);
         $this->postInstall->importCustomDeltas($database);
         $this->postInstall->runCustomScripts($installDir);
         $this->postInstall->fixShopHost($database);
 
-        $this->ioService->writeln("<info>Install completed</info>");
+        $this->ioService->writeln('<info>Install completed</info>');
     }
 
     private function getDestinationPath($installDir, $destination)
@@ -108,8 +108,8 @@ class Vcs
     /**
      * Enforce a configured core repository
      *
-     * @return mixed
      * @throws \RuntimeException
+     * @return mixed
      */
     private function checkCoreConfig()
     {

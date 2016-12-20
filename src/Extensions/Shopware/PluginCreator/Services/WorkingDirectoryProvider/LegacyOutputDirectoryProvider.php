@@ -37,7 +37,7 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
     {
         if (!$this->isValidNamespace($namespace) && strlen($namespace)) {
             throw new \Exception(
-                sprintf("Invalid namespace given: %s", $namespace)
+                sprintf('Invalid namespace given: %s', $namespace)
             );
         }
 

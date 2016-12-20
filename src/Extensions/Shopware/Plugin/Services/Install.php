@@ -88,7 +88,7 @@ class Install
     public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
-        $pluginDestPath = $plugin->module . "/" . $plugin->name;
+        $pluginDestPath = $plugin->module . '/' . $plugin->name;
 
         if (!file_exists($vcsMappingFile)) {
             return;

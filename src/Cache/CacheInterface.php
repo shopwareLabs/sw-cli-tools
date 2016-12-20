@@ -20,19 +20,16 @@ interface CacheInterface
      */
     public function read($key);
 
-    /**
-     * @return void
-     */
+    
     public function delete($key);
 
     /**
+     * @param mixed $key
      * @return boolean
      */
     public function exists($key);
 
-    /**
-     * @return void
-     */
+    
     public function clear();
 
     public function getKeys();
