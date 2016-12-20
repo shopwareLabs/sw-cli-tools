@@ -2,9 +2,9 @@
 
 namespace Shopware\Plugin\Services;
 
+use Shopware\Plugin\RepositoryAwareExtension;
 use Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory;
 use ShopwareCli\Application\ExtensionManager;
-use Shopware\Plugin\RepositoryAwareExtension;
 
 /**
  * Collect default and plugin repositories

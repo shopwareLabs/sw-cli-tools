@@ -32,8 +32,8 @@ class OpenSSLVerifier
     /**
      * @param string $message
      * @param string $signature
-     * @return bool
      * @throws \RuntimeException
+     * @return bool
      */
     public function isValid($message, $signature)
     {

@@ -35,8 +35,8 @@ class BootstrapInfo
      * Return name and namespace from a plugin by regex-ing the class name
      *
      * @param  string            $content
-     * @return string[]
      * @throws \RuntimeException
+     * @return string[]
      */
     private function analyzeClass($content)
     {

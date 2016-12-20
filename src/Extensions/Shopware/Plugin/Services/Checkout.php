@@ -2,9 +2,9 @@
 
 namespace Shopware\Plugin\Services;
 
+use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\GitUtil;
 use ShopwareCli\Services\IoService;
-use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Utilities;
 
 /**
@@ -104,8 +104,6 @@ class Checkout
             $this->utilities->changeDir($cwd);
         }
         $this->ioService->writeln("Plugin '$pluginName' successfully updated.\n");
-
-        return;
     }
 
     /**

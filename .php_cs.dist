@@ -9,9 +9,22 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'function_typehint_space' => true,
+        'function_declaration' => true,
+        'no_empty_phpdoc' => true,
+        'no_empty_comment' => true,
+        'no_useless_return' => true,
+        'ordered_imports' => true,
+        'phpdoc_add_missing_param_annotation' => [
+            'only_untyped' => false
+        ],
+        'phpdoc_no_empty_return' => true,
+        'phpdoc_order' => true,
+        'phpdoc_types' => true,
         'combine_consecutive_unsets' => true,
         'hash_to_slash_comment' => true,
         'linebreak_after_opening_tag' => true,
+        //'single_quote' => true,
         'short_scalar_cast' => true,
     ])
     ->setFinder($finder)

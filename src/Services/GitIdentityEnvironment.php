@@ -42,8 +42,8 @@ EOF;
      * Will return the path to the custom SSH key. Will return null if no
      * custom key is configured
      *
-     * @return null|string
      * @throws \RuntimeException
+     * @return null|string
      */
     private function getCustomKey()
     {
@@ -92,8 +92,8 @@ EOF;
     /**
      * Return path of the git wrapper file. If it doesn't exist, it will be created
      *
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     private function getGitWrapper()
     {

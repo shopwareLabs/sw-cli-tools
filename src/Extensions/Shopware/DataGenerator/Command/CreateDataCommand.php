@@ -156,6 +156,7 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param InputInterface $input
      * @param string optionName
      * @param string|null $optionHumanName
+     * @param mixed $optionName
      */
     private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null)
     {
@@ -176,8 +177,9 @@ Requires \'local-infile=1\' in your MySQL installation.
 
     /**
      * @param  string
-     * @return int
+     * @param mixed $input
      * @throws \RuntimeException
+     * @return int
      */
     public function validateInt($input)
     {

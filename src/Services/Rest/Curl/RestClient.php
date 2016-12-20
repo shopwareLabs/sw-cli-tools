@@ -73,8 +73,8 @@ class RestClient implements RestInterface
      * @param  string     $method
      * @param  array      $parameters
      * @param  array      $headers
-     * @return Response
      * @throws \Exception
+     * @return Response
      */
     public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])
     {
