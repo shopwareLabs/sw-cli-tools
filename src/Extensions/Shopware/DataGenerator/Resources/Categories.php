@@ -38,7 +38,7 @@ class Categories extends BaseResource
      */
     private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null)
     {
-        $categoriesOnThisLevel = ($depth === 1) ? 6 : rand(2, 10);
+        $categoriesOnThisLevel = ($depth === 0) ? 6 : rand(2, 10);
         $categoriesPerChild = round($number / $categoriesOnThisLevel);
 
         // Due to round and random calculation of subcategories

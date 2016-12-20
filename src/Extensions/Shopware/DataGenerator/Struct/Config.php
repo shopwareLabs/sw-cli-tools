@@ -16,8 +16,8 @@ class Config
     protected $numberVouchers = 0;
     protected $categoriesPerArticle = 3;
     protected $articleFilterGroups = 1;
-    protected $articleFilterOptions = 50;
-    protected $articleFilterValues = 70;
+    protected $articleFilterOptions = 15;
+    protected $articleFilterValues = 20;
 
     /**
      * Path of the image directory
