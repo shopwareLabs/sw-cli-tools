@@ -24,7 +24,7 @@ interface CacheInterface
     public function delete($key);
 
     /**
-     * @param mixed $key
+     * @param $key
      * @return boolean
      */
     public function exists($key);

@@ -37,7 +37,7 @@ class BufferedFileWriter implements WriterInterface
 
     /**
      * @param string $file
-     * @param mixed $maxBufferSize
+     * @param $maxBufferSize
      */
     public function __construct($file, $maxBufferSize = 50)
     {

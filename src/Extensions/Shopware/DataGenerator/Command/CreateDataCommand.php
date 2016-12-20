@@ -156,7 +156,7 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param InputInterface $input
      * @param string optionName
      * @param string|null $optionHumanName
-     * @param mixed $optionName
+     * @param $optionName
      */
     private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null)
     {
@@ -176,8 +176,7 @@ Requires \'local-infile=1\' in your MySQL installation.
     }
 
     /**
-     * @param  string
-     * @param mixed $input
+     * @param $input
      * @throws \RuntimeException
      * @return int
      */
@@ -190,7 +189,7 @@ Requires \'local-infile=1\' in your MySQL installation.
             throw new \RuntimeException('Field has to be numeric');
         }
 
-        return intval($input);
+        return (int)$input;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

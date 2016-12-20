@@ -109,7 +109,7 @@ class Vcs
      * Enforce a configured core repository
      *
      * @throws \RuntimeException
-     * @return mixed
+     * @return $core
      */
     private function checkCoreConfig()
     {

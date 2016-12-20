@@ -45,7 +45,7 @@ class ExtensionManager
     /**
      * Read all available plugins
      *
-     * @param mixed $extensionDirs
+     * @param $extensionDirs
      * @throws \RuntimeException
      */
     public function discoverExtensions($extensionDirs)

@@ -11,7 +11,7 @@ class DependencyInjection
 {
     const DEFAULT_PROCESS_TIMEOUT = 180;
     /**
-     * @param mixed $rootDir
+     * @param $rootDir
      * @return ContainerBuilder
      */
     public static function createContainer($rootDir)

@@ -31,7 +31,7 @@ abstract class Struct
 
     /**
      * @param string $name
-     * @param mixed  $value
+     * @param $value
      *
      * @throws \OutOfRangeException
      */

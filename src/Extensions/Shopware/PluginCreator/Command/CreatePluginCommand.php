@@ -230,7 +230,7 @@ EOF
      *
      * @param $input
      * @throws \InvalidArgumentException
-     * @return mixed
+     * @return $input
      */
     public function validateNamespace($input)
     {
@@ -246,7 +246,7 @@ EOF
      *
      * @param $input
      * @throws \InvalidArgumentException
-     * @return mixed
+     * @return $input
      */
     public function validateModel($input)
     {

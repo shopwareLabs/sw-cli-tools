@@ -62,7 +62,7 @@ class Zip
 
     /**
      * @param string $directory
-     * @param mixed $outputFile
+     * @param $outputFile
      */
     public function zipDir($directory, $outputFile)
     {
