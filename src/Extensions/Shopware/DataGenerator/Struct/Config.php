@@ -176,7 +176,7 @@ class Config
             return;
         }
         if (is_string($thumbnailSizes)) {
-            $thumbnailSizes = explode(",", $thumbnailSizes);
+            $thumbnailSizes = explode(',', $thumbnailSizes);
         }
         $this->thumbnailSizes = $thumbnailSizes;
     }
@@ -255,7 +255,7 @@ class Config
      */
     public function setImageDir($imageDir)
     {
-        $dir = $imageDir."/"."thumbnail";
+        $dir = $imageDir.'/'.'thumbnail';
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }

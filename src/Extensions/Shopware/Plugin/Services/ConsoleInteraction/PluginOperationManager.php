@@ -3,8 +3,8 @@
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
 use Shopware\Plugin\Services\PluginProvider;
-use ShopwareCli\Services\IoService;
 use Shopware\Plugin\Struct\Plugin;
+use ShopwareCli\Services\IoService;
 use ShopwareCli\Utilities;
 use Symfony\Component\Console\Output\OutputInterface;
 

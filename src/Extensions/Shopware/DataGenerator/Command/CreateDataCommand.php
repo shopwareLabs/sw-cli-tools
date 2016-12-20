@@ -156,6 +156,7 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param InputInterface $input
      * @param string optionName
      * @param string|null $optionHumanName
+     * @param $optionName
      */
     private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null)
     {
@@ -175,9 +176,9 @@ Requires \'local-infile=1\' in your MySQL installation.
     }
 
     /**
-     * @param  string
-     * @return int
+     * @param $input
      * @throws \RuntimeException
+     * @return int
      */
     public function validateInt($input)
     {
@@ -185,10 +186,10 @@ Requires \'local-infile=1\' in your MySQL installation.
             return 0;
         }
         if (!is_numeric($input)) {
-            throw new \RuntimeException("Field has to be numeric");
+            throw new \RuntimeException('Field has to be numeric');
         }
 
-        return intval($input);
+        return (int)$input;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -289,10 +290,10 @@ Requires \'local-infile=1\' in your MySQL installation.
     ) {
         // Check some pre-conditions
         if ($articles > 0 && !$categories) {
-            throw new \UnexpectedValueException("Articles require categories");
+            throw new \UnexpectedValueException('Articles require categories');
         }
         if ($orders > 0 && !$articles) {
-            throw new \UnexpectedValueException("Orders require articles");
+            throw new \UnexpectedValueException('Orders require articles');
         }
 
         /** @var Config $config */

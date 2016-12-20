@@ -54,7 +54,7 @@ class Config implements \ArrayAccess
     }
 
     /**
-     * @param mixed $offset
+     * @param $offset
      *
      * @return bool
      */
@@ -64,7 +64,7 @@ class Config implements \ArrayAccess
     }
 
     /**
-     * @param mixed $offset
+     * @param $offset
      *
      * @return mixed
      */
@@ -74,8 +74,8 @@ class Config implements \ArrayAccess
     }
 
     /**
-     * @param mixed $offset
-     * @param mixed $value
+     * @param $offset
+     * @param $value
      */
     public function offsetSet($offset, $value)
     {
@@ -83,7 +83,7 @@ class Config implements \ArrayAccess
     }
 
     /**
-     * @param mixed $offset
+     * @param $offset
      */
     public function offsetUnset($offset)
     {

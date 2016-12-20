@@ -7,19 +7,19 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 class Newsletter extends BaseResource
 {
     protected $tables = [
-        "s_campaigns_articles",
-        "s_campaigns_banner",
-        "s_campaigns_containers",
-        "s_campaigns_groups",
-        "s_campaigns_html",
-        "s_campaigns_links",
-        "s_campaigns_logs",
-        "s_campaigns_mailaddresses",
-        "s_campaigns_maildata",
-        "s_campaigns_mailings",
-        "s_campaigns_positions",
-        "s_campaigns_sender",
-        "s_campaigns_templates"
+        's_campaigns_articles',
+        's_campaigns_banner',
+        's_campaigns_containers',
+        's_campaigns_groups',
+        's_campaigns_html',
+        's_campaigns_links',
+        's_campaigns_logs',
+        's_campaigns_mailaddresses',
+        's_campaigns_maildata',
+        's_campaigns_mailings',
+        's_campaigns_positions',
+        's_campaigns_sender',
+        's_campaigns_templates'
     ];
 
     /**
@@ -41,7 +41,7 @@ class Newsletter extends BaseResource
         // Recipients
         $writer->write(
             sprintf(
-                "INSERT IGNORE INTO `s_campaigns_mailaddresses` (`id`, `customer`, `groupID`, `email`, `lastmailing`, `lastread`) VALUES %s;",
+                'INSERT IGNORE INTO `s_campaigns_mailaddresses` (`id`, `customer`, `groupID`, `email`, `lastmailing`, `lastread`) VALUES %s;',
                 implode(",\n ", $addressValues)
             )
         );
@@ -53,7 +53,7 @@ class Newsletter extends BaseResource
 
         // Groups assigned to the newsletter
         $groups = [
-            ["EK" => 0, "H" => 0],
+            ['EK' => 0, 'H' => 0],
             [1 => 0]
         ];
         $groups = serialize($groups);

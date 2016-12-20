@@ -3,9 +3,9 @@
 namespace Shopware\Plugin\Command;
 
 use Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager;
+use Shopware\Plugin\Services\Install;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Command\BaseCommand;
-use Shopware\Plugin\Services\Install;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

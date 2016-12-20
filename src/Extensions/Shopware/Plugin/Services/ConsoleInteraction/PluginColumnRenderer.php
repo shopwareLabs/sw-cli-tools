@@ -3,9 +3,9 @@
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
 use Shopware\Plugin\Struct\DisplayPlugin;
+use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
-use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
@@ -147,7 +147,7 @@ class PluginColumnRenderer
         }
 
         $this->ioService->write(implode($columns, $spacer));
-        $this->ioService->writeln("");
+        $this->ioService->writeln('');
     }
 
     /**

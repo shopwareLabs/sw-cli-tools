@@ -2,9 +2,9 @@
 
 namespace Shopware\Install;
 
-use Shopware\Install\Command\ShopwareInstallVcsCommand;
-use Shopware\Install\Command\ShopwareInstallReleaseCommand;
 use Shopware\Install\Command\ShopwareClearCacheCommand;
+use Shopware\Install\Command\ShopwareInstallReleaseCommand;
+use Shopware\Install\Command\ShopwareInstallVcsCommand;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -43,13 +43,13 @@ class PluginFactory
     private static function setPluginModuleFromName($name, Plugin $plugin)
     {
         if (stripos($name, 'frontend') === 0) {
-            $plugin->module = "Frontend";
+            $plugin->module = 'Frontend';
             $plugin->name = substr($name, 9);
         } elseif (stripos($name, 'backend') === 0) {
-            $plugin->module = "Backend";
+            $plugin->module = 'Backend';
             $plugin->name = substr($name, 8);
         } elseif (stripos($name, 'core') === 0) {
-            $plugin->module = "Core";
+            $plugin->module = 'Core';
             $plugin->name = substr($name, 5);
         }
 

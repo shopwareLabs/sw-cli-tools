@@ -45,7 +45,7 @@ class Utilities
         }
 
         return $this->ioService->askAndValidate(
-            "Path to your Shopware installation: ",
+            'Path to your Shopware installation: ',
             [$this, 'validateShopwarePath']
         );
     }
@@ -54,8 +54,8 @@ class Utilities
      * Shopware path validator - can be used in askAndValidate methods
      *
      * @param  string $shopwarePath
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     public function validateShopwarePath($shopwarePath)
     {

@@ -48,7 +48,7 @@ EOF;
 
     public function writeConfigPhp($installDir, $user, $password, $name, $host, $port = 3306)
     {
-        $this->ioService->writeln("<info>Writing config.php</info>");
+        $this->ioService->writeln('<info>Writing config.php</info>');
 
         $config = sprintf($this->configTemplate, $user, $password, $name, $host, $port);
 
@@ -57,7 +57,7 @@ EOF;
 
     public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost, $port = 3306)
     {
-        $this->ioService->writeln("<info>Writing build.properties</info>");
+        $this->ioService->writeln('<info>Writing build.properties</info>');
 
         $shopPath = '/' . ltrim($shopPath, '/');
 

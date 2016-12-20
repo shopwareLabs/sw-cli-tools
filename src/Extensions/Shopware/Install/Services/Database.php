@@ -57,7 +57,7 @@ class Database
     private function getConnection()
     {
         if (!$this->connection) {
-            throw new \RuntimeException("Connection was not created");
+            throw new \RuntimeException('Connection was not created');
         }
 
         return $this->connection;
@@ -128,7 +128,7 @@ EOF
             return;
         }
 
-        $this->ioService->writeln("<info>Running build-unit</info>");
+        $this->ioService->writeln('<info>Running build-unit</info>');
         $command = sprintf('ant -f %s build-unit', $buildXml);
         $this->processExecutor->execute($command);
     }
@@ -141,7 +141,7 @@ EOF
      */
     private function saltPassword($password)
     {
-        return md5("A9ASD:_AD!_=%a8nx0asssblPlasS$" . md5($password));
+        return md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . md5($password));
     }
 
     /**
@@ -152,27 +152,27 @@ EOF
      * @param  string            $mail
      * @param  string            $language
      * @param  string            $password
-     * @return bool
      * @throws \RuntimeException
+     * @return bool
      */
     public function createAdmin($user, $name, $mail, $language, $password)
     {
         $this->ioService->writeln("<info>Creating admin user $user</info>");
 
-        $fetchLanguageId = $this->getConnection()->prepare("SELECT id FROM s_core_locales WHERE locale = ?");
+        $fetchLanguageId = $this->getConnection()->prepare('SELECT id FROM s_core_locales WHERE locale = ?');
         $fetchLanguageId->execute([$language]);
         $fetchLanguageId = $fetchLanguageId->fetchColumn();
 
-        $authTableVersion = $this->getConnection()->prepare("SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411");
+        $authTableVersion = $this->getConnection()->prepare('SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411');
         $authTableVersion->execute();
         $authTableVersion = $authTableVersion->fetchColumn();
 
         if (!$fetchLanguageId) {
-            throw new \RuntimeException("Could not resolve language ".$language);
+            throw new \RuntimeException('Could not resolve language '.$language);
         }
 
          // Drop previous inserted admins
-        $this->getConnection()->query("DELETE FROM s_core_auth");
+        $this->getConnection()->query('DELETE FROM s_core_auth');
 
         // Insert new admin
         if ($authTableVersion) {
@@ -209,7 +209,7 @@ EOF;
      */
     private function importBaseDelta($installDir)
     {
-        $this->ioService->writeln("<info>Importing main delta</info>");
+        $this->ioService->writeln('<info>Importing main delta</info>');
 
         $installDataDir = $this->getInstallDataFolder($installDir);
 
@@ -217,7 +217,7 @@ EOF;
         $pathLatest = "{$installDataDir}/install.sql";
 
         if (!$installDataDir || (!file_exists($path42) && !file_exists($pathLatest))) {
-            throw new \RuntimeException("Could not find setup delta");
+            throw new \RuntimeException('Could not find setup delta');
         }
 
         $path = file_exists($path42) ? $path42 : $pathLatest;
@@ -234,13 +234,13 @@ EOF;
      */
     private function importSnippetDeltas($installDir)
     {
-        $this->ioService->writeln("<info>Importing snippet delta</info>");
+        $this->ioService->writeln('<info>Importing snippet delta</info>');
 
         $installDataDir = $this->getInstallDataFolder($installDir);
         $snippetsFilePath = "{$installDataDir}/snippets.sql";
 
         if (!file_exists($installDataDir) || !file_exists($snippetsFilePath)) {
-            $this->ioService->writeln("<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>");
+            $this->ioService->writeln('<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>');
 
             return;
         }

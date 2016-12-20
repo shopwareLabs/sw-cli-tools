@@ -229,8 +229,8 @@ EOF
      * Make sure the namespace is one of core, backend, frontend
      *
      * @param $input
-     * @return mixed
      * @throws \InvalidArgumentException
+     * @return $input
      */
     public function validateNamespace($input)
     {
@@ -245,8 +245,8 @@ EOF
      * Check the entered model (check might be somewhat more sufisticated)
      *
      * @param $input
-     * @return mixed
      * @throws \InvalidArgumentException
+     * @return $input
      */
     public function validateModel($input)
     {

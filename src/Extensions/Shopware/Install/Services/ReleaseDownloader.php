@@ -65,14 +65,14 @@ class ReleaseDownloader
      */
     public function downloadRelease($release, $installDir)
     {
-        $this->ioService->writeln("<info>Downloading release</info>");
+        $this->ioService->writeln('<info>Downloading release</info>');
         $zipLocation = $this->downloadFromUpdateApi($release);
 
         if (!is_dir($installDir)) {
             mkdir($installDir);
         }
 
-        $this->ioService->writeln("<info>Unzipping archive</info>");
+        $this->ioService->writeln('<info>Unzipping archive</info>');
         $this->processExecutor->execute("unzip -qq {$zipLocation} -d {$installDir}");
     }
 
@@ -92,7 +92,7 @@ class ReleaseDownloader
             if ($release == 'latest') {
                 $content = array_shift($indexedReleases);
             } else {
-                throw new \RuntimeException(sprintf("Could not find release %s", $release));
+                throw new \RuntimeException(sprintf('Could not find release %s', $release));
             }
         }
 
@@ -110,7 +110,7 @@ class ReleaseDownloader
         $this->downloader->download($url, $target);
         $sha1Actual = sha1_file($target);
         if ($sha1 != $sha1Actual) {
-            throw new \RuntimeException("Hash mismatch");
+            throw new \RuntimeException('Hash mismatch');
         }
         copy($target, $cacheFilePath);
 
@@ -138,7 +138,7 @@ class ReleaseDownloader
 
         $releases = $response->json();
         if (empty($releases)) {
-            throw new \RuntimeException("Could not get releases list package");
+            throw new \RuntimeException('Could not get releases list package');
         }
 
         $indexedReleases = [];

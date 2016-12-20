@@ -3,8 +3,8 @@ namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\IoService;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand

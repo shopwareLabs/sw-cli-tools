@@ -46,7 +46,7 @@ class RestClient implements RestInterface
      * @param  array       $curlOptions
      * @throws \Exception
      */
-    public function __construct($apiUrl, $username = "", $apiKey = "", $curlOptions = [])
+    public function __construct($apiUrl, $username = '', $apiKey = '', $curlOptions = [])
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
             throw new \Exception('Invalid URL given');
@@ -73,8 +73,8 @@ class RestClient implements RestInterface
      * @param  string     $method
      * @param  array      $parameters
      * @param  array      $headers
-     * @return Response
      * @throws \Exception
+     * @return Response
      */
     public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])
     {

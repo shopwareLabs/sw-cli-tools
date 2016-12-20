@@ -3,9 +3,9 @@
 namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Services\Repositories\BaseRepository;
-use ShopwareCli\Config;
 use Shopware\Plugin\Services\Repositories\RepositoryInterface;
 use Shopware\Plugin\Struct\Plugin;
+use ShopwareCli\Config;
 
 /**
  * Class PluginProvider

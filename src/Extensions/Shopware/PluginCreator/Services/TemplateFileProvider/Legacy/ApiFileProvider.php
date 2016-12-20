@@ -22,8 +22,8 @@ class ApiFileProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . "Components/Api/Resource/Resource.tpl" => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
-            self::LEGACY_DIR . "Controllers/Api.tpl" => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
+            self::LEGACY_DIR . 'Components/Api/Resource/Resource.tpl' => "Components/Api/Resource/{$nameGenerator->camelCaseModel}.php",
+            self::LEGACY_DIR . 'Controllers/Api.tpl' => "Controllers/Api/{$nameGenerator->camelCaseModel}.php",
         ];
     }
 }

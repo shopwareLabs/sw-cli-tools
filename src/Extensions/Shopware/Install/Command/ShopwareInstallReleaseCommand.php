@@ -5,8 +5,8 @@ use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
@@ -146,13 +146,13 @@ EOF
 
     /**
      * @param  string            $input
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     public function genericValidator($input)
     {
         if (empty($input)) {
-            throw new \RuntimeException("Field may not be empty");
+            throw new \RuntimeException('Field may not be empty');
         }
 
         return $input;
@@ -160,8 +160,8 @@ EOF
 
     /**
      * @param  string            $path
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     public function validateInstallDir($path)
     {
@@ -213,7 +213,7 @@ EOF
                 continue;
             }
 
-            //
+            
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
                 [$this, 'genericValidator']
@@ -302,7 +302,7 @@ EOF
     {
         $databaseUser = $input->getOption('db-user');
         if (!$databaseUser) {
-            $databaseUser = $ioService->ask("Please provide the database user: ");
+            $databaseUser = $ioService->ask('Please provide the database user: ');
             $input->setOption('db-user', trim($databaseUser));
         }
     }
@@ -315,7 +315,7 @@ EOF
     {
         $databasePassword = $input->getOption('db-password');
         if (!$databasePassword) {
-            $databasePassword = $ioService->ask("Please provide the database password: ");
+            $databasePassword = $ioService->ask('Please provide the database password: ');
             $input->setOption('db-password', trim($databasePassword));
         }
     }

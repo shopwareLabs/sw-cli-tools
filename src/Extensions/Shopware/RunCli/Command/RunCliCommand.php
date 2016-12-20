@@ -71,7 +71,7 @@ EOF
         } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
 
         return $ioService->askAndValidate(
-            "Path to your Shopware installation: ",
+            'Path to your Shopware installation: ',
             [$this->container->get('utilities'), 'validateShopwarePath']
         );
     }

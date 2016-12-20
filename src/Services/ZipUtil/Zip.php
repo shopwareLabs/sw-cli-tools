@@ -95,9 +95,9 @@ class Zip extends Adapter
             case ZipArchive::ER_INCONS:
                 return sprintf("Zip archive '%s' is inconsistent.", $file);
             case ZipArchive::ER_INVAL:
-                return sprintf("Invalid argument (%s)", $file);
+                return sprintf('Invalid argument (%s)', $file);
             case ZipArchive::ER_MEMORY:
-                return sprintf("Malloc failure (%s)", $file);
+                return sprintf('Malloc failure (%s)', $file);
             case ZipArchive::ER_NOENT:
                 return sprintf("No such zip file: '%s'", $file);
             case ZipArchive::ER_NOZIP:
@@ -105,9 +105,9 @@ class Zip extends Adapter
             case ZipArchive::ER_OPEN:
                 return sprintf("Can't open zip file: %s", $file);
             case ZipArchive::ER_READ:
-                return sprintf("Zip read error (%s)", $file);
+                return sprintf('Zip read error (%s)', $file);
             case ZipArchive::ER_SEEK:
-                return sprintf("Zip seek error (%s)", $file);
+                return sprintf('Zip seek error (%s)', $file);
             default:
                 return sprintf("'%s' is not a valid zip archive, got error code: %s", $file, $retval);
         }

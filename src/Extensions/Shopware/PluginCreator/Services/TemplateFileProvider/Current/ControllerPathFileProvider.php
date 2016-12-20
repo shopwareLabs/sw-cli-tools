@@ -26,7 +26,7 @@ class ControllerPathFileProvider implements FileProviderInterface
         }
 
         return [
-            self::CURRENT_DIR . "Subscriber/ControllerPath.tpl" => "Subscriber/ControllerPath.php",
+            self::CURRENT_DIR . 'Subscriber/ControllerPath.tpl' => 'Subscriber/ControllerPath.php',
         ];
     }
 }

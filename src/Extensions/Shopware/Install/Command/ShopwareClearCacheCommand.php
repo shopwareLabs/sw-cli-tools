@@ -43,13 +43,13 @@ class ShopwareClearCacheCommand extends BaseCommand
 
         /** @var ProcessExecutor $processExecutor */
         $processExecutor = $this->container->get('process_executor');
-        $processExecutor->execute($shopwareInfo->getCacheDir($path)."/clear_cache.sh");
+        $processExecutor->execute($shopwareInfo->getCacheDir($path).'/clear_cache.sh');
     }
 
     /**
      * @param  string $path
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     public function validateShopwareDirectory($path)
     {

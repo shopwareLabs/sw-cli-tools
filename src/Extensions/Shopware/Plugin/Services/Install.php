@@ -2,8 +2,8 @@
 
 namespace Shopware\Plugin\Services;
 
-use ShopwareCli\Services\IoService;
 use Shopware\Plugin\Struct\Plugin;
+use ShopwareCli\Services\IoService;
 
 /**
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml
@@ -59,8 +59,6 @@ class Install
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath);
-
-        return;
     }
 
     /**
@@ -90,7 +88,7 @@ class Install
     public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
-        $pluginDestPath = $plugin->module . "/" . $plugin->name;
+        $pluginDestPath = $plugin->module . '/' . $plugin->name;
 
         if (!file_exists($vcsMappingFile)) {
             return;
