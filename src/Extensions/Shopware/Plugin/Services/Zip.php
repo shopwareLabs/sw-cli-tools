@@ -9,7 +9,6 @@ use ShopwareCli\Utilities;
 /**
  * Checks out a given plugin and creates a zip file from it
  *
- * Class Zip
  * @package Shopware\Plugin\Services
  */
 class Zip
@@ -43,9 +42,9 @@ class Zip
 
     /**
      * @param Plugin $plugin
-     * @param        $path
-     * @param        $zipTo
-     * @param        $branch
+     * @param string $path
+     * @param string $zipTo
+     * @param string $branch
      * @param bool $useHttp
      *
      * @return string
@@ -53,6 +52,19 @@ class Zip
     public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp = false)
     {
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
+
+        $pluginPath = $path . '/' . $plugin->module . '/' . $plugin->name;
+        $blackListPath = $pluginPath . '/.sw-zip-blacklist';
+
+        if (file_exists($blackListPath)) {
+            $blackList = file_get_contents($blackListPath);
+            $blackList = array_filter(explode("\n", $blackList));
+
+            foreach ($blackList as $item) {
+                $this->processExecutor->execute('rm -rf ' . $pluginPath . '/' . $item);
+            }
+            $this->processExecutor->execute('rm -rf ' . $blackListPath);
+        }
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
         $this->zipDir($plugin->module, $outputFile);
