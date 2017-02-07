@@ -51,19 +51,20 @@ class Install
             $useHttp
         );
 
-        $this->checkForNewStructure($plugin, $shopwarePath);
+        $isNewStructure =  $this->checkForNewStructure($plugin, $shopwarePath);
 
         if ($inputActivate) {
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
         }
 
-        $this->addPluginVcsMapping($plugin, $shopwarePath);
+        $this->addPluginVcsMapping($plugin, $shopwarePath, $isNewStructure);
     }
 
     /**
      * @param Plugin $plugin
      * @param string $shopwarePath
+     * @return bool
      */
     private function checkForNewStructure(Plugin $plugin, $shopwarePath)
     {
@@ -75,17 +76,20 @@ class Install
         $absPath = $path . '/' . $destPath;
 
         if (file_exists($absPath . '/Bootstrap.php')) {
-            return;
+            return false;
         }
 
         rename($absPath, $shopwarePath . '/custom/plugins/' . $pluginName);
+
+        return true;
     }
 
     /**
      * @param Plugin $plugin
      * @param string $shopwarePath
+     * @param bool $isNewStructure
      */
-    public function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
+    public function addPluginVcsMapping(Plugin $plugin, $shopwarePath, $isNewStructure)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . '/' . $plugin->name;
@@ -104,6 +108,10 @@ class Install
         }
 
         $mappingDirectory = '$PROJECT_DIR$/engine/Shopware/Plugins/Local/' . $pluginDestPath;
+
+        if ($isNewStructure) {
+            $mappingDirectory = '$PROJECT_DIR$/custom/plugins/' . $plugin->name;
+        }
 
         // mapping needs to be created
         $newMapping = $xml->component->addChild('mapping');

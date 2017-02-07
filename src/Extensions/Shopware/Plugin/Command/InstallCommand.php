@@ -156,7 +156,6 @@ class InstallCommand extends BaseCommand
     /**
      * @param $plugin
      * @param $params
-     * @return mixed
      */
     private function install($plugin, &$params)
     {
@@ -178,7 +177,6 @@ class InstallCommand extends BaseCommand
     /**
      * @param $plugin Plugin
      * @param $params
-     * @return mixed
      */
     private function checkout($plugin, &$params)
     {
