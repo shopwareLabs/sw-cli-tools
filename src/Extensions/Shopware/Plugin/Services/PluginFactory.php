@@ -13,7 +13,7 @@ use Shopware\Plugin\Struct\Plugin;
 class PluginFactory
 {
     /**
-     * Input is a name like Frontend_SwagBusinessEssentials
+     * Input is a name like Backend_SwagBusinessEssentials
      *
      * @param  string $name
      * @param  string $sshUrl
@@ -53,8 +53,9 @@ class PluginFactory
             $plugin->name = substr($name, 5);
         }
 
+        // plugin is build after new structure
         if (empty($plugin->module)) {
-            $plugin->module = 'Frontend';
+            $plugin->module = null;
             $plugin->name = $name;
         }
     }

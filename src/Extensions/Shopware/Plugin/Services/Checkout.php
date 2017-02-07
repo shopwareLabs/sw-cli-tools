@@ -56,7 +56,12 @@ class Checkout
             $cloneUrl = $plugin->cloneUrlSsh;
         }
         $pluginName = $plugin->name;
-        $destPath = $plugin->module . '/' . $plugin->name;
+
+        if ($plugin->module) {
+            $destPath = $plugin->module . '/' . $pluginName;
+        } else {
+            $destPath = $pluginName;
+        }
 
         $absPath = $path . '/' . $destPath;
 
