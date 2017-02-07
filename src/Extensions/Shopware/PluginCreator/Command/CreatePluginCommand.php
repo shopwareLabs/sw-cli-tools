@@ -143,7 +143,7 @@ EOF
 
         // for backend / api the backendModel is mandatory
         if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>): ', [$this, 'validateModel'], false, $defaultModel);
+            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ', [$this, 'validateModel'], false, $defaultModel);
             $input->setOption('backendModel', $modelName);
         }
 
