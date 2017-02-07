@@ -73,6 +73,8 @@ Valid options/arguments are:
     --small: Show 3 columns of plugins in a short form
     --branch branch to checkout out
     names1…nameN - names of plugins to zip
+    
+If the plugins contains a file in its root named `.sw-zip-blacklist`, the files/directories described there, will be excluded from zipping
 
 ### sw plugin:zip:dir
 Will zip the given plugin directory. DIRECTORY must point to the directory where the plugin bootstrap can be found.
