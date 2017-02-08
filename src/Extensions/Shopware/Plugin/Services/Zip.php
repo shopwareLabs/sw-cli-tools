@@ -53,7 +53,12 @@ class Zip
     {
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
 
-        $pluginPath = $path . '/' . $plugin->module . '/' . $plugin->name;
+        if ($plugin->module) {
+            $pluginPath = $path . '/' . $plugin->module . '/' . $plugin->name;
+        } else {
+            $pluginPath = $path . '/' . $plugin->name;
+        }
+
         $blackListPath = $pluginPath . '/.sw-zip-blacklist';
 
         if (file_exists($blackListPath)) {
@@ -66,8 +71,14 @@ class Zip
             $this->processExecutor->execute('rm -rf ' . $blackListPath);
         }
 
+
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
-        $this->zipDir($plugin->module, $outputFile);
+
+        if ($plugin->module) {
+            $this->zipDir($plugin->module, $outputFile);
+        } else {
+            $this->zipDir($plugin->name, $outputFile);
+        }
 
         return $outputFile;
     }
