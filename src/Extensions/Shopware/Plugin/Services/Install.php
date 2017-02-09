@@ -50,20 +50,24 @@ class Install
      */
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
-        $pluginName = $plugin->name;
+        $installationPath = $shopwarePath . '/engine/Shopware/Plugins/Local/';
+        $isNewStructure =  $this->checkForNewStructure($plugin, $installationPath);
+
+        if ($isNewStructure) {
+            $installationPath = $shopwarePath . '/custom/plugins/';
+        }
 
         $this->checkout->checkout(
             $plugin,
-            $shopwarePath . '/engine/Shopware/Plugins/Local/',
+            $installationPath,
             $branch,
-            $useHttp
+            $useHttp,
+            $isNewStructure
         );
-
-        $isNewStructure =  $this->checkForNewStructure($plugin, $shopwarePath);
 
         if ($inputActivate) {
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $plugin->name));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath, $isNewStructure);
@@ -72,23 +76,16 @@ class Install
 
     /**
      * @param Plugin $plugin
-     * @param string $shopwarePath
+     * @param string $pluginDirectoryPath
      * @return bool
      */
-    private function checkForNewStructure(Plugin $plugin, $shopwarePath)
+    private function checkForNewStructure(Plugin $plugin, $pluginDirectoryPath)
     {
-        $path = $shopwarePath . '/engine/Shopware/Plugins/Local/';
-        $pluginName = $plugin->name;
+        $pluginPath = $pluginDirectoryPath . '/' . $plugin->module . '/' . $plugin->name;
 
-        $destPath = $plugin->module . '/' . $pluginName;
-
-        $absPath = $path . '/' . $destPath;
-
-        if (file_exists($absPath . '/Bootstrap.php')) {
+        if (file_exists($pluginPath . '/Bootstrap.php')) {
             return false;
         }
-
-        rename($absPath, $shopwarePath . '/custom/plugins/' . $pluginName);
 
         return true;
     }
