@@ -4,6 +4,7 @@ namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\IoService;
+use ShopwareCli\Services\ProcessExecutor;
 
 /**
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml
@@ -24,13 +25,20 @@ class Install
     private $ioService;
 
     /**
-     * @param Checkout  $checkout
-     * @param IoService $ioService
+     * @var ProcessExecutor
      */
-    public function __construct(Checkout $checkout, IoService $ioService)
+    private $processExecutor;
+
+    /**
+     * @param Checkout $checkout
+     * @param IoService $ioService
+     * @param ProcessExecutor $processExecutor
+     */
+    public function __construct(Checkout $checkout, IoService $ioService, ProcessExecutor $processExecutor)
     {
         $this->checkout = $checkout;
         $this->ioService = $ioService;
+        $this->processExecutor = $processExecutor;
     }
 
     /**
@@ -59,6 +67,7 @@ class Install
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath, $isNewStructure);
+        $this->installGitHook($plugin, $shopwarePath, $isNewStructure);
     }
 
     /**
@@ -130,5 +139,26 @@ class Install
     private function normalize($string)
     {
         return strtolower(str_replace(['/', '\\'], '-', $string));
+    }
+
+    /**
+     * @param Plugin $plugin
+     * @param string $shopwarePath
+     * @param string $isNewStructure
+     */
+    private function installGitHook(Plugin $plugin, $shopwarePath, $isNewStructure)
+    {
+        $pluginPath = $shopwarePath . '/engine/Shopware/Plugins/Local/' . $plugin->module . '/' . $plugin->name;
+        if ($isNewStructure) {
+            $pluginPath = $shopwarePath . '/custom/plugins/' . $plugin->name;
+        }
+
+        $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
+
+        if (!file_exists($installShFile)) {
+            return;
+        }
+
+        $this->processExecutor->execute($installShFile);
     }
 }
