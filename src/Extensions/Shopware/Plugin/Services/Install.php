@@ -51,18 +51,19 @@ class Install
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
         $installationPath = $shopwarePath . '/engine/Shopware/Plugins/Local/';
-        $isNewStructure =  $this->checkForNewStructure($plugin, $installationPath);
+        $pluginPath = $installationPath . '/' . $plugin->module . '/' . $plugin->name;
 
+        $isNewStructure =  $this->checkForNewStructure($pluginPath);
         if ($isNewStructure) {
             $installationPath = $shopwarePath . '/custom/plugins/';
+            $pluginPath = $installationPath . '/' . $plugin->name;
         }
 
         $this->checkout->checkout(
             $plugin,
             $installationPath,
             $branch,
-            $useHttp,
-            $isNewStructure
+            $useHttp
         );
 
         if ($inputActivate) {
@@ -71,18 +72,15 @@ class Install
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath, $isNewStructure);
-        $this->installGitHook($plugin, $shopwarePath, $isNewStructure);
+        $this->installGitHook($pluginPath);
     }
 
     /**
-     * @param Plugin $plugin
-     * @param string $pluginDirectoryPath
+     * @param string $pluginPath
      * @return bool
      */
-    private function checkForNewStructure(Plugin $plugin, $pluginDirectoryPath)
+    private function checkForNewStructure($pluginPath)
     {
-        $pluginPath = $pluginDirectoryPath . '/' . $plugin->module . '/' . $plugin->name;
-
         if (file_exists($pluginPath . '/Bootstrap.php')) {
             return false;
         }
@@ -95,7 +93,7 @@ class Install
      * @param string $shopwarePath
      * @param bool $isNewStructure
      */
-    public function addPluginVcsMapping(Plugin $plugin, $shopwarePath, $isNewStructure)
+    private function addPluginVcsMapping(Plugin $plugin, $shopwarePath, $isNewStructure)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . '/' . $plugin->name;
@@ -106,12 +104,6 @@ class Install
 
         $mapping = file_get_contents($vcsMappingFile);
         $xml = new \SimpleXMLElement($mapping);
-        foreach ($xml->component->mapping as $mapping) {
-            // if already mapped, return
-            if (strpos($this->normalize($mapping['directory']), $this->normalize($pluginDestPath)) !== false) {
-                return;
-            }
-        }
 
         $mappingDirectory = '$PROJECT_DIR$/engine/Shopware/Plugins/Local/' . $pluginDestPath;
 
@@ -128,28 +120,10 @@ class Install
     }
 
     /**
-     * Normalize directory strings to make them comparable
-     *
-     * @param $string
-     * @return string
+     * @param string $pluginPath
      */
-    private function normalize($string)
+    private function installGitHook($pluginPath)
     {
-        return strtolower(str_replace(['/', '\\'], '-', $string));
-    }
-
-    /**
-     * @param Plugin $plugin
-     * @param string $shopwarePath
-     * @param string $isNewStructure
-     */
-    private function installGitHook(Plugin $plugin, $shopwarePath, $isNewStructure)
-    {
-        $pluginPath = $shopwarePath . '/engine/Shopware/Plugins/Local/' . $plugin->module . '/' . $plugin->name;
-        if ($isNewStructure) {
-            $pluginPath = $shopwarePath . '/custom/plugins/' . $plugin->name;
-        }
-
         $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
 
         if (!file_exists($installShFile)) {
