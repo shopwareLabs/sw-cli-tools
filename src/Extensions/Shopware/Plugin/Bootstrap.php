@@ -7,6 +7,7 @@ use Shopware\Plugin\Command\ZipCommand;
 use Shopware\Plugin\Command\ZipLocalCommand;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
+use ShopwareCli\Services\ProcessExecutor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -61,7 +62,8 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 
         $container->register('install_service', 'Shopware\Plugin\Services\Install')
             ->addArgument(new Reference('checkout_service'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->addArgument(new Reference('process_executor'));
 
         $container->register('zip_service', 'Shopware\Plugin\Services\Zip')
             ->addArgument(new Reference('checkout_service'))

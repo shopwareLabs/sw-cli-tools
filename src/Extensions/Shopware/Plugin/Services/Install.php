@@ -4,6 +4,7 @@ namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\IoService;
+use ShopwareCli\Services\ProcessExecutor;
 
 /**
  * Checks out a given plugin, activates it and adds it to the phpstorm vcs.xml
@@ -24,13 +25,20 @@ class Install
     private $ioService;
 
     /**
-     * @param Checkout  $checkout
-     * @param IoService $ioService
+     * @var ProcessExecutor
      */
-    public function __construct(Checkout $checkout, IoService $ioService)
+    private $processExecutor;
+
+    /**
+     * @param Checkout $checkout
+     * @param IoService $ioService
+     * @param ProcessExecutor $processExecutor
+     */
+    public function __construct(Checkout $checkout, IoService $ioService, ProcessExecutor $processExecutor)
     {
         $this->checkout = $checkout;
         $this->ioService = $ioService;
+        $this->processExecutor = $processExecutor;
     }
 
     /**
@@ -42,44 +50,40 @@ class Install
      */
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
-        $pluginName = $plugin->name;
+        $installationPath = $shopwarePath . '/engine/Shopware/Plugins/Local/';
+        $pluginPath = $installationPath . '/' . $plugin->module . '/' . $plugin->name;
+
+        $isNewStructure =  $this->checkForNewStructure($pluginPath);
+        if ($isNewStructure) {
+            $installationPath = $shopwarePath . '/custom/plugins/';
+            $pluginPath = $installationPath . '/' . $plugin->name;
+        }
 
         $this->checkout->checkout(
             $plugin,
-            $shopwarePath . '/engine/Shopware/Plugins/Local/',
+            $installationPath,
             $branch,
             $useHttp
         );
 
-        $isNewStructure =  $this->checkForNewStructure($plugin, $shopwarePath);
-
         if ($inputActivate) {
             $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $pluginName));
+            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $plugin->name));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath, $isNewStructure);
+        $this->installGitHook($pluginPath);
     }
 
     /**
-     * @param Plugin $plugin
-     * @param string $shopwarePath
+     * @param string $pluginPath
      * @return bool
      */
-    private function checkForNewStructure(Plugin $plugin, $shopwarePath)
+    private function checkForNewStructure($pluginPath)
     {
-        $path = $shopwarePath . '/engine/Shopware/Plugins/Local/';
-        $pluginName = $plugin->name;
-
-        $destPath = $plugin->module . '/' . $pluginName;
-
-        $absPath = $path . '/' . $destPath;
-
-        if (file_exists($absPath . '/Bootstrap.php')) {
+        if (file_exists($pluginPath . '/Bootstrap.php')) {
             return false;
         }
-
-        rename($absPath, $shopwarePath . '/custom/plugins/' . $pluginName);
 
         return true;
     }
@@ -89,7 +93,7 @@ class Install
      * @param string $shopwarePath
      * @param bool $isNewStructure
      */
-    public function addPluginVcsMapping(Plugin $plugin, $shopwarePath, $isNewStructure)
+    private function addPluginVcsMapping(Plugin $plugin, $shopwarePath, $isNewStructure)
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . '/' . $plugin->name;
@@ -100,12 +104,6 @@ class Install
 
         $mapping = file_get_contents($vcsMappingFile);
         $xml = new \SimpleXMLElement($mapping);
-        foreach ($xml->component->mapping as $mapping) {
-            // if already mapped, return
-            if (strpos($this->normalize($mapping['directory']), $this->normalize($pluginDestPath)) !== false) {
-                return;
-            }
-        }
 
         $mappingDirectory = '$PROJECT_DIR$/engine/Shopware/Plugins/Local/' . $pluginDestPath;
 
@@ -122,13 +120,16 @@ class Install
     }
 
     /**
-     * Normalize directory strings to make them comparable
-     *
-     * @param $string
-     * @return string
+     * @param string $pluginPath
      */
-    private function normalize($string)
+    private function installGitHook($pluginPath)
     {
-        return strtolower(str_replace(['/', '\\'], '-', $string));
+        $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
+
+        if (!file_exists($installShFile)) {
+            return;
+        }
+
+        $this->processExecutor->execute($installShFile);
     }
 }
