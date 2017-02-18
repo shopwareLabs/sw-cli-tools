@@ -124,7 +124,7 @@ Requires \'local-infile=1\' in your MySQL installation.
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     public function interact(InputInterface $input, OutputInterface $output)
@@ -162,7 +162,7 @@ Requires \'local-infile=1\' in your MySQL installation.
     {
         $ioService = $this->container->get('io_service');
 
-        $optionHumanName = $optionHumanName ? : $optionName;
+        $optionHumanName = $optionHumanName ?: $optionName;
         $optionValue = $input->getOption($optionName);
         if ($optionValue != 0) {
             return;
@@ -177,7 +177,9 @@ Requires \'local-infile=1\' in your MySQL installation.
 
     /**
      * @param $input
+     *
      * @throws \RuntimeException
+     *
      * @return int
      */
     public function validateInt($input)
@@ -189,7 +191,7 @@ Requires \'local-infile=1\' in your MySQL installation.
             throw new \RuntimeException('Field has to be numeric');
         }
 
-        return (int)$input;
+        return (int) $input;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -342,7 +344,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $config->setCreateImages(false);
         $config->setThumbnailSizes('105x105,140x140,285x255,30x30,57x57,720x600');
 
-        $config->setMinVariants(3);
-        $config->setMaxVariants(50);
+        $config->setMinVariants(1);
+        $config->setMaxVariants(20);
     }
 }

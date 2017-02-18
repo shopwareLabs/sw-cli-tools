@@ -7,6 +7,9 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 
 class Articles extends BaseResource
 {
+    const GROUPS = 500;
+    const OPTIONS = 10;
+
     /**
      * @var array
      */
@@ -48,6 +51,8 @@ class Articles extends BaseResource
      */
     protected $articleDetailsFlat;
 
+    protected $configuratorsGroups = [];
+
     /**
      * @return \SplFixedArray
      */
@@ -56,8 +61,24 @@ class Articles extends BaseResource
         return $this->articleDetailsFlat;
     }
 
+    public function createConfiguratorOptions()
+    {
+        for ($group = 0; $group <= self::GROUPS; ++$group) {
+            $currentGroup = ['id' => $this->getUniqueId(
+                'conf_group'
+            ), 'name' => 'Configurator Group '.$group, 'position' => $group, $options = []];
+            for ($option = 0; $option <= self::OPTIONS; ++$option) {
+                $currentGroup['options'][] = ['id' => $this->getUniqueId(
+                    'conf_option'
+                ), 'name' => 'Option'.$option, 'position' => $option];
+            }
+            $this->configuratorsGroups[] = $currentGroup;
+        }
+    }
+
     /**
-     * Generates SQL which creates filter groups, options and values
+     * Generates SQL which creates filter groups, options and values.
+     *
      * @param WriterInterface $importWriter
      */
     protected function createFilterGroupSQL(WriterInterface $importWriter)
@@ -71,15 +92,15 @@ class Articles extends BaseResource
         $filterOptions = $this->config->getArticleFilterOptions();
         $filterValues = $this->config->getArticleFilterValues();
 
-        for ($groupId = 1; $groupId <= $filterGroups; $groupId++) {
+        for ($groupId = 1; $groupId <= $filterGroups; ++$groupId) {
             $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).', '.rand(0, 1);
 
-            for ($o = 1; $o <= $filterOptions; $o++) {
+            for ($o = 1; $o <= $filterOptions; ++$o) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
                 $filterOptionValues[] = "$optionId, Option #{$o},  ".rand(0, 1);
                 $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
 
-                for ($v = 1; $v <= $filterValues; $v++) {
+                for ($v = 1; $v <= $filterValues; ++$v) {
                     $valueId = $v + ($optionId - 1) * $filterValues;
                     $filterValueValues[] = "$valueId, $optionId, Value #{$valueId}, $valueId";
                 }
@@ -103,8 +124,10 @@ class Articles extends BaseResource
     }
 
     /**
-     * Helper function which creates a cartesian product
+     * Helper function which creates a cartesian product.
+     *
      * @param $arrays
+     *
      * @return array
      */
     private function createCartesianProduct($arrays)
@@ -136,10 +159,12 @@ class Articles extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
+        $this->createConfiguratorOptions();
+
         $number = $this->config->getNumberArticles();
         $this->loadDataInfile = new LoadDataInfile();
 
@@ -197,7 +222,21 @@ class Articles extends BaseResource
 
         $priceVariations = $this->generatePriceVariations($number);
 
-        for ($articleCounter = 0; $articleCounter < $number; $articleCounter++) {
+        // Write all configurators and options beforehand
+
+        foreach ($this->configuratorsGroups as $currentGroup) {
+            $configuratorGroups->write(
+                "{$currentGroup['id']}, {$currentGroup['name']},NULL, {$currentGroup['position']}"
+            );
+
+            foreach ($currentGroup['options'] as $currentOption) {
+                $configuratorOptions->write(
+                    "{$currentOption['id']}, {$currentGroup['id']}, {$currentOption['name']}, {$currentOption['position']}"
+                );
+            }
+        }
+
+        for ($articleCounter = 0; $articleCounter < $number; ++$articleCounter) {
             $this->advanceProgressBar();
             $id = $this->getUniqueId('article');
             $createConfigurator = $id === 1 ? 1 : rand(0, 1); // Force the first article to be a configurator
@@ -210,39 +249,43 @@ class Articles extends BaseResource
             $detailIDs = [$articleDetailId];
 
             $configuratorSetId = $createConfigurator === 1 ? $id : 'NULL';
+            // number of variants is choosen randomly
             $numberOfVariants = $createConfigurator === 1 ? rand(
                 $this->config->getMinVariants(),
                 $this->config->getMaxVariants()
             ) : 1;
-//            $numberOfVariants = $id === 1 ? 500 : $numberOfVariants;
-            $numberOfOptions = rand(2, 4);
-            $numberGroups = floor(pow($numberOfVariants, 1 / $numberOfOptions));
+
+            // number of variants determines number of groups, as number of options is static
+            $numberOfGroups = max(1, $numberOfVariants / self::OPTIONS);
+
+            // number of variants will be a multiple of self::OPTIONS so it is re-calculated here
             if ($createConfigurator === 1) {
-                $numberOfVariants = $numberOfOptions * $numberGroups;
+                $numberOfVariants = self::OPTIONS * $numberOfGroups;
             }
 
             //
             // Configurator
             //
             if ($createConfigurator) {
-                $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id})");
-                // Create configurator groups and options
                 $groups = [];
                 $options = [];
-                for ($g = 1; $g <= $numberGroups; $g++) {
-                    $groupId = $this->getUniqueId('group');
-                    $configuratorGroups->write("{$groupId}, Configurator-Group #{$groupId}, NULL, {$g}");
-                    $groups[$groupId] = [];
-                    // Create options for this group
-                    for ($o = 1; $o <= $numberOfOptions; $o++) {
-                        $optionId = $this->getUniqueId('option');
-                        $configuratorOptions->write("$optionId, $groupId, Option G{$groupId}-O{$optionId}, {$o}");
-                        $options[] = $optionId;
-                        $groups[$groupId][] = $optionId;
-                    }
+                $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id}");
+                $randomGroups = array_rand($this->configuratorsGroups, $numberOfGroups);
+                // array_rand will not return an array if only one element was choosen
+                if (!is_array($randomGroups)) {
+                    $randomGroups = [$randomGroups];
                 }
 
-                /**
+                // Create configurator groups and options
+                foreach ($randomGroups as $g) {
+                    $currentGroup = $this->configuratorsGroups[$g];
+                    // Create options for this group
+                    $curOptions = array_column($this->configuratorsGroups[$g]['options'], 'id');
+                    $options = array_merge($curOptions, $options);
+                    $groups[$currentGroup['id']] = $curOptions;
+                }
+
+                /*
                  * create a cartesian product of the available options in order to simply assign them to articles later
                  */
                 $allOptions = $this->createCartesianProduct($groups);
@@ -260,7 +303,7 @@ class Articles extends BaseResource
             }
 
             shuffle($validCategoryIds);
-            for ($i = 0; $i < $categoriesPerArticle; $i++) {
+            for ($i = 0; $i < $categoriesPerArticle; ++$i) {
                 $articleCategories->write("{$id}, {$validCategoryIds[$i]}");
 
                 $categoryIds = $this->getCategoryPath($validCategoryIds[$i], $categoriesFlat);
@@ -277,7 +320,7 @@ class Articles extends BaseResource
             if ($this->config->getCreateImages()) {
                 throw new \Exception('Not implemented, yet');
                 // Images
-                for ($i = 1; $i <= $numImagesPerArticle; $i++) {
+                for ($i = 1; $i <= $numImagesPerArticle; ++$i) {
                     $mediaId = $this->getUniqueId('media');
                     $name = $physicallyCreateEachImage ? $baseName.$id : $baseName;
                     $images[] = $name;
@@ -294,7 +337,7 @@ class Articles extends BaseResource
             $filterGroupId = 1;
             if ($createFilter === 0) {
                 $filterGroupId = rand(1, $filterOptions);
-                for ($option = 1; $option <= $filterOptions; $option++) {
+                for ($option = 1; $option <= $filterOptions; ++$option) {
                     $optionId = $option * $filterGroupId;
                     $valueId = rand(1, $filterValues) * $optionId;
                     $filterArticles->write("{$id}, {$valueId}");
@@ -309,7 +352,7 @@ class Articles extends BaseResource
             );
 
             // Create article details / variants
-            for ($i = 1; $i <= $numberOfVariants; $i++) {
+            for ($i = 1; $i <= $numberOfVariants; ++$i) {
                 if ($this->config->getNumberOrders() > 0) {
                     $this->articleDetailsFlat[$articleDetailId] = "{$id}|sw-{$id}-{$i}|{$articleDetailId}";
                 }
@@ -322,11 +365,13 @@ class Articles extends BaseResource
                     "{$articleDetailId}, {$id},sw-{$id}-{$i}, , {$kind}, , 0, 1, 25, 0, 0.000, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, {$purchaseUnit}, {$referenceUnit}, Flasche(n), 2012-06-13, 0, "
                 );
 
-                $index = rand(0, count($priceVariations) -1);
+                $index = rand(0, count($priceVariations) - 1);
                 $variantPrices = $priceVariations[$index];
 
                 foreach ($variantPrices as $price) {
-                    $prices->write("EK,{$price['from']},{$price['to']},{$id},{$articleDetailId},{$price['price']}, 0, 0, 0 ");
+                    $prices->write(
+                        "EK,{$price['from']},{$price['to']},{$id},{$articleDetailId},{$price['price']}, 0, 0, 0 "
+                    );
                     $attributes->write("{$id}, {$articleDetailId}");
                 }
 
@@ -341,6 +386,9 @@ class Articles extends BaseResource
             if ($createConfigurator) {
                 foreach ($detailIDs as $detailID) {
                     $options = array_pop($allOptions);
+                    if (empty($options)) {
+                        continue;
+                    }
                     foreach ($options as $option) {
                         $articleConfiguratorRelations->write("{$detailID}, ".$option);
                     }
@@ -383,6 +431,12 @@ class Articles extends BaseResource
         );
         $writer->write(
             $this->loadDataInfile->get(
+                's_article_configurator_set_option_relations',
+                $configuratorSetOptionRelations->getFileName()
+            )
+        );
+        $writer->write(
+            $this->loadDataInfile->get(
                 's_article_configurator_set_group_relations',
                 $configuratorSetGroupRelations->getFileName()
             )
@@ -398,6 +452,7 @@ class Articles extends BaseResource
     /**
      * @param $id
      * @param $categories
+     *
      * @return array
      */
     private function getCategoryPath($id, $categories)
@@ -423,11 +478,12 @@ class Articles extends BaseResource
     }
 
     /**
-     * Copies the default image for each article
+     * Copies the default image for each article.
+     *
      * @param $imageDir
      * @param $images
      * @param $thumbs
-     * @param integer $useSmallImage
+     * @param int $useSmallImage
      */
     private function copyImages($imageDir, $images, $thumbs, $useSmallImage)
     {
@@ -462,7 +518,7 @@ class Articles extends BaseResource
     }
 
     /**
-     * @param integer $number
+     * @param int $number
      */
     private function generatePriceVariations($number)
     {
@@ -470,12 +526,14 @@ class Articles extends BaseResource
 
         $variations = [];
 
-        for ($v = 0; $v <= $count; $v++) {
+        for ($v = 0; $v <= $count; ++$v) {
+            // create random number of bulk prices between 1 and 5
             $priceCount = rand(1, 5);
             $to = 0;
-            
+
+            // price will be something between 3 and 2000
             $price = rand(3, 2000);
-            for ($i = 1; $i <= $priceCount; $i++) {
+            for ($i = 1; $i <= $priceCount; ++$i) {
                 $from = $to + 1;
                 $to = $from + rand(2, 4);
                 if ($i == $priceCount) {
@@ -486,7 +544,7 @@ class Articles extends BaseResource
                 $variations[$v][] = [
                     'from' => $from,
                     'to' => $to,
-                    'price' => $price
+                    'price' => $price,
                 ];
             }
         }
