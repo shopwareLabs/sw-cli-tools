@@ -10,6 +10,9 @@ use TestLoaderProvider;
 trait CommandTestCaseTrait
 {
     /**
+     * Accepts command line argument like "plugin:create", outputs every console output as one item
+     * in a numeric indexed array.
+     *
      * @param string $command
      * @return array
      */
