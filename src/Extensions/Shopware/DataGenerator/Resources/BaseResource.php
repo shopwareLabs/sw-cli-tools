@@ -106,6 +106,7 @@ abstract class BaseResource
     protected function prepareTables()
     {
         $sql = [
+            'SET autocommit = 0;',
             'SET foreign_key_checks=0;',
             'SET unique_checks=0;',
             'SET @@session.sql_mode = ""',
@@ -196,8 +197,8 @@ abstract class BaseResource
         $this->create($writer);
         $this->ioService->writeln('');
 
-        $writer->write($this->enableKeys());
         $this->writerManager->flushAll();
+        $writer->write($this->enableKeys());
         $this->writerManager->clear();
     }
 }

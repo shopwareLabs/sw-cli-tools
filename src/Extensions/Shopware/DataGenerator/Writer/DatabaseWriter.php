@@ -5,8 +5,7 @@ namespace Shopware\DataGenerator\Writer;
 use PDO;
 
 /**
- * Class ShopwareWriter
- * @package Shopware\DataGenerator\Writer
+ * Class ShopwareWriter.
  */
 class DatabaseWriter implements WriterInterface
 {
@@ -27,7 +26,7 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($content)
     {
@@ -39,7 +38,7 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
-     * Flushes all known writer at once
+     * Flushes all known writer at once.
      */
     public function flush()
     {
@@ -54,18 +53,20 @@ class DatabaseWriter implements WriterInterface
                 throw new \Exception("Failed to execute $query\n\nCode: $info");
             }
         }
+        $this->data = [];
 
         $connection->commit();
     }
 
     /**
      * @param $config
+     *
      * @return PDO
      */
     private function connectToDatabase($config)
     {
         $connection = new PDO(
-            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
+            'mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['username'], $config['password'],
             [
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
                 PDO::ERRMODE_EXCEPTION => 1,
@@ -76,7 +77,7 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {
