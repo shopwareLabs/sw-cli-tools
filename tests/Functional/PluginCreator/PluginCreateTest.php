@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\tests;
+namespace ShopwareCli\Tests\Functional;
 
 use Shopware\PluginCreator\Services\Generator;
 use Shopware\PluginCreator\Services\IoAdapter\Dummy;

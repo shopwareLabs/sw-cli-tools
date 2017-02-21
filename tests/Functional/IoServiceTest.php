@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\tests;
+namespace ShopwareCli\Tests\Functional;
 
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Helper\QuestionHelper;

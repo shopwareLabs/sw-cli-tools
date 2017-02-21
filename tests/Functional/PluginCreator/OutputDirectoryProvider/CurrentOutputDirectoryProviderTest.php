@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\tests\PluginCreator\OutputDirectoryProvider;
+namespace ShopwareCli\Tests\Functional\PluginCreator\OutputDirectoryProvider;
 
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
 
