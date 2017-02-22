@@ -146,4 +146,12 @@ class Application extends \Symfony\Component\Console\Application
         $this->container->get('extension_manager')->discoverExtensions($paths);
         $this->container->get('extension_manager')->injectContainer($this->container);
     }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
 }

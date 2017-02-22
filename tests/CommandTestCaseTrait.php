@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\Tests\Common;
+namespace ShopwareCli\Tests;
 
 use ShopwareCli\Application;
 use Symfony\Component\Console\Input\StringInput;
@@ -9,6 +9,8 @@ use TestLoaderProvider;
 
 trait CommandTestCaseTrait
 {
+    use ApplicationTestCaseTrait;
+
     /**
      * Accepts command line argument like "plugin:create", outputs every console output as one item
      * in a numeric indexed array.
@@ -22,8 +24,7 @@ trait CommandTestCaseTrait
         $input = new StringInput($command);
         $output = new StreamOutput($fp);
 
-        $application = new Application(TestLoaderProvider::getLoader());
-        $application->doRun($input, $output);
+        self::getApplication()->doRun($input, $output);
 
         $consoleOutput = $this->readConsoleOutput($fp);
         return explode(PHP_EOL, $consoleOutput);
