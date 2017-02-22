@@ -1,5 +1,6 @@
 config.cfg
 *config.yaml
+!tests/**/config.yaml
 vendor/
 composer.phar
 php_errors.log

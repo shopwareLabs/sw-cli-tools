@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\tests\PluginCreater;
+namespace ShopwareCli\Tests\Functional\PluginCreater;
 
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 

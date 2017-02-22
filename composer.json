@@ -33,7 +33,8 @@
     },
     "autoload": {
         "psr-4": {
-            "ShopwareCli\\": "src/"
+            "ShopwareCli\\": "src/",
+            "ShopwareCli\\Tests\\": "tests/"
         }
     },
     "autoload-dev": {

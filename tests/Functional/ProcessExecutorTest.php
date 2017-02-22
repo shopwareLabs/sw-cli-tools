@@ -1,6 +1,6 @@
 <?php
 
-namespace ShopwareCli\tests;
+namespace ShopwareCli\Tests\Functional;
 
 use ShopwareCli\Services\ProcessExecutor;
 use Symfony\Component\Console\Output\BufferedOutput;
