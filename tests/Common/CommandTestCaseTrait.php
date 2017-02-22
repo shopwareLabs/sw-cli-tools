@@ -16,7 +16,7 @@ trait CommandTestCaseTrait
      * @param string $command
      * @return array
      */
-    public function run($command)
+    public function runCommand($command)
     {
         $fp = tmpfile();
         $input = new StringInput($command);
