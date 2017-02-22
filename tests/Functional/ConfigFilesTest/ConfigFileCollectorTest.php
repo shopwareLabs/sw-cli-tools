@@ -22,7 +22,7 @@
  * our trademarks remain entirely with us.
  */
 
-namespace ShopwareCli\Tests\Functional;
+namespace ShopwareCli\Tests\Functional\ConfigFileTest;
 
 use ShopwareCli\ConfigFileCollector;
 
@@ -35,7 +35,7 @@ class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
 {
     public function testSome()
     {
-        $testDir = __DIR__ . '/ConfigFilesTest';
+        $testDir = __DIR__ . '/_fixtures';
 
         $pathProvider = $this->getMockBuilder('ShopwareCli\Services\PathProvider\PathProvider')
             ->disableOriginalConstructor()
