@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 class CreatePluginCommand extends BaseCommand
 {
@@ -125,8 +126,8 @@ EOF
 
     public function interact(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Symfony\Component\Console\Helper\DialogHelper $dialog */
-        $dialog = $this->getHelperSet()->get('dialog');
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        $helper = $this->getHelperSet()->get('question');
 
         $name = $input->getArgument('name');
         $modelName = implode('', array_slice($this->upperToArray($name), 1));
@@ -143,7 +144,9 @@ EOF
 
         // for backend / api the backendModel is mandatory
         if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $modelName = $dialog->askAndValidate($output, '<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ', [$this, 'validateModel'], false, $defaultModel);
+            $question = new Question('<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ');
+            $question->setValidator($this->validateModel($input));
+            $modelName = $helper->ask($input, $output, $question);
             $input->setOption('backendModel', $modelName);
         }
 
@@ -183,10 +186,6 @@ EOF
 
         if ($input->getOption(self::LEGACY_OPTION)) {
             $this->validateNamespace($input->getOption('namespace'));
-        }
-
-        if ($input->getOption('backendModel') !== null) {
-            $this->validateModel($input->getOption('backendModel'));
         }
 
         $configuration = $this->getConfigurationObject($input);
@@ -250,11 +249,13 @@ EOF
      */
     public function validateModel($input)
     {
-        if (empty($input)) {
-            throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
-        }
+        return function () use ($input) {
+            if (empty($input)) {
+                throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
+            }
 
-        return $input;
+            return $input;
+        };
     }
 
     /**
