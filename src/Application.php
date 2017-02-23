@@ -40,6 +40,8 @@ class Application extends \Symfony\Component\Console\Application
         $this->loader = $loader;
 
         parent::__construct(static::NAME, static::VERSION);
+
+        $this->container = DependencyInjection::createContainer(dirname(__DIR__));
     }
 
     /**
@@ -47,18 +49,18 @@ class Application extends \Symfony\Component\Console\Application
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->createContainer($input, $output);
+        $this->createContainer($input, $output);
         $this->checkDirectories();
 
         $noExtensions = $input->hasParameterOption('--no-extensions');
         $this->loadExtensions($noExtensions);
 
         // Compile the container after the plugins did their container extensions
-        $container->compile();
+        $this->container->compile();
 
-        $this->addCommands($container->get('command_manager')->getCommands());
+        $this->addCommands($this->container->get('command_manager')->getCommands());
 
-        $container->get('plugin_provider')->setRepositories($container->get('repository_manager')->getRepositories());
+        $this->container->get('plugin_provider')->setRepositories($this->container->get('repository_manager')->getRepositories());
 
         return parent::doRun($input, $output);
     }
@@ -87,18 +89,15 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)
     {
-        $rootDir = dirname(__DIR__);
-        $container = DependencyInjection::createContainer($rootDir);
-
         $questionHelper = $this->getHelperSet()->get('question');
 
-        $container->set('output_interface', $output);
-        $container->set('input_interface', $input);
-        $container->set('question_helper', $questionHelper);
-        $container->set('helper_set', $this->getHelperSet());
-        $container->set('autoloader', $this->loader);
+        $this->container->set('output_interface', $output);
+        $this->container->set('input_interface', $input);
+        $this->container->set('question_helper', $questionHelper);
+        $this->container->set('helper_set', $this->getHelperSet());
+        $this->container->set('autoloader', $this->loader);
 
-        return $this->container = $container;
+        return $this->container;
     }
 
     /**
