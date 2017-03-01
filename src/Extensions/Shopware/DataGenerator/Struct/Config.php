@@ -5,7 +5,8 @@ namespace Shopware\DataGenerator\Struct;
 class Config
 {
     /**
-     * Default values
+     * Default values.
+     *
      * @var
      */
     protected $numberArticles = 0;
@@ -14,13 +15,14 @@ class Config
     protected $numberOrders = 0;
     protected $numberNewsletter = 0;
     protected $numberVouchers = 0;
-    protected $categoriesPerArticle = 3;
-    protected $articleFilterGroups = 1;
-    protected $articleFilterOptions = 15;
-    protected $articleFilterValues = 20;
+    protected $categoriesPerArticle = 0;
+    protected $articleFilterGroups = 0;
+    protected $articleFilterOptions = 0;
+    protected $articleFilterValues = 0;
 
     /**
-     * Path of the image directory
+     * Path of the image directory.
+     *
      * @var
      */
     protected $imageDir;
@@ -36,19 +38,21 @@ class Config
     protected $thumbnailSizes;
 
     /**
-     * Number of variants each configurator article will have at least
+     * Number of variants each configurator article will have at least.
+     *
      * @var int
      */
     protected $minVariants;
 
     /**
-     * Number of variants each configurator article will have at most
+     * Number of variants each configurator article will have at most.
+     *
      * @var
      */
     protected $maxVariants;
 
     /**
-     * Output file for the sql file
+     * Output file for the sql file.
      *
      * @var string
      */
@@ -56,13 +60,15 @@ class Config
 
     /**
      * Seed used to init the random generator
-     * Using a default seed here, so usually you will get reproducible random numbers
+     * Using a default seed here, so usually you will get reproducible random numbers.
+     *
      * @var int
      */
     protected $seed;
 
     /**
-     * Number of values per insert
+     * Number of values per insert.
+     *
      * @var int
      */
     protected $chunkSize;
@@ -140,7 +146,6 @@ class Config
     {
         $this->outputName = $outputName;
     }
-
 
     public function setMaxVariants($maxVariants)
     {
@@ -275,7 +280,7 @@ class Config
      */
     public function setCreateImages($createImages)
     {
-        $this->createImages = (bool)$createImages;
+        $this->createImages = (bool) $createImages;
     }
 
     /**
