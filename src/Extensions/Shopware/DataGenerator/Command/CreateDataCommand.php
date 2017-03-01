@@ -23,84 +23,98 @@ class CreateDataCommand extends BaseCommand
                 'a',
                 InputOption::VALUE_OPTIONAL,
                 'Number of articles to create',
-                null
+                0
             )
             ->addOption(
                 'articleFilterGroups',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Number article filter option groups to create',
-                null
+                0
             )
             ->addOption(
                 'articleFilterOptions',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Number article filter options to create',
-                null
+                0
             )
             ->addOption(
                 'articleFilterValues',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Number article filter values to create per each filter option',
-                null
+                0
+            )
+            ->addOption(
+                'articleMinVariants',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'minimum number of variants',
+                0
+            )
+            ->addOption(
+                'articleMaxVariants',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'max number of variants',
+                0
             )
             ->addOption(
                 'orders',
                 'o',
                 InputOption::VALUE_OPTIONAL,
                 'Number of orders to create',
-                null
+                0
             )
             ->addOption(
                 'categories',
                 'c',
                 InputOption::VALUE_OPTIONAL,
                 'Number of categories to create',
-                null
+                0
             )
             ->addOption(
                 'categoriesPerArticle',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Number of categories to assign to each article',
-                null
+                0
             )
             ->addOption(
                 'newsletter',
                 'e',
                 InputOption::VALUE_OPTIONAL,
                 'Number of newsletter to create',
-                null
+                0
             )
             ->addOption(
                 'customers',
                 'u',
                 InputOption::VALUE_OPTIONAL,
                 'Number of customers to create',
-                null
+                0
             )
             ->addOption(
                 'vouchers',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Number of vouchers to create',
-                null
+                0
             )
             ->addOption(
                 'chunk-size',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Chung size',
-                null
+                'Chunk size',
+                1000
             )
             ->addOption(
                 'seed',
                 's',
                 InputOption::VALUE_OPTIONAL,
                 'Random seed',
-                null
+                0
             )
             ->addOption(
                 'installDir',
@@ -140,16 +154,21 @@ Requires \'local-infile=1\' in your MySQL installation.
             return;
         }
 
-        $this->askConfigOptions($input, 'articles');
-        $this->askConfigOptions($input, 'categories');
-        $this->askConfigOptions($input, 'categoriesPerArticle', 'categories per article');
-        $this->askConfigOptions($input, 'articleFilterGroups');
-        $this->askConfigOptions($input, 'articleFilterOptions');
-        $this->askConfigOptions($input, 'articleFilterValues');
-        $this->askConfigOptions($input, 'orders');
-        $this->askConfigOptions($input, 'newsletter');
-        $this->askConfigOptions($input, 'customers');
-        $this->askConfigOptions($input, 'vouchers');
+        $ioService = $this->container->get('io_service');
+        $ioService->writeln('<info>Please provide the desired number of…</info>');
+
+        $this->askConfigOptions($input, 'articles', 'Articles', 10000);
+        $this->askConfigOptions($input, 'categories', 'Categories', 500);
+        $this->askConfigOptions($input, 'categoriesPerArticle', 'Categories per article', 3);
+        $this->askConfigOptions($input, 'articleMinVariants', 'Minimum variants per article', 1);
+        $this->askConfigOptions($input, 'articleMaxVariants', 'Maximum variants per article', 20);
+        $this->askConfigOptions($input, 'articleFilterGroups', 'Filter groups', 0);
+        $this->askConfigOptions($input, 'articleFilterOptions', 'Filter Options', 0);
+        $this->askConfigOptions($input, 'articleFilterValues', 'Filter Values', 0);
+        $this->askConfigOptions($input, 'orders', 'Orders', 0);
+        $this->askConfigOptions($input, 'newsletter', 'Newsletters', 0);
+        $this->askConfigOptions($input, 'customers', 'Customers', 1000);
+        $this->askConfigOptions($input, 'vouchers', 'Vouchers', 0);
     }
 
     /**
@@ -157,8 +176,9 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param string optionName
      * @param string|null $optionHumanName
      * @param $optionName
+     * @param mixed $default
      */
-    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null)
+    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
     {
         $ioService = $this->container->get('io_service');
 
@@ -169,10 +189,10 @@ Requires \'local-infile=1\' in your MySQL installation.
         }
 
         $optionValue = $ioService->askAndValidate(
-            "Please provide the value for {$optionHumanName}, use 0 or leave empty to skip: ",
+            "<question>{$optionHumanName}</question> [{$default}]: ",
             [$this, 'validateInt']
         );
-        $input->setOption($optionName, trim($optionValue) ? $optionValue : null);
+        $input->setOption($optionName, trim($optionValue) ? $optionValue : $default);
     }
 
     /**
@@ -209,8 +229,11 @@ Requires \'local-infile=1\' in your MySQL installation.
         $articleFilterGroups = $input->getOption('articleFilterGroups');
         $articleFilterOptions = $input->getOption('articleFilterOptions');
         $articleFilterValues = $input->getOption('articleFilterValues');
+        $articleMinVariants = max($input->getOption('articleMinVariants'), 1);
+        $articleMaxVariants = max($input->getOption('articleMaxVariants'), $articleMinVariants);
+
         $seed = $input->getOption('seed');
-        $chunkSize = $input->getOption('chunk-size') ?: 1000;
+        $chunkSize = $input->getOption('chunk-size');
 
         if (!($articles || $orders || $customers || $newsletter || $categories || $vouchers)) {
             $output->writeln(
@@ -250,7 +273,9 @@ Requires \'local-infile=1\' in your MySQL installation.
             $articleFilterGroups,
             $articleFilterOptions,
             $articleFilterValues,
-            $chunkSize
+            $chunkSize,
+            $articleMinVariants,
+            $articleMaxVariants
         );
 
         foreach (['categories', 'articles', 'customers', 'orders', 'newsletter', 'vouchers'] as $type) {
@@ -275,6 +300,8 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param $articleFilterOptions
      * @param $articleFilterValues
      * @param $chunkSize
+     * @param $minVariants
+     * @param $maxVariants
      */
     protected function configureGenerator(
         $seed,
@@ -288,7 +315,9 @@ Requires \'local-infile=1\' in your MySQL installation.
         $articleFilterGroups,
         $articleFilterOptions,
         $articleFilterValues,
-        $chunkSize
+        $chunkSize,
+        $minVariants,
+        $maxVariants
     ) {
         // Check some pre-conditions
         if ($articles > 0 && !$categories) {
@@ -300,42 +329,18 @@ Requires \'local-infile=1\' in your MySQL installation.
 
         /** @var Config $config */
         $config = $this->container->get('generator_config');
-        if ($chunkSize !== null) {
-            $config->setChunkSize($chunkSize);
-        }
-        if ($articles !== null) {
-            $config->setNumberArticles($articles);
-        }
-        if ($categories !== null) {
-            $config->setNumberCategories($categories);
-        }
-        if ($categoriesPerArticle !== null) {
-            $config->setNumberCategoriesPerArticle($categoriesPerArticle);
-        }
-        if ($orders !== null) {
-            $config->setNumberOrders($orders);
-        }
-        if ($customers !== null) {
-            $config->setNumberCustomers($customers);
-        }
-        if ($newsletter !== null) {
-            $config->setNumberNewsletter($newsletter);
-        }
-        if ($vouchers !== null) {
-            $config->setNumberVouchers($vouchers);
-        }
-        if ($articleFilterGroups !== null) {
-            $config->setArticleFilterGroups($articleFilterGroups);
-        }
-        if ($articleFilterOptions !== null) {
-            $config->setArticleFilterOptions($articleFilterOptions);
-        }
-        if ($articleFilterValues !== null) {
-            $config->setArticleFilterValues($articleFilterValues);
-        }
-        if ($seed !== null) {
-            $config->setSeed($seed);
-        }
+        $config->setChunkSize($chunkSize);
+        $config->setNumberArticles($articles);
+        $config->setNumberCategories($categories);
+        $config->setNumberCategoriesPerArticle($categoriesPerArticle);
+        $config->setNumberOrders($orders);
+        $config->setNumberCustomers($customers);
+        $config->setNumberNewsletter($newsletter);
+        $config->setNumberVouchers($vouchers);
+        $config->setArticleFilterGroups($articleFilterGroups);
+        $config->setArticleFilterOptions($articleFilterOptions);
+        $config->setArticleFilterValues($articleFilterValues);
+        $config->setSeed($seed);
 
         $config->setOutputName('');
 
@@ -344,7 +349,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $config->setCreateImages(false);
         $config->setThumbnailSizes('105x105,140x140,285x255,30x30,57x57,720x600');
 
-        $config->setMinVariants(1);
-        $config->setMaxVariants(20);
+        $config->setMinVariants($minVariants);
+        $config->setMaxVariants($maxVariants);
     }
 }
