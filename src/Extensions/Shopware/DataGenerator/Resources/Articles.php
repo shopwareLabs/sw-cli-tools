@@ -240,6 +240,16 @@ class Articles extends BaseResource
             $this->advanceProgressBar();
             $id = $this->getUniqueId('article');
             $createConfigurator = $id === 1 ? 1 : rand(0, 1); // Force the first article to be a configurator
+            // number of variants is choosen randomly
+            $numberOfVariants = $createConfigurator === 1 ? rand(
+                $this->config->getMinVariants(),
+                $this->config->getMaxVariants()
+            ) : 1;
+
+            if ($numberOfVariants == 1) {
+                $createConfigurator = 0;
+            }
+
             $createFilter = rand(0, 3);
 
             $urls->write("/detail/index/sArticle/{$id}");
@@ -249,11 +259,6 @@ class Articles extends BaseResource
             $detailIDs = [$articleDetailId];
 
             $configuratorSetId = $createConfigurator === 1 ? $id : 'NULL';
-            // number of variants is choosen randomly
-            $numberOfVariants = $createConfigurator === 1 ? rand(
-                $this->config->getMinVariants(),
-                $this->config->getMaxVariants()
-            ) : 1;
 
             // number of variants determines number of groups, as number of options is static
             $numberOfGroups = max(1, $numberOfVariants / self::OPTIONS);
@@ -347,8 +352,9 @@ class Articles extends BaseResource
             //
             // Article / -details
             //
+            $name = rtrim($this->generator->getSentence(3), '.');
             $articles->write(
-                "{$id}, 2, {$this->generator->getSentence(3)}, SHORT DESCRIPTION, LONG DESCRIPTION, NULL, 2012-08-15, 1, 1, 20, 0, , 2012-08-30 16:57:00, 1, 0, {$filterGroupId}, 0, 0, 0, , 0, {$articleDetailId}, NULL, NULL, {$configuratorSetId}"
+                "{$id}, 2, {$name}, SHORT DESCRIPTION, LONG DESCRIPTION, NULL, 2012-08-15, 1, 1, 20, 0, , 2012-08-30 16:57:00, 1, 0, {$filterGroupId}, 0, 0, 0, , 0, {$articleDetailId}, NULL, NULL, {$configuratorSetId}"
             );
 
             // Create article details / variants
