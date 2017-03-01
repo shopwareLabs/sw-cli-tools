@@ -27,4 +27,12 @@ trait ApplicationTestCaseTrait
     {
         self::$application = new Application(\TestLoaderProvider::getLoader());
     }
+
+    /**
+     * @after
+     */
+    protected function destoryApplicationAfter()
+    {
+        self::$application = false;
+    }
 }
