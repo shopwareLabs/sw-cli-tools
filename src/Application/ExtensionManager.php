@@ -75,7 +75,7 @@ class ExtensionManager
     {
         /** @var $extensionPath \DirectoryIterator */
         foreach (new \DirectoryIterator($vendorPath) as $extensionPath) {
-            if (!$this->isValidExtensionDir($extensionPath)) {
+            if (!$this->isValidExtensionDir($extensionPath) || $extensionPath->getBasename() === 'vendor') {
                 continue;
             }
 
