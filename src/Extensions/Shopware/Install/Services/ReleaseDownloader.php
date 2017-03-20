@@ -131,12 +131,12 @@ class ReleaseDownloader
         $signature = $response->getHeader('X-Shopware-Signature');
 
         if ($this->openSSLVerifier->isSystemSupported()) {
-            if (!$this->openSSLVerifier->isValid($response->getBody(), $signature)) {
+            if (!$this->openSSLVerifier->isValid($response->getBody(), $signature[0])) {
                 throw new \RuntimeException('API signature verification failed');
             }
         }
 
-        $releases = $response->json();
+        $releases = json_decode($response->getBody(), true);
         if (empty($releases)) {
             throw new \RuntimeException('Could not get releases list package');
         }
