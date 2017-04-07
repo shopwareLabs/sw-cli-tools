@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?= '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL; ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../../../../engine/Shopware/Components/Plugin/schema/config.xsd">
 

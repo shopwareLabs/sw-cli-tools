@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?= '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL; ?>
 <menu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/5.2/engine/Shopware/Components/Plugin/schema/menu.xsd">
     <entries>
         <entry>
