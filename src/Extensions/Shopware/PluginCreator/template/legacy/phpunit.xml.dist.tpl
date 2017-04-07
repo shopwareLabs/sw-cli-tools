@@ -1,4 +1,4 @@
-<?= '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<?= '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL; ?>
 <?php if ($configuration->isLegacyPlugin) { ?>
 <phpunit bootstrap="../../../../../../tests/Shopware/TestHelper.php">
 <?php } else { ?>
