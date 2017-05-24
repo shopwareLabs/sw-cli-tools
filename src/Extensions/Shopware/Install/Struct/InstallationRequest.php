@@ -13,6 +13,12 @@ class InstallationRequest extends Struct
     private $installDir;
 
     /** @var string */
+    private $onlyUnpack;
+
+    /** @var string */
+    private $skipDownload;
+
+    /** @var string */
     private $dbHost;
 
     /** @var string */
@@ -98,6 +104,22 @@ class InstallationRequest extends Struct
     public function getInstallDir()
     {
         return $this->installDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnlyUnpack()
+    {
+        return $this->onlyUnpack;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSkipDownload()
+    {
+        return $this->skipDownload;
     }
 
     /**

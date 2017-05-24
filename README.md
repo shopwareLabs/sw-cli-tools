@@ -95,6 +95,8 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 ### sw install:release
     --release=RELEASE                Release version. Default: Latest. Possible are all shopware release versions like "4.2.0"
     --install-dir[=INSTALL-DIR]      Install directory
+    --unpack-only                    Only unpack the downloaded release
+    --skip-download                  Skip release downloading
     --db-host=DB-HOST                Database host [default: "localhost"]
     --db-port=DB-PORT                Database port [default: "3306"]
     --db-socket=DB-SOCKET            Database socket

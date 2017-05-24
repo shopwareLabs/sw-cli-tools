@@ -108,28 +108,31 @@ class Release
      */
     public function installShopware(InstallationRequest $request)
     {
-        $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
-
-        if ($request->getRelease() === 'latest' || version_compare($request->getRelease(), '5.1.2', '>=')) {
-            $this->createDatabase($request);
-            $this->createShopwareConfig($request);
-            $this->runInstaller($request);
-        } else {
-            $this->generateVcsMapping($request->getAbsoluteInstallDir());
-            $this->createShopwareConfig($request);
-            $this->setupDatabase($request);
-            $this->lockInstaller($request->getAbsoluteInstallDir());
+        if (!$request->getSkipDownload()) {
+            $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
         }
+        if (!$request->getOnlyUnpack()) {
+            if ($request->getRelease() === 'latest' || version_compare($request->getRelease(), '5.1.2', '>=')) {
+                $this->createDatabase($request);
+                $this->createShopwareConfig($request);
+                $this->runInstaller($request);
+            } else {
+                $this->generateVcsMapping($request->getAbsoluteInstallDir());
+                $this->createShopwareConfig($request);
+                $this->setupDatabase($request);
+                $this->lockInstaller($request->getAbsoluteInstallDir());
+            }
 
-        $this->ioService->writeln('<info>Running post release scripts</info>');
-        $this->postInstall->fixPermissions($request->getAbsoluteInstallDir());
-        $this->postInstall->setupTheme($request->getAbsoluteInstallDir());
-        $this->postInstall->importCustomDeltas($request->getDbName());
-        $this->postInstall->runCustomScripts($request->getAbsoluteInstallDir());
+            $this->ioService->writeln('<info>Running post release scripts</info>');
+            $this->postInstall->fixPermissions($request->getAbsoluteInstallDir());
+            $this->postInstall->setupTheme($request->getAbsoluteInstallDir());
+            $this->postInstall->importCustomDeltas($request->getDbName());
+            $this->postInstall->runCustomScripts($request->getAbsoluteInstallDir());
 
-        $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
+            $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
 
-        $this->ioService->writeln('<info>Install completed</info>');
+            $this->ioService->writeln('<info>Install completed</info>');
+        }
     }
 
     private function createDatabase(InstallationRequest $request)

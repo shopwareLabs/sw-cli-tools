@@ -42,7 +42,9 @@ EOF
     {
         $this
             ->addOption('release', 'r', InputOption::VALUE_REQUIRED, 'Release version. Default: Latest')
-            ->addOption('install-dir', 'i', InputOption::VALUE_REQUIRED, 'Install directory');
+            ->addOption('install-dir', 'i', InputOption::VALUE_REQUIRED, 'Install directory')
+            ->addOption('unpack-only', null, InputOption::VALUE_NONE, 'Only unpack the downloaded release')
+            ->addOption('skip-download', null, InputOption::VALUE_NONE, 'Skip release downloading');
     }
 
     private function addDbOptions()
@@ -90,6 +92,8 @@ EOF
         $request = new InstallationRequest([
             'release' => $input->getOption('release'),
             'installDir' => $input->getOption('install-dir'),
+            'onlyUnpack' => $input->getOption('unpack-only'),
+            'skipDownload' => $input->getOption('skip-download'),
             'dbHost' => $input->getOption('db-host'),
             'dbPort' => $input->getOption('db-port'),
             'dbSocket' => $input->getOption('db-socket'),
@@ -129,19 +133,22 @@ EOF
 
         $this->askGenericOptions($input, $ioService);
 
-        $release = $this->askRelease($input, $ioService);
+        $suggestion = '';
+        if (!$input->getOption('skip-download')) {
+            $release = $this->askRelease($input, $ioService);
+            $suggestion = $release ?: 'latest';
 
-        $suggestion = $release ?: 'latest';
+            $installDir = $this->askInstallationDirectory($input, $ioService, $suggestion);
+            $suggestion = $installDir ?: $suggestion;
+        }
 
-        $installDir = $this->askInstallationDirectory($input, $ioService, $suggestion);
+        if (!$input->getOption('unpack-only')) {
+            $this->askBasePath($input, $ioService, $suggestion);
 
-        $suggestion = $installDir ?: $suggestion;
-
-        $this->askBasePath($input, $ioService, $suggestion);
-
-        $this->askDatabaseUser($input, $ioService);
-        $this->askDatabasePassword($input, $ioService);
-        $this->askDatabaseName($input, $ioService, $suggestion);
+            $this->askDatabaseUser($input, $ioService);
+            $this->askDatabasePassword($input, $ioService);
+            $this->askDatabaseName($input, $ioService, $suggestion);
+        }
     }
 
     /**
