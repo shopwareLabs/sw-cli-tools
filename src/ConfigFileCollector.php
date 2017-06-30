@@ -27,18 +27,18 @@ class ConfigFileCollector
     {
         $files = [];
 
-        // Load user file first. Its config values cannot be overwritten
-        $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
-        if (file_exists($userConfig)) {
-            $files[] = $userConfig;
-        }
+        // Load config.yaml.dist as latest - this way the fallback config options are defined
+        $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
 
         $extensionPath = $this->pathProvider->getExtensionPath();
         $files = array_merge($files, $this->iterateVendors($extensionPath));
         $files = array_merge($files, $this->iterateVendors(__DIR__ . '/Extensions'));
 
-        // Load config.yaml.dist as latest - this way the fallback config options are defined
-        $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
+        // Load user file first. Its config values cannot be overwritten
+        $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
+        if (file_exists($userConfig)) {
+            $files[] = $userConfig;
+        }
 
         return $files;
     }

@@ -22,27 +22,14 @@ class Config implements \ArrayAccess
      */
     public function __construct(ConfigFileCollector $fileCollector)
     {
-        $config = $this->getMergedConfigs($fileCollector->collectConfigFiles());
-        $this->configArray = Yaml::parse($config, true);
-
-        $this->validateConfig();
-    }
-
-    /**
-     * Merge all given config.yaml files
-     *
-     * @param  string[] $paths
-     * @return string
-     */
-    private function getMergedConfigs($paths)
-    {
-        $content = [];
-
-        foreach ($paths as $path) {
-            $content[] = file_get_contents($path);
+        $config = [];
+        foreach ($fileCollector->collectConfigFiles() as $configFile) {
+            $config = array_replace_recursive($config, Yaml::parse(file_get_contents($configFile), true));
         }
 
-        return implode("\n", $content);
+        $this->configArray = $config;
+
+        $this->validateConfig();
     }
 
     /**

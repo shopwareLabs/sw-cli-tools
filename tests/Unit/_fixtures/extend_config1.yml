@@ -1,0 +1,6 @@
+config:
+  some_config: some_value
+  recursive:
+    config1: value1
+    config2: value2
+    not_existing: value
