@@ -1,0 +1,7 @@
+config:
+  some_config: override
+  extend_config: extend
+  recursive:
+    config1: value1
+    config2: override
+    config3: value3
