@@ -196,7 +196,7 @@ The configuration of the script is done in `~/.config/sw-cli-tools/config.yaml`.
 
 # Building sw.phar
 For building the release package (`sw.phar`) [box](http://box-project.github.io/box2/) is used.
-A new release is build autmatically for every push on the master branch by Travis CI (See `bin/deploy.sh`).
+A new release is build automatically for every push on the master branch by Travis CI (See `bin/deploy.sh`).
 
 
 # Coding standard

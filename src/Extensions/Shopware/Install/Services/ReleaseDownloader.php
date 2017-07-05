@@ -167,6 +167,6 @@ class ReleaseDownloader
      */
     private function getTempFile()
     {
-        return sys_get_temp_dir().'/'.uniqid('release_download');
+        return sys_get_temp_dir().'/'.uniqid('release_download', true);
     }
 }
