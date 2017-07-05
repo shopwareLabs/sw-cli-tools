@@ -51,6 +51,7 @@ class File implements CacheInterface
 
     /**
      * @param string $key
+     * @return bool
      */
     public function exists($key)
     {

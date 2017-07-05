@@ -37,7 +37,7 @@ class Config implements \ArrayAccess
      */
     public function getRepositories()
     {
-        return $this->configArray['repositories'];
+        return (array) $this->configArray['repositories'];
     }
 
     /**
