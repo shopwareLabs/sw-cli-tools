@@ -71,6 +71,9 @@ class Zip
             $this->processExecutor->execute('rm -rf ' . $blackListPath);
         }
 
+        if (file_exists($pluginPath . '/composer.json')) {
+            $this->processExecutor->execute('composer install --no-dev', $pluginPath);
+        }
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
 
