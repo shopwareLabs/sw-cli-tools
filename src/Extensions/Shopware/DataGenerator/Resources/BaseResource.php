@@ -109,7 +109,7 @@ abstract class BaseResource
             'SET autocommit = 0;',
             'SET foreign_key_checks=0;',
             'SET unique_checks=0;',
-            'SET @@session.sql_mode = ""',
+            'SET @@session.sql_mode = "";',
         ];
 
         foreach ($this->tables as $table) {
