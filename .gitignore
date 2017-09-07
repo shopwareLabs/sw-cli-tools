@@ -21,3 +21,4 @@ sw.phar.version
 
 src/Extensions/
 !src/Extensions/Shopware
+output/
