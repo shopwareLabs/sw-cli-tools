@@ -315,7 +315,7 @@ EOF
     {
         $databasePassword = $input->getOption('db-password');
         if (!$databasePassword) {
-            $databasePassword = $ioService->ask('Please provide the database password: ');
+            $databasePassword = $ioService->ask('Please provide the database password: ', null, true);
             $input->setOption('db-password', trim($databasePassword));
         }
     }

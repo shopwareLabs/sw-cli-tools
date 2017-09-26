@@ -122,9 +122,14 @@ class IoService
      * @param  null            $default
      * @return string
      */
-    public function ask($question, $default = null)
+    public function ask($question, $default = null, $hidden = false)
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
+
+        if ($hidden) {
+            $question->setHidden(true);
+            $question->setHiddenFallback(false);
+        }
 
         return $this->questionHelper->ask($this->input, $this->output, $question);
     }
