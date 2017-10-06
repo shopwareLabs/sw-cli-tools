@@ -4,7 +4,7 @@
 namespace  <?= $configuration->name; ?>\Subscriber;
 
 use Enlight\Event\SubscriberInterface;
-use Shopware\Recovery\Common\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ApiSubscriber implements SubscriberInterface
 {
