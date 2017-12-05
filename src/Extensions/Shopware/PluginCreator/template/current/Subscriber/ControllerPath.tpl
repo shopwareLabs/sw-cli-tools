@@ -49,7 +49,7 @@ class ControllerPath implements SubscriberInterface
      */
     public function onGetControllerPathBackend(\Enlight_Event_EventArgs $args)
     {
-        $this->container->get('template')->addTemplateDir(__DIR__ . '/..' . '/Resources/views/');
+        $this->container->get('template')->addTemplateDir(__DIR__ . '/../Resources/views/');
         return __DIR__ . '/../Controllers/Backend/<?= $configuration->name; ?>.php';
     }
 <?php } ?>
@@ -64,6 +64,7 @@ class ControllerPath implements SubscriberInterface
      */
     public function onGetControllerPathFrontend(\Enlight_Event_EventArgs $args)
     {
+        $this->container->get('template')->addTemplateDir(__DIR__ . '/../Resources/views/');
         return __DIR__ . '/../Controllers/Frontend/<?= $configuration->name; ?>.php';
     }
 <?php } ?>
