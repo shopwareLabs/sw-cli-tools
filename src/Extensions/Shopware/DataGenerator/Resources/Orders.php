@@ -87,7 +87,7 @@ class Orders extends BaseResource
 
             $cleared = rand(9, 21);
             $state = rand(0, 8);
-            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '2012-08-30 10:15:54', {$state}, {$cleared}, 4, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141')";
+            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, NOW(), {$state}, {$cleared}, 4, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141')";
 
             for ($detailCounter = 1; $detailCounter <= $numArticles; $detailCounter++) {
                 $detailId = $this->getUniqueId('orderDetail');
