@@ -120,7 +120,7 @@ class Application extends \Symfony\Component\Console\Application
                 continue;
             }
 
-            if (!@mkdir($dir, 0777, true)) {
+            if (!mkdir($dir, 0777, true) && !is_dir($dir)) {
                 throw new \RuntimeException("Could not find / create $dir");
             }
         }

@@ -69,7 +69,9 @@ class ZipLocalCommand extends BaseCommand
             $outputFile = $this->getZipDir() . '/' . $info->name . '.zip';
             $tempDir = $this->getTempDir();
             $sourceDir = $tempDir . '/' . $info->module . '/' . $info->name;
-            mkdir($sourceDir, 0777, true);
+            if (!mkdir($sourceDir, 0777, true) && !is_dir($sourceDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $sourceDir));
+            }
 
             $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
             $this->container->get('utilities')->changeDir($tempDir);
@@ -81,7 +83,9 @@ class ZipLocalCommand extends BaseCommand
 
             $tempDir = $this->getTempDir();
             $sourceDir = $tempDir . '/' . $pluginName;
-            mkdir($sourceDir, 0777, true);
+            if (!mkdir($sourceDir, 0777, true) && !is_dir($sourceDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $sourceDir));
+            }
 
             $this->container->get('process_executor')->execute("cp -r {$pluginDirectory}/* $sourceDir");
             $this->container->get('utilities')->changeDir($tempDir);
@@ -95,8 +99,10 @@ class ZipLocalCommand extends BaseCommand
     protected function getTempDir()
     {
         $tempDirectory = sys_get_temp_dir();
-        $tempDirectory .= '/plugin-inst-' . uniqid();
-        mkdir($tempDirectory, 0777, true);
+        $tempDirectory .= '/plugin-inst-' . uniqid('', true);
+        if (!mkdir($tempDirectory, 0777, true) && !is_dir($tempDirectory)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDirectory));
+        }
 
         return $tempDirectory;
     }

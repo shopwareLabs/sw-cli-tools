@@ -75,15 +75,16 @@ EOF;
     /**
      * @param string $dir
      * @param string $sshKeyFile
+     * @return bool
      */
     private function writeSshKey($dir, $sshKeyFile)
     {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0700, true);
+        if (!mkdir($dir, 0700, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
 
         $filename = $dir . $this->keyFileName;
-        file_put_contents($filename, file_get_contents($sshKeyFile));
+        copy($sshKeyFile, $filename);
         chmod($filename, 0700);
 
         return file_exists($filename);
@@ -116,8 +117,8 @@ EOF;
      */
     private function writeGitSshWrapper($dir)
     {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0700, true);
+        if (!mkdir($dir, 0700, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
 
         $filename = $dir . $this->wrapperFileName;
