@@ -59,13 +59,13 @@ class Demodata
     public function setup($installDir)
     {
         $assetDir = $this->pathProvider->getAssetsPath();
-        if (!is_dir($assetDir)) {
-            mkdir($assetDir);
+        if (!mkdir($assetDir) && !is_dir($assetDir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $assetDir));
         }
 
         $targetFile = md5($this->demoUrl) . '_demo.zip';
 
-        if (!file_exists(($assetDir . '/' . $targetFile))) {
+        if (!file_exists($assetDir . '/' . $targetFile)) {
             $this->ioService->writeln('<info>Downloading demodata from shopware.de</info>');
             $this->processExecutor->execute("wget {$this->demoUrl} -O {$assetDir}/{$targetFile}");
             $this->ioService->writeln('<info>Unzipping demo data</info>');

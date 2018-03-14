@@ -10,20 +10,29 @@ class Config
      * @var
      */
     protected $numberArticles = 0;
+
     protected $numberCategories = 0;
+
     protected $numberCustomers = 0;
+
     protected $numberOrders = 0;
+
     protected $numberNewsletter = 0;
+
     protected $numberVouchers = 0;
+
     protected $categoriesPerArticle = 0;
+
     protected $articleFilterGroups = 0;
+
     protected $articleFilterOptions = 0;
+
     protected $articleFilterValues = 0;
 
     /**
      * Path of the image directory.
      *
-     * @var
+     * @var string
      */
     protected $imageDir;
 
@@ -33,7 +42,7 @@ class Config
     protected $createImages;
 
     /**
-     * @var
+     * @var mixed
      */
     protected $thumbnailSizes;
 
@@ -47,7 +56,7 @@ class Config
     /**
      * Number of variants each configurator article will have at most.
      *
-     * @var
+     * @var int
      */
     protected $maxVariants;
 
@@ -81,16 +90,25 @@ class Config
         $this->numberArticles = $numberArticles;
     }
 
+    /**
+     * @return int
+     */
     public function getNumberArticles()
     {
         return $this->numberArticles;
     }
 
+    /**
+     * @param int $numberCategories
+     */
     public function setNumberCategories($numberCategories)
     {
         $this->numberCategories = $numberCategories;
     }
 
+    /**
+     * @param int $categoriesPerArticle
+     */
     public function setNumberCategoriesPerArticle($categoriesPerArticle)
     {
         $this->categoriesPerArticle = max(1, $categoriesPerArticle);
@@ -104,36 +122,57 @@ class Config
         return $this->categoriesPerArticle;
     }
 
+    /**
+     * @return int
+     */
     public function getNumberCategories()
     {
         return $this->numberCategories;
     }
 
+    /**
+     * @param $numberCustomers
+     */
     public function setNumberCustomers($numberCustomers)
     {
         $this->numberCustomers = $numberCustomers;
     }
 
+    /**
+     * @return int
+     */
     public function getNumberCustomers()
     {
         return $this->numberCustomers;
     }
 
+    /**
+     * @param $numberOrders
+     */
     public function setNumberOrders($numberOrders)
     {
         $this->numberOrders = $numberOrders;
     }
 
+    /**
+     * @return int
+     */
     public function getNumberOrders()
     {
         return $this->numberOrders;
     }
 
+    /**
+     * @param $numberNewsletter
+     */
     public function setNumberNewsletter($numberNewsletter)
     {
         $this->numberNewsletter = $numberNewsletter;
     }
 
+    /**
+     * @return int
+     */
     public function getNumberNewsletter()
     {
         return $this->numberNewsletter;
@@ -147,18 +186,24 @@ class Config
         $this->outputName = $outputName;
     }
 
+    /**
+     * @param int $maxVariants
+     */
     public function setMaxVariants($maxVariants)
     {
         $this->maxVariants = $maxVariants;
     }
 
+    /**
+     * @param int $minVariants
+     */
     public function setMinVariants($minVariants)
     {
         $this->minVariants = $minVariants;
     }
 
     /**
-     * @return
+     * @return int
      */
     public function getMaxVariants()
     {
@@ -173,6 +218,9 @@ class Config
         return $this->minVariants;
     }
 
+    /**
+     * @param string $thumbnailSizes
+     */
     public function setThumbnailSizes($thumbnailSizes)
     {
         if (empty($thumbnailSizes)) {
@@ -260,15 +308,15 @@ class Config
      */
     public function setImageDir($imageDir)
     {
-        $dir = $imageDir.'/'.'thumbnail';
-        if (!file_exists($dir)) {
-            mkdir($dir, 0777, true);
+        $dir = $imageDir . '/' . 'thumbnail';
+        if (!mkdir($dir, 0777, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
         $this->imageDir = $imageDir;
     }
 
     /**
-     * @return
+     * @return string
      */
     public function getImageDir()
     {
@@ -293,13 +341,13 @@ class Config
 
     public function createOutputDir()
     {
-        if (!is_dir('output')) {
-            mkdir('output');
+        if (!mkdir('output') && !is_dir('output')) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', 'output'));
         }
     }
 
     /**
-     * @param  $chunkSize
+     * @param int $chunkSize
      */
     public function setChunkSize($chunkSize)
     {

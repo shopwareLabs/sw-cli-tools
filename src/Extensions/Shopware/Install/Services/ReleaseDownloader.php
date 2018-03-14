@@ -68,8 +68,8 @@ class ReleaseDownloader
         $this->ioService->writeln('<info>Downloading release</info>');
         $zipLocation = $this->downloadFromUpdateApi($release);
 
-        if (!is_dir($installDir)) {
-            mkdir($installDir);
+        if (!mkdir($installDir) && !is_dir($installDir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $installDir));
         }
 
         $this->ioService->writeln('<info>Unzipping archive</info>');

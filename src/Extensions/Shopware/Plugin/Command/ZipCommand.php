@@ -85,8 +85,10 @@ class ZipCommand extends BaseCommand
     protected function getTempDir()
     {
         $tempDirectory = sys_get_temp_dir();
-        $tempDirectory .= '/plugin-inst-' . uniqid();
-        mkdir($tempDirectory, 0777, true);
+        $tempDirectory .= '/plugin-inst-' . uniqid('', true);
+        if (!mkdir($tempDirectory, 0777, true) && !is_dir($tempDirectory)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDirectory));
+        }
 
         $this->container->get('utilities')->changeDir($tempDirectory);
 
