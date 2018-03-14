@@ -86,7 +86,7 @@ class ZipCommand extends BaseCommand
     {
         $tempDirectory = sys_get_temp_dir();
         $tempDirectory .= '/plugin-inst-' . uniqid('', true);
-        if (!mkdir($tempDirectory, 0777, true) && !is_dir($tempDirectory)) {
+        if (!is_dir($tempDirectory) && !mkdir($tempDirectory, 0777, true) && !is_dir($tempDirectory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDirectory));
         }
 
