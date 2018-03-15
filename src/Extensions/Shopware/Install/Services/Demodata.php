@@ -59,7 +59,7 @@ class Demodata
     public function setup($installDir)
     {
         $assetDir = $this->pathProvider->getAssetsPath();
-        if (!mkdir($assetDir) && !is_dir($assetDir)) {
+        if (!is_dir($assetDir) && !mkdir($assetDir) && !is_dir($assetDir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $assetDir));
         }
 

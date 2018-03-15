@@ -309,7 +309,7 @@ class Config
     public function setImageDir($imageDir)
     {
         $dir = $imageDir . '/' . 'thumbnail';
-        if (!mkdir($dir, 0777, true) && !is_dir($dir)) {
+        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
         $this->imageDir = $imageDir;
@@ -341,7 +341,7 @@ class Config
 
     public function createOutputDir()
     {
-        if (!mkdir('output') && !is_dir('output')) {
+        if (!is_dir('output') && !mkdir('output') && !is_dir('output')) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', 'output'));
         }
     }

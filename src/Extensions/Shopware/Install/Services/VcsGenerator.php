@@ -37,7 +37,7 @@ EOF;
         $this->ioService->writeln('<info>Generating VCS mapping</info>');
 
         $dir = $installDir.'/.idea';
-        if (!mkdir($dir) && !is_dir($dir)) {
+        if (!is_dir($dir) && !mkdir($dir) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
 
