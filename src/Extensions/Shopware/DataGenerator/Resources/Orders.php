@@ -2,10 +2,17 @@
 
 namespace Shopware\DataGenerator\Resources;
 
+use Faker\Factory;
 use Shopware\DataGenerator\Writer\WriterInterface;
 
 class Orders extends BaseResource
 {
+    const DEVICES = [
+        'desktop',
+        'mobile',
+        'tablet'
+    ];
+
     /**
      * @var array
      */
@@ -68,6 +75,8 @@ class Orders extends BaseResource
         $orderNumbers = [];
 
         for ($orderCounter = 0; $orderCounter < $number; $orderCounter++) {
+            $faker = Factory::create();
+
             $id = $this->getUniqueId('order');
             $orderNumber = $this->getUniqueId('ordernumber');
 
@@ -81,13 +90,18 @@ class Orders extends BaseResource
             $totalPricePreTax = $totalPrice / 1.19;
 
             // Create faster inserts by using dummy data instead of INSERT..SELECTING the data from s_user_billingaddress/shippingaddress
-            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', '', 2, 0 )";
-            $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', 'dummyFirst', 'dummyLast', 'street 1', '48153', 'Münster', 2, 0)";
+            $valueData['customerBillingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', $currentCustomerNumber, '{$this->quote($faker->firstName)}', '{$this->quote($faker->lastName)}', '{$this->quote($faker->streetAddress)}', '{$this->quote($faker->postcode)}', '{$this->quote($faker->city)}', '', 2, 0 )";
+            $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', '{$this->quote($faker->firstName)}', '{$this->quote($faker->lastName)}', '{$this->quote($faker->streetAddress)}', '{$this->quote($faker->postcode)}', '{$this->quote($faker->city)}', 2, 0)";
             $valueData['customerBillingAttributeValues'][] = "({$id}, {$id})";
 
             $cleared = rand(9, 21);
             $state = rand(0, 8);
-            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, NOW(), {$state}, {$cleared}, 4, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141')";
+            $payment = rand(2, 6);
+            $device = self::DEVICES[rand(0, count(self::DEVICES) - 1)];
+            $date = $faker->dateTimeBetween('-3months', 'now');
+
+
+            $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '{$date->format('Y-m-d H:i:s')}', {$state}, {$cleared}, {$payment}, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141', '{$device}')";
 
             for ($detailCounter = 1; $detailCounter <= $numArticles; $detailCounter++) {
                 $detailId = $this->getUniqueId('orderDetail');
@@ -112,7 +126,7 @@ class Orders extends BaseResource
         $sql = [];
 
         $sql[] = '
-            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr` ) VALUES '.implode(
+            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr`, `deviceType`) VALUES '.implode(
                 ",\n            ",
                 $valueData['orderValues']
             ).';';
@@ -145,5 +159,14 @@ class Orders extends BaseResource
 
 
         return $sql;
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    private function quote($string)
+    {
+        return str_replace('\'', "\'", $string);
     }
 }

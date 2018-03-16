@@ -14,7 +14,7 @@
         "dnoegel/php-xdg-base-dir": "~0.1",
         "shopwarelabs/plugin-info": "dev-master",
         "ramsey/array_column": "~1.1",
-        "fzaninotto/faker": "^1.5",
+        "fzaninotto/faker": "^1.7",
         "guzzlehttp/guzzle": "^6.0",
         "php-http/guzzle6-adapter": "^1.0",
         "piwik/ini": "^1.0",
