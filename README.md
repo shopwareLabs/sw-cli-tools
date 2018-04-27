@@ -137,7 +137,7 @@ The database credentials are configured in ~/.config/sw-cli-tools/config.yaml
 ### sw generate
 Will generate data which can be used to fill the shop for e.g. load tests.
 
-!Warning! this command ist destructive
+!Warning! this command is destructive
 
 Valid options / arguments are:
 
