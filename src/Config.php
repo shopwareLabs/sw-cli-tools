@@ -57,7 +57,11 @@ class Config implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return $this->configArray[$offset];
+        if (array_key_exists($offset, $this->configArray)) {
+            return $this->configArray[$offset];
+        }
+
+        return null;
     }
 
     /**
