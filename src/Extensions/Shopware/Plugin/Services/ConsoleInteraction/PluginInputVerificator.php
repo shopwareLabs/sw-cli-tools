@@ -54,7 +54,7 @@ class PluginInputVerificator
      * @param  string[] $allowedAnswers
      * @return string
      */
-    public function selectPlugin($plugins, $allowedAnswers = ['all'])
+    public function selectPlugin($plugins, array $allowedAnswers = ['all'])
     {
         while (true) {
             system('clear');
@@ -65,6 +65,10 @@ class PluginInputVerificator
             );
 
             $response = $this->ioService->ask($question);
+
+            if (in_array($response, $allowedAnswers, true)) {
+                return $response;
+            }
 
             if ($range = $this->getPluginRange($response)) {
                 return array_filter(
@@ -78,14 +82,14 @@ class PluginInputVerificator
                         return $plugin;
                     }
                 );
-            } elseif (isset($plugins[$response - 1])) {
-                return $plugins[$response - 1];
-            } elseif (in_array($response, $allowedAnswers)) {
-                return $response;
-            } else {
-                $question = new Question('<error>Invalid answer, hit enter to continue</error>');
-                $this->ioService->ask($question);
             }
+
+            if (isset($plugins[$response - 1])) {
+                return $plugins[$response - 1];
+            }
+
+            $question = new Question('<error>Invalid answer, hit enter to continue</error>');
+            $this->ioService->ask($question);
         }
     }
 
@@ -102,18 +106,20 @@ class PluginInputVerificator
 
         if (empty($allowedAnswers)) {
             return sprintf($template, '');
-        } elseif (count($allowedAnswers) == 1) {
-            return sprintf($template, sprintf('or "%s"', $allowedAnswers[0]));
-        } else {
-            $allowedAnswers = array_map(
-                function ($option) {
-                    return sprintf('"<comment>%s</comment>"', $option);
-                },
-                $allowedAnswers
-            );
-
-            return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
         }
+
+        if (count($allowedAnswers) === 1) {
+            return sprintf($template, sprintf('or "%s"', $allowedAnswers[0]));
+        }
+
+        $allowedAnswers = array_map(
+            function ($option) {
+                return sprintf('"<comment>%s</comment>"', $option);
+            },
+            $allowedAnswers
+        );
+
+        return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
     }
 
     /**

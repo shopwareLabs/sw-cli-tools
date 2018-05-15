@@ -55,8 +55,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $container->register('plugin_operation_manager', 'Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager')
             ->addArgument(new Reference('plugin_provider'))
             ->addArgument(new Reference('plugin_selector'))
-            ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('utilities'));
+            ->addArgument(new Reference('io_service'));
 
         $container->register('bootstrap_info', 'Shopware\Plugin\Services\BootstrapInfo');
 

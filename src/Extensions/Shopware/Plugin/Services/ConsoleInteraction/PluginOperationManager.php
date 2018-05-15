@@ -32,11 +32,6 @@ class PluginOperationManager
     protected $output;
 
     /**
-     * @var Utilities
-     */
-    private $utilities;
-
-    /**
      * @var PluginInputVerificator
      */
     protected $pluginSelector;
@@ -50,17 +45,14 @@ class PluginOperationManager
      * @param PluginProvider         $pluginProvider
      * @param PluginInputVerificator $pluginSelector
      * @param IoService              $ioService
-     * @param Utilities              $utilities
      */
     public function __construct(
         PluginProvider $pluginProvider,
         PluginInputVerificator $pluginSelector,
-        IoService $ioService,
-        Utilities $utilities
+        IoService $ioService
     ) {
         $this->pluginProvider = $pluginProvider;
         $this->pluginSelector = $pluginSelector;
-        $this->utilities = $utilities;
         $this->ioService = $ioService;
     }
 
@@ -78,11 +70,11 @@ class PluginOperationManager
             $plugins = $this->pluginProvider->getPluginByName($name);
             $count = count($plugins);
 
-            if ($count == 0) {
+            if ($count === 0) {
                 $plugins = $this->pluginProvider->getPluginsByRepositoryName($name);
                 $count = count($plugins);
             }
-            if ($count == 0) {
+            if ($count === 0) {
                 $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
 
                 return;
@@ -90,7 +82,7 @@ class PluginOperationManager
 
             $this->ioService->writeln("\nWill now process '<comment>{$name}</comment>'");
 
-            if ($count == 1) {
+            if ($count === 1) {
                 $this->executeMethodCallback($plugins[0], $callback, $params);
 
                 return;
@@ -126,9 +118,13 @@ class PluginOperationManager
     {
         if ($response instanceof Plugin) {
             return [$response];
-        } elseif (is_array($response)) {
+        }
+
+        if (is_array($response)) {
             return $response;
-        } elseif ($response == 'all') {
+        }
+
+        if ($response === 'all') {
             return $plugins;
         }
     }
@@ -145,7 +141,7 @@ class PluginOperationManager
         while (true) {
             $response = $this->pluginSelector->selectPlugin($plugins, ['all', 'exit']);
 
-            if ($response == 'exit') {
+            if ($response === 'exit') {
                 return;
             }
 
