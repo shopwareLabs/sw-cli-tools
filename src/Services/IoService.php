@@ -182,7 +182,7 @@ class IoService
      *
      * @return string
      */
-    public function askAndValidate($question, $validator = false, $attempts = false, $default = null)
+    public function askAndValidate($question, $validator = false, $attempts = false, $default = null, $hidden = false)
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
@@ -192,6 +192,11 @@ class IoService
 
         if ($validator) {
             $question->setValidator($validator);
+        }
+
+        if ($hidden) {
+            $question->setHidden(true);
+            $question->setHiddenFallback(false);
         }
 
         return $this->questionHelper->ask($this->input, $this->output, $question);

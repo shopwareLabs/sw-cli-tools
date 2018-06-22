@@ -213,10 +213,18 @@ EOF
                 continue;
             }
 
+            $hidden = false;
+
+            if ($field === 'admin-password') {
+                $hidden = true;
+            }
             
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
-                [$this, 'genericValidator']
+                [$this, 'genericValidator'],
+                false,
+                null,
+                $hidden
             );
             $input->setOption($field, $fieldData);
         }
