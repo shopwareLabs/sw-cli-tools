@@ -119,6 +119,10 @@ class LoadDataInfile
             'lockeduntil',
             'default_billing_address_id',
             'default_shipping_address_id',
+            'salutation',
+            'firstname',
+            'lastname',
+            'birthday'
         ],
         's_user_addresses' => [
             'id',

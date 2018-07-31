@@ -2,6 +2,7 @@
 
 namespace Shopware\DataGenerator\Resources;
 
+use Faker\Factory;
 use Shopware\DataGenerator\Services\LoadDataInfile;
 use Shopware\DataGenerator\Writer\WriterInterface;
 
@@ -52,16 +53,25 @@ class Customers extends BaseResource
         $this->createProgressBar($number);
 
         for ($customerCounter = 0; $customerCounter < $number; $customerCounter++) {
+            $faker = Factory::create();
+
             $this->advanceProgressBar();
 
             $id = $this->getUniqueId('customer');
             $customerNumber = $this->getUniqueId('customerNumber');
 
             $group = $customerCounter % 2 === 1 ? 'EK' : 'H';
+
             $sex = $customerCounter % 2 === 1 ? 'mr' : 'ms';
 
+            $birthday = '';
+
+            if (rand(1, 4) !== 4) {
+                $birthday = $faker->dateTimeThisCentury->format('Y-m-d');
+            }
+
             $importCustomers->write(
-                "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,user_{$id}@example.org,1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id}"
+                "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,{$faker->email},1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id},{$sex},{$faker->firstName},{$faker->lastName}, {$birthday}"
             );
             $importCustomersAttributes->write("{$id}");
             $importCustomersBillingAttributes->write("{$id}");
@@ -115,5 +125,7 @@ class Customers extends BaseResource
                 $importCustomersShippingAttributes->getFileName()
             )
         );
+
+        $writer->write('UPDATE s_user SET birthday = NULL WHERE birthday = "0000-00-00 00:00"');
     }
 }
