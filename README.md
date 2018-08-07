@@ -1,3 +1,4 @@
+
 # Shopware CLI Tools
 
 [![Build Status](https://img.shields.io/travis/shopwareLabs/sw-cli-tools/master.svg?style=flat-square)](https://travis-ci.org/shopwareLabs/sw-cli-tools)
@@ -73,7 +74,7 @@ Valid options/arguments are:
     --small: Show 3 columns of plugins in a short form
     --branch branch to checkout out
     names1…nameN - names of plugins to zip
-    
+
 If the plugins contains a file in its root named `.sw-zip-blacklist`, the files/directories described there, will be excluded from zipping
 
 ### sw plugin:zip:dir
@@ -128,7 +129,7 @@ Valid options / arguments are:
     --haveCommands | -c: Generate a console command
     --haveWidget | -w: Generate a backend widget
     --haveApi | -a: Generate an API resource + REST controller
-    --licenseHeader[="..."]: Include a license header at the beginning of any file name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
+    --licenseHeader[="/home/user/license.txt"]: Include a license header file at the beginning of any file name: Name of your plugin. Must at least have a dev prefix + plugin name, e.g. "SwagBundle", "PrefixPluginName"; "SwagBrowserLanguageDetection"
     --haveElasticSearch | -e: Generate ElasticSearch blueprint classes and an example of a decorator for the product number search.
 
 The options will be read interactively, if not provided.
