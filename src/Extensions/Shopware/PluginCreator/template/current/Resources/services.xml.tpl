@@ -59,7 +59,7 @@
             <tag name="shopware_elastic_search.data_indexer" />
             <argument id="dbal_connection" type="service"/>
             <argument id="shopware_elastic_search.client" type="service"/>
-            <argument id="<?= $names->under_score_js ?>.search.rovider" type="service"/>
+            <argument id="<?= $names->under_score_js ?>.search.provider" type="service"/>
         </service>
 
         <service id="<?= $names->under_score_js ?>.mapping.mapping" class="<?= $configuration->name; ?>\Components\ESIndexingBundle\Mapping">
