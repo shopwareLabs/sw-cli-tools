@@ -39,7 +39,7 @@ class <?= $names->camelCaseModel; ?> extends ModelEntity
     }
 
     /**
-     * return string
+     * @return string
      */
     public function getName()
     {
