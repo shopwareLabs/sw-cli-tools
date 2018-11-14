@@ -108,7 +108,13 @@ class Release
      */
     public function installShopware(InstallationRequest $request)
     {
-        $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
+        if (!$request->getSkipDownload()) {
+            $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
+        }
+
+        if ($request->getOnlyUnpack()) {
+            return;
+        }
 
         if ($request->getRelease() === 'latest' || version_compare($request->getRelease(), '5.1.2', '>=')) {
             $this->createDatabase($request);
