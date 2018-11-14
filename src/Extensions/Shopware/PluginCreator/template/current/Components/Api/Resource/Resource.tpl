@@ -216,7 +216,7 @@ class <?= $names->camelCaseModel; ?> extends Resource
     {
         $builder = $this->getManager()->createQueryBuilder();
         $builder->select(array('<?= $names->backendModelAlias; ?>'))
-            ->from('<?= $configuration->backendModel; ?>', '<?= $names->backendModelAlias; ?>');
+            ->from('<?= $configuration->name; ?>\Models\<?= $configuration->backendModel; ?>', '<?= $names->backendModelAlias; ?>');
 
         return $builder;
     }
