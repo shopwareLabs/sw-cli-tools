@@ -73,6 +73,7 @@ class Orders extends BaseResource
 
         $totalNumberCustomers = $this->config->getNumberCustomers();
         $orderNumbers = [];
+        $orderDates = [];
 
         for ($orderCounter = 0; $orderCounter < $number; $orderCounter++) {
             $faker = Factory::create();
@@ -98,7 +99,15 @@ class Orders extends BaseResource
             $state = rand(0, 8);
             $payment = rand(2, 6);
             $device = self::DEVICES[rand(0, count(self::DEVICES) - 1)];
-            $date = $faker->dateTimeBetween('-3months', 'now');
+            $date = $faker->dateTimeBetween('-2years', 'now');
+
+            $dateFormatted = $date->format('Y-m-d');
+
+            if (isset($orderDates[$dateFormatted])) {
+                $orderDates[$dateFormatted]++;
+            } else {
+                $orderDates[$dateFormatted] = 0;
+            }
 
 
             $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '{$date->format('Y-m-d H:i:s')}', {$state}, {$cleared}, {$payment}, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141', '{$device}')";
@@ -111,8 +120,24 @@ class Orders extends BaseResource
             }
         }
 
+        $begin = new \DateTime(min(array_keys($orderDates)));
+        $end = new \DateTime(max(array_keys($orderDates)));
+
+        $interval = \DateInterval::createFromDateString('1 day');
+
+        foreach (new \DatePeriod($begin, $interval, $end) as $dt) {
+            $date = $dt->format('Y-m-d');
+
+            $ordersOnDate = isset($orderDates[$date]) ? $orderDates[$date] : 10;
+            $pageImpressions = $ordersOnDate * rand(200, 1500);
+            $uniqueVisits = $ordersOnDate * rand(1, 50);
+
+            $valueData['visitors'][] = "(1, \"{$date}\", {$pageImpressions}, {$uniqueVisits}, \"desktop\")";
+        }
+
         $writer->write($this->createSQL($valueData));
         $orderCSVWriter->write($orderNumbers);
+
         $this->finishProgressBar();
     }
 
@@ -155,6 +180,12 @@ class Orders extends BaseResource
             INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES '.implode(
                 ', ',
                 $valueData['customerBillingAttributeValues']
+            ).';';
+
+        $sql[] = '
+            INSERT INTO `s_statistics_visitors` (`shopID`, `datum`, `pageimpressions`, `uniquevisits`, `deviceType`) VALUES '.implode(
+                ', ',
+                $valueData['visitors']
             ).';';
 
 
