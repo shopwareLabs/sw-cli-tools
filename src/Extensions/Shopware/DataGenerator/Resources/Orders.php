@@ -138,8 +138,6 @@ class Orders extends BaseResource
         $writer->write($this->createSQL($valueData));
         $orderCSVWriter->write($orderNumbers);
 
-
-
         $this->finishProgressBar();
     }
 
