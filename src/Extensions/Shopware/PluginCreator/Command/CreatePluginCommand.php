@@ -1,17 +1,11 @@
 <?php
+
 namespace Shopware\PluginCreator\Command;
 
-use Shopware\PluginCreator\Services\Generator;
 use Shopware\PluginCreator\Services\GeneratorFactory;
-use Shopware\PluginCreator\Services\IoAdapter\HardDrive;
-use Shopware\PluginCreator\Services\NameGenerator;
-use Shopware\PluginCreator\Services\Template;
-use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
-use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
-use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
-use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Config;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -119,10 +113,7 @@ class CreatePluginCommand extends BaseCommand
 The <info>%command.name%</info> creates a new plugin.
 EOF
             );
-        ;
     }
-
-
 
     public function interact(InputInterface $input, OutputInterface $output)
     {
@@ -144,14 +135,16 @@ EOF
 
         // for backend / api the backendModel is mandatory
         if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $question = new Question('<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ');
-            $question->setValidator($this->validateModel($input));
+            $question = new Question('<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ', $defaultModel);
+            $question->setValidator($this->validateModel());
             $modelName = $helper->ask($input, $output, $question);
             $input->setOption('backendModel', $modelName);
         }
 
         // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
-        if ($input->getOption('haveBackend') && strpos($input->getOption('backendModel'), 'Shopware\Models') === false) {
+        if ($input->getOption('haveBackend')
+            && strpos($input->getOption('backendModel'), 'Shopware\Models') === false
+        ) {
             $input->setOption('haveModels', true);
         }
     }
@@ -163,7 +156,18 @@ EOF
      */
     public function normalizeBooleanFields(InputInterface $input)
     {
-        foreach (['haveBackend', 'haveFrontend', 'haveModels', 'haveCommands', 'haveWidget', 'haveApi', 'haveFilter', self::LEGACY_OPTION] as $key) {
+        $inputOptions = [
+            'haveBackend',
+            'haveFrontend',
+            'haveModels',
+            'haveCommands',
+            'haveWidget',
+            'haveApi',
+            'haveFilter',
+            self::LEGACY_OPTION
+        ];
+
+        foreach ($inputOptions as $key) {
             switch (strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
@@ -191,8 +195,7 @@ EOF
         $configuration = $this->getConfigurationObject($input);
         $configuration->pluginConfig = $this->getConfig()->offsetGet('PluginConfig');
 
-        $generatorFactory = new GeneratorFactory();
-        $generator = $generatorFactory->create($configuration);
+        $generator = (new GeneratorFactory())->create($configuration);
 
         $generator->run();
     }
@@ -209,8 +212,6 @@ EOF
         if (count($parts) <= 1) {
             throw new \InvalidArgumentException('Name must be in CamelCase and have at least two components. Don\'t forget you developer-prefix');
         }
-
-        return $name;
     }
 
     /**
@@ -243,13 +244,11 @@ EOF
     /**
      * Check the entered model (check might be somewhat more sufisticated)
      *
-     * @param $input
      * @throws \InvalidArgumentException
-     * @return $input
      */
-    public function validateModel($input)
+    public function validateModel()
     {
-        return function () use ($input) {
+        return function ($input) {
             if (empty($input)) {
                 throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
             }

@@ -7,14 +7,13 @@
  */
 class Shopware_Controllers_Backend_<?= $configuration->name; ?> extends Shopware_Controllers_Backend_Application
 {
-    protected $model = '\<?= $configuration->name; ?>\Models\<?= $configuration->backendModel; ?>';
+    protected $model = \<?= $configuration->backendModel; ?>::class;
+
     protected $alias = '<?= $names->under_score_model; ?>';
 <?php } else { ?>
 class Shopware_Controllers_Backend_<?= $configuration->name; ?> extends Shopware_Controllers_Backend_ExtJs
 {
 <?php } ?>
-
-
 <?php if ($configuration->hasWidget) { ?>
     /**
      * Loads data for the backend widget
