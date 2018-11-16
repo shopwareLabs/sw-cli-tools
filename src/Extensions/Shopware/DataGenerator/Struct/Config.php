@@ -29,6 +29,8 @@ class Config
 
     protected $articleFilterValues = 0;
 
+    protected $generatorLocale;
+
     /**
      * Path of the image directory.
      *
@@ -42,7 +44,7 @@ class Config
     protected $createImages;
 
     /**
-     * @var mixed
+     * @var array
      */
     protected $thumbnailSizes;
 
@@ -219,7 +221,7 @@ class Config
     }
 
     /**
-     * @param string $thumbnailSizes
+     * @param string|array $thumbnailSizes
      */
     public function setThumbnailSizes($thumbnailSizes)
     {
@@ -384,5 +386,21 @@ class Config
     public function getSeed()
     {
         return $this->seed;
+    }
+
+    /**
+     * @param string $generatorLocale
+     */
+    public function setGeneratorLocale($generatorLocale)
+    {
+        $this->generatorLocale = $generatorLocale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeneratorLocale()
+    {
+        return $this->generatorLocale;
     }
 }

@@ -130,6 +130,12 @@ ShopwareInstallRepos:
     ssh: git@github.com:shopware/shopware.git
     http: https://github.com/shopware/shopware.git
 
+## Here you can define a locale which is used for data generation.
+## For available locales please refer to: https://github.com/fzaninotto/Faker/tree/master/src/Faker/Provider
+#
+# DataGenerator:
+  # locale: de_DE
+
   ##
   # Here you could add own plugins and other stuff you want to include in any
   # installation you set up

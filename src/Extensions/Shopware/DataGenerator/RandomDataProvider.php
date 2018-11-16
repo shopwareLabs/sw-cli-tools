@@ -9,6 +9,7 @@ class RandomDataProvider
 {
     /**
      * Fake data generator
+     *
      * @var Generator
      */
     protected $faker;
@@ -16,6 +17,18 @@ class RandomDataProvider
     public function __construct()
     {
         $this->faker = Factory::create();
+    }
+
+    /**
+     * @param string|null $locale
+     */
+    public function setProviderLocale($locale)
+    {
+        if ($locale === null) {
+            $this->faker = Factory::create();
+        } else {
+            $this->faker = Factory::create($locale);
+        }
     }
 
     /**
@@ -57,5 +70,13 @@ class RandomDataProvider
     public function getSentence($wordCount)
     {
         return $this->faker->sentence(max($wordCount, 1));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandomIpv4()
+    {
+        return $this->faker->ipv4;
     }
 }

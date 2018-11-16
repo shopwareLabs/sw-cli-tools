@@ -173,18 +173,17 @@ Requires \'local-infile=1\' in your MySQL installation.
 
     /**
      * @param InputInterface $input
-     * @param string optionName
+     * @param string $optionName
      * @param string|null $optionHumanName
-     * @param $optionName
-     * @param mixed $default
+     * @param int $default
      */
     private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
     {
         $ioService = $this->container->get('io_service');
 
         $optionHumanName = $optionHumanName ?: $optionName;
-        $optionValue = $input->getOption($optionName);
-        if ($optionValue != 0) {
+        $optionValue = (int) $input->getOption($optionName);
+        if ($optionValue !== 0) {
             return;
         }
 
@@ -261,6 +260,9 @@ Requires \'local-infile=1\' in your MySQL installation.
             $writerManager->setDefaultWriterType('file');
         }
 
+        $config = $this->container->get('config');
+        $generatorLocale = empty($config['DataGenerator']['locale']) ? null : $config['DataGenerator']['locale'];
+
         $this->configureGenerator(
             $seed,
             $articles,
@@ -275,7 +277,8 @@ Requires \'local-infile=1\' in your MySQL installation.
             $articleFilterValues,
             $chunkSize,
             $articleMinVariants,
-            $articleMaxVariants
+            $articleMaxVariants,
+            $generatorLocale
         );
 
         foreach (['categories', 'articles', 'customers', 'orders', 'newsletter', 'vouchers'] as $type) {
@@ -302,6 +305,7 @@ Requires \'local-infile=1\' in your MySQL installation.
      * @param $chunkSize
      * @param $minVariants
      * @param $maxVariants
+     * @param $generatorLocale
      */
     protected function configureGenerator(
         $seed,
@@ -317,7 +321,8 @@ Requires \'local-infile=1\' in your MySQL installation.
         $articleFilterValues,
         $chunkSize,
         $minVariants,
-        $maxVariants
+        $maxVariants,
+        $generatorLocale
     ) {
         // Check some pre-conditions
         if ($articles > 0 && !$categories) {
@@ -341,6 +346,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $config->setArticleFilterOptions($articleFilterOptions);
         $config->setArticleFilterValues($articleFilterValues);
         $config->setSeed($seed);
+        $config->setGeneratorLocale($generatorLocale);
 
         $config->setOutputName('');
 
