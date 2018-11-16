@@ -341,7 +341,8 @@ class Config
 
     public function createOutputDir()
     {
-        if (!is_dir('output') && !mkdir('output') && !is_dir('output')) {
+        $outputDir = getcwd() . '/output';
+        if (!is_dir($outputDir) && !mkdir($outputDir) && !is_dir($outputDir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', 'output'));
         }
     }
