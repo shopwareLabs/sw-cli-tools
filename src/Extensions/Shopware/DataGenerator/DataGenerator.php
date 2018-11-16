@@ -2,10 +2,7 @@
 
 namespace Shopware\DataGenerator;
 
-use Shopware\DataGenerator\RandomDataProvider;
-use Shopware\DataGenerator\Resources;
 use Shopware\DataGenerator\Struct\Config;
-use ShopwareCli\Services\IoService;
 
 /**
  * Basically calls the resource classes and provides access to the options and random data generation method
@@ -36,26 +33,18 @@ class DataGenerator
     private $config;
 
     /**
-     * @var IoService
-     */
-    private $ioService;
-
-    /**
      * @param RandomDataProvider $generator
      * @param ResourceLoader $resourceLoader
      * @param Config $config
-     * @param IoService $ioService
      */
     public function __construct(
         RandomDataProvider $generator,
         ResourceLoader $resourceLoader,
-        Config $config,
-        IoService $ioService
+        Config $config
     ) {
         $this->generator = $generator;
         $this->resourceLoader = $resourceLoader;
         $this->config = $config;
-        $this->ioService = $ioService;
     }
 
     /**
@@ -65,7 +54,7 @@ class DataGenerator
     protected function initSeed($seed)
     {
         if (!empty($seed)) {
-            srand($this->config->getSeed());
+            mt_srand($this->config->getSeed());
         }
     }
 
@@ -78,7 +67,7 @@ class DataGenerator
     public function run()
     {
         $locale = $this->config->getGeneratorLocale();
-        if(!empty($locale)){
+        if (!empty($locale)) {
             $this->generator->setProviderLocale($locale);
         }
 

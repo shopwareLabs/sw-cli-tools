@@ -28,7 +28,8 @@ class Config
     protected $articleFilterOptions = 0;
 
     protected $articleFilterValues = 0;
-    protected $generatorLocale = null;
+
+    protected $generatorLocale;
 
     /**
      * Path of the image directory.
@@ -43,7 +44,7 @@ class Config
     protected $createImages;
 
     /**
-     * @var mixed
+     * @var array
      */
     protected $thumbnailSizes;
 
@@ -220,7 +221,7 @@ class Config
     }
 
     /**
-     * @param string $thumbnailSizes
+     * @param string|array $thumbnailSizes
      */
     public function setThumbnailSizes($thumbnailSizes)
     {

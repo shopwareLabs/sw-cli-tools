@@ -9,6 +9,7 @@ class RandomDataProvider
 {
     /**
      * Fake data generator
+     *
      * @var Generator
      */
     protected $faker;
@@ -23,9 +24,9 @@ class RandomDataProvider
      */
     public function setProviderLocale($locale)
     {
-        if(empty($locale)){
+        if ($locale === null) {
             $this->faker = Factory::create();
-        }else{
+        } else {
             $this->faker = Factory::create($locale);
         }
     }

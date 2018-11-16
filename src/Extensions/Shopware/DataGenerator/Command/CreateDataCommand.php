@@ -173,18 +173,17 @@ Requires \'local-infile=1\' in your MySQL installation.
 
     /**
      * @param InputInterface $input
-     * @param string optionName
+     * @param string $optionName
      * @param string|null $optionHumanName
-     * @param $optionName
-     * @param mixed $default
+     * @param int $default
      */
     private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
     {
         $ioService = $this->container->get('io_service');
 
         $optionHumanName = $optionHumanName ?: $optionName;
-        $optionValue = $input->getOption($optionName);
-        if ($optionValue != 0) {
+        $optionValue = (int) $input->getOption($optionName);
+        if ($optionValue !== 0) {
             return;
         }
 

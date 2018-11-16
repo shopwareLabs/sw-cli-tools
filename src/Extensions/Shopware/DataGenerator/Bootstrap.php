@@ -25,8 +25,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         $this->container->register('data_generator', '\Shopware\DataGenerator\DataGenerator')
             ->addArgument(new Reference('random_data_provider'))
             ->addArgument(new Reference('resource_loader'))
-            ->addArgument(new Reference('generator_config'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('generator_config'));
 
         $this->container->register('writer_manager', '\Shopware\DataGenerator\Writer\WriterManager')
             ->addArgument(new Reference('generator_config'))
