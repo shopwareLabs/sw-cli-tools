@@ -3,19 +3,7 @@
 namespace Shopware\PluginCreator\Services;
 
 use Shopware\PluginCreator\Services\IoAdapter\IoAdapter;
-use Shopware\PluginCreator\Services\TemplateFileProvider\ApiFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\BackendControllerFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\BackendFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\CommandFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\ControllerPathFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\DefaultFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderLoaderInterface;
-use Shopware\PluginCreator\Services\TemplateFileProvider\FilterFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\FrontendFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
-use Shopware\PluginCreator\Services\TemplateFileProvider\ModelFileProvider;
-use Shopware\PluginCreator\Services\TemplateFileProvider\WidgetFileProvider;
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\OutputDirectoryProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
