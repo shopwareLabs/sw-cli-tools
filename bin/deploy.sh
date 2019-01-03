@@ -12,7 +12,7 @@ chmod 600 .travis/build-key.pem
 ssh-add .travis/build-key.pem
 
 # Setup git defaults
-git config --global user.email "contact@shopware.com"
+git config --global user.email "entwicklung@shopware.de "
 git config --global user.name "shopwareBot"
 
 # Remove some files from vendor directory
