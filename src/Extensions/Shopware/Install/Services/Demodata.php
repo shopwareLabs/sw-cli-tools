@@ -23,7 +23,7 @@ class Demodata
     /**
      * @var string
      */
-    private $demoUrl = 'http://releases.s3.shopware.com/test_images.zip';
+    private $demoUrl = 'http://releases.s3.shopware.com/test_images_since_5.1.zip';
 
     /**
      * @var \ShopwareCli\Services\IoService
