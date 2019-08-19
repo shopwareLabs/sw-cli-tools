@@ -85,7 +85,6 @@ class Vcs
         $this->generateVcsMapping($installDir);
         $this->writeBuildProperties($installDir, $basePath, $database);
         $this->setupDatabase($installDir, $database);
-        $this->demoData->runLicenseImport($installDir);
 
         if (!$noDemoData) {
             $this->demoData->setup($installDir);

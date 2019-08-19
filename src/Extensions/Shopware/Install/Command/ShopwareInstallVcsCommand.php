@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand
 {
-    const MAIN_BRANCH = '5.5';
+    const MAIN_BRANCH = '5.6';
 
     /**
      * {@inheritdoc}

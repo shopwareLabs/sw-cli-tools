@@ -133,8 +133,6 @@ class Release
         $this->postInstall->importCustomDeltas($request->getDbName());
         $this->postInstall->runCustomScripts($request->getAbsoluteInstallDir());
 
-        $this->demodata->runLicenseImport($request->getAbsoluteInstallDir());
-
         $this->ioService->writeln('<info>Install completed</info>');
     }
 

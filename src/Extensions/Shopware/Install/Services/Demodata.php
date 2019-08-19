@@ -81,39 +81,4 @@ class Demodata
         $this->processExecutor->execute('find ' .$this->shopwareInfo->getFilesDir($installDir) ." -type d -exec chmod 777 {} \;", true);
         $this->processExecutor->execute('find ' .$this->shopwareInfo->getCacheDir($installDir) ."  -type d -exec chmod 777 {} \;", true);
     }
-
-    /**
-     * @param string $installDir
-     */
-    public function runLicenseImport($installDir)
-    {
-        if (file_exists("{$installDir}/bin/console")) {
-            try {
-                $this->runCliCommands($installDir);
-            } catch (\RuntimeException $e) {
-                $this->ioService->writeln("<comment>Skipping license import: {$e->getMessage()}</comment>");
-            }
-        }
-
-        $this->ioService->writeln('<info>Clearing the cache</info>');
-
-        $this->processExecutor->execute($this->shopwareInfo->getCacheDir($installDir) . '/clear_cache.sh');
-    }
-
-    /**
-     * @param $installDir
-     */
-    private function runCliCommands($installDir)
-    {
-        $this->ioService->writeln('<info>Running license import</info>');
-
-        $this->processExecutor->execute("{$installDir}/bin/console sw:generate:attributes");
-        $this->processExecutor->execute("{$installDir}/bin/console sw:plugin:refresh");
-        $this->processExecutor->execute("{$installDir}/bin/console sw:plugin:install SwagLicense --activate");
-
-        $licenseFile = @getenv('HOME').'/licenses.txt';
-        if (file_exists($licenseFile)) {
-            $this->processExecutor->execute("{$installDir}/bin/console swaglicense:import {$licenseFile}");
-        }
-    }
 }
