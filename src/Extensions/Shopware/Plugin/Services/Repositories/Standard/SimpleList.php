@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\Repositories\Standard;
 
@@ -11,11 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * servers (e.g. local, github, bitbucket, stash…)
  *
  * Class SimpleList
- * @package Shopware\Plugin\Services\Repositories
  */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {
-    /** @var  ContainerInterface */
+    /** @var ContainerInterface */
     protected $container;
 
     public function setContainer(ContainerInterface $container = null)

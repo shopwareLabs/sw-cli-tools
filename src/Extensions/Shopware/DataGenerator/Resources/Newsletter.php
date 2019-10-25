@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -19,11 +25,11 @@ class Newsletter extends BaseResource
         's_campaigns_mailings',
         's_campaigns_positions',
         's_campaigns_sender',
-        's_campaigns_templates'
+        's_campaigns_templates',
     ];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -31,7 +37,7 @@ class Newsletter extends BaseResource
         $this->createProgressBar($number);
 
         $addressValues = [];
-        for ($i = 0; $i < $number; $i++) {
+        for ($i = 0; $i < $number; ++$i) {
             $this->advanceProgressBar();
             $addressId = $this->getUniqueId('addressId');
 
@@ -54,7 +60,7 @@ class Newsletter extends BaseResource
         // Groups assigned to the newsletter
         $groups = [
             ['EK' => 0, 'H' => 0],
-            [1 => 0]
+            [1 => 0],
         ];
         $groups = serialize($groups);
 

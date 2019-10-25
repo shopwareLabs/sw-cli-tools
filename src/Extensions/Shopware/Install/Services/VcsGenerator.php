@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -8,7 +14,6 @@ use ShopwareCli\Services\IoService;
  * creates the phpstorm vcs mapping file
  *
  * Class VcsGenerator
- * @package Shopware\Install\Services
  */
 class VcsGenerator
 {
@@ -36,7 +41,7 @@ EOF;
     {
         $this->ioService->writeln('<info>Generating VCS mapping</info>');
 
-        $dir = $installDir.'/.idea';
+        $dir = $installDir . '/.idea';
         if (!is_dir($dir) && !mkdir($dir) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -10,17 +16,16 @@ use ShopwareCli\Utilities;
  * Sets up the database by creating the database itself and running the build scripts to populate the database
  *
  * Class Database
- * @package Shopware\Install\Services
  */
 class Database
 {
     /**
-     * @var  Utilities
+     * @var Utilities
      */
     private $utilities;
 
     /**
-     * @var  \PDO
+     * @var \PDO
      */
     private $connection;
 
@@ -35,8 +40,8 @@ class Database
     private $processExecutor;
 
     /**
-     * @param Utilities $utilities
-     * @param IoService $ioService
+     * @param Utilities       $utilities
+     * @param IoService       $ioService
      * @param ProcessExecutor $processExecutor
      */
     public function __construct(Utilities $utilities, IoService $ioService, ProcessExecutor $processExecutor)
@@ -44,23 +49,6 @@ class Database
         $this->utilities = $utilities;
         $this->ioService = $ioService;
         $this->processExecutor = $processExecutor;
-    }
-
-    private function createConnection($host, $username, $password, $port = 3306)
-    {
-        $this->connection = new \PDO("mysql:host={$host};charset=utf8;port={$port}", $username, $password);
-        $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-        return $this->connection;
-    }
-
-    private function getConnection()
-    {
-        if (!$this->connection) {
-            throw new \RuntimeException('Connection was not created');
-        }
-
-        return $this->connection;
     }
 
     public function setup($user, $password, $name, $host, $port = 3306)
@@ -134,25 +122,16 @@ EOF
     }
 
     /**
-     * Salt password for SW backend user
-     *
-     * @param  string $password
-     * @return string
-     */
-    private function saltPassword($password)
-    {
-        return md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . md5($password));
-    }
-
-    /**
      * Create backend user
      *
-     * @param  string            $user
-     * @param  string            $name
-     * @param  string            $mail
-     * @param  string            $language
-     * @param  string            $password
+     * @param string $user
+     * @param string $name
+     * @param string $mail
+     * @param string $language
+     * @param string $password
+     *
      * @throws \RuntimeException
+     *
      * @return bool
      */
     public function createAdmin($user, $name, $mail, $language, $password)
@@ -168,7 +147,7 @@ EOF
         $authTableVersion = $authTableVersion->fetchColumn();
 
         if (!$fetchLanguageId) {
-            throw new \RuntimeException('Could not resolve language '.$language);
+            throw new \RuntimeException('Could not resolve language ' . $language);
         }
 
          // Drop previous inserted admins
@@ -197,14 +176,44 @@ EOF;
             $this->saltPassword($password),
             $fetchLanguageId,
             $name,
-            $mail
+            $mail,
         ]);
 
         return true;
     }
 
+    private function createConnection($host, $username, $password, $port = 3306)
+    {
+        $this->connection = new \PDO("mysql:host={$host};charset=utf8;port={$port}", $username, $password);
+        $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        return $this->connection;
+    }
+
+    private function getConnection()
+    {
+        if (!$this->connection) {
+            throw new \RuntimeException('Connection was not created');
+        }
+
+        return $this->connection;
+    }
+
     /**
-     * @param  string            $installDir
+     * Salt password for SW backend user
+     *
+     * @param string $password
+     *
+     * @return string
+     */
+    private function saltPassword($password)
+    {
+        return md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . md5($password));
+    }
+
+    /**
+     * @param string $installDir
+     *
      * @throws \RuntimeException
      */
     private function importBaseDelta($installDir)
@@ -229,7 +238,8 @@ EOF;
     }
 
     /**
-     * @param  string            $installDir
+     * @param string $installDir
+     *
      * @throws \RuntimeException
      */
     private function importSnippetDeltas($installDir)

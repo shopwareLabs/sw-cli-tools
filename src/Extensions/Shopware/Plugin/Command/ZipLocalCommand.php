@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Command;
 
@@ -12,38 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Zip a plugin
  *
  * Class ZipCommand
- * @package ShopwareCli\Command
  */
 class ZipLocalCommand extends BaseCommand
 {
     protected $utilities;
     protected $zipDir;
-
-    protected function configure()
-    {
-        $this
-            ->setName('plugin:zip:dir')
-            ->setDescription('Creates a installable plugin zip from a given plugin directory')
-            ->addArgument(
-                'dir',
-                InputArgument::REQUIRED,
-                'Name of the plugin to install'
-            );
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->zipDir = getcwd();
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $directory = $input->getArgument('dir');
-        $directory = rtrim($directory, '/');
-        $this->validatePluginDir($directory);
-
-        $this->doZip($directory);
-    }
 
     /**
      * @param string $dir
@@ -94,6 +73,32 @@ class ZipLocalCommand extends BaseCommand
         }
 
         $this->container->get('io_service')->writeln("<info>Created file $outputFile</info>");
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setName('plugin:zip:dir')
+            ->setDescription('Creates a installable plugin zip from a given plugin directory')
+            ->addArgument(
+                'dir',
+                InputArgument::REQUIRED,
+                'Name of the plugin to install'
+            );
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->zipDir = getcwd();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $directory = $input->getArgument('dir');
+        $directory = rtrim($directory, '/');
+        $this->validatePluginDir($directory);
+
+        $this->doZip($directory);
     }
 
     protected function getTempDir()

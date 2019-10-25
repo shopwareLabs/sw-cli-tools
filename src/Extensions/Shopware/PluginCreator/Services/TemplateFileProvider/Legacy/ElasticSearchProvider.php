@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Legacy;
 
@@ -9,7 +15,7 @@ use Shopware\PluginCreator\Struct\Configuration;
 class ElasticSearchProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -23,7 +29,7 @@ class ElasticSearchProvider implements FileProviderInterface
             self::LEGACY_DIR . 'Components/ESIndexingBundle/Provider.tpl' => 'Components/ESIndexingBundle/Provider.php',
             self::LEGACY_DIR . 'Components/ESIndexingBundle/Settings.tpl' => 'Components/ESIndexingBundle/Settings.php',
             self::LEGACY_DIR . 'Components/ESIndexingBundle/Synchronizer.tpl' => 'Components/ESIndexingBundle/Synchronizer.php',
-            self::LEGACY_DIR . 'Components/SearchBundleES/Search.tpl' => 'Components/SearchBundleES/Search.php'
+            self::LEGACY_DIR . 'Components/SearchBundleES/Search.tpl' => 'Components/SearchBundleES/Search.php',
         ];
     }
 }

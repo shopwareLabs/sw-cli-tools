@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services;
 
@@ -6,10 +12,7 @@ use ShopwareCli\Config;
 use ShopwareCli\Services\PathProvider\PathProvider;
 
 /**
- *
- *
  * Class GitIdentityEnvironment
- * @package ShopwareCli\Services
  */
 class GitIdentityEnvironment
 {
@@ -39,10 +42,29 @@ EOF;
     }
 
     /**
+     * Will return an array of SSH_KEYFILE and GIT_SSH if a custom ssh key is configured
+     * Else null will be returned
+     *
+     * @return array|null
+     */
+    public function getGitEnv()
+    {
+        if (!$this->getCustomKey()) {
+            return null;
+        }
+
+        return [
+            'SSH_KEYFILE' => $this->getCustomKey(),
+            'GIT_SSH' => $this->getGitWrapper(),
+        ];
+    }
+
+    /**
      * Will return the path to the custom SSH key. Will return null if no
      * custom key is configured
      *
      * @throws \RuntimeException
+     *
      * @return null|string
      */
     private function getCustomKey()
@@ -75,6 +97,7 @@ EOF;
     /**
      * @param string $dir
      * @param string $sshKeyFile
+     *
      * @return bool
      */
     private function writeSshKey($dir, $sshKeyFile)
@@ -94,6 +117,7 @@ EOF;
      * Return path of the git wrapper file. If it doesn't exist, it will be created
      *
      * @throws \RuntimeException
+     *
      * @return string
      */
     private function getGitWrapper()
@@ -112,7 +136,8 @@ EOF;
     /**
      * Create git wrapper file
      *
-     * @param  string $dir
+     * @param string $dir
+     *
      * @return bool
      */
     private function writeGitSshWrapper($dir)
@@ -126,23 +151,5 @@ EOF;
         chmod($filename, 0700);
 
         return file_exists($filename);
-    }
-
-    /**
-     * Will return an array of SSH_KEYFILE and GIT_SSH if a custom ssh key is configured
-     * Else null will be returned
-     *
-     * @return array|null
-     */
-    public function getGitEnv()
-    {
-        if (!$this->getCustomKey()) {
-            return null;
-        }
-
-        return [
-            'SSH_KEYFILE' => $this->getCustomKey(),
-            'GIT_SSH' => $this->getGitWrapper()
-        ];
     }
 }

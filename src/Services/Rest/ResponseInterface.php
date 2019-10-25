@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services\Rest;
 
@@ -15,7 +21,7 @@ interface ResponseInterface
     /**
      * Returns the http response code
      *
-     * @return integer
+     * @return int
      */
     public function getCode();
 

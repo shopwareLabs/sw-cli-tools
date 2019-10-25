@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Command;
 
@@ -10,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Read the internal CLI cache. Used for e.g. plugin repos
  *
  * Class CacheGetCommand
- * @package ShopwareCli\Command
  */
 class CacheGetCommand extends BaseCommand
 {

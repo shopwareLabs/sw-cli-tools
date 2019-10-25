@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services\Rest\Curl;
 
@@ -8,7 +14,6 @@ use ShopwareCli\Services\Rest\RestInterface;
  * RestClient based on CURL
  *
  * Class RestClient
- * @package ShopwareCli\Services\Rest\Curl
  */
 class RestClient implements RestInterface
 {
@@ -26,7 +31,7 @@ class RestClient implements RestInterface
         self::METHOD_GET,
         self::METHOD_PUT,
         self::METHOD_POST,
-        self::METHOD_DELETE
+        self::METHOD_DELETE,
     ];
 
     /**
@@ -40,10 +45,11 @@ class RestClient implements RestInterface
     protected $cURL;
 
     /**
-     * @param  string      $apiUrl
-     * @param  string|null $username
-     * @param  string|null $apiKey
-     * @param  array       $curlOptions
+     * @param string      $apiUrl
+     * @param string|null $username
+     * @param string|null $apiKey
+     * @param array       $curlOptions
+     *
      * @throws \Exception
      */
     public function __construct($apiUrl, $username = '', $apiKey = '', $curlOptions = [])
@@ -69,11 +75,13 @@ class RestClient implements RestInterface
     /**
      * Generic call method to perform an HTTP request with the given $method
      *
-     * @param  string     $url
-     * @param  string     $method
-     * @param  array      $parameters
-     * @param  array      $headers
+     * @param string $url
+     * @param string $method
+     * @param array  $parameters
+     * @param array  $headers
+     *
      * @throws \Exception
+     *
      * @return Response
      */
     public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\AutoUpdate;
 
@@ -13,11 +19,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * Provides self update capability
  *
  * Class Bootstrap
- * @package Shopware\AutoUpdate
  */
 class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
-    /** @var  ContainerBuilder */
+    /** @var ContainerBuilder */
     protected $container;
 
     /**
@@ -33,7 +38,6 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
         $this->populateContainer($container);
     }
-
 
     /**
      * {@inheritdoc}
@@ -55,6 +59,18 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     }
 
     /**
+     * Checks if script is run as phar archive and manifestUrl is available
+     *
+     * @return bool
+     */
+    public function isPharFile()
+    {
+        $toolPath = $this->container->get('path_provider')->getCliToolPath();
+
+        return strpos($toolPath, 'phar:') !== false;
+    }
+
+    /**
      * @param ContainerBuilder $container
      */
     private function populateContainer($container)
@@ -67,29 +83,16 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
      */
     private function createUpdater()
     {
-        $config     = $this->container->get('config');
-        $pharUrl    = $config['update']['pharUrl'];
+        $config = $this->container->get('config');
+        $pharUrl = $config['update']['pharUrl'];
         $versionUrl = $config['update']['vesionUrl'];
-        $verifyKey  = (bool)$config['update']['verifyPublicKey'];
+        $verifyKey = (bool) $config['update']['verifyPublicKey'];
 
         $updater = new Updater(null, $verifyKey);
         $updater->getStrategy()->setPharUrl($pharUrl);
         $updater->getStrategy()->setVersionUrl($versionUrl);
 
         return $updater;
-    }
-
-
-    /**
-     * Checks if script is run as phar archive and manifestUrl is available
-     *
-     * @return bool
-     */
-    public function isPharFile()
-    {
-        $toolPath = $this->container->get('path_provider')->getCliToolPath();
-
-        return strpos($toolPath, 'phar:') !== false ;
     }
 
     /**

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services;
 
@@ -32,7 +38,9 @@ class OpenSSLVerifier
     /**
      * @param string $message
      * @param string $signature
+     *
      * @throws \RuntimeException
+     *
      * @return bool
      */
     public function isValid($message, $signature)
@@ -56,9 +64,8 @@ class OpenSSLVerifier
             return true;
         } elseif ($ok == 0) {
             return false;
-        } else {
-            while ($errors[] = openssl_error_string());
-            throw new \RuntimeException(sprintf("Error during private key read: \n%s", implode("\n", $errors)));
         }
+        while ($errors[] = openssl_error_string());
+        throw new \RuntimeException(sprintf("Error during private key read: \n%s", implode("\n", $errors)));
     }
 }

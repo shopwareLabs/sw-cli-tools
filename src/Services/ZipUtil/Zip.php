@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services\ZipUtil;
 
@@ -6,7 +12,6 @@ use ZipArchive;
 
 /**
  * Class Zip
- * @package ShopwareCli\Services\ZipUtil
  */
 class Zip extends Adapter
 {
@@ -16,8 +21,9 @@ class Zip extends Adapter
     protected $stream;
 
     /**
-     * @param  string     $fileName
-     * @param  null       $flags
+     * @param string $fileName
+     * @param null   $flags
+     *
      * @throws \Exception
      */
     public function __construct($fileName = null, $flags = null)
@@ -46,7 +52,8 @@ class Zip extends Adapter
     }
 
     /**
-     * @param  string   $name
+     * @param string $name
+     *
      * @return resource
      */
     public function getStream($name)
@@ -55,7 +62,8 @@ class Zip extends Adapter
     }
 
     /**
-     * @param  string $name
+     * @param string $name
+     *
      * @return mixed
      */
     public function getContents($name)
@@ -65,6 +73,7 @@ class Zip extends Adapter
 
     /**
      * @param $position
+     *
      * @return mixed
      */
     public function getEntry($position)
@@ -83,8 +92,9 @@ class Zip extends Adapter
     /**
      * Give a meaningful error message to the user.
      *
-     * @param  int    $retval
-     * @param  string $file
+     * @param int    $retval
+     * @param string $file
+     *
      * @return string
      */
     protected function getErrorMessage($retval, $file)

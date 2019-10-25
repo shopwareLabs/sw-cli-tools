@@ -1,9 +1,15 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ShopwareCli\Services;
 
 /**
  * Class FileDownloader
- * @package ShopwareCli\Services
  */
 class StreamFileDownloader implements FileDownloader
 {
@@ -23,8 +29,9 @@ class StreamFileDownloader implements FileDownloader
     }
 
     /**
-     * @param  string            $sourceUrl
-     * @param  string            $destination
+     * @param string $sourceUrl
+     * @param string $destination
+     *
      * @throws \RuntimeException
      */
     public function download($sourceUrl, $destination)
@@ -39,17 +46,17 @@ class StreamFileDownloader implements FileDownloader
 
         $length = $this->getContentLengthFromStream($readHandle);
 
-        $progress = $this->ioService->createProgressBar($length/1024);
+        $progress = $this->ioService->createProgressBar($length / 1024);
         $progress->start();
 
         // update every 0.5 magabytes
-        $progress->setRedrawFrequency(524288/1024);
+        $progress->setRedrawFrequency(524288 / 1024);
 
         $currentSize = 0;
 
         while (!feof($readHandle)) {
             $currentSize += fwrite($writeHandle, fread($readHandle, self::BLOCKSIZE));
-            $progress->setCurrent($currentSize/1024);
+            $progress->setCurrent($currentSize / 1024);
         }
         $progress->finish();
 
@@ -60,7 +67,8 @@ class StreamFileDownloader implements FileDownloader
     }
 
     /**
-     * @param  resource $readHandle
+     * @param resource $readHandle
+     *
      * @return int
      */
     private function getContentLengthFromStream($readHandle)

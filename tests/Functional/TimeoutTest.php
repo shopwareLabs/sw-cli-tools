@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 class TimeoutTest extends PHPUnit_Framework_TestCase
 {
@@ -17,6 +23,7 @@ class TimeoutTest extends PHPUnit_Framework_TestCase
         $executor = $this->getContainer()->get('process_executor');
         $this->assertAttributeEquals('999', 'timeout', $executor);
     }
+
     public function testGitUtilTimeout()
     {
         putenv('SW_TIMEOUT=123');

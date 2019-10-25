@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\Repositories;
 
@@ -10,12 +16,12 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
  * Step through the config file, lookup needed repositories and create them
  *
  * Class DefaultRepositoryFactory
- * @package Shopware\Plugin\Services\Repositories
  */
 class DefaultRepositoryFactory
 {
     /**
      * List of repositories the DefaultRepository will handle
+     *
      * @var array
      */
     private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList', 'GitLab'];
@@ -81,7 +87,7 @@ class DefaultRepositoryFactory
 
             $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
-            $this->defaultRepositories[] =  $this->createRepository($name, $type, $repoConfig, $restClient);
+            $this->defaultRepositories[] = $this->createRepository($name, $type, $repoConfig, $restClient);
         }
     }
 
@@ -90,6 +96,7 @@ class DefaultRepositoryFactory
      * @param $type
      * @param $repoConfig
      * @param $restClient
+     *
      * @return BaseRepository
      */
     private function createRepository($name, $type, $repoConfig, $restClient)

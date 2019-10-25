@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -8,8 +14,6 @@ use ShopwareCli\Utilities;
 
 /**
  * Checks out a given plugin and creates a zip file from it
- *
- * @package Shopware\Plugin\Services
  */
 class Zip
 {
@@ -29,8 +33,8 @@ class Zip
     private $processExecutor;
 
     /**
-     * @param Checkout $checkout
-     * @param Utilities $utilities
+     * @param Checkout        $checkout
+     * @param Utilities       $utilities
      * @param ProcessExecutor $processExecutor
      */
     public function __construct(Checkout $checkout, Utilities $utilities, ProcessExecutor $processExecutor)
@@ -45,7 +49,7 @@ class Zip
      * @param string $path
      * @param string $zipTo
      * @param string $branch
-     * @param bool $useHttp
+     * @param bool   $useHttp
      *
      * @return string
      */

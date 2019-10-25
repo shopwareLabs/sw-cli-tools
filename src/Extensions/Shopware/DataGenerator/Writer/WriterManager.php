@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Writer;
 
@@ -7,7 +13,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * Class WriterManager
- * @package Shopware\DataGenerator\Writer
  */
 class WriterManager
 {
@@ -42,7 +47,7 @@ class WriterManager
     private $ioService;
 
     /**
-     * @param Config $config
+     * @param Config    $config
      * @param IoService $ioService
      */
     public function __construct(
@@ -56,7 +61,8 @@ class WriterManager
     /**
      * @param string $resourceKey
      * @param string $type
-     * @param null $writerType
+     * @param null   $writerType
+     *
      * @return WriterInterface
      */
     public function createWriter($resourceKey, $type = null, $writerType = null)
@@ -71,9 +77,9 @@ class WriterManager
                 }
 
             default:
-                $resourcePath = getcwd().'/output/'.$this->config->getOutputName().$resourceKey;
+                $resourcePath = getcwd() . '/output/' . $this->config->getOutputName() . $resourceKey;
                 if ($type) {
-                    $resourcePath .= '.'.$type;
+                    $resourcePath .= '.' . $type;
                 }
                 if ($type == 'sql') {
                     $this->displayImportMessage = true;

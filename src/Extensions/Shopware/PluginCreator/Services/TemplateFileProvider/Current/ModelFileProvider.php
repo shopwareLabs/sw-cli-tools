@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
@@ -8,12 +14,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class ModelFileProvider returns model related files
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class ModelFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -23,7 +28,7 @@ class ModelFileProvider implements FileProviderInterface
 
         return [
             self::CURRENT_DIR . 'Models/Model.tpl' => "Models/{$nameGenerator->camelCaseModel}.php",
-            self::CURRENT_DIR . 'Models/Repository.tpl' => 'Models/Repository.php'
+            self::CURRENT_DIR . 'Models/Repository.tpl' => 'Models/Repository.php',
         ];
     }
 }

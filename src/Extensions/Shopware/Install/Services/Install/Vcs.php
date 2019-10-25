@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services\Install;
 
@@ -15,26 +21,25 @@ use ShopwareCli\Services\IoService;
  * This install service will run all steps needed to setup shopware in the correct order
  *
  * Class Vcs
- * @package Shopware\Install\Services\Install
  */
 class Vcs
 {
-    /** @var  Checkout */
+    /** @var Checkout */
     protected $checkout;
 
     /** @var Config */
     protected $config;
 
-    /** @var  VcsGenerator */
+    /** @var VcsGenerator */
     protected $vcsGenerator;
 
-    /** @var  ConfigWriter */
+    /** @var ConfigWriter */
     protected $configWriter;
 
-    /** @var  Database */
+    /** @var Database */
     protected $database;
 
-    /** @var  Demodata */
+    /** @var Demodata */
     protected $demoData;
     /**
      * @var \ShopwareCli\Services\IoService
@@ -108,6 +113,7 @@ class Vcs
      * Enforce a configured core repository
      *
      * @throws \RuntimeException
+     *
      * @return $core
      */
     private function checkCoreConfig()

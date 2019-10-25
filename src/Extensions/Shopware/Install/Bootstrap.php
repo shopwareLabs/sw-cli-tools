@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install;
 
@@ -14,7 +20,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * This plugin will install/setup shopware in a development version
  *
  * Class Bootstrap
- * @package Shopware\Install
  */
 class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 {
@@ -34,7 +39,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         return [
             new ShopwareInstallVcsCommand(),
             new ShopwareInstallReleaseCommand(),
-            new ShopwareClearCacheCommand()
+            new ShopwareClearCacheCommand(),
         ];
     }
 

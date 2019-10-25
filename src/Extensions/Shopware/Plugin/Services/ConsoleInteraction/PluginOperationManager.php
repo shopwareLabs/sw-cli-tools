@@ -1,11 +1,16 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
 use Shopware\Plugin\Services\PluginProvider;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Services\IoService;
-use ShopwareCli\Utilities;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Works via callback you can pass in order to get notified about the selected plugins
  *
  * Class PluginOperationManager
- * @package ShopwareCli\Command\Services
  */
 class PluginOperationManager
 {
@@ -98,38 +102,6 @@ class PluginOperationManager
     }
 
     /**
-     * @param object   $subject
-     * @param callable $callback
-     * @param array    $params
-     */
-    private function executeMethodCallback($subject, $callback, $params)
-    {
-        call_user_func_array($callback, [$subject, &$params]);
-    }
-
-    /**
-     * Prepares a response and returns an array of plugin objects
-     *
-     * @param $response
-     * @param  Plugin[] $plugins
-     * @return array
-     */
-    private function getPluginsFromResponse($response, $plugins)
-    {
-        if ($response instanceof Plugin) {
-            return [$response];
-        }
-
-        if (is_array($response)) {
-            return $response;
-        }
-
-        if ($response === 'all') {
-            return $plugins;
-        }
-    }
-
-    /**
      * Show the plugin list to the user, until "all" or "exit" was entered
      *
      * @param callable $callback
@@ -153,6 +125,39 @@ class PluginOperationManager
             }
             $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
             $this->ioService->cls();
+        }
+    }
+
+    /**
+     * @param object   $subject
+     * @param callable $callback
+     * @param array    $params
+     */
+    private function executeMethodCallback($subject, $callback, $params)
+    {
+        call_user_func_array($callback, [$subject, &$params]);
+    }
+
+    /**
+     * Prepares a response and returns an array of plugin objects
+     *
+     * @param $response
+     * @param Plugin[] $plugins
+     *
+     * @return array
+     */
+    private function getPluginsFromResponse($response, $plugins)
+    {
+        if ($response instanceof Plugin) {
+            return [$response];
+        }
+
+        if (is_array($response)) {
+            return $response;
+        }
+
+        if ($response === 'all') {
+            return $plugins;
         }
     }
 }

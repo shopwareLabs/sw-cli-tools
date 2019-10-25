@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -9,7 +15,6 @@ use ShopwareCli\Config;
 
 /**
  * Class PluginProvider
- * @package ShopwareCli\Plugin
  */
 class PluginProvider
 {
@@ -46,39 +51,11 @@ class PluginProvider
     }
 
     /**
-     * Sort a given array of plugins by the configured properties
-     *
-     * @param $plugins
-     * @return Plugin[]
-     */
-    protected function sortPlugins($plugins)
-    {
-        switch ($this->sortBy) {
-            case 'repository':
-                usort($plugins, function ($a, $b) {
-                    return $a->repository . $a->name > $b->repository . $b->name;
-                });
-                break;
-            case 'module':
-                usort($plugins, function ($a, $b) {
-                    return $a->module . $a->name > $b->module . $b->name;
-                });
-                break;
-            default:
-                usort($plugins, function ($a, $b) {
-                    return $a->name > $b->name;
-                });
-                break;
-        }
-
-        return $plugins;
-    }
-
-    /**
      * Query all plugin repositories for plugins named like $name
      *
-     * @param  string   $name string  Name to search for
+     * @param string $name string  Name to search for
      * @param $exact    boolean Whether to search for exact match or not
+     *
      * @return Plugin[]
      */
     public function getPluginByName($name, $exact = false)
@@ -94,7 +71,8 @@ class PluginProvider
     /**
      * Query plugin repositories by $name and return the plugins contained in it
      *
-     * @param  string   $name string  Repo name to search for
+     * @param string $name string  Repo name to search for
+     *
      * @return Plugin[]
      */
     public function getPluginsByRepositoryName($name)
@@ -122,5 +100,35 @@ class PluginProvider
         }
 
         return $this->sortPlugins($result);
+    }
+
+    /**
+     * Sort a given array of plugins by the configured properties
+     *
+     * @param $plugins
+     *
+     * @return Plugin[]
+     */
+    protected function sortPlugins($plugins)
+    {
+        switch ($this->sortBy) {
+            case 'repository':
+                usort($plugins, function ($a, $b) {
+                    return $a->repository . $a->name > $b->repository . $b->name;
+                });
+                break;
+            case 'module':
+                usort($plugins, function ($a, $b) {
+                    return $a->module . $a->name > $b->module . $b->name;
+                });
+                break;
+            default:
+                usort($plugins, function ($a, $b) {
+                    return $a->name > $b->name;
+                });
+                break;
+        }
+
+        return $plugins;
     }
 }

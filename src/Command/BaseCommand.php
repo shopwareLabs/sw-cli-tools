@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Command;
 
@@ -10,11 +16,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * The BaseCommand takes care of the container
  *
  * Class BaseCommand
- * @package ShopwareCli\Command
  */
 abstract class BaseCommand extends Command implements ContainerAwareInterface
 {
-    /** @var  ContainerInterface */
+    /** @var ContainerInterface */
     protected $container;
 
     /**

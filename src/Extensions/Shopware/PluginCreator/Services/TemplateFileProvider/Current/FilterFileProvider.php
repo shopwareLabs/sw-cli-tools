@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
@@ -8,12 +14,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class FilterFileProvider returns files needed for the frontend filter
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class FilterFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -30,7 +35,7 @@ class FilterFileProvider implements FileProviderInterface
             self::CURRENT_DIR . 'Components/SearchBundleDBAL/Sorting/SortingHandler.tpl' => 'Components/SearchBundleDBAL/Sorting/SortingHandler.php',
             self::CURRENT_DIR . 'Components/SearchBundle/CriteriaRequestHandler.tpl' => "Components/SearchBundle/{$configuration->name}CriteriaRequestHandler.php",
             self::CURRENT_DIR . 'Subscriber/SearchBundle.tpl' => 'Subscriber/SearchBundle.php',
-            self::CURRENT_DIR . 'Resources/views/frontend/listing/actions/action-sorting.tpl' => 'Resources/views/frontend/listing/actions/action-sorting.tpl'
+            self::CURRENT_DIR . 'Resources/views/frontend/listing/actions/action-sorting.tpl' => 'Resources/views/frontend/listing/actions/action-sorting.tpl',
         ];
     }
 }

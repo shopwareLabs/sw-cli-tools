@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -67,6 +73,52 @@ abstract class BaseResource
     }
 
     /**
+     * @param string $field
+     *
+     * @return int
+     */
+    public function getIds($field = null)
+    {
+        if ($field) {
+            return $this->ids[$field];
+        }
+
+        return $this->ids;
+    }
+
+    /**
+     * Creates the data associated with the current resource and writes it to the
+     * provided writer
+     * May create additional writers using the existing WriterManager
+     * All writers are automatically flushed once the data creation ends.
+     *
+     * @param WriterInterface $writer
+     *
+     * @return mixed
+     */
+    abstract public function create(WriterInterface $writer);
+
+    /**
+     * Initializes the main WriterInterface instance where the data will be written
+     * Calls the create method
+     * Flushes data at the end
+     * Handles pre and pos query handling (truncating, enable/disable foreign keys).
+     */
+    final public function generateData()
+    {
+        $path = explode('\\', get_class($this));
+        $writer = $this->writerManager->createWriter(strtolower(array_pop($path)), 'sql');
+        $writer->write($this->prepareTables());
+
+        $this->create($writer);
+        $this->ioService->writeln('');
+
+        $this->writerManager->flushAll();
+        $writer->write($this->enableKeys());
+        $this->writerManager->clear();
+    }
+
+    /**
      * Helper function which manages ids for a given type.
      *
      * @param string $type
@@ -84,20 +136,6 @@ abstract class BaseResource
         $this->ids[$type] += 1;
 
         return $this->ids[$type];
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return int
-     */
-    public function getIds($field = null)
-    {
-        if ($field) {
-            return $this->ids[$field];
-        }
-
-        return $this->ids;
     }
 
     /**
@@ -168,37 +206,5 @@ abstract class BaseResource
         }
 
         $this->progressBar->finish();
-    }
-
-    /**
-     * Creates the data associated with the current resource and writes it to the
-     * provided writer
-     * May create additional writers using the existing WriterManager
-     * All writers are automatically flushed once the data creation ends.
-     *
-     * @param WriterInterface $writer
-     *
-     * @return mixed
-     */
-    abstract public function create(WriterInterface $writer);
-
-    /**
-     * Initializes the main WriterInterface instance where the data will be written
-     * Calls the create method
-     * Flushes data at the end
-     * Handles pre and pos query handling (truncating, enable/disable foreign keys).
-     */
-    final public function generateData()
-    {
-        $path = explode('\\', get_class($this));
-        $writer = $this->writerManager->createWriter(strtolower(array_pop($path)), 'sql');
-        $writer->write($this->prepareTables());
-
-        $this->create($writer);
-        $this->ioService->writeln('');
-
-        $this->writerManager->flushAll();
-        $writer->write($this->enableKeys());
-        $this->writerManager->clear();
     }
 }

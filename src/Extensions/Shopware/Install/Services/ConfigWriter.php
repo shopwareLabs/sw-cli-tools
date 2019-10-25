@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -8,7 +14,6 @@ use ShopwareCli\Services\IoService;
  * The config writer is responsible for writing build.properties and config.php configuration files
  *
  * Class ConfigWriter
- * @package Shopware\Install\Services
  */
 class ConfigWriter
 {

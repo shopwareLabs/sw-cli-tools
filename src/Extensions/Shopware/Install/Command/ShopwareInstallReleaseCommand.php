@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Shopware\Install\Command;
 
 use Shopware\Install\Struct\InstallationRequest;
@@ -11,6 +18,69 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
 {
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
+    public function interact(InputInterface $input, OutputInterface $output)
+    {
+        $this->validateInput($input);
+
+        /** @var $ioService IoService */
+        $ioService = $this->container->get('io_service');
+
+        $this->askGenericOptions($input, $ioService);
+
+        $suggestion = '';
+        if (!$input->getOption('skip-download')) {
+            $release = $this->askRelease($input, $ioService);
+            $suggestion = $release ?: 'latest';
+
+            $installDir = $this->askInstallationDirectory($input, $ioService, $suggestion);
+            $suggestion = $installDir ?: $suggestion;
+        }
+
+        if (!$input->getOption('unpack-only')) {
+            $this->askBasePath($input, $ioService, $suggestion);
+
+            $this->askDatabaseUser($input, $ioService);
+            $this->askDatabasePassword($input, $ioService);
+            $this->askDatabaseName($input, $ioService, $suggestion);
+        }
+    }
+
+    /**
+     * @param string $input
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function genericValidator($input)
+    {
+        if (empty($input)) {
+            throw new \RuntimeException('Field may not be empty');
+        }
+
+        return $input;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function validateInstallDir($path)
+    {
+        if (is_dir($path)) {
+            throw new \RuntimeException("Path '{$path}'' is not empty");
+        }
+
+        return $path;
+    }
+
     /**
      * @return Config
      */
@@ -36,6 +106,55 @@ EOF
         $this->addDbOptions();
         $this->addShopOptions();
         $this->addAdminOptions();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $request = new InstallationRequest([
+            'release' => $input->getOption('release'),
+            'installDir' => $input->getOption('install-dir'),
+            'onlyUnpack' => $input->getOption('unpack-only'),
+            'skipDownload' => $input->getOption('skip-download'),
+            'dbHost' => $input->getOption('db-host'),
+            'dbPort' => $input->getOption('db-port'),
+            'dbSocket' => $input->getOption('db-socket'),
+            'dbUser' => $input->getOption('db-user'),
+            'dbPassword' => $input->getOption('db-password'),
+            'dbName' => $input->getOption('db-name'),
+            'shopLocale' => $input->getOption('shop-locale'),
+            'shopHost' => $input->getOption('shop-host'),
+            'shopPath' => $input->getOption('shop-path'),
+            'shopName' => $input->getOption('shop-name'),
+            'shopEmail' => $input->getOption('shop-email'),
+            'shopCurrency' => $input->getOption('shop-currency'),
+            'adminUsername' => $input->getOption('admin-username'),
+            'adminPassword' => $input->getOption('admin-password'),
+            'adminEmail' => $input->getOption('admin-email'),
+            'adminLocale' => $input->getOption('admin-locale'),
+            'adminName' => $input->getOption('admin-name'),
+            'noSkipImport' => $input->getOption('no-skip-import'),
+            'skipAdminCreation' => $input->getOption('skip-admin-creation'),
+        ]);
+
+        /** @var \Shopware\Install\Services\Install\Release $installService */
+        $installService = $this->container->get('shopware_release_install_service');
+        $installService->installShopware($request);
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @throws \RuntimeException
+     */
+    protected function validateInput(InputInterface $input)
+    {
+        $language = $input->getOption('shop-locale');
+        if (!in_array($language, ['en_GB', 'de_DE'])) {
+            throw new \RuntimeException("Invalid locale: '$language'");
+        }
     }
 
     private function addInstallerOptions()
@@ -85,113 +204,6 @@ EOF
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $request = new InstallationRequest([
-            'release' => $input->getOption('release'),
-            'installDir' => $input->getOption('install-dir'),
-            'onlyUnpack' => $input->getOption('unpack-only'),
-            'skipDownload' => $input->getOption('skip-download'),
-            'dbHost' => $input->getOption('db-host'),
-            'dbPort' => $input->getOption('db-port'),
-            'dbSocket' => $input->getOption('db-socket'),
-            'dbUser' => $input->getOption('db-user'),
-            'dbPassword' => $input->getOption('db-password'),
-            'dbName' => $input->getOption('db-name'),
-            'shopLocale' => $input->getOption('shop-locale'),
-            'shopHost' => $input->getOption('shop-host'),
-            'shopPath' => $input->getOption('shop-path'),
-            'shopName' => $input->getOption('shop-name'),
-            'shopEmail' => $input->getOption('shop-email'),
-            'shopCurrency' => $input->getOption('shop-currency'),
-            'adminUsername' => $input->getOption('admin-username'),
-            'adminPassword' => $input->getOption('admin-password'),
-            'adminEmail' => $input->getOption('admin-email'),
-            'adminLocale' => $input->getOption('admin-locale'),
-            'adminName' => $input->getOption('admin-name'),
-            'noSkipImport' => $input->getOption('no-skip-import'),
-            'skipAdminCreation' => $input->getOption('skip-admin-creation')
-        ]);
-
-        /** @var \Shopware\Install\Services\Install\Release $installService */
-        $installService = $this->container->get('shopware_release_install_service');
-        $installService->installShopware($request);
-    }
-
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
-    public function interact(InputInterface $input, OutputInterface $output)
-    {
-        $this->validateInput($input);
-
-        /** @var $ioService IoService */
-        $ioService = $this->container->get('io_service');
-
-        $this->askGenericOptions($input, $ioService);
-
-        $suggestion = '';
-        if (!$input->getOption('skip-download')) {
-            $release = $this->askRelease($input, $ioService);
-            $suggestion = $release ?: 'latest';
-
-            $installDir = $this->askInstallationDirectory($input, $ioService, $suggestion);
-            $suggestion = $installDir ?: $suggestion;
-        }
-
-        if (!$input->getOption('unpack-only')) {
-            $this->askBasePath($input, $ioService, $suggestion);
-
-            $this->askDatabaseUser($input, $ioService);
-            $this->askDatabasePassword($input, $ioService);
-            $this->askDatabaseName($input, $ioService, $suggestion);
-        }
-    }
-
-    /**
-     * @param  string            $input
-     * @throws \RuntimeException
-     * @return string
-     */
-    public function genericValidator($input)
-    {
-        if (empty($input)) {
-            throw new \RuntimeException('Field may not be empty');
-        }
-
-        return $input;
-    }
-
-    /**
-     * @param  string            $path
-     * @throws \RuntimeException
-     * @return string
-     */
-    public function validateInstallDir($path)
-    {
-        if (is_dir($path)) {
-            throw new \RuntimeException("Path '{$path}'' is not empty");
-        }
-
-        return $path;
-    }
-
-    /**
-     * @param  InputInterface    $input
-     * @throws \RuntimeException
-     */
-    protected function validateInput(InputInterface $input)
-    {
-        $language = $input->getOption('shop-locale');
-        if (!in_array($language, ['en_GB', 'de_DE'])) {
-            throw new \RuntimeException("Invalid locale: '$language'");
-        }
-    }
-
-    /**
      * Make sure, that some required fields are available
      *
      * @param InputInterface $input
@@ -203,7 +215,7 @@ EOF
             'admin-username' => 'backend user name',
             'admin-password' => 'backend user password',
             'admin-name' => 'your full name',
-            'admin-email' => 'your email'
+            'admin-email' => 'your email',
         ];
 
         $config = $this->getConfig();
@@ -225,7 +237,7 @@ EOF
             if ($field === 'admin-password') {
                 $hidden = true;
             }
-            
+
             $fieldData = $ioService->askAndValidate(
                 "Please enter $description: ",
                 [$this, 'genericValidator'],
@@ -311,7 +323,7 @@ EOF
 
     /**
      * @param InputInterface $input
-     * @param IoService $ioService
+     * @param IoService      $ioService
      */
     private function askDatabaseUser(InputInterface $input, IoService $ioService)
     {
@@ -324,7 +336,7 @@ EOF
 
     /**
      * @param InputInterface $input
-     * @param IoService $ioService
+     * @param IoService      $ioService
      */
     private function askDatabasePassword(InputInterface $input, IoService $ioService)
     {

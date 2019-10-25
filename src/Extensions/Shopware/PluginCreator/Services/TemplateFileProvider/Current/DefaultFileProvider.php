@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Current;
 
@@ -8,12 +14,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class DefaultFileProvider returns the default files, always needed for a plugin
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class DefaultFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -29,7 +34,7 @@ class DefaultFileProvider implements FileProviderInterface
             self::CURRENT_DIR . 'tests/PluginTest.tpl' => 'tests/PluginTest.php',
             self::CURRENT_DIR . 'Resources/services.xml.tpl' => 'Resources/services.xml',
             self::CURRENT_DIR . 'Resources/config.xml.tpl' => 'Resources/config.xml',
-            self::CURRENT_DIR . 'Resources/menu.xml.tpl' => 'Resources/menu.xml'
+            self::CURRENT_DIR . 'Resources/menu.xml.tpl' => 'Resources/menu.xml',
         ];
     }
 }

@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Shopware\RunCli\Command;
 
 use ShopwareCli\Command\BaseCommand;
@@ -10,6 +17,45 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCliCommand extends BaseCommand
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $shopwarePath = $input->getOption('shopwarePath');
+        $arguments = implode(' ', $input->getArgument('sw-command'));
+
+        /** @var $ioService IoService */
+        $ioService = $this->container->get('io_service');
+        $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
+
+        system("{$shopwarePath}/bin/console {$arguments}");
+    }
+
+    /**
+     * @param string    $shopwarePath
+     * @param IoService $ioService
+     *
+     * @return string
+     */
+    public function getValidShopwarePath($shopwarePath, IoService $ioService)
+    {
+        if (!$shopwarePath) {
+            $shopwarePath = realpath(getcwd());
+        }
+
+        do {
+            if ($this->container->get('utilities')->isShopwareInstallation($shopwarePath)) {
+                return $shopwarePath;
+            }
+        } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
+
+        return $ioService->askAndValidate(
+            'Path to your Shopware installation: ',
+            [$this->container->get('utilities'), 'validateShopwarePath']
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,44 +81,5 @@ class RunCliCommand extends BaseCommand
 The <info>%command.name%</info> command allows you to trigger shopware cli commands from any subdirectory.
 EOF
             );
-        ;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
-        $shopwarePath = $input->getOption('shopwarePath');
-        $arguments = implode(' ', $input->getArgument('sw-command'));
-
-        /** @var $ioService IoService */
-        $ioService = $this->container->get('io_service');
-        $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
-
-        system("{$shopwarePath}/bin/console {$arguments}");
-    }
-
-    /**
-     * @param  string    $shopwarePath
-     * @param  IoService $ioService
-     * @return string
-     */
-    public function getValidShopwarePath($shopwarePath, IoService $ioService)
-    {
-        if (!$shopwarePath) {
-            $shopwarePath = realpath(getcwd());
-        }
-
-        do {
-            if ($this->container->get('utilities')->isShopwareInstallation($shopwarePath)) {
-                return $shopwarePath;
-            }
-        } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
-
-        return $ioService->askAndValidate(
-            'Path to your Shopware installation: ',
-            [$this->container->get('utilities'), 'validateShopwarePath']
-        );
     }
 }

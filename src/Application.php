@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli;
 
@@ -15,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Main application of the cli tools
  *
  * Class Application
- * @package ShopwareCli
  */
 class Application extends \Symfony\Component\Console\Application
 {
@@ -66,6 +71,14 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
      * Add global "--no-extensions" option
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
@@ -83,8 +96,9 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Creates the container and sets some services which are only synthetic in the container
      *
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
      * @return ContainerBuilder
      */
     protected function createContainer(InputInterface $input, OutputInterface $output)
@@ -107,14 +121,14 @@ class Application extends \Symfony\Component\Console\Application
      */
     protected function checkDirectories()
     {
-        /** @var  $pathProvider PathProvider */
+        /** @var $pathProvider PathProvider */
         $pathProvider = $this->container->get('path_provider');
 
         foreach ([
             $pathProvider->getAssetsPath(),
             $pathProvider->getCachePath(),
             $pathProvider->getExtensionPath(),
-            $pathProvider->getConfigPath()
+            $pathProvider->getConfigPath(),
          ] as $dir) {
             if (is_dir($dir)) {
                 continue;
@@ -144,13 +158,5 @@ class Application extends \Symfony\Component\Console\Application
 
         $this->container->get('extension_manager')->discoverExtensions($paths);
         $this->container->get('extension_manager')->injectContainer($this->container);
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
     }
 }

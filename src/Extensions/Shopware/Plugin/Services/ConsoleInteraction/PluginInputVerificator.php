@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
@@ -12,7 +18,6 @@ use Symfony\Component\Console\Question\Question;
  * Will trigger the PluginColumnRenderer until an valid answer was made. Will then return the corresponding plugin/answer
  *
  * Class PluginInputVerificator
- * @package ShopwareCli\Command\Services
  */
 class PluginInputVerificator
 {
@@ -27,7 +32,7 @@ class PluginInputVerificator
     protected $outputInterface;
 
     /**
-     * @var  PluginColumnRenderer
+     * @var PluginColumnRenderer
      */
     protected $outputRenderer;
 
@@ -50,8 +55,9 @@ class PluginInputVerificator
      * Ask the user to select one of the given plugins or enter one of $allowedAnswers
      * Will loop until a valid choice was made
      *
-     * @param  Plugin[] $plugins
-     * @param  string[] $allowedAnswers
+     * @param Plugin[] $plugins
+     * @param string[] $allowedAnswers
+     *
      * @return string
      */
     public function selectPlugin($plugins, array $allowedAnswers = ['all'])
@@ -96,8 +102,9 @@ class PluginInputVerificator
     /**
      * Format the question for the user
      *
-     * @param  integer  $count
-     * @param  string[] $allowedAnswers
+     * @param int      $count
+     * @param string[] $allowedAnswers
+     *
      * @return string
      */
     private function formatQuestion($count, $allowedAnswers)
@@ -127,7 +134,8 @@ class PluginInputVerificator
      *
      * Will return false if not or the numbers from the range as an array
      *
-     * @param  string     $userInput
+     * @param string $userInput
+     *
      * @return array|bool
      */
     private function getPluginRange($userInput)

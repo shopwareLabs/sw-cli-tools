@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services\Rest;
 
@@ -8,7 +14,6 @@ use ShopwareCli\Cache\CacheInterface;
  * Decorated a RestInterface in order to implement a simple cache layer for GET requests
  *
  * Class CacheDecorator
- * @package ShopwareCli\Services\Rest
  */
 class CacheDecorator implements RestInterface
 {
@@ -74,16 +79,17 @@ class CacheDecorator implements RestInterface
     }
 
     /**
-     * @param  string     $call
-     * @param  string     $key
-     * @param  string     $url
-     * @param  array      $parameters
-     * @param  array      $headers
+     * @param string $call
+     * @param string $key
+     * @param string $url
+     * @param array  $parameters
+     * @param array  $headers
+     *
      * @return bool|mixed
      */
     public function callCached($call, $key, $url, $parameters = [], $headers = [])
     {
-        /** @var $response ResponseInterface */
+        /* @var $response ResponseInterface */
         if (!$this->cacheProvider || $this->cacheTime == 0) {
             $response = call_user_func([$this->decorate, $call], $url, $parameters, $headers);
         } else {

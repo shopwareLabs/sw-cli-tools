@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Writer;
 
@@ -6,7 +12,6 @@ namespace Shopware\DataGenerator\Writer;
  * Buffered file writer which will only write to disc every X writes
  *
  * Class BufferedFileWriter
- * @package Shopware\DataGenerator\Writer
  */
 class BufferedFileWriter implements WriterInterface
 {
@@ -57,7 +62,7 @@ class BufferedFileWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write($content)
     {
@@ -88,7 +93,7 @@ class BufferedFileWriter implements WriterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {

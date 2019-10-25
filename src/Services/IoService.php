@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services;
 
@@ -12,7 +18,6 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * Class IoService
- * @package ShopwareCli\Services
  */
 class IoService
 {
@@ -78,6 +83,7 @@ class IoService
 
     /**
      * Return true if output is ver verbose (or debug)
+     *
      * @return bool
      */
     public function isVeryVerbose()
@@ -118,8 +124,9 @@ class IoService
     /**
      * Ask a $question
      *
-     * @param  string|Question $question
-     * @param  null            $default
+     * @param string|Question $question
+     * @param null            $default
+     *
      * @return string
      */
     public function ask($question, $default = null, $hidden = false)
@@ -139,6 +146,7 @@ class IoService
      *
      * @param array|null $headers
      * @param array|null $results
+     *
      * @return Table
      */
     public function createTable($headers = null, $results = null)
@@ -159,8 +167,9 @@ class IoService
     /**
      * Ask for confirmation
      *
-     * @param  string|Question $question
-     * @param  null            $default
+     * @param string|Question $question
+     * @param null            $default
+     *
      * @return string
      */
     public function askConfirmation($question, $default = null)
@@ -203,7 +212,8 @@ class IoService
     }
 
     /**
-     * @param  int         $max Maximum steps (0 if unknown)
+     * @param int $max Maximum steps (0 if unknown)
+     *
      * @return ProgressBar
      */
     public function createProgressBar($max = 0)

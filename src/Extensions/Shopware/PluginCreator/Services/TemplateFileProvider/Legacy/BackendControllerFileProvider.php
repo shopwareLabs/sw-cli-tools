@@ -1,20 +1,24 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Legacy;
 
-use Shopware\DataGenerator\Struct\Config;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class BackendControllerFileProvider returns files for the backend controller
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class BackendControllerFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -23,7 +27,7 @@ class BackendControllerFileProvider implements FileProviderInterface
         }
 
         return [
-            self::LEGACY_DIR . 'Controllers/Backend.tpl' => "Controllers/Backend/{$configuration->name}.php"
+            self::LEGACY_DIR . 'Controllers/Backend.tpl' => "Controllers/Backend/{$configuration->name}.php",
         ];
     }
 }

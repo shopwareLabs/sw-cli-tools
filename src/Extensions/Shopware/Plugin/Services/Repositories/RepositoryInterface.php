@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\Repositories;
 
@@ -8,7 +14,6 @@ use Shopware\Plugin\Struct\Plugin;
  * Interface for repository classes
  *
  * Class RepositoryInterface
- * @package ShopwareCli\Plugin
  */
 interface RepositoryInterface
 {

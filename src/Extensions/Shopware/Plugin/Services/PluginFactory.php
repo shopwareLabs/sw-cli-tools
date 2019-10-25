@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -8,18 +14,18 @@ use Shopware\Plugin\Struct\Plugin;
  * Create a plugin struct from the passed data
  *
  * Class PluginFactory
- * @package ShopwareCli\Plugin
  */
 class PluginFactory
 {
     /**
      * Input is a name like Backend_SwagBusinessEssentials
      *
-     * @param  string $name
-     * @param  string $sshUrl
-     * @param  string $httpUrl
-     * @param  string $repoName
+     * @param string $name
+     * @param string $sshUrl
+     * @param string $httpUrl
+     * @param string $repoName
      * @param $repoType
+     *
      * @return Plugin
      */
     public static function getPlugin($name, $sshUrl, $httpUrl, $repoName, $repoType = null)
