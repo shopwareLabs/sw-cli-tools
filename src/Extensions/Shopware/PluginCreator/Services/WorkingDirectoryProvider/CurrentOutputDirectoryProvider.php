@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\WorkingDirectoryProvider;
 
@@ -20,7 +26,7 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     /**
      * @param RootDetectorInterface $rootDetector
-     * @param string $name
+     * @param string                $name
      */
     public function __construct(RootDetectorInterface $rootDetector, $name)
     {
@@ -36,6 +42,7 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
         if ($this->rootDetector->isRoot($this->getCwd())) {
             return $this->getCwd() . '/' . self::CURRENT_PLUGIN_DIR . '/' . $this->name . '/';
         }
+
         return $this->getCwd() . '/' . $this->name . '/';
     }
 

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services\Install;
 
@@ -17,7 +23,6 @@ use ShopwareCli\Services\ProcessExecutor;
  * This install service will run all steps needed to setup shopware in the correct order
  *
  * Class Release
- * @package Shopware\Install\Services\Install
  */
 class Release
 {
@@ -27,22 +32,22 @@ class Release
     protected $config;
 
     /**
-     * @var  VcsGenerator
+     * @var VcsGenerator
      */
     protected $vcsGenerator;
 
     /**
-     * @var  ConfigWriter
+     * @var ConfigWriter
      */
     protected $configWriter;
 
     /**
-     * @var  Database
+     * @var Database
      */
     protected $database;
 
     /**
-     * @var  Demodata
+     * @var Demodata
      */
     protected $demoData;
 
@@ -72,14 +77,14 @@ class Release
 
     /**
      * @param ReleaseDownloader $releaseDownloader
-     * @param Config $config
-     * @param VcsGenerator $vcsGenerator
-     * @param ConfigWriter $configWriter
-     * @param Database $database
-     * @param Demodata $demodata
-     * @param IoService $ioService
-     * @param PostInstall $postInstall
-     * @param ProcessExecutor $processExecutor
+     * @param Config            $config
+     * @param VcsGenerator      $vcsGenerator
+     * @param ConfigWriter      $configWriter
+     * @param Database          $database
+     * @param Demodata          $demodata
+     * @param IoService         $ioService
+     * @param PostInstall       $postInstall
+     * @param ProcessExecutor   $processExecutor
      */
     public function __construct(
         ReleaseDownloader $releaseDownloader,
@@ -159,7 +164,7 @@ class Release
         $delegateOptions = [
             'dbHost', 'dbPort', 'dbSocket', 'dbUser', 'dbPassword', 'dbName',
             'shopLocale', 'shopHost', 'shopPath', 'shopName', 'shopEmail', 'shopCurrency',
-            'adminUsername', 'adminPassword', 'adminEmail', 'adminLocale', 'adminName'
+            'adminUsername', 'adminPassword', 'adminEmail', 'adminLocale', 'adminName',
         ];
 
         $arguments = [];

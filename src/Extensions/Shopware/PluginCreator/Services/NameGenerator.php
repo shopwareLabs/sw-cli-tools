@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services;
 
@@ -8,7 +14,6 @@ use Shopware\PluginCreator\Struct\Configuration;
  * The name generator generates useful names for controller, variables and views depending on the configuration object
  *
  * Class NameGenerator
- * @package Shopware\PluginCreator\Services
  */
 class NameGenerator
 {
@@ -93,6 +98,7 @@ class NameGenerator
      * Splits a given string by upper case characters
      *
      * @param $input
+     *
      * @return array
      */
     public function upperToArray($input)

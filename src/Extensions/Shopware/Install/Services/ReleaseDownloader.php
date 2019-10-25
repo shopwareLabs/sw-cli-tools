@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -38,10 +44,10 @@ class ReleaseDownloader
 
     /**
      * @param ProcessExecutor $processExecutor
-     * @param IoService $ioService
-     * @param FileDownloader $downloader
+     * @param IoService       $ioService
+     * @param FileDownloader  $downloader
      * @param OpenSSLVerifier $openSSLVerifier
-     * @param string $cachePath
+     * @param string          $cachePath
      */
     public function __construct(
         ProcessExecutor $processExecutor,
@@ -80,6 +86,7 @@ class ReleaseDownloader
      * New releases can be downloaded via the update api and provide a sha1 hash
      *
      * @param string $release
+     *
      * @return string
      */
     private function downloadFromUpdateApi($release)
@@ -153,11 +160,12 @@ class ReleaseDownloader
      * Return a generic cache file name for a given release
      *
      * @param $release
+     *
      * @return string
      */
     private function getCacheFilePath($release)
     {
-        return $this->cachePath."/{$release}.zip";
+        return $this->cachePath . "/{$release}.zip";
     }
 
     /**
@@ -167,6 +175,6 @@ class ReleaseDownloader
      */
     private function getTempFile()
     {
-        return sys_get_temp_dir().'/'.uniqid('release_download', true);
+        return sys_get_temp_dir() . '/' . uniqid('release_download', true);
     }
 }

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\WorkingDirectoryProvider;
 
@@ -29,8 +35,9 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     /**
      * @param RootDetectorInterface $rootDetector
-     * @param string $name
-     * @param string $namespace
+     * @param string                $name
+     * @param string                $namespace
+     *
      * @throws \Exception
      */
     public function __construct(RootDetectorInterface $rootDetector, $name, $namespace)
@@ -60,6 +67,7 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     /**
      * @param string $namespace
+     *
      * @return bool
      */
     private function isValidNamespace($namespace)

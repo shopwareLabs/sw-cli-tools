@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services;
 
@@ -11,12 +17,12 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class GeneratorFactory
- * @package Shopware\PluginCreator\Services
  */
 class GeneratorFactory
 {
     /**
      * @param Configuration $configuration
+     *
      * @return Generator
      */
     public function create(Configuration $configuration)
@@ -36,6 +42,7 @@ class GeneratorFactory
 
     /**
      * @param Configuration $configuration
+     *
      * @return CurrentOutputDirectoryProvider|LegacyOutputDirectoryProvider
      */
     private function getOutputDirectoryProvider(Configuration $configuration)
@@ -52,6 +59,7 @@ class GeneratorFactory
                 $configuration->namespace
             );
         }
+
         return $outputDirectoryProvider;
     }
 }

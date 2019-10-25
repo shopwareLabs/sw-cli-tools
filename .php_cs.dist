@@ -1,31 +1,35 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')
-    ->in(__DIR__.'/tests')
-;
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests');
+
+$header = <<<EOF
+(c) shopware AG <info@shopware.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+EOF;
 
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setUsingCache(false)
     ->setRules([
         '@PSR2' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'function_typehint_space' => true,
-        'function_declaration' => true,
-        'no_empty_phpdoc' => true,
-        'no_empty_comment' => true,
+        '@Symfony' => true,
+        'header_comment' => ['header' => $header, 'separate' => 'bottom', 'commentType' => 'PHPDoc'],
+        'no_useless_else' => true,
         'no_useless_return' => true,
+        'ordered_class_elements' => true,
         'ordered_imports' => true,
-        'phpdoc_add_missing_param_annotation' => [
-            'only_untyped' => false
-        ],
-        'phpdoc_no_empty_return' => true,
         'phpdoc_order' => true,
-        'phpdoc_types' => true,
-        'combine_consecutive_unsets' => true,
-        'hash_to_slash_comment' => true,
-        'linebreak_after_opening_tag' => true,
-        'single_quote' => true,
-        'short_scalar_cast' => true,
+        'phpdoc_summary' => false,
+        'blank_line_after_opening_tag' => false,
+        'concat_space' => ['spacing' => 'one'],
+        'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
+        'array_syntax' => ['syntax' => 'short'],
+        'general_phpdoc_annotation_remove' => [
+            'annotations' => ['copyright', 'category'],
+        ],
     ])
-    ->setFinder($finder)
-;
+    ->setFinder($finder);

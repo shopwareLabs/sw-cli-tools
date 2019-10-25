@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -11,7 +17,6 @@ use ShopwareCli\Services\ShopwareInfo;
  * Handles demo data and licenses
  *
  * Class Demodata
- * @package Shopware\Install\Services
  */
 class Demodata
 {
@@ -40,9 +45,9 @@ class Demodata
     private $processExecutor;
 
     /**
-     * @param PathProvider $pathProvider
-     * @param IoService $ioService
-     * @param ShopwareInfo $shopwareInfo
+     * @param PathProvider    $pathProvider
+     * @param IoService       $ioService
+     * @param ShopwareInfo    $shopwareInfo
      * @param ProcessExecutor $processExecutor
      */
     public function __construct(PathProvider $pathProvider, IoService $ioService, ShopwareInfo $shopwareInfo, ProcessExecutor $processExecutor)
@@ -76,9 +81,9 @@ class Demodata
         $this->ioService->writeln('<info>Copying demo data to shop</info>');
         $this->processExecutor->execute("cp -rf {$assetDir}/files {$installDir}");
         $this->processExecutor->execute("cp -rf {$assetDir}/media {$installDir}");
-        $this->processExecutor->execute('find ' .$this->shopwareInfo->getCacheDir($installDir) ." -type d -exec chmod 777 {} \;", true);
-        $this->processExecutor->execute('find ' .$this->shopwareInfo->getMediaDir($installDir) ." -type d -exec chmod 777 {} \;", true);
-        $this->processExecutor->execute('find ' .$this->shopwareInfo->getFilesDir($installDir) ." -type d -exec chmod 777 {} \;", true);
-        $this->processExecutor->execute('find ' .$this->shopwareInfo->getCacheDir($installDir) ."  -type d -exec chmod 777 {} \;", true);
+        $this->processExecutor->execute('find ' . $this->shopwareInfo->getCacheDir($installDir) . " -type d -exec chmod 777 {} \;", true);
+        $this->processExecutor->execute('find ' . $this->shopwareInfo->getMediaDir($installDir) . " -type d -exec chmod 777 {} \;", true);
+        $this->processExecutor->execute('find ' . $this->shopwareInfo->getFilesDir($installDir) . " -type d -exec chmod 777 {} \;", true);
+        $this->processExecutor->execute('find ' . $this->shopwareInfo->getCacheDir($installDir) . "  -type d -exec chmod 777 {} \;", true);
     }
 }

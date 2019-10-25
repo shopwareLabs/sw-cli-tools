@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Command;
 
@@ -12,12 +18,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Zip a plugin
  *
  * Class ZipCommand
- * @package ShopwareCli\Command
  */
 class ZipCommand extends BaseCommand
 {
     protected $utilities;
     protected $zipDir;
+
+    public function doZip($plugin, $params)
+    {
+        $this->container->get('zip_service')->zip($plugin, $this->getTempDir(), $this->getZipDir(), $params['branch'], $params['useHttp']);
+    }
 
     protected function configure()
     {
@@ -75,11 +85,6 @@ class ZipCommand extends BaseCommand
         }
 
         $interactionManager->operationLoop([$this, 'doZip'], $params);
-    }
-
-    public function doZip($plugin, $params)
-    {
-        $this->container->get('zip_service')->zip($plugin, $this->getTempDir(), $this->getZipDir(), $params['branch'], $params['useHttp']);
     }
 
     protected function getTempDir()

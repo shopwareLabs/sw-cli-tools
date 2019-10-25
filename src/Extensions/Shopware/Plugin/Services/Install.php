@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -27,8 +33,8 @@ class Install
     private $processExecutor;
 
     /**
-     * @param Checkout $checkout
-     * @param IoService $ioService
+     * @param Checkout        $checkout
+     * @param IoService       $ioService
      * @param ProcessExecutor $processExecutor
      */
     public function __construct(Checkout $checkout, IoService $ioService, ProcessExecutor $processExecutor)
@@ -41,9 +47,9 @@ class Install
     /**
      * @param Plugin $plugin
      * @param string $shopwarePath
-     * @param bool $inputActivate
+     * @param bool   $inputActivate
      * @param string $branch
-     * @param bool $useHttp
+     * @param bool   $useHttp
      */
     public function install(Plugin $plugin, $shopwarePath, $inputActivate = false, $branch = 'master', $useHttp = false)
     {
@@ -111,6 +117,7 @@ class Install
      * Normalize directory strings to make them comparable
      *
      * @param $string
+     *
      * @return string
      */
     private function normalize($string)

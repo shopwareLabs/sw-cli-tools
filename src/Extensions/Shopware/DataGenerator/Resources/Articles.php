@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -66,96 +72,14 @@ class Articles extends BaseResource
         for ($group = 0; $group <= self::GROUPS; ++$group) {
             $currentGroup = ['id' => $this->getUniqueId(
                 'conf_group'
-            ), 'name' => 'Configurator Group '.$group, 'position' => $group, $options = []];
+            ), 'name' => 'Configurator Group ' . $group, 'position' => $group, $options = []];
             for ($option = 0; $option <= self::OPTIONS; ++$option) {
                 $currentGroup['options'][] = ['id' => $this->getUniqueId(
                     'conf_option'
-                ), 'name' => 'Option'.$option, 'position' => $option];
+                ), 'name' => 'Option' . $option, 'position' => $option];
             }
             $this->configuratorsGroups[] = $currentGroup;
         }
-    }
-
-    /**
-     * Generates SQL which creates filter groups, options and values.
-     *
-     * @param WriterInterface $importWriter
-     */
-    protected function createFilterGroupSQL(WriterInterface $importWriter)
-    {
-        $filterGroupValues = [];
-        $filterOptionValues = [];
-        $filterValueValues = [];
-        $filterOptionGroupRelationValues = [];
-
-        $filterGroups = $this->config->getArticleFilterGroups();
-        $filterOptions = $this->config->getArticleFilterOptions();
-        $filterValues = $this->config->getArticleFilterValues();
-
-        for ($groupId = 1; $groupId <= $filterGroups; ++$groupId) {
-            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, ".rand(0, 1).', '.rand(0, 1);
-
-            for ($o = 1; $o <= $filterOptions; ++$o) {
-                $optionId = $o + ($groupId - 1) * $filterOptions;
-                $filterOptionValues[] = "$optionId, Option #{$o},  ".rand(0, 1);
-                $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
-
-                for ($v = 1; $v <= $filterValues; ++$v) {
-                    $valueId = $v + ($optionId - 1) * $filterValues;
-                    $filterValueValues[] = "$valueId, $optionId, Value #{$valueId}, $valueId";
-                }
-            }
-        }
-
-        $filter = $this->writerManager->createWriter('filter', 'csv');
-        $filterOptions = $this->writerManager->createWriter('filter_options', 'csv');
-        $filterValues = $this->writerManager->createWriter('filter_values', 'csv');
-        $filterRelations = $this->writerManager->createWriter('filter_relations', 'csv');
-
-        $filter->write($filterGroupValues);
-        $filterOptions->write($filterOptionValues);
-        $filterValues->write($filterValueValues);
-        $filterRelations->write($filterOptionGroupRelationValues);
-
-        $importWriter->write($this->loadDataInfile->get('s_filter', $filter->getFileName()));
-        $importWriter->write($this->loadDataInfile->get('s_filter_options', $filterOptions->getFileName()));
-        $importWriter->write($this->loadDataInfile->get('s_filter_values', $filterValues->getFileName()));
-        $importWriter->write($this->loadDataInfile->get('s_filter_relations', $filterRelations->getFileName()));
-    }
-
-    /**
-     * Helper function which creates a cartesian product.
-     *
-     * @param $arrays
-     *
-     * @return array
-     */
-    private function createCartesianProduct($arrays)
-    {
-        $cartesian = [];
-        $dims = array_reverse($arrays);
-
-        foreach ($dims as $dimName => $dim) {
-            $buf = [];
-
-            foreach ($dim as $val) {
-                $buf[] = [$dimName => $val];
-            }
-
-            if (!count($cartesian)) {
-                $cartesian = $buf;
-            } else {
-                $tmp = [];
-                foreach ($buf as $elBuf) {
-                    foreach ($cartesian as $elAp) {
-                        $tmp[] = array_merge($elBuf, $elAp);
-                    }
-                }
-                $cartesian = $tmp;
-            }
-        }
-
-        return $cartesian;
     }
 
     /**
@@ -327,7 +251,7 @@ class Articles extends BaseResource
                 // Images
                 for ($i = 1; $i <= $numImagesPerArticle; ++$i) {
                     $mediaId = $this->getUniqueId('media');
-                    $name = $physicallyCreateEachImage ? $baseName.$id : $baseName;
+                    $name = $physicallyCreateEachImage ? $baseName . $id : $baseName;
                     $images[] = $name;
                     $mediaValues[] = "({$mediaId}, -1, {$name}, media/image/{$name}.jpg, IMAGE, jpg, 2012-08-15 )";
                     $main = ($i === 1) ? 1 : 2;
@@ -396,7 +320,7 @@ class Articles extends BaseResource
                         continue;
                     }
                     foreach ($options as $option) {
-                        $articleConfiguratorRelations->write("{$detailID}, ".$option);
+                        $articleConfiguratorRelations->write("{$detailID}, " . $option);
                     }
                 }
             }
@@ -456,6 +380,104 @@ class Articles extends BaseResource
     }
 
     /**
+     * @return Categories
+     */
+    public function getCategoryResource()
+    {
+        return $this->categoryResource;
+    }
+
+    /**
+     * @param Categories $categoryResource
+     */
+    public function setCategoryResource(Categories $categoryResource)
+    {
+        $this->categoryResource = $categoryResource;
+    }
+
+    /**
+     * Generates SQL which creates filter groups, options and values.
+     *
+     * @param WriterInterface $importWriter
+     */
+    protected function createFilterGroupSQL(WriterInterface $importWriter)
+    {
+        $filterGroupValues = [];
+        $filterOptionValues = [];
+        $filterValueValues = [];
+        $filterOptionGroupRelationValues = [];
+
+        $filterGroups = $this->config->getArticleFilterGroups();
+        $filterOptions = $this->config->getArticleFilterOptions();
+        $filterValues = $this->config->getArticleFilterValues();
+
+        for ($groupId = 1; $groupId <= $filterGroups; ++$groupId) {
+            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, " . rand(0, 1) . ', ' . rand(0, 1);
+
+            for ($o = 1; $o <= $filterOptions; ++$o) {
+                $optionId = $o + ($groupId - 1) * $filterOptions;
+                $filterOptionValues[] = "$optionId, Option #{$o},  " . rand(0, 1);
+                $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
+
+                for ($v = 1; $v <= $filterValues; ++$v) {
+                    $valueId = $v + ($optionId - 1) * $filterValues;
+                    $filterValueValues[] = "$valueId, $optionId, Value #{$valueId}, $valueId";
+                }
+            }
+        }
+
+        $filter = $this->writerManager->createWriter('filter', 'csv');
+        $filterOptions = $this->writerManager->createWriter('filter_options', 'csv');
+        $filterValues = $this->writerManager->createWriter('filter_values', 'csv');
+        $filterRelations = $this->writerManager->createWriter('filter_relations', 'csv');
+
+        $filter->write($filterGroupValues);
+        $filterOptions->write($filterOptionValues);
+        $filterValues->write($filterValueValues);
+        $filterRelations->write($filterOptionGroupRelationValues);
+
+        $importWriter->write($this->loadDataInfile->get('s_filter', $filter->getFileName()));
+        $importWriter->write($this->loadDataInfile->get('s_filter_options', $filterOptions->getFileName()));
+        $importWriter->write($this->loadDataInfile->get('s_filter_values', $filterValues->getFileName()));
+        $importWriter->write($this->loadDataInfile->get('s_filter_relations', $filterRelations->getFileName()));
+    }
+
+    /**
+     * Helper function which creates a cartesian product.
+     *
+     * @param $arrays
+     *
+     * @return array
+     */
+    private function createCartesianProduct($arrays)
+    {
+        $cartesian = [];
+        $dims = array_reverse($arrays);
+
+        foreach ($dims as $dimName => $dim) {
+            $buf = [];
+
+            foreach ($dim as $val) {
+                $buf[] = [$dimName => $val];
+            }
+
+            if (!count($cartesian)) {
+                $cartesian = $buf;
+            } else {
+                $tmp = [];
+                foreach ($buf as $elBuf) {
+                    foreach ($cartesian as $elAp) {
+                        $tmp[] = array_merge($elBuf, $elAp);
+                    }
+                }
+                $cartesian = $tmp;
+            }
+        }
+
+        return $cartesian;
+    }
+
+    /**
      * @param $id
      * @param $categories
      *
@@ -495,32 +517,16 @@ class Articles extends BaseResource
     {
         $assetsDir = ''; //TODO: implement real asset loading
         // Copy the images to media directory
-        $destination = $assetsDir.($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
+        $destination = $assetsDir . ($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {
-            $target = $imageDir.'/'.$imageName.'.jpg';
+            $target = $imageDir . '/' . $imageName . '.jpg';
             copy($destination, $target);
 
             foreach ($thumbs as $size) {
-                $target = $imageDir.'/thumbnail/'.$imageName.'_'.$size.'.jpg';
+                $target = $imageDir . '/thumbnail/' . $imageName . '_' . $size . '.jpg';
                 copy($destination, $target);
             }
         }
-    }
-
-    /**
-     * @return Categories
-     */
-    public function getCategoryResource()
-    {
-        return $this->categoryResource;
-    }
-
-    /**
-     * @param Categories $categoryResource
-     */
-    public function setCategoryResource(Categories $categoryResource)
-    {
-        $this->categoryResource = $categoryResource;
     }
 
     /**

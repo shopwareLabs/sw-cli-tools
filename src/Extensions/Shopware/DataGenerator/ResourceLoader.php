@@ -1,8 +1,13 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator;
 
-use Plugin\ShopwarePluginCreator\Generator;
 use Shopware\DataGenerator\Resources\BaseResource;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -24,6 +29,7 @@ class ResourceLoader
 
     /**
      * @param $type
+     *
      * @return BaseResource
      */
     public function getResource($type)

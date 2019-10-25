@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Application;
 
@@ -20,7 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * e.g. github
  *
  * Class ExtensionManager
- * @package ShopwareCli\Application
  */
 class ExtensionManager
 {
@@ -46,6 +51,7 @@ class ExtensionManager
      * Read all available plugins
      *
      * @param $extensionDirs
+     *
      * @throws \RuntimeException
      */
     public function discoverExtensions($extensionDirs)
@@ -63,6 +69,67 @@ class ExtensionManager
                 $this->discoverVendorFolder($vendorPath->getPathname(), $vendorName);
             }
         }
+    }
+
+    /**
+     * Instantiates a extension
+     *
+     * @param $className
+     *
+     * @return object
+     */
+    public function bootstrapExtension($className)
+    {
+        $extension = new $className();
+
+        return $extension;
+    }
+
+    /**
+     * Inject the di container into the extension
+     *
+     * @param ContainerBuilder $container
+     */
+    public function injectContainer(ContainerBuilder $container)
+    {
+        foreach ($this->extensions as $extension) {
+            if ($extension instanceof ContainerAwareExtension) {
+                $extension->setContainer($container);
+            }
+        }
+    }
+
+    /**
+     * Return all extensions
+     *
+     * @return object[]
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * Returns the plugin queried by name
+     *
+     * @param $name
+     *
+     * @return object
+     */
+    public function getExtension($name)
+    {
+        return $this->extensions[$name];
+    }
+
+    /**
+     * Overwrite the instance of extension $name with $class
+     *
+     * @param string $name
+     * @param object $class
+     */
+    public function setExtension($name, $class)
+    {
+        $this->extensions[$name] = $class;
     }
 
     /**
@@ -112,64 +179,5 @@ class ExtensionManager
     {
         $namespace = rtrim($namespace, '\\') . '\\';
         $this->autoLoader->addPsr4($namespace, $path);
-    }
-
-    /**
-     * Instantiates a extension
-     *
-     * @param $className
-     * @return object
-     */
-    public function bootstrapExtension($className)
-    {
-        $extension = new $className();
-
-        return $extension;
-    }
-
-    /**
-     * Inject the di container into the extension
-     *
-     * @param ContainerBuilder $container
-     */
-    public function injectContainer(ContainerBuilder $container)
-    {
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof ContainerAwareExtension) {
-                $extension->setContainer($container);
-            }
-        }
-    }
-
-    /**
-     * Return all extensions
-     *
-     * @return object[]
-     */
-    public function getExtensions()
-    {
-        return $this->extensions;
-    }
-
-    /**
-     * Returns the plugin queried by name
-     *
-     * @param $name
-     * @return object
-     */
-    public function getExtension($name)
-    {
-        return $this->extensions[$name];
-    }
-
-    /**
-     * Overwrite the instance of extension $name with $class
-     *
-     * @param string $name
-     * @param object $class
-     */
-    public function setExtension($name, $class)
-    {
-        $this->extensions[$name] = $class;
     }
 }

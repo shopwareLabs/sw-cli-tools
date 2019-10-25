@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Install\Services;
 
@@ -55,7 +61,7 @@ class PostInstall
         $this->processExecutor->execute($command, null, true);
 
         if (file_exists($directory . '/web')) {
-            $command = sprintf('chmod 0777 -R "%s"', $directory.'/web');
+            $command = sprintf('chmod 0777 -R "%s"', $directory . '/web');
             $this->processExecutor->execute($command, null, true);
         }
 
@@ -91,6 +97,7 @@ class PostInstall
      * Import custom deltas
      *
      * @param $database
+     *
      * @throws \RuntimeException
      */
     public function importCustomDeltas($database)

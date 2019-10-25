@@ -1,12 +1,16 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Shopware\AutoUpdate\Command;
 
 use Humbug\SelfUpdate\Updater;
 use ShopwareCli\Command\BaseCommand;
-use ShopwareCli\Services\ProcessExecutor;
-use ShopwareCli\Services\ShopwareInfo;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SelfUpdateCommand extends BaseCommand
@@ -39,6 +43,7 @@ class SelfUpdateCommand extends BaseCommand
             $result = $this->updater->update();
             if (!$result) {
                 $output->writeln('No update needed.');
+
                 return 0;
             }
 
@@ -60,7 +65,7 @@ class SelfUpdateCommand extends BaseCommand
 
     /**
      * @param OutputInterface $output
-     * @param \Exception $exception
+     * @param \Exception      $exception
      */
     protected function printException(OutputInterface $output, \Exception $exception)
     {

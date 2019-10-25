@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Services;
 
@@ -6,7 +12,6 @@ namespace Shopware\DataGenerator\Services;
  * Knows everything about our tables to create proper LOAD DATA INFILE queries
  *
  * Class LoadDataInfile
- * @package Shopware\DataGenerator\Services
  */
 class LoadDataInfile
 {
@@ -36,7 +41,7 @@ class LoadDataInfile
             'main_detail_id',
             'available_from',
             'available_to',
-            'configurator_set_id'
+            'configurator_set_id',
         ],
         's_articles_details' => [
             'id',
@@ -64,7 +69,7 @@ class LoadDataInfile
             'packunit',
             'releasedate',
             'shippingfree',
-            'shippingtime'
+            'shippingtime',
         ],
         's_articles_prices' => [
             'pricegroup',
@@ -75,7 +80,7 @@ class LoadDataInfile
             'price',
             'pseudoprice',
             'baseprice',
-            'percent'
+            'percent',
         ],
         's_articles_categories' => ['articleID', 'categoryID'],
         's_media' => ['id', 'albumID', 'name', 'path', 'type', 'extension', 'created'],
@@ -122,7 +127,7 @@ class LoadDataInfile
             'salutation',
             'firstname',
             'lastname',
-            'birthday'
+            'birthday',
         ],
         's_user_addresses' => [
             'id',
@@ -158,7 +163,7 @@ class LoadDataInfile
             'phone',
             'countryID',
             'stateID',
-            'ustid'
+            'ustid',
         ],
         's_user_billingaddress_attributes' => ['billingID'],
         's_user_shippingaddress' => [
@@ -173,7 +178,7 @@ class LoadDataInfile
             'zipcode',
             'city',
             'countryID',
-            'stateID'
+            'stateID',
         ],
         's_user_shippingaddress_attributes' => ['shippingID'],
         's_emarketing_vouchers' => [
@@ -189,18 +194,18 @@ class LoadDataInfile
             'percental',
             'numorder',
             'customergroup',
-            'taxconfig'
+            'taxconfig',
         ],
         's_emarketing_vouchers_attributes' => ['voucherID'],
-        's_emarketing_voucher_codes' => ['voucherID', 'userID', 'code', 'cashed']
+        's_emarketing_voucher_codes' => ['voucherID', 'userID', 'code', 'cashed'],
     ];
-
 
     /**
      * Returns a loadDataInfile query for the selected table / file
      *
      * @param $tableName
      * @param $file
+     *
      * @return string
      */
     public function get($tableName, $file)

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -11,7 +17,6 @@ use ShopwareCli\Utilities;
  * Checkouts a given plugin
  *
  * Class Checkout
- * @package Shopware\Plugin\Services
  */
 class Checkout
 {
@@ -39,14 +44,14 @@ class Checkout
     {
         $this->utilities = $utilities;
         $this->ioService = $ioService;
-        $this->gitUtil   = $gitUtil;
+        $this->gitUtil = $gitUtil;
     }
 
     /**
      * @param Plugin $plugin
      * @param string $path
      * @param string $branch
-     * @param bool $useHttp
+     * @param bool   $useHttp
      */
     public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
     {

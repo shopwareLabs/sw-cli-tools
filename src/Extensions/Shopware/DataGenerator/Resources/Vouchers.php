@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -28,7 +34,7 @@ class Vouchers extends BaseResource
     private $loadDataInfile;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -41,7 +47,7 @@ class Vouchers extends BaseResource
 
         $this->createProgressBar($number);
 
-        for ($voucherCounter = 0; $voucherCounter < $number; $voucherCounter++) {
+        for ($voucherCounter = 0; $voucherCounter < $number; ++$voucherCounter) {
             $this->advanceProgressBar();
 
             $id = $this->getUniqueId('voucher');
@@ -50,7 +56,7 @@ class Vouchers extends BaseResource
             $isPercental = !$voucherCounter % 3;
             $numOrder = !$isIndividual; // individual vouchers are not restricted
 
-            $code = 'code'.$id;
+            $code = 'code' . $id;
             if ($isIndividual) {
                 $code = '';
             }
@@ -62,7 +68,7 @@ class Vouchers extends BaseResource
             $voucherAttributeCsv->write("{$id}");
 
             if ($isIndividual) {
-                for ($i = 0; $i < $this->numberOfIndividualVoucherCodes; $i++) {
+                for ($i = 0; $i < $this->numberOfIndividualVoucherCodes; ++$i) {
                     $code = "code-{$id}-{$i}";
                     $voucherCodeCsv->write("{$id},\N,{$code},0");
                 }

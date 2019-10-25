@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Services;
 
@@ -25,9 +31,9 @@ class GitUtil
     private $gitEnv;
 
     /**
-     * @param OutputInterface $output
+     * @param OutputInterface        $output
      * @param GitIdentityEnvironment $gitEnv
-     * @param int $timeout
+     * @param int                    $timeout
      */
     public function __construct(OutputInterface $output, GitIdentityEnvironment $gitEnv, $timeout)
     {
@@ -36,10 +42,10 @@ class GitUtil
         $this->gitEnv = $gitEnv;
     }
 
-
     /**
-     * @param  string $commandline
+     * @param string   $commandline
      * @param int|null $timeout
+     *
      * @return string
      */
     public function run($commandline, $timeout = null)

@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
@@ -10,6 +17,43 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ShopwareInstallVcsCommand extends BaseCommand
 {
     const MAIN_BRANCH = '5.6';
+
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
+    public function interact(InputInterface $input, OutputInterface $output)
+    {
+        /** @var $ioService IoService */
+        $ioService = $this->container->get('io_service');
+
+        $branch = $this->askBranch($input, $ioService);
+
+        $suggestion = $this->suggestNameFromBranch($branch) ?: self::MAIN_BRANCH;
+
+        $installDir = $this->askInstallationDir($input, $ioService, $suggestion);
+
+        $suggestion = $installDir ?: $suggestion;
+
+        $this->askDatabaseName($input, $ioService, $suggestion);
+        $this->askBasePath($input, $ioService, $suggestion);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function validateInstallDir($path)
+    {
+        if (is_dir($path)) {
+            throw new \RuntimeException("Path '{$path}'' is not empty");
+        }
+
+        return $path;
+    }
 
     /**
      * {@inheritdoc}
@@ -60,7 +104,6 @@ class ShopwareInstallVcsCommand extends BaseCommand
 The <info>%command.name%</info> sets up shopware
 EOF
             );
-        ;
     }
 
     /**
@@ -82,30 +125,10 @@ EOF
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
-    public function interact(InputInterface $input, OutputInterface $output)
-    {
-        /** @var $ioService IoService */
-        $ioService = $this->container->get('io_service');
-
-        $branch = $this->askBranch($input, $ioService);
-
-        $suggestion = $this->suggestNameFromBranch($branch) ?: self::MAIN_BRANCH;
-
-        $installDir = $this->askInstallationDir($input, $ioService, $suggestion);
-
-        $suggestion = $installDir ?: $suggestion;
-
-        $this->askDatabaseName($input, $ioService, $suggestion);
-        $this->askBasePath($input, $ioService, $suggestion);
-    }
-
-    /**
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
      *
-     * @param  string $branch
+     * @param string $branch
+     *
      * @return string
      */
     private function suggestNameFromBranch($branch)
@@ -119,20 +142,6 @@ EOF
         }
 
         return str_replace('.', '', $branch);
-    }
-
-    /**
-     * @param  string            $path
-     * @throws \RuntimeException
-     * @return string
-     */
-    public function validateInstallDir($path)
-    {
-        if (is_dir($path)) {
-            throw new \RuntimeException("Path '{$path}'' is not empty");
-        }
-
-        return $path;
     }
 
     /**

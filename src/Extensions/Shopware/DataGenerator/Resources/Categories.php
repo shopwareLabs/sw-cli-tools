@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -7,16 +13,15 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 class Categories extends BaseResource
 {
     /**
-     * @var array
-     */
-    protected $tables = ['s_categories'];
-
-    /**
      * The array with the categories that are going to be created.
      *
      * @var
      */
     public $categoriesFlat = [];
+    /**
+     * @var array
+     */
+    protected $tables = ['s_categories'];
 
     /**
      * The number of categories which have been created
@@ -30,6 +35,78 @@ class Categories extends BaseResource
      * @var
      */
     protected $total;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $type
+     */
+    public function getUniqueId($type)
+    {
+        ++$this->categoriesSum;
+        if (empty($this->ids[$type])) {
+            $this->ids[$type] = 1;
+
+            return 1;
+        }
+
+        $this->ids[$type] += 1;
+
+        return $this->ids[$type];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create(WriterInterface $writer)
+    {
+        // Start with id 4
+        $this->ids['category'] = 3;
+        $this->ids['finalCats'] = 1000000;
+
+        $this->total = $this->config->getNumberCategories();
+
+        $this->createProgressBar($this->total);
+
+        $this->categoriesFlat[1] = null;
+        $this->categoriesFlat[3] = null;
+        $germanCategory = $this->buildNestedTree($this->config->getNumberCategories());
+
+        $thisCategory = [
+            'id' => 1,
+            'parent' => 'NULL',
+            'path' => '',
+            'name' => 'Root',
+            'level' => 0,
+            'position' => 0,
+            'left' => 1,
+            'right' => $germanCategory['right'] + 1,
+            'children' => [$germanCategory],
+        ];
+        $this->categoriesFlat[1] = $thisCategory;
+
+        $categoryUrls = $this->writerManager->createWriter('categories', 'csv');
+
+        $categoryURLs = [];
+        $values = [];
+        foreach ($this->categoriesFlat as $id => $category) {
+            $this->advanceProgressBar();
+            $categoryURLs[] = "/cat/index/sCategory/{$category['id']}";
+
+            $name = isset($category['name']) ? $category['name'] : $this->generator->getRandomWord();
+            $values[] = "({$category['id']}, {$category['parent']}, '{$category['path']}', '{$name}', {$id}, 1)";
+        }
+
+        $categoryValues = sprintf(
+            'INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;',
+            implode(",\n             ", $values)
+        );
+
+        $this->finishProgressBar();
+
+        $writer->write($categoryValues);
+        $categoryUrls->write($categoryURLs);
+    }
 
     /**
      * @param int        $number
@@ -141,77 +218,5 @@ class Categories extends BaseResource
         }
 
         return $path;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $type
-     */
-    public function getUniqueId($type)
-    {
-        ++$this->categoriesSum;
-        if (empty($this->ids[$type])) {
-            $this->ids[$type] = 1;
-
-            return 1;
-        }
-
-        $this->ids[$type] += 1;
-
-        return $this->ids[$type];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(WriterInterface $writer)
-    {
-        // Start with id 4
-        $this->ids['category'] = 3;
-        $this->ids['finalCats'] = 1000000;
-
-        $this->total = $this->config->getNumberCategories();
-
-        $this->createProgressBar($this->total);
-
-        $this->categoriesFlat[1] = null;
-        $this->categoriesFlat[3] = null;
-        $germanCategory = $this->buildNestedTree($this->config->getNumberCategories());
-
-        $thisCategory = [
-            'id' => 1,
-            'parent' => 'NULL',
-            'path' => '',
-            'name' => 'Root',
-            'level' => 0,
-            'position' => 0,
-            'left' => 1,
-            'right' => $germanCategory['right'] + 1,
-            'children' => [$germanCategory],
-        ];
-        $this->categoriesFlat[1] = $thisCategory;
-
-        $categoryUrls = $this->writerManager->createWriter('categories', 'csv');
-
-        $categoryURLs = [];
-        $values = [];
-        foreach ($this->categoriesFlat as $id => $category) {
-            $this->advanceProgressBar();
-            $categoryURLs[] = "/cat/index/sCategory/{$category['id']}";
-
-            $name = isset($category['name']) ? $category['name'] : $this->generator->getRandomWord();
-            $values[] = "({$category['id']}, {$category['parent']}, '{$category['path']}', '{$name}', {$id}, 1)";
-        }
-
-        $categoryValues = sprintf(
-            'INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;',
-            implode(",\n             ", $values)
-        );
-
-        $this->finishProgressBar();
-
-        $writer->write($categoryValues);
-        $categoryUrls->write($categoryURLs);
     }
 }

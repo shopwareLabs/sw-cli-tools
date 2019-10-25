@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\TemplateFileProvider\Legacy;
 
@@ -8,12 +14,11 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * Class FilterFileProvider returns files needed for the frontend filter
- * @package Shopware\PluginCreator\Services\TemplateFileProvider
  */
 class FilterFileProvider implements FileProviderInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFiles(Configuration $configuration, NameGenerator $nameGenerator)
     {
@@ -27,7 +32,7 @@ class FilterFileProvider implements FileProviderInterface
             self::LEGACY_DIR . 'Components/SearchBundleDBAL/Facet/Facet.tpl' => "Components/SearchBundleDBAL/Facet/{$configuration->name}Facet.php",
             self::LEGACY_DIR . 'Components/SearchBundleDBAL/Facet/FacetHandler.tpl' => "Components/SearchBundleDBAL/Facet/{$configuration->name}FacetHandler.php",
             self::LEGACY_DIR . 'Components/SearchBundleDBAL/CriteriaRequestHandler.tpl' => "Components/SearchBundleDBAL/{$configuration->name}CriteriaRequestHandler.php",
-            self::LEGACY_DIR . 'Subscriber/SearchBundle.tpl' => 'Subscriber/SearchBundle.php'
+            self::LEGACY_DIR . 'Subscriber/SearchBundle.tpl' => 'Subscriber/SearchBundle.php',
         ];
     }
 }

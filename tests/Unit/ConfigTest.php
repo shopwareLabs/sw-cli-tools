@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Tests\Unit;
 
@@ -19,7 +25,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($config->offsetExists('test'));
         $this->assertEquals(
-            [ 'some_config' => 'some_value' ],
+            ['some_config' => 'some_value'],
             $config->offsetGet('test')
         );
     }
@@ -29,11 +35,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = new Config(new MultiConfigFileCollectorMock());
 
         $this->assertEquals(
-            [ 'some_config1' => 'some_value1' ],
+            ['some_config1' => 'some_value1'],
             $config->offsetGet('config1')
         );
         $this->assertEquals(
-            [ 'some_config2' => 'some_value2' ],
+            ['some_config2' => 'some_value2'],
             $config->offsetGet('config2')
         );
     }
@@ -44,7 +50,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFileExists(__DIR__ . '/_fixtures/override_config1.yml');
         $this->assertEquals(
-            [ 'some_config' => 'override' ],
+            ['some_config' => 'override'],
             $config->offsetGet('config')
         );
     }
@@ -70,8 +76,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'config1' => 'value1',
                 'config2' => 'override',
                 'config3' => 'value3',
-                'not_existing' => 'value'
-            ]
+                'not_existing' => 'value',
+            ],
         ], $config->offsetGet('config'));
     }
 }
@@ -97,7 +103,7 @@ class SingleConfigFileCollectorMock extends ConfigFileCollector
     public function collectConfigFiles()
     {
         return [
-            __DIR__ . '/_fixtures/single_config.yml'
+            __DIR__ . '/_fixtures/single_config.yml',
         ];
     }
 }
@@ -112,7 +118,7 @@ class MultiConfigFileCollectorMock extends ConfigFileCollector
     {
         return [
             __DIR__ . '/_fixtures/multi_config1.yml',
-            __DIR__ . '/_fixtures/multi_config2.yml'
+            __DIR__ . '/_fixtures/multi_config2.yml',
         ];
     }
 }
@@ -127,7 +133,7 @@ class OverrideConfigFileCollectorMock extends ConfigFileCollector
     {
         return [
             __DIR__ . '/_fixtures/override_config1.yml',
-            __DIR__ . '/_fixtures/override_config2.yml'
+            __DIR__ . '/_fixtures/override_config2.yml',
         ];
     }
 }
@@ -142,7 +148,7 @@ class MergeConfigFileCollectorMock extends ConfigFileCollector
     {
         return [
             __DIR__ . '/_fixtures/merge_config1.yml',
-            __DIR__ . '/_fixtures/merge_config2.yml'
+            __DIR__ . '/_fixtures/merge_config2.yml',
         ];
     }
 }
@@ -157,7 +163,7 @@ class ExtendConfigFileCollectorMock extends ConfigFileCollector
     {
         return [
             __DIR__ . '/_fixtures/extend_config1.yml',
-            __DIR__ . '/_fixtures/extend_config2.yml'
+            __DIR__ . '/_fixtures/extend_config2.yml',
         ];
     }
 }

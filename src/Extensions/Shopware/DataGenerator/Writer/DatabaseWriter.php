@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Writer;
 
@@ -59,6 +65,14 @@ class DatabaseWriter implements WriterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return -10;
+    }
+
+    /**
      * @param $config
      *
      * @return PDO
@@ -66,7 +80,7 @@ class DatabaseWriter implements WriterInterface
     private function connectToDatabase($config)
     {
         $connection = new PDO(
-            'mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['username'], $config['password'],
+            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
             [
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
                 PDO::ERRMODE_EXCEPTION => 1,
@@ -74,13 +88,5 @@ class DatabaseWriter implements WriterInterface
         );
 
         return $connection;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return -10;
     }
 }

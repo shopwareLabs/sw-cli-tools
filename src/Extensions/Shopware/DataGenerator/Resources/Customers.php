@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -18,11 +24,12 @@ class Customers extends BaseResource
         's_user_billingaddress',
         's_user_billingaddress_attributes',
         's_user_shippingaddress',
-        's_user_shippingaddress_attributes'
+        's_user_shippingaddress_attributes',
     ];
 
     /**
      * Stores the used ids for SQL inserts
+     *
      * @var array
      */
     protected $ids = [];
@@ -33,7 +40,7 @@ class Customers extends BaseResource
     private $loadDataInfile;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -49,10 +56,9 @@ class Customers extends BaseResource
         $importCustomersShipping = $this->writerManager->createWriter('customers_shipping', 'csv');
         $importCustomersShippingAttributes = $this->writerManager->createWriter('customers_shipping_attributes', 'csv');
 
-
         $this->createProgressBar($number);
 
-        for ($customerCounter = 0; $customerCounter < $number; $customerCounter++) {
+        for ($customerCounter = 0; $customerCounter < $number; ++$customerCounter) {
             $faker = Factory::create();
 
             $this->advanceProgressBar();

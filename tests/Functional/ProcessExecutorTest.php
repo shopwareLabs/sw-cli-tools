@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli\Tests\Functional;
 
@@ -75,7 +81,6 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 1);
-
 
         $executor->execute('sleep 2', null, true);
     }

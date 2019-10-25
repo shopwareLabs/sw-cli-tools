@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Resources;
 
@@ -7,12 +13,6 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 
 class Orders extends BaseResource
 {
-    private static $devices = [
-        'desktop',
-        'mobile',
-        'tablet'
-    ];
-
     /**
      * @var array
      */
@@ -22,13 +22,18 @@ class Orders extends BaseResource
         's_order_billingaddress',
         's_order_billingaddress_attributes',
         's_order_shippingaddress',
-        's_order_shippingaddress_attributes'
+        's_order_shippingaddress_attributes',
     ];
 
     /**
      * Number of article details available
      */
     protected $numberDetails;
+    private static $devices = [
+        'desktop',
+        'mobile',
+        'tablet',
+    ];
 
     /**
      * @var Articles
@@ -44,7 +49,7 @@ class Orders extends BaseResource
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
@@ -60,7 +65,6 @@ class Orders extends BaseResource
         // Force order numbers to start at 10001
         $this->ids['ordernumber'] = 1000;
 
-
         $valueData = [
             'orderValues' => [],
             'orderDetailValues' => [],
@@ -75,7 +79,7 @@ class Orders extends BaseResource
         $orderNumbers = [];
         $orderDates = [];
 
-        for ($orderCounter = 0; $orderCounter < $number; $orderCounter++) {
+        for ($orderCounter = 0; $orderCounter < $number; ++$orderCounter) {
             $faker = Factory::create();
 
             $id = $this->getUniqueId('order');
@@ -104,15 +108,14 @@ class Orders extends BaseResource
             $dateFormatted = $date->format('Y-m-d');
 
             if (isset($orderDates[$dateFormatted])) {
-                $orderDates[$dateFormatted]++;
+                ++$orderDates[$dateFormatted];
             } else {
                 $orderDates[$dateFormatted] = 0;
             }
 
-
             $valueData['orderValues'][] = "({$id}, $orderNumber, {$currentCustomer}, {$totalPrice}, {$totalPricePreTax}, 0, 0, '{$date->format('Y-m-d H:i:s')}', {$state}, {$cleared}, {$payment}, '', '', '', '', 1, 0, '', '', '', NULL, '', '1', 9, 'EUR', 1, 1, '217.86.205.141', '{$device}')";
 
-            for ($detailCounter = 1; $detailCounter <= $numArticles; $detailCounter++) {
+            for ($detailCounter = 1; $detailCounter <= $numArticles; ++$detailCounter) {
                 $detailId = $this->getUniqueId('orderDetail');
 
                 $articleId = $articleDetails[mt_rand(1, $this->articleResource->getIds('article'))];
@@ -144,7 +147,9 @@ class Orders extends BaseResource
 
     /**
      * Constructs the actual inserts from the passed arrays
+     *
      * @param $valueData
+     *
      * @return string[]
      */
     private function createSQL($valueData)
@@ -152,49 +157,49 @@ class Orders extends BaseResource
         $sql = [];
 
         $sql[] = '
-            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr`, `deviceType`) VALUES '.implode(
+            INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr`, `deviceType`) VALUES ' . implode(
                 ",\n            ",
                 $valueData['orderValues']
-            ).';';
+            ) . ';';
 
         $sql[] = '
             INSERT INTO `s_order_details` (`id`, `orderID`, `ordernumber`, `articleID`, `articleordernumber`, `price`, `quantity`, `name`, `status`, `shipped`, `shippedgroup`) VALUES
-            '.implode(',', $valueData['orderDetailValues']).';';
+            ' . implode(',', $valueData['orderDetailValues']) . ';';
 
         $sql[] = '
-            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES '.implode(
+            INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES ' . implode(
                 ' , ',
                 $valueData['customerBillingValues']
-            ).';';
+            ) . ';';
         $sql[] = '
-            INSERT INTO `s_order_shippingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `countryID`, `stateID`) VALUES '.implode(
+            INSERT INTO `s_order_shippingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `countryID`, `stateID`) VALUES ' . implode(
                 ' , ',
                 $valueData['customerShippingValues']
-            ).';';
+            ) . ';';
 
         $sql[] = '
-            INSERT INTO `s_order_shippingaddress_attributes` (`id`, `shippingID`) VALUES '.implode(
+            INSERT INTO `s_order_shippingaddress_attributes` (`id`, `shippingID`) VALUES ' . implode(
                 ', ',
                 $valueData['customerBillingAttributeValues']
-            ).';';
+            ) . ';';
         $sql[] = '
-            INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES '.implode(
+            INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES ' . implode(
                 ', ',
                 $valueData['customerBillingAttributeValues']
-            ).';';
+            ) . ';';
 
         $sql[] = '
-            INSERT INTO `s_statistics_visitors` (`shopID`, `datum`, `pageimpressions`, `uniquevisits`, `deviceType`) VALUES '.implode(
+            INSERT INTO `s_statistics_visitors` (`shopID`, `datum`, `pageimpressions`, `uniquevisits`, `deviceType`) VALUES ' . implode(
                 ', ',
                 $valueData['visitors']
-            ).';';
-
+            ) . ';';
 
         return $sql;
     }
 
     /**
      * @param $string
+     *
      * @return string
      */
     private function quote($string)

@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ShopwareCli;
 
 use ShopwareCli\Services\PathProvider\PathProvider;
@@ -44,7 +51,8 @@ class ConfigFileCollector
     }
 
     /**
-     * @param  string   $extensionPath
+     * @param string $extensionPath
+     *
      * @return string[]
      */
     private function iterateVendors($extensionPath)
@@ -61,7 +69,7 @@ class ConfigFileCollector
             if (file_exists($file)) {
                 $files[] = $file;
             }
-            
+
             $files = array_merge(
                 $files,
                 $this->iterateExtensions($vendorFileInfo->getPathname())
@@ -72,7 +80,8 @@ class ConfigFileCollector
     }
 
     /**
-     * @param  string   $vendorPath
+     * @param string $vendorPath
+     *
      * @return string[]
      */
     private function iterateExtensions($vendorPath)

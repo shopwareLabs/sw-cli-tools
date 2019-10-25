@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services;
 
@@ -42,11 +48,11 @@ class Generator
     private $outputDirectoryProvider;
 
     /**
-     * @param IoAdapter $ioAdapter
-     * @param Configuration $configuration
-     * @param NameGenerator $nameGenerator
-     * @param Template $template
-     * @param FileProviderLoaderInterface $fileProviderLoader
+     * @param IoAdapter                        $ioAdapter
+     * @param Configuration                    $configuration
+     * @param NameGenerator                    $nameGenerator
+     * @param Template                         $template
+     * @param FileProviderLoaderInterface      $fileProviderLoader
      * @param OutputDirectoryProviderInterface $outputDirectoryProvider
      */
     public function __construct(

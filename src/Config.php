@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace ShopwareCli;
 
@@ -8,7 +14,6 @@ use Symfony\Component\Yaml\Yaml;
  * Simple config object for the config.yaml file
  *
  * Class Config
- * @package ShopwareCli
  */
 class Config implements \ArrayAccess
 {

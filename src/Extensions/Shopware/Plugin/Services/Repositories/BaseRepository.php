@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\Repositories;
 
@@ -10,7 +16,6 @@ use ShopwareCli\Services\Rest\RestInterface;
  * Base repository class providing a constructor for injection and a convenient access to the PluginFactory
  *
  * Class BaseRepository
- * @package ShopwareCli\Plugin
  */
 abstract class BaseRepository implements RepositoryInterface
 {
@@ -54,9 +59,10 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @param  string $sshUrl
-     * @param  string $httpUrl
-     * @param  string $name
+     * @param string $sshUrl
+     * @param string $httpUrl
+     * @param string $name
+     *
      * @return Plugin
      */
     public function createPlugin($sshUrl, $httpUrl, $name)
@@ -68,26 +74,27 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
-     * Very simple compare method
-     *
-     * @param  string $searched
-     * @param  string $actual
-     * @param  bool   $exact
-     * @return bool
-     */
-    protected function doesMatch($actual, $searched, $exact = false)
-    {
-        return (
-            !$exact && stripos($actual, $searched) !== false
-            || $exact && $searched == $actual
-        );
-    }
-
-    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Very simple compare method
+     *
+     * @param string $searched
+     * @param string $actual
+     * @param bool   $exact
+     *
+     * @return bool
+     */
+    protected function doesMatch($actual, $searched, $exact = false)
+    {
+        return
+            !$exact && stripos($actual, $searched) !== false
+            || $exact && $searched == $actual
+        ;
     }
 }

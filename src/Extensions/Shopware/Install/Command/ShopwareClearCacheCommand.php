@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Shopware\Install\Command;
 
 use ShopwareCli\Command\BaseCommand;
@@ -10,6 +17,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareClearCacheCommand extends BaseCommand
 {
+    /**
+     * @param string $path
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function validateShopwareDirectory($path)
+    {
+        if (!$this->container->get('utilities')->isShopwareInstallation($path)) {
+            throw new \RuntimeException("'$path' is not a valid shopware path");
+        }
+
+        return rtrim($path, '/');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +58,7 @@ class ShopwareClearCacheCommand extends BaseCommand
         $path = $this->checkPath($input);
 
         if (strpos($path, '/') !== 0) {
-            $path = './'.$path;
+            $path = './' . $path;
         }
 
         /** @var $shopwareInfo ShopwareInfo */
@@ -43,25 +66,12 @@ class ShopwareClearCacheCommand extends BaseCommand
 
         /** @var ProcessExecutor $processExecutor */
         $processExecutor = $this->container->get('process_executor');
-        $processExecutor->execute($shopwareInfo->getCacheDir($path).'/clear_cache.sh');
+        $processExecutor->execute($shopwareInfo->getCacheDir($path) . '/clear_cache.sh');
     }
 
     /**
-     * @param  string $path
-     * @throws \RuntimeException
-     * @return string
-     */
-    public function validateShopwareDirectory($path)
-    {
-        if (!$this->container->get('utilities')->isShopwareInstallation($path)) {
-            throw new \RuntimeException("'$path' is not a valid shopware path");
-        }
-
-        return rtrim($path, '/');
-    }
-
-    /**
-     * @param  InputInterface $input
+     * @param InputInterface $input
+     *
      * @return string
      */
     private function checkPath(InputInterface $input)

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services\ConsoleInteraction;
 
@@ -11,7 +17,6 @@ use ShopwareCli\Services\IoService;
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
  *
  * Class PluginColumnRenderer
- * @package ShopwareCli\Command\Services
  */
 class PluginColumnRenderer
 {
@@ -41,7 +46,7 @@ class PluginColumnRenderer
     }
 
     /**
-     * @param boolean $isSmall
+     * @param bool $isSmall
      */
     public function setSmall($isSmall)
     {
@@ -63,14 +68,15 @@ class PluginColumnRenderer
         }
 
         $displayPlugins = $this->createDisplayPlugins($allPlugins);
-        $pluginColumns  = $this->createPluginColumns($displayPlugins, $columns);
+        $pluginColumns = $this->createPluginColumns($displayPlugins, $columns);
 
         $this->printLegend($displayPlugins);
         $this->printColumns($pluginColumns);
     }
 
     /**
-     * @param  Plugin[]        $plugins
+     * @param Plugin[] $plugins
+     *
      * @return DisplayPlugin[]
      */
     private function createDisplayPlugins($plugins)
@@ -84,8 +90,9 @@ class PluginColumnRenderer
     }
 
     /**
-     * @param  DisplayPlugin[] $plugins
-     * @param  int             $columns
+     * @param DisplayPlugin[] $plugins
+     * @param int             $columns
+     *
      * @return array
      */
     private function createPluginColumns($plugins, $columns)
@@ -95,7 +102,7 @@ class PluginColumnRenderer
 
         $pluginsPerColumn = ceil($length / $columns);
         // Build columns and prepare unshift plugin of each column
-        for ($i = 0; $i < $columns; $i++) {
+        for ($i = 0; $i < $columns; ++$i) {
             $sliceOffset = $pluginsPerColumn * $i;
             $sliceLength = $pluginsPerColumn * ($i + 1);
 
@@ -111,11 +118,11 @@ class PluginColumnRenderer
     private function printColumns($pluginColumns)
     {
         $columnCount = count($pluginColumns);
-        $rowCount    = count($pluginColumns[0]) -1;
+        $rowCount = count($pluginColumns[0]) - 1;
 
         foreach (range(0, $rowCount) as $row) {
             $currentRow = [];
-            foreach (range(0, $columnCount -1) as $column) {
+            foreach (range(0, $columnCount - 1) as $column) {
                 if (isset($pluginColumns[$column][$row])) {
                     $currentRow[] = $pluginColumns[$column][$row];
                 }
@@ -180,8 +187,9 @@ class PluginColumnRenderer
     /**
      * Modifies the baseMask for a plugin by setting the repository colors
      *
-     * @param  DisplayPlugin $plugin
-     * @param  string        $baseMask
+     * @param DisplayPlugin $plugin
+     * @param string        $baseMask
+     *
      * @return string
      */
     private function getMaskForPlugin(DisplayPlugin $plugin, $baseMask)
@@ -200,7 +208,8 @@ class PluginColumnRenderer
     }
 
     /**
-     * @param  DisplayPlugin $plugin
+     * @param DisplayPlugin $plugin
+     *
      * @return string
      */
     private function formatPlugin(DisplayPlugin $plugin)
@@ -211,22 +220,24 @@ class PluginColumnRenderer
     /**
      * Format the module name - in "small" mode, only the first char is shown (F/B/C)
      *
-     * @param  DisplayPlugin $plugin
+     * @param DisplayPlugin $plugin
+     *
      * @return string
      */
     private function formatModuleName(DisplayPlugin $plugin)
     {
         if ($this->small) {
             return $plugin->module[0];
-        } else {
-            return $plugin->module;
         }
+
+        return $plugin->module;
     }
 
     /**
      * Get the configured color for the given plugin's repository
      *
-     * @param  DisplayPlugin $plugin
+     * @param DisplayPlugin $plugin
+     *
      * @return string
      */
     private function getColorForPlugin(DisplayPlugin $plugin)

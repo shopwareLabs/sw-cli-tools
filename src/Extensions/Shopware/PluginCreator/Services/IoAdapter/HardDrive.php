@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Services\IoAdapter;
 
@@ -6,12 +12,12 @@ namespace Shopware\PluginCreator\Services\IoAdapter;
  * HardDrive IoAdapter actually performs IO on the hdd
  *
  * Class HardDrive
- * @package Shopware\PluginCreator\Services\IoAdapter
  */
 class HardDrive implements IoAdapter
 {
     /**
      * @param $path
+     *
      * @return bool
      */
     public function exists($path)

@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Services;
 
@@ -8,7 +14,6 @@ use Shopware\Plugin\Struct\PluginBootstrap;
  * Extract info from a shopware plugin bootstrap
  *
  * Class BootstrapInfo
- * @package Shopware\Plugin\Services
  */
 class BootstrapInfo
 {
@@ -16,6 +21,7 @@ class BootstrapInfo
      * Analyze a bootstrap file and return a PluginBootstrap struct
      *
      * @param $bootstrapFile
+     *
      * @return PluginBootstrap
      */
     public function analyze($bootstrapFile)
@@ -34,8 +40,10 @@ class BootstrapInfo
     /**
      * Return name and namespace from a plugin by regex-ing the class name
      *
-     * @param  string            $content
+     * @param string $content
+     *
      * @throws \RuntimeException
+     *
      * @return string[]
      */
     private function analyzeClass($content)

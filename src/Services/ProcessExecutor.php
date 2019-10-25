@@ -1,4 +1,11 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ShopwareCli\Services;
 
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +28,7 @@ class ProcessExecutor
 
     /**
      * @param OutputInterface $output
-     * @param int $timeout
+     * @param int             $timeout
      */
     public function __construct(OutputInterface $output, $timeout)
     {
@@ -30,10 +37,11 @@ class ProcessExecutor
     }
 
     /**
-     * @param  string $commandline
-     * @param  string $cwd
-     * @param  bool $allowFailure
+     * @param string   $commandline
+     * @param string   $cwd
+     * @param bool     $allowFailure
      * @param int|null $timeout
+     *
      * @return int|null
      */
     public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null)

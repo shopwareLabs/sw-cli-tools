@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\PluginCreator\Command;
 
@@ -15,6 +21,118 @@ use Symfony\Component\Console\Question\Question;
 class CreatePluginCommand extends BaseCommand
 {
     const LEGACY_OPTION = 'legacy';
+
+    public function interact(InputInterface $input, OutputInterface $output)
+    {
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        $helper = $this->getHelperSet()->get('question');
+
+        $name = $input->getArgument('name');
+        $modelName = implode('', array_slice($this->upperToArray($name), 1));
+
+        if ($input->getOption(self::LEGACY_OPTION)) {
+            $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+        } else {
+            $defaultModel = sprintf('%s\Models\%s', $name, $modelName);
+        }
+
+        $this->normalizeBooleanFields($input);
+
+        $backendModel = $input->getOption('backendModel');
+
+        // for backend / api the backendModel is mandatory
+        if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
+            $question = new Question('<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ', $defaultModel);
+            $question->setValidator($this->validateModel());
+            $modelName = $helper->ask($input, $output, $question);
+            $input->setOption('backendModel', $modelName);
+        }
+
+        // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
+        if ($input->getOption('haveBackend')
+            && strpos($input->getOption('backendModel'), 'Shopware\Models') === false
+        ) {
+            $input->setOption('haveModels', true);
+        }
+    }
+
+    /**
+     * Make sure, that our booleans are actual booleans
+     *
+     * @param InputInterface $input
+     */
+    public function normalizeBooleanFields(InputInterface $input)
+    {
+        $inputOptions = [
+            'haveBackend',
+            'haveFrontend',
+            'haveModels',
+            'haveCommands',
+            'haveWidget',
+            'haveApi',
+            'haveFilter',
+            self::LEGACY_OPTION,
+        ];
+
+        foreach ($inputOptions as $key) {
+            switch (strtolower($input->getOption($key))) {
+                case 'false':
+                case '0':
+                    $input->setOption($key, false);
+                    break;
+                case 'true':
+                case '1':
+                    $input->setOption($key, true);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Split "SwagTestPlugin" into array("Swag", "Test", "Plugin")
+     *
+     * @param $input
+     *
+     * @return array
+     */
+    public function upperToArray($input)
+    {
+        return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    /**
+     * Make sure the namespace is one of core, backend, frontend
+     *
+     * @param $input
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return $input
+     */
+    public function validateNamespace($input)
+    {
+        if (!in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
+            throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
+        }
+
+        return $input;
+    }
+
+    /**
+     * Check the entered model (check might be somewhat more sufisticated)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function validateModel()
+    {
+        return function ($input) {
+            if (empty($input)) {
+                throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
+            }
+
+            return $input;
+        };
+    }
 
     /**
      * @return Config
@@ -115,72 +233,6 @@ EOF
             );
     }
 
-    public function interact(InputInterface $input, OutputInterface $output)
-    {
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
-        $helper = $this->getHelperSet()->get('question');
-
-        $name = $input->getArgument('name');
-        $modelName = implode('', array_slice($this->upperToArray($name), 1));
-
-        if ($input->getOption(self::LEGACY_OPTION)) {
-            $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
-        } else {
-            $defaultModel = sprintf('%s\Models\%s', $name, $modelName);
-        }
-
-        $this->normalizeBooleanFields($input);
-
-        $backendModel = $input->getOption('backendModel');
-
-        // for backend / api the backendModel is mandatory
-        if (($input->getOption('haveBackend') || $input->getOption('haveApi')) && empty($backendModel)) {
-            $question = new Question('<question>Please specify the main model for your backend application:</question> <comment>' . $defaultModel . '</comment>: ', $defaultModel);
-            $question->setValidator($this->validateModel());
-            $modelName = $helper->ask($input, $output, $question);
-            $input->setOption('backendModel', $modelName);
-        }
-
-        // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
-        if ($input->getOption('haveBackend')
-            && strpos($input->getOption('backendModel'), 'Shopware\Models') === false
-        ) {
-            $input->setOption('haveModels', true);
-        }
-    }
-
-    /**
-     * Make sure, that our booleans are actual booleans
-     *
-     * @param InputInterface $input
-     */
-    public function normalizeBooleanFields(InputInterface $input)
-    {
-        $inputOptions = [
-            'haveBackend',
-            'haveFrontend',
-            'haveModels',
-            'haveCommands',
-            'haveWidget',
-            'haveApi',
-            'haveFilter',
-            self::LEGACY_OPTION
-        ];
-
-        foreach ($inputOptions as $key) {
-            switch (strtolower($input->getOption($key))) {
-                case 'false':
-                case '0':
-                    $input->setOption($key, false);
-                    break;
-                case 'true':
-                case '1':
-                    $input->setOption($key, true);
-                    break;
-            }
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -204,6 +256,7 @@ EOF
      * Check the plugin name - it needs to constist of two parts at least - the first one is the dev prefix
      *
      * @param $name
+     *
      * @throws \InvalidArgumentException
      */
     protected function validateName($name)
@@ -215,52 +268,10 @@ EOF
     }
 
     /**
-     * Split "SwagTestPlugin" into array("Swag", "Test", "Plugin")
-     *
-     * @param $input
-     * @return array
-     */
-    public function upperToArray($input)
-    {
-        return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
-    }
-
-    /**
-     * Make sure the namespace is one of core, backend, frontend
-     *
-     * @param $input
-     * @throws \InvalidArgumentException
-     * @return $input
-     */
-    public function validateNamespace($input)
-    {
-        if (!in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
-            throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
-        }
-
-        return $input;
-    }
-
-    /**
-     * Check the entered model (check might be somewhat more sufisticated)
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function validateModel()
-    {
-        return function ($input) {
-            if (empty($input)) {
-                throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
-            }
-
-            return $input;
-        };
-    }
-
-    /**
      * Populate a configuration object by the input interface
      *
-     * @param  InputInterface $input
+     * @param InputInterface $input
+     *
      * @return Configuration
      */
     protected function getConfigurationObject(InputInterface $input)

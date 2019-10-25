@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\DataGenerator\Command;
 
@@ -13,6 +19,59 @@ class CreateDataCommand extends BaseCommand
 {
     protected $utilities;
     protected $zipDir;
+
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
+    public function interact(InputInterface $input, OutputInterface $output)
+    {
+        $articles = $input->getOption('articles');
+        $orders = $input->getOption('orders');
+        $customers = $input->getOption('customers');
+        $newsletter = $input->getOption('newsletter');
+        $categories = $input->getOption('categories');
+        $vouchers = $input->getOption('vouchers');
+
+        if ($articles || $orders || $customers || $newsletter || $categories || $vouchers) {
+            return;
+        }
+
+        $ioService = $this->container->get('io_service');
+        $ioService->writeln('<info>Please provide the desired number of…</info>');
+
+        $this->askConfigOptions($input, 'articles', 'Articles', 10000);
+        $this->askConfigOptions($input, 'categories', 'Categories', 500);
+        $this->askConfigOptions($input, 'categoriesPerArticle', 'Categories per article', 3);
+        $this->askConfigOptions($input, 'articleMinVariants', 'Minimum variants per article', 1);
+        $this->askConfigOptions($input, 'articleMaxVariants', 'Maximum variants per article', 20);
+        $this->askConfigOptions($input, 'articleFilterGroups', 'Filter groups', 0);
+        $this->askConfigOptions($input, 'articleFilterOptions', 'Filter Options', 0);
+        $this->askConfigOptions($input, 'articleFilterValues', 'Filter Values', 0);
+        $this->askConfigOptions($input, 'orders', 'Orders', 0);
+        $this->askConfigOptions($input, 'newsletter', 'Newsletters', 0);
+        $this->askConfigOptions($input, 'customers', 'Customers', 1000);
+        $this->askConfigOptions($input, 'vouchers', 'Vouchers', 0);
+    }
+
+    /**
+     * @param $input
+     *
+     * @throws \RuntimeException
+     *
+     * @return int
+     */
+    public function validateInt($input)
+    {
+        if (empty($input)) {
+            return 0;
+        }
+        if (!is_numeric($input)) {
+            throw new \RuntimeException('Field has to be numeric');
+        }
+
+        return (int) $input;
+    }
 
     protected function configure()
     {
@@ -137,82 +196,6 @@ Requires \'local-infile=1\' in your MySQL installation.
             ');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
-    public function interact(InputInterface $input, OutputInterface $output)
-    {
-        $articles = $input->getOption('articles');
-        $orders = $input->getOption('orders');
-        $customers = $input->getOption('customers');
-        $newsletter = $input->getOption('newsletter');
-        $categories = $input->getOption('categories');
-        $vouchers = $input->getOption('vouchers');
-
-        if ($articles || $orders || $customers || $newsletter || $categories || $vouchers) {
-            return;
-        }
-
-        $ioService = $this->container->get('io_service');
-        $ioService->writeln('<info>Please provide the desired number of…</info>');
-
-        $this->askConfigOptions($input, 'articles', 'Articles', 10000);
-        $this->askConfigOptions($input, 'categories', 'Categories', 500);
-        $this->askConfigOptions($input, 'categoriesPerArticle', 'Categories per article', 3);
-        $this->askConfigOptions($input, 'articleMinVariants', 'Minimum variants per article', 1);
-        $this->askConfigOptions($input, 'articleMaxVariants', 'Maximum variants per article', 20);
-        $this->askConfigOptions($input, 'articleFilterGroups', 'Filter groups', 0);
-        $this->askConfigOptions($input, 'articleFilterOptions', 'Filter Options', 0);
-        $this->askConfigOptions($input, 'articleFilterValues', 'Filter Values', 0);
-        $this->askConfigOptions($input, 'orders', 'Orders', 0);
-        $this->askConfigOptions($input, 'newsletter', 'Newsletters', 0);
-        $this->askConfigOptions($input, 'customers', 'Customers', 1000);
-        $this->askConfigOptions($input, 'vouchers', 'Vouchers', 0);
-    }
-
-    /**
-     * @param InputInterface $input
-     * @param string $optionName
-     * @param string|null $optionHumanName
-     * @param int $default
-     */
-    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
-    {
-        $ioService = $this->container->get('io_service');
-
-        $optionHumanName = $optionHumanName ?: $optionName;
-        $optionValue = (int) $input->getOption($optionName);
-        if ($optionValue !== 0) {
-            return;
-        }
-
-        $optionValue = $ioService->askAndValidate(
-            "<question>{$optionHumanName}</question> [{$default}]: ",
-            [$this, 'validateInt']
-        );
-        $input->setOption($optionName, trim($optionValue) ? $optionValue : $default);
-    }
-
-    /**
-     * @param $input
-     *
-     * @throws \RuntimeException
-     *
-     * @return int
-     */
-    public function validateInt($input)
-    {
-        if (empty($input)) {
-            return 0;
-        }
-        if (!is_numeric($input)) {
-            throw new \RuntimeException('Field has to be numeric');
-        }
-
-        return (int) $input;
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var DataGenerator $generator */
@@ -247,8 +230,8 @@ Requires \'local-infile=1\' in your MySQL installation.
             $shopwarePath = realpath(getcwd());
         }
         $writerManager = $this->container->get('writer_manager');
-        if (is_readable($shopwarePath.'/config.php')) {
-            $shopwareConfig = require $shopwarePath.'/config.php';
+        if (is_readable($shopwarePath . '/config.php')) {
+            $shopwareConfig = require $shopwarePath . '/config.php';
             if (!array_key_exists('db', $shopwareConfig)) {
                 $output->writeln('<error>Invalid Shopware configuration file.</error>');
 
@@ -357,5 +340,28 @@ Requires \'local-infile=1\' in your MySQL installation.
 
         $config->setMinVariants($minVariants);
         $config->setMaxVariants($maxVariants);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param string         $optionName
+     * @param string|null    $optionHumanName
+     * @param int            $default
+     */
+    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
+    {
+        $ioService = $this->container->get('io_service');
+
+        $optionHumanName = $optionHumanName ?: $optionName;
+        $optionValue = (int) $input->getOption($optionName);
+        if ($optionValue !== 0) {
+            return;
+        }
+
+        $optionValue = $ioService->askAndValidate(
+            "<question>{$optionHumanName}</question> [{$default}]: ",
+            [$this, 'validateInt']
+        );
+        $input->setOption($optionName, trim($optionValue) ? $optionValue : $default);
     }
 }

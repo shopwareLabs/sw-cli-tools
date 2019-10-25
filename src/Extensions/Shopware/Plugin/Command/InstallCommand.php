@@ -1,4 +1,10 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Shopware\Plugin\Command;
 
@@ -16,7 +22,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * Install a plugin
  *
  * Class InstallCommand
- * @package ShopwareCli\Command
  */
 class InstallCommand extends BaseCommand
 {
@@ -31,6 +36,19 @@ class InstallCommand extends BaseCommand
     public function getInstallService()
     {
         return $this->container->get('install_service');
+    }
+
+    /**
+     * @param $plugin
+     * @param $params
+     */
+    public function doInstall($plugin, &$params)
+    {
+        if ($params['checkout']) {
+            $this->checkout($plugin, $params);
+        } else {
+            $this->install($plugin, $params);
+        }
     }
 
     /**
@@ -120,19 +138,6 @@ class InstallCommand extends BaseCommand
     }
 
     /**
-     * @param $plugin
-     * @param $params
-     */
-    public function doInstall($plugin, &$params)
-    {
-        if ($params['checkout']) {
-            $this->checkout($plugin, $params);
-        } else {
-            $this->install($plugin, $params);
-        }
-    }
-
-    /**
      * @return string
      */
     protected function getShopwarePath()
@@ -186,8 +191,8 @@ class InstallCommand extends BaseCommand
         $path = realpath('.') . '/' . $destination;
         $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
 
-        $repo        = escapeshellarg($url);
-        $branch      = $params['branch'] ? escapeshellarg($params['branch']) : null;
+        $repo = escapeshellarg($url);
+        $branch = $params['branch'] ? escapeshellarg($params['branch']) : null;
         $destination = escapeshellarg('./' . $destination);
 
         $branchArg = $branch ? "-b {$branch}" : '';
