@@ -18,7 +18,7 @@ class DefaultRepositoryFactory
      * List of repositories the DefaultRepository will handle
      * @var array
      */
-    private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList'];
+    private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList', 'GitLab'];
 
     private $defaultRepositories = [];
 
