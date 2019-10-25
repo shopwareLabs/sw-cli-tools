@@ -8,10 +8,14 @@
 
 namespace Shopware\Plugin\Command;
 
+use Shopware\Plugin\Services\ConsoleInteraction\PluginColumnRenderer;
 use Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager;
 use Shopware\Plugin\Services\Install;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Command\BaseCommand;
+use ShopwareCli\Services\GitUtil;
+use ShopwareCli\Services\IoService;
+use ShopwareCli\Utilities;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,15 +32,7 @@ class InstallCommand extends BaseCommand
     /**
      * @var string
      */
-    protected $shopwarePath;
-
-    /**
-     * @return Install
-     */
-    public function getInstallService()
-    {
-        return $this->container->get('install_service');
-    }
+    private $shopwarePath;
 
     /**
      * @param $plugin
@@ -111,17 +107,19 @@ class InstallCommand extends BaseCommand
         if (!$shopwarePath) {
             $shopwarePath = null;
         }
-        $this->container->get('io_service')->cls();
+        $this->getIOService()->cls();
 
         if (!$checkout) {
-            $shopwarePath = $this->container->get('utilities')->getValidShopwarePath($shopwarePath);
+            $shopwarePath = $this->getUtilities()->getValidShopwarePath($shopwarePath);
             $this->shopwarePath = $shopwarePath;
         }
 
         /** @var PluginOperationManager $interactionManager */
         $interactionManager = $this->container->get('plugin_operation_manager');
 
-        $this->container->get('plugin_column_renderer')->setSmall($small);
+        /** @var PluginColumnRenderer $pluginColumnRenderer */
+        $pluginColumnRenderer = $this->container->get('plugin_column_renderer');
+        $pluginColumnRenderer->setSmall($small);
 
         $params = ['checkout' => $checkout, 'branch' => $branch, 'useHttp' => $useHttp];
 
@@ -140,9 +138,9 @@ class InstallCommand extends BaseCommand
     /**
      * @return string
      */
-    protected function getShopwarePath()
+    private function getShopwarePath()
     {
-        $this->container->get('utilities')->changeDir($this->shopwarePath);
+        $this->getUtilities()->changeDir($this->shopwarePath);
 
         return $this->shopwarePath;
     }
@@ -150,12 +148,14 @@ class InstallCommand extends BaseCommand
     /**
      * @return bool
      */
-    protected function askActivatePluginQuestion()
+    private function askActivatePluginQuestion()
     {
-        $question = new ConfirmationQuestion('<question>Activate plugins after checkout?</question> <comment>[Y/n]</comment> ', true);
-        $activate = $this->container->get('io_service')->ask($question);
+        $question = new ConfirmationQuestion(
+            '<question>Activate plugins after checkout?</question> <comment>[Y/n]</comment> ',
+            true
+        );
 
-        return $activate;
+        return $this->getIOService()->ask($question);
     }
 
     /**
@@ -168,9 +168,9 @@ class InstallCommand extends BaseCommand
             $params['activate'] = $this->askActivatePluginQuestion();
         }
 
-        $this->container->get('utilities')->changeDir($this->getShopwarePath() . '/engine/Shopware/Plugins/Local/');
-
-        $this->getInstallService()->install(
+        /** @var Install $installService */
+        $installService = $this->container->get('install_service');
+        $installService->install(
             $plugin,
             $this->getShopwarePath(),
             $params['activate'],
@@ -189,7 +189,7 @@ class InstallCommand extends BaseCommand
 
         $destination = strtolower($plugin->module . '_' . $plugin->name);
         $path = realpath('.') . '/' . $destination;
-        $this->container->get('io_service')->writeln("<info>Checking out $plugin->name to $path</info>");
+        $this->getIOService()->writeln("<info>Checking out $plugin->name to $path</info>");
 
         $repo = escapeshellarg($url);
         $branch = $params['branch'] ? escapeshellarg($params['branch']) : null;
@@ -197,8 +197,26 @@ class InstallCommand extends BaseCommand
 
         $branchArg = $branch ? "-b {$branch}" : '';
 
-        $this->container->get('git_util')->run(
+        /** @var GitUtil $gitUtil */
+        $gitUtil = $this->container->get('git_util');
+        $gitUtil->run(
             "clone --progress {$branchArg} {$repo} {$destination}"
         );
+    }
+
+    /**
+     * @return IoService
+     */
+    private function getIOService()
+    {
+        return $this->container->get('io_service');
+    }
+
+    /**
+     * @return Utilities
+     */
+    private function getUtilities()
+    {
+        return $this->container->get('utilities');
     }
 }

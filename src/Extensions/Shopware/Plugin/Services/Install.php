@@ -133,6 +133,10 @@ class Install
         $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
 
         if (!file_exists($installShFile)) {
+            $installShFile = $pluginPath . '/bin/setup.sh';
+        }
+
+        if (!file_exists($installShFile)) {
             return;
         }
 

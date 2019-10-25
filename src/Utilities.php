@@ -23,32 +23,47 @@ class Utilities
     }
 
     /**
-     * Checks if a given path is a shopware installation
-     * (by checking for shopware.php)
+     * Checks if a given path is a Shopware 5 installation
      *
      * @param string $path
      *
      * @return bool
      */
-    public function isShopwareInstallation($path)
+    public function isShopware5Installation($path)
     {
         return is_readable($path . '/shopware.php');
     }
 
     /**
-     * Ask for a valid shopware path until the user enters it
+     * Checks if a given path is a Shopware 6 installation
      *
-     * @param string $shopwarePath
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function isShopware6Installation($path)
+    {
+        return is_dir($path . '/vendor/shopware/platform') || is_dir($path . '/vendor/shopware/core');
+    }
+
+    /**
+     * Ask for a valid Shopware path until the user enters it
+     *
+     * @param string|null $shopwarePath
      *
      * @return string
      */
     public function getValidShopwarePath($shopwarePath = null)
     {
-        if (!$shopwarePath) {
+        if ($shopwarePath === null) {
             $shopwarePath = realpath(getcwd());
         }
 
-        if ($this->isShopwareInstallation($shopwarePath)) {
+        if ($this->isShopware5Installation($shopwarePath)) {
+            return $shopwarePath;
+        }
+
+        if ($this->isShopware6Installation($shopwarePath)) {
             return $shopwarePath;
         }
 
@@ -71,13 +86,17 @@ class Utilities
     {
         $shopwarePathReal = realpath($shopwarePath);
 
-        if (!$this->isShopwareInstallation($shopwarePathReal)) {
-            throw new \RuntimeException(
-                "{$shopwarePathReal} is not a valid shopware path"
-            );
+        if ($this->isShopware5Installation($shopwarePathReal)) {
+            return $shopwarePathReal;
         }
 
-        return $shopwarePathReal;
+        if ($this->isShopware6Installation($shopwarePathReal)) {
+            return $shopwarePathReal;
+        }
+
+        throw new \RuntimeException(
+            "{$shopwarePathReal} is not a valid Shopware path"
+        );
     }
 
     /**
