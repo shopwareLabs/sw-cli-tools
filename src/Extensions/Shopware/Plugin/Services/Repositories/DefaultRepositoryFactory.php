@@ -82,6 +82,10 @@ class DefaultRepositoryFactory
         $username = isset($data['config']['username']) ? $data['config']['username'] : null;
         $password = isset($data['config']['password']) ? $data['config']['password'] : null;
 
+        if (!isset($data['repositories'])) {
+            return;
+        }
+
         foreach ($data['repositories'] as $name => $repoConfig) {
             $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
 
