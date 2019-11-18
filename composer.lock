@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "0e33e64b5150339815e3abce4f751cc4",
@@ -782,6 +782,7 @@
                 "array_column",
                 "column"
             ],
+            "abandoned": true,
             "time": "2015-03-20T22:07:39+00:00"
         },
         {
@@ -994,16 +995,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v2.8.18",
+            "version": "v2.8.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "efdbeefa454a41154fd99a6f0489f0e9cb46c497"
+                "reference": "c306198fee8f872a8f5f031e6e4f6f83086992d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/efdbeefa454a41154fd99a6f0489f0e9cb46c497",
-                "reference": "efdbeefa454a41154fd99a6f0489f0e9cb46c497",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/c306198fee8f872a8f5f031e6e4f6f83086992d8",
+                "reference": "c306198fee8f872a8f5f031e6e4f6f83086992d8",
                 "shasum": ""
             },
             "require": {
@@ -1053,7 +1054,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-28T12:31:05+00:00"
+            "time": "2019-04-16T11:33:46+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -2009,6 +2010,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2015-10-02T06:51:40+00:00"
         },
         {
