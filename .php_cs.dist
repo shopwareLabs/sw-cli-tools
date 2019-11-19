@@ -26,7 +26,6 @@ return PhpCsFixer\Config::create()
         'phpdoc_summary' => false,
         'blank_line_after_opening_tag' => false,
         'concat_space' => ['spacing' => 'one'],
-        'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'array_syntax' => ['syntax' => 'short'],
         'general_phpdoc_annotation_remove' => [
             'annotations' => ['copyright', 'category'],

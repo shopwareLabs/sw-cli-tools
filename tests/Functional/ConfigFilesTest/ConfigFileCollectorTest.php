@@ -10,11 +10,6 @@ namespace ShopwareCli\Tests\Functional\ConfigFileTest;
 
 use ShopwareCli\ConfigFileCollector;
 
-/**
- * @category  Shopware
- *
- * @copyright Copyright (c) shopware AG (http://www.shopware.de)
- */
 class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
 {
     public function testSome()

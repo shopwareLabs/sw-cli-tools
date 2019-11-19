@@ -150,7 +150,7 @@ EOF
             throw new \RuntimeException('Could not resolve language ' . $language);
         }
 
-         // Drop previous inserted admins
+        // Drop previous inserted admins
         $this->getConnection()->query('DELETE FROM s_core_auth');
 
         // Insert new admin

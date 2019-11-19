@@ -5,7 +5,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 
 class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
