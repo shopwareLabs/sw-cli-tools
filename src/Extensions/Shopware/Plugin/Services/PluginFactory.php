@@ -38,6 +38,7 @@ class PluginFactory
         $plugin->cloneUrlHttp = $httpUrl;
         $plugin->repository = $repoName;
         $plugin->repoType = $repoType;
+        $plugin->isShopware6 = (bool) strpos($sshUrl, 'shopware/6/services'); // could not be position 0, so this is safe
 
         return $plugin;
     }

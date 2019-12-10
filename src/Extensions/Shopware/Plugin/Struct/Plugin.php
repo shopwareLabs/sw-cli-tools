@@ -17,15 +17,38 @@ use ShopwareCli\Struct;
  */
 class Plugin extends Struct
 {
+    /**
+     * @var string
+     */
     public $name;
 
+    /**
+     * @var string
+     */
     public $cloneUrlHttp;
 
+    /**
+     * @var string
+     */
     public $cloneUrlSsh;
 
+    /**
+     * @var string
+     */
     public $module;
 
+    /**
+     * @var string
+     */
     public $repository;
 
+    /**
+     * @var string
+     */
     public $repoType;
+
+    /**
+     * @var bool
+     */
+    public $isShopware6 = false;
 }

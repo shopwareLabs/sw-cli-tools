@@ -69,6 +69,7 @@ abstract class BaseRepository implements RepositoryInterface
     {
         $type = array_slice(explode('\\', get_class($this)), -1);
         $type = $type[0];
+        $name = str_replace(' ', '', $name);
 
         return PluginFactory::getPlugin($name, $sshUrl, $httpUrl, $this->name, $type);
     }
