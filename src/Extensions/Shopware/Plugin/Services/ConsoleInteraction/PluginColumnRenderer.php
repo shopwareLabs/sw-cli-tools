@@ -48,7 +48,7 @@ class PluginColumnRenderer
     /**
      * @param bool $isSmall
      */
-    public function setSmall($isSmall)
+    public function setSmall($isSmall): void
     {
         $this->small = $isSmall;
     }
@@ -58,7 +58,7 @@ class PluginColumnRenderer
      *
      * @param Plugin[] $allPlugins
      */
-    public function show($allPlugins)
+    public function show($allPlugins): void
     {
         // Output format
         if ($this->small) {
@@ -79,7 +79,7 @@ class PluginColumnRenderer
      *
      * @return DisplayPlugin[]
      */
-    private function createDisplayPlugins($plugins)
+    private function createDisplayPlugins($plugins): array
     {
         $displayPlugins = [];
         foreach ($plugins as $key => $plugin) {
@@ -95,7 +95,7 @@ class PluginColumnRenderer
      *
      * @return array
      */
-    private function createPluginColumns($plugins, $columns)
+    private function createPluginColumns($plugins, $columns): array
     {
         $length = count($plugins);
         $pluginColumns = [];
@@ -115,7 +115,7 @@ class PluginColumnRenderer
     /**
      * @param DisplayPlugin[][] $pluginColumns
      */
-    private function printColumns($pluginColumns)
+    private function printColumns($pluginColumns): void
     {
         $columnCount = count($pluginColumns);
         $rowCount = count($pluginColumns[0]) - 1;
@@ -135,7 +135,7 @@ class PluginColumnRenderer
     /**
      * @param DisplayPlugin[] $row
      */
-    private function printRow($row)
+    private function printRow($row): void
     {
         if ($this->small) {
             $baseMask = '%4.4s #COL_START#%-25.25s#COL_END#';
@@ -153,7 +153,7 @@ class PluginColumnRenderer
             $columns[] = sprintf($mask, $plugin->index, $this->formatPlugin($plugin));
         }
 
-        $this->ioService->write(implode($columns, $spacer));
+        $this->ioService->write(implode($spacer, $columns));
         $this->ioService->writeln('');
     }
 
@@ -162,7 +162,7 @@ class PluginColumnRenderer
      *
      * @param DisplayPlugin[] $plugins
      */
-    private function printLegend($plugins)
+    private function printLegend($plugins): void
     {
         if (!$this->config['general']['enableRepositoryColors']) {
             return;
@@ -192,16 +192,14 @@ class PluginColumnRenderer
      *
      * @return string
      */
-    private function getMaskForPlugin(DisplayPlugin $plugin, $baseMask)
+    private function getMaskForPlugin(DisplayPlugin $plugin, $baseMask): string
     {
         $color = $this->getColorForPlugin($plugin);
 
         if (!$this->config['general']['enableRepositoryColors'] || !$plugin || !$color) {
-            $baseMask = str_replace('#COL_START#', '', $baseMask);
-            $baseMask = str_replace('#COL_END#', '', $baseMask);
+            $baseMask = str_replace(['#COL_START#', '#COL_END#'], '', $baseMask);
         } else {
-            $baseMask = str_replace('#COL_START#', "<fg={$color}>", $baseMask);
-            $baseMask = str_replace('#COL_END#', "</fg={$color}>", $baseMask);
+            $baseMask = str_replace(['#COL_START#', '#COL_END#'], ["<fg={$color}>", "</fg={$color}>"], $baseMask);
         }
 
         return $baseMask;
@@ -212,19 +210,15 @@ class PluginColumnRenderer
      *
      * @return string
      */
-    private function formatPlugin(DisplayPlugin $plugin)
+    private function formatPlugin(DisplayPlugin $plugin): string
     {
         return $this->formatModuleName($plugin) . '/' . $plugin->name;
     }
 
     /**
      * Format the module name - in "small" mode, only the first char is shown (F/B/C)
-     *
-     * @param DisplayPlugin $plugin
-     *
-     * @return string
      */
-    private function formatModuleName(DisplayPlugin $plugin)
+    private function formatModuleName(DisplayPlugin $plugin): ?string
     {
         if ($this->small) {
             return $plugin->module[0];
@@ -235,22 +229,16 @@ class PluginColumnRenderer
 
     /**
      * Get the configured color for the given plugin's repository
-     *
-     * @param DisplayPlugin $plugin
-     *
-     * @return string
      */
-    private function getColorForPlugin(DisplayPlugin $plugin)
+    private function getColorForPlugin(DisplayPlugin $plugin): ?string
     {
         $repos = $this->config->getRepositories();
         $hasColorConfig = $plugin ? isset($repos[$plugin->repoType]['repositories'][$plugin->repository]['color']) : false;
 
-        if (!$hasColorConfig) {
-            return false;
+        if ($hasColorConfig === false) {
+            return null;
         }
 
-        $color = $repos[$plugin->repoType]['repositories'][$plugin->repository]['color'];
-
-        return $color;
+        return $repos[$plugin->repoType]['repositories'][$plugin->repository]['color'];
     }
 }

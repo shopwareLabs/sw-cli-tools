@@ -1,9 +1,16 @@
 <?php
+/**
+ * (c) shopware AG <info@shopware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+use Composer\Autoload\ClassLoader;
 
 final class TestLoaderProvider
 {
     /**
-     * @var \Composer\Autoload\ClassLoader
+     * @var ClassLoader
      */
     private static $loader;
 
@@ -11,12 +18,12 @@ final class TestLoaderProvider
     {
     }
 
-    public static function setLoader(\Composer\Autoload\ClassLoader $loader)
+    public static function setLoader(ClassLoader $loader): void
     {
         self::$loader = $loader;
     }
 
-    public static function getLoader()
+    public static function getLoader(): ClassLoader
     {
         return self::$loader;
     }
