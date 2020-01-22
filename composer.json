@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=7.2.0",
         "ext-curl": "*",
         "symfony/console": "~2.8",
         "symfony/config": "~2.8",
@@ -47,7 +47,7 @@
     "bin": ["bin/sw"],
     "config": {
         "platform": {
-            "php": "5.5"
+            "php": "7.2"
         }
     },
     "extra": {
