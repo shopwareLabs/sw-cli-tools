@@ -20,8 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * selects 'all' or 'exit' (operationLoop).
  *
  * Works via callback you can pass in order to get notified about the selected plugins
- *
- * Class PluginOperationManager
  */
 class PluginOperationManager
 {
@@ -45,11 +43,6 @@ class PluginOperationManager
      */
     private $ioService;
 
-    /**
-     * @param PluginProvider         $pluginProvider
-     * @param PluginInputVerificator $pluginSelector
-     * @param IoService              $ioService
-     */
     public function __construct(
         PluginProvider $pluginProvider,
         PluginInputVerificator $pluginSelector,
@@ -68,15 +61,15 @@ class PluginOperationManager
      * @param callable $callback
      * @param array    $params
      */
-    public function searchAndOperate($names, $callback, $params)
+    public function searchAndOperate($names, $callback, $params): void
     {
         foreach ($names as $name) {
             $plugins = $this->pluginProvider->getPluginByName($name);
-            $count = count($plugins);
+            $count = \count($plugins);
 
             if ($count === 0) {
                 $plugins = $this->pluginProvider->getPluginsByRepositoryName($name);
-                $count = count($plugins);
+                $count = \count($plugins);
             }
             if ($count === 0) {
                 $this->ioService->writeln("\n<error>Could not find a plugin named '{$name}'</error>");
@@ -92,7 +85,7 @@ class PluginOperationManager
                 return;
             }
 
-            $response = $this->pluginSelector->selectPlugin($plugins, ['all']);
+            $response = $this->pluginSelector->selectPlugin($plugins);
             $plugins = $this->getPluginsFromResponse($response, $plugins);
 
             foreach ($plugins as $plugin) {
@@ -107,7 +100,7 @@ class PluginOperationManager
      * @param callable $callback
      * @param array    $params
      */
-    public function operationLoop($callback, $params)
+    public function operationLoop($callback, $params): void
     {
         $plugins = $this->pluginProvider->getPlugins();
         while (true) {
@@ -119,8 +112,7 @@ class PluginOperationManager
 
             $this->ioService->cls();
 
-            $responsePlugins = $this->getPluginsFromResponse($response, $plugins);
-            foreach ($responsePlugins as $plugin) {
+            foreach ($this->getPluginsFromResponse($response, $plugins) as $plugin) {
                 $this->executeMethodCallback($plugin, $callback, $params);
             }
             $this->ioService->ask("\n<error>Done, hit enter to continue.</error>");
@@ -133,31 +125,30 @@ class PluginOperationManager
      * @param callable $callback
      * @param array    $params
      */
-    private function executeMethodCallback($subject, $callback, $params)
+    private function executeMethodCallback($subject, $callback, $params): void
     {
-        call_user_func_array($callback, [$subject, &$params]);
+        \call_user_func_array($callback, [$subject, &$params]);
     }
 
     /**
      * Prepares a response and returns an array of plugin objects
      *
-     * @param $response
      * @param Plugin[] $plugins
-     *
-     * @return array
      */
-    private function getPluginsFromResponse($response, $plugins)
+    private function getPluginsFromResponse($response, $plugins): array
     {
         if ($response instanceof Plugin) {
             return [$response];
         }
 
-        if (is_array($response)) {
+        if (\is_array($response)) {
             return $response;
         }
 
         if ($response === 'all') {
             return $plugins;
         }
+
+        return [];
     }
 }

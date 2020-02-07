@@ -12,6 +12,7 @@ use Shopware\PluginCreator\Services\GeneratorFactory;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Config;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,15 +21,15 @@ use Symfony\Component\Console\Question\Question;
 
 class CreatePluginCommand extends BaseCommand
 {
-    const LEGACY_OPTION = 'legacy';
+    private const LEGACY_OPTION = 'legacy';
 
     public function interact(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelperSet()->get('question');
 
         $name = $input->getArgument('name');
-        $modelName = implode('', array_slice($this->upperToArray($name), 1));
+        $modelName = implode('', \array_slice($this->upperToArray($name), 1));
 
         if ($input->getOption(self::LEGACY_OPTION)) {
             $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
@@ -58,10 +59,8 @@ class CreatePluginCommand extends BaseCommand
 
     /**
      * Make sure, that our booleans are actual booleans
-     *
-     * @param InputInterface $input
      */
-    public function normalizeBooleanFields(InputInterface $input)
+    public function normalizeBooleanFields(InputInterface $input): void
     {
         $inputOptions = [
             'haveBackend',
@@ -90,12 +89,8 @@ class CreatePluginCommand extends BaseCommand
 
     /**
      * Split "SwagTestPlugin" into array("Swag", "Test", "Plugin")
-     *
-     * @param $input
-     *
-     * @return array
      */
-    public function upperToArray($input)
+    public function upperToArray($input): array
     {
         return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
     }
@@ -103,15 +98,13 @@ class CreatePluginCommand extends BaseCommand
     /**
      * Make sure the namespace is one of core, backend, frontend
      *
-     * @param $input
-     *
      * @throws \InvalidArgumentException
      *
      * @return $input
      */
     public function validateNamespace($input)
     {
-        if (!in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
+        if (!\in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
             throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
         }
 
@@ -119,13 +112,13 @@ class CreatePluginCommand extends BaseCommand
     }
 
     /**
-     * Check the entered model (check might be somewhat more sufisticated)
+     * Check the entered model (check might be somewhat more sophisticated)
      *
      * @throws \InvalidArgumentException
      */
-    public function validateModel()
+    public function validateModel(): callable
     {
-        return function ($input) {
+        return static function ($input) {
             if (empty($input)) {
                 throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
             }
@@ -134,10 +127,7 @@ class CreatePluginCommand extends BaseCommand
         };
     }
 
-    /**
-     * @return Config
-     */
-    protected function getConfig()
+    protected function getConfig(): Config
     {
         return $this->container->get('config');
     }
@@ -227,7 +217,8 @@ class CreatePluginCommand extends BaseCommand
                 'File with your desired license header',
                 ''
             )
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>%command.name%</info> creates a new plugin.
 EOF
             );
@@ -253,28 +244,22 @@ EOF
     }
 
     /**
-     * Check the plugin name - it needs to constist of two parts at least - the first one is the dev prefix
-     *
-     * @param $name
+     * Check the plugin name - it needs to consist of two parts at least - the first one is the dev prefix
      *
      * @throws \InvalidArgumentException
      */
     protected function validateName($name)
     {
         $parts = $this->upperToArray($name);
-        if (count($parts) <= 1) {
+        if (\count($parts) <= 1) {
             throw new \InvalidArgumentException('Name must be in CamelCase and have at least two components. Don\'t forget you developer-prefix');
         }
     }
 
     /**
      * Populate a configuration object by the input interface
-     *
-     * @param InputInterface $input
-     *
-     * @return Configuration
      */
-    protected function getConfigurationObject(InputInterface $input)
+    protected function getConfigurationObject(InputInterface $input): Configuration
     {
         $configuration = new Configuration();
         $configuration->name = $input->getArgument('name');
@@ -302,7 +287,7 @@ EOF
         return $configuration;
     }
 
-    private function prepareLicenseHeader($license)
+    private function prepareLicenseHeader($license): string
     {
         $license = str_replace("\n", "\n * ", trim($license));
 

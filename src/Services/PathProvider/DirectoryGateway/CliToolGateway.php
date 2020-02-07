@@ -63,9 +63,6 @@ class CliToolGateway implements DirectoryGatewayInterface
         return $this->getBasePath();
     }
 
-    /**
-     * @return mixed
-     */
     public function getRuntimeDir()
     {
         throw new \RuntimeException('not implemented');

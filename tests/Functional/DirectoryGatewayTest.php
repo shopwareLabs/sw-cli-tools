@@ -8,23 +8,24 @@
 
 namespace ShopwareCli\Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
 use ShopwareCli\Services\PathProvider\DirectoryGateway\CliToolGateway;
 use ShopwareCli\Services\PathProvider\DirectoryGateway\XdgGateway;
 use XdgBaseDir\Xdg;
 
-class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
+class DirectoryGatewayTest extends TestCase
 {
-    public function testCliToolGateway()
+    public function testCliToolGateway(): void
     {
         $gateway = new CliToolGateway('/some/dir/');
 
-        $this->assertEquals('/some/dir/extensions', $gateway->getExtensionDir());
-        $this->assertEquals('/some/dir/assets', $gateway->getAssetsDir());
-        $this->assertEquals('/some/dir/cache', $gateway->getCacheDir());
-        $this->assertEquals('/some/dir', $gateway->getConfigDir());
+        static::assertEquals('/some/dir/extensions', $gateway->getExtensionDir());
+        static::assertEquals('/some/dir/assets', $gateway->getAssetsDir());
+        static::assertEquals('/some/dir/cache', $gateway->getCacheDir());
+        static::assertEquals('/some/dir', $gateway->getConfigDir());
     }
 
-    public function testXdgGateway()
+    public function testXdgGateway(): void
     {
         putenv('HOME=/tmp/');
         putenv('XDG_DATA_HOME=/tmp/xdg-data');
@@ -33,9 +34,9 @@ class DirectoryGatewayTest extends \PHPUnit_Framework_TestCase
 
         $gateway = new XdgGateway(new Xdg());
 
-        $this->assertEquals('/tmp/xdg-config/sw-cli-tools/extensions', $gateway->getExtensionDir());
-        $this->assertEquals('/tmp/xdg-data/sw-cli-tools/assets', $gateway->getAssetsDir());
-        $this->assertEquals('/tmp/xdg-cache/sw-cli-tools', $gateway->getCacheDir());
-        $this->assertEquals('/tmp/xdg-config/sw-cli-tools', $gateway->getConfigDir());
+        static::assertEquals('/tmp/xdg-config/sw-cli-tools/extensions', $gateway->getExtensionDir());
+        static::assertEquals('/tmp/xdg-data/sw-cli-tools/assets', $gateway->getAssetsDir());
+        static::assertEquals('/tmp/xdg-cache/sw-cli-tools', $gateway->getCacheDir());
+        static::assertEquals('/tmp/xdg-config/sw-cli-tools', $gateway->getConfigDir());
     }
 }

@@ -15,13 +15,11 @@ use ShopwareCli\Services\ShopwareInfo;
 
 /**
  * Handles demo data and licenses
- *
- * Class Demodata
  */
 class Demodata
 {
     /**
-     * @var \ShopwareCli\Services\PathProvider\PathProvider
+     * @var PathProvider
      */
     private $pathProvider;
 
@@ -31,9 +29,10 @@ class Demodata
     private $demoUrl = 'http://releases.s3.shopware.com/test_images_since_5.1.zip';
 
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
+
     /**
      * @var ShopwareInfo
      */
@@ -44,12 +43,6 @@ class Demodata
      */
     private $processExecutor;
 
-    /**
-     * @param PathProvider    $pathProvider
-     * @param IoService       $ioService
-     * @param ShopwareInfo    $shopwareInfo
-     * @param ProcessExecutor $processExecutor
-     */
     public function __construct(PathProvider $pathProvider, IoService $ioService, ShopwareInfo $shopwareInfo, ProcessExecutor $processExecutor)
     {
         $this->pathProvider = $pathProvider;
@@ -61,7 +54,7 @@ class Demodata
     /**
      * @param string $installDir
      */
-    public function setup($installDir)
+    public function setup($installDir): void
     {
         $assetDir = $this->pathProvider->getAssetsPath();
         if (!is_dir($assetDir) && !mkdir($assetDir) && !is_dir($assetDir)) {

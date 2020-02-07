@@ -12,23 +12,17 @@ use Shopware\Plugin\Struct\PluginBootstrap;
 
 /**
  * Extract info from a shopware plugin bootstrap
- *
- * Class BootstrapInfo
  */
 class BootstrapInfo
 {
     /**
      * Analyze a bootstrap file and return a PluginBootstrap struct
-     *
-     * @param $bootstrapFile
-     *
-     * @return PluginBootstrap
      */
-    public function analyze($bootstrapFile)
+    public function analyze($bootstrapFile): PluginBootstrap
     {
         $content = file_get_contents($bootstrapFile);
 
-        list($namespace, $name) = $this->analyzeClass($content);
+        [$namespace, $name] = $this->analyzeClass($content);
 
         $info = new PluginBootstrap();
         $info->module = $namespace;
@@ -46,7 +40,7 @@ class BootstrapInfo
      *
      * @return string[]
      */
-    private function analyzeClass($content)
+    private function analyzeClass($content): array
     {
         $pattern = '#.*Shopware_Plugins_(?P<namespace>[a-zA-Z0-9]+)_(?P<name>[a-zA-Z0-9]+)_Bootstrap.*#';
         $matches = [];

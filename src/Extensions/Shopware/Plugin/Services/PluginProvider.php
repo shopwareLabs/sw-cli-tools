@@ -13,9 +13,6 @@ use Shopware\Plugin\Services\Repositories\RepositoryInterface;
 use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Config;
 
-/**
- * Class PluginProvider
- */
 class PluginProvider
 {
     /**
@@ -28,24 +25,12 @@ class PluginProvider
      */
     protected $sortBy;
 
-    /**
-     * @var \ShopwareCli\Config
-     */
-    private $config;
-
-    /**
-     * @param Config $config
-     */
     public function __construct(Config $config)
     {
-        $this->config = $config;
         $this->sortBy = $config['general']['sortBy'];
     }
 
-    /**
-     * @param $repositories
-     */
-    public function setRepositories($repositories)
+    public function setRepositories($repositories): void
     {
         $this->repositories = $repositories;
     }
@@ -53,8 +38,8 @@ class PluginProvider
     /**
      * Query all plugin repositories for plugins named like $name
      *
-     * @param string $name string  Name to search for
-     * @param $exact    boolean Whether to search for exact match or not
+     * @param string $name  string  Name to search for
+     * @param mixed  $exact boolean Whether to search for exact match or not
      *
      * @return Plugin[]
      */
@@ -75,7 +60,7 @@ class PluginProvider
      *
      * @return Plugin[]
      */
-    public function getPluginsByRepositoryName($name)
+    public function getPluginsByRepositoryName($name): array
     {
         $result = [];
         foreach ($this->repositories as $repo) {
@@ -92,7 +77,7 @@ class PluginProvider
      *
      * @return Plugin[]
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         $result = [];
         foreach ($this->repositories as $repo) {
@@ -105,25 +90,23 @@ class PluginProvider
     /**
      * Sort a given array of plugins by the configured properties
      *
-     * @param $plugins
-     *
      * @return Plugin[]
      */
-    protected function sortPlugins($plugins)
+    protected function sortPlugins($plugins): array
     {
         switch ($this->sortBy) {
             case 'repository':
-                usort($plugins, function ($a, $b) {
+                usort($plugins, static function ($a, $b) {
                     return $a->repository . $a->name > $b->repository . $b->name;
                 });
                 break;
             case 'module':
-                usort($plugins, function ($a, $b) {
+                usort($plugins, static function ($a, $b) {
                     return $a->module . $a->name > $b->module . $b->name;
                 });
                 break;
             default:
-                usort($plugins, function ($a, $b) {
+                usort($plugins, static function ($a, $b) {
                     return $a->name > $b->name;
                 });
                 break;

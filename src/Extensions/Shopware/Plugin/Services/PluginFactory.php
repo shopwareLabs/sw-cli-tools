@@ -12,8 +12,6 @@ use Shopware\Plugin\Struct\Plugin;
 
 /**
  * Create a plugin struct from the passed data
- *
- * Class PluginFactory
  */
 class PluginFactory
 {
@@ -24,11 +22,8 @@ class PluginFactory
      * @param string $sshUrl
      * @param string $httpUrl
      * @param string $repoName
-     * @param $repoType
-     *
-     * @return Plugin
      */
-    public static function getPlugin($name, $sshUrl, $httpUrl, $repoName, $repoType = null)
+    public static function getPlugin($name, $sshUrl, $httpUrl, $repoName, $repoType = null): Plugin
     {
         $plugin = new Plugin();
 
@@ -45,9 +40,8 @@ class PluginFactory
 
     /**
      * @param string $name
-     * @param Plugin $plugin
      */
-    private static function setPluginModuleFromName($name, Plugin $plugin)
+    private static function setPluginModuleFromName($name, Plugin $plugin): void
     {
         if (stripos($name, 'frontend') === 0) {
             $plugin->module = 'Frontend';

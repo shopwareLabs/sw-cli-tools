@@ -12,24 +12,25 @@ use ShopwareCli\Struct;
 
 /**
  * Shopware plugin struct
- *
- * Class Plugin
  */
 class DisplayPlugin extends Struct
 {
     public $index;
+
     public $repoType;
+
     public $name;
+
     public $module;
+
     public $repository;
 
     /**
-     * @param Plugin $plugin
-     * @param int    $index
+     * @param int $index
      *
      * @return static
      */
-    public static function createFromPluginAndIndex(Plugin $plugin, $index)
+    public static function createFromPluginAndIndex(Plugin $plugin, $index): DisplayPlugin
     {
         return new static([
             'index' => $index,

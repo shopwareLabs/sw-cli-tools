@@ -14,10 +14,8 @@ interface CacheInterface
      * @param string $key
      * @param string $data
      * @param int    $valid
-     *
-     * @return bool
      */
-    public function write($key, $data, $valid);
+    public function write($key, $data, $valid): bool;
 
     /**
      * @param string $key
@@ -26,16 +24,11 @@ interface CacheInterface
      */
     public function read($key);
 
-    public function delete($key);
+    public function delete($key): void;
 
-    /**
-     * @param $key
-     *
-     * @return bool
-     */
-    public function exists($key);
+    public function exists($key): bool;
 
-    public function clear();
+    public function clear(): void;
 
-    public function getKeys();
+    public function getKeys(): array;
 }

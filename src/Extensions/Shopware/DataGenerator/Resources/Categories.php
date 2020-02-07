@@ -18,6 +18,7 @@ class Categories extends BaseResource
      * @var
      */
     public $categoriesFlat = [];
+
     /**
      * @var array
      */
@@ -50,7 +51,7 @@ class Categories extends BaseResource
             return 1;
         }
 
-        $this->ids[$type] += 1;
+        ++$this->ids[$type];
 
         return $this->ids[$type];
     }
@@ -113,12 +114,10 @@ class Categories extends BaseResource
      * @param int|null   $parentCategory
      * @param int        $depth
      * @param array|null $leftNeighbour
-     *
-     * @return array
      */
-    private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null)
+    private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null): array
     {
-        $categoriesOnThisLevel = ($depth === 0) ? 6 : rand(2, 10);
+        $categoriesOnThisLevel = ($depth === 0) ? 6 : random_int(2, 10);
         $categoriesPerChild = round($number / $categoriesOnThisLevel);
 
         // Due to round and random calculation of subcategories
@@ -196,12 +195,8 @@ class Categories extends BaseResource
 
     /**
      * Builds path for the given category.
-     *
-     * @param $id
-     *
-     * @return array
      */
-    private function buildPath($id)
+    private function buildPath($id): array
     {
         if (!$id) {
             return [];

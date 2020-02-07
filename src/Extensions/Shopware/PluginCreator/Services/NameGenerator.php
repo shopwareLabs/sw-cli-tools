@@ -12,28 +12,32 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 /**
  * The name generator generates useful names for controller, variables and views depending on the configuration object
- *
- * Class NameGenerator
  */
 class NameGenerator
 {
     // e.g. swag
     public $developerPrefix;
+
     // e.g. swag-promotion
     public $dash_js;
+
     // e.g. swag_promotion
     public $under_score_js;
+
     // e.g. promotion_test
     public $under_score_model;
+
     // e.g. PromotionTest
     public $camelCaseModel;
+
     // e.g.promotion
     public $backendModelAlias;
+
     // e.g. SwagTestWidget
     public $backendWidgetController;
 
     /**
-     * @var \Shopware\PluginCreator\Struct\Configuration
+     * @var Configuration
      */
     private $configuration;
 
@@ -47,7 +51,7 @@ class NameGenerator
     /**
      * Generate all needed names
      */
-    public function generateNames()
+    public function generateNames(): void
     {
         $parts = $this->upperToArray($this->configuration->name);
 
@@ -70,7 +74,7 @@ class NameGenerator
     public function getModelName()
     {
         if (!$this->configuration->backendModel) {
-            return implode('', array_slice($this->upperToArray($this->configuration->name), 1));
+            return implode('', \array_slice($this->upperToArray($this->configuration->name), 1));
         }
 
         $parts = explode('\\', $this->configuration->backendModel);
@@ -80,10 +84,8 @@ class NameGenerator
 
     /**
      * Determine the alias for the backend model
-     *
-     * @return string
      */
-    public function getBackendModelAlias()
+    public function getBackendModelAlias(): string
     {
         if (!$this->configuration->backendModel) {
             return 'alias';
@@ -96,12 +98,8 @@ class NameGenerator
 
     /**
      * Splits a given string by upper case characters
-     *
-     * @param $input
-     *
-     * @return array
      */
-    public function upperToArray($input)
+    public function upperToArray($input): array
     {
         return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
     }

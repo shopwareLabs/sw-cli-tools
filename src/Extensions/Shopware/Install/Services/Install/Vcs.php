@@ -19,8 +19,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * This install service will run all steps needed to setup shopware in the correct order
- *
- * Class Vcs
  */
 class Vcs
 {
@@ -41,10 +39,12 @@ class Vcs
 
     /** @var Demodata */
     protected $demoData;
+
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
+
     /**
      * @var PostInstall
      */
@@ -73,14 +73,11 @@ class Vcs
     /**
      * Runs the steps needed to setup shopware
      *
-     * @param $branch
      * @param string $installDir
-     * @param $basePath
-     * @param $database
-     * @param null $httpUser
-     * @param bool $noDemoData
+     * @param null   $httpUser
+     * @param bool   $noDemoData
      */
-    public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null, $noDemoData = false)
+    public function installShopware($branch, $installDir, $basePath, $database, $httpUser = null, $noDemoData = false): void
     {
         $this->checkoutRepos($branch, $installDir, $httpUser);
 
@@ -104,7 +101,7 @@ class Vcs
         $this->ioService->writeln('<info>Install completed</info>');
     }
 
-    private function getDestinationPath($installDir, $destination)
+    private function getDestinationPath($installDir, $destination): string
     {
         return $installDir . $destination;
     }
@@ -120,7 +117,7 @@ class Vcs
     {
         $core = $this->config['ShopwareInstallRepos']['core'];
         if (!$core['destination'] || !$core['ssh'] || !$core['http']) {
-            throw new  \RuntimeException('You need to have a repo "core" defined in the config.yaml of this plugin');
+            throw new \RuntimeException('You need to have a repo "core" defined in the config.yaml of this plugin');
         }
 
         return $core;
@@ -128,13 +125,8 @@ class Vcs
 
     /**
      * Checkout a given branch from a given repo
-     *
-     * @param $branch
-     * @param $installDir
-     * @param $httpUser
-     * @param $repo
      */
-    private function checkoutRepo($branch, $installDir, $httpUser, $repo)
+    private function checkoutRepo($branch, $installDir, $httpUser, $repo): void
     {
         $type = $httpUser ? 'http' : 'ssh';
 
@@ -144,11 +136,9 @@ class Vcs
     /**
      * Checkout all user defined repositories (except: core)
      *
-     * @param $branch
      * @param string $installDir
-     * @param $httpUser
      */
-    private function checkoutRepos($branch, $installDir, $httpUser)
+    private function checkoutRepos($branch, $installDir, $httpUser): void
     {
         $core = $this->checkCoreConfig();
 
@@ -167,21 +157,17 @@ class Vcs
      *
      * @param string $installDir
      */
-    private function generateVcsMapping($installDir)
+    private function generateVcsMapping($installDir): void
     {
-        $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
-            return $repo['destination'];
-        }, $this->config['ShopwareInstallRepos']));
+        $this->vcsGenerator->createVcsMapping($installDir, array_column($this->config['ShopwareInstallRepos'], 'destination'));
     }
 
     /**
      * Write the build properties file
      *
      * @param string $installDir
-     * @param $basePath
-     * @param $database
      */
-    private function writeBuildProperties($installDir, $basePath, $database)
+    private function writeBuildProperties($installDir, $basePath, $database): void
     {
         $this->configWriter->writeBuildProperties(
             $installDir,
@@ -199,9 +185,8 @@ class Vcs
      * Run the database setup tool
      *
      * @param string $installDir
-     * @param $database
      */
-    private function setupDatabase($installDir, $database)
+    private function setupDatabase($installDir, $database): void
     {
         $this->database->setup(
             $this->config['DatabaseConfig']['user'],

@@ -15,17 +15,20 @@ use ShopwareCli\Services\ShopwareInfo;
 class PostInstall
 {
     /**
-     * @var \ShopwareCli\Services\ProcessExecutor
+     * @var ProcessExecutor
      */
     private $processExecutor;
+
     /**
      * @var Owner
      */
     private $owner;
+
     /**
-     * @var \ShopwareCli\Config
+     * @var Config
      */
     private $config;
+
     /**
      * @var ShopwareInfo
      */
@@ -39,10 +42,10 @@ class PostInstall
         $this->shopwareInfo = $shopwareInfo;
     }
 
-    public function fixShopHost($database)
+    public function fixShopHost($database): void
     {
         $connection = $this->getConnection();
-        $connection->query("USE `{$database}`");
+        $connection->exec("USE `{$database}`");
 
         $connection->exec('UPDATE s_core_shops SET host = NULL WHERE host = ""');
     }
@@ -52,7 +55,7 @@ class PostInstall
      *
      * @param string $directory
      */
-    public function fixPermissions($directory)
+    public function fixPermissions($directory): void
     {
         $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getLogDir($directory));
         $this->processExecutor->execute($command, null, true);
@@ -77,10 +80,8 @@ class PostInstall
 
     /**
      * Set up default theme settings
-     *
-     * @param $directory
      */
-    public function setupTheme($directory)
+    public function setupTheme($directory): void
     {
         if (!file_exists($directory . '/themes')) {
             return;
@@ -96,18 +97,16 @@ class PostInstall
     /**
      * Import custom deltas
      *
-     * @param $database
-     *
      * @throws \RuntimeException
      */
-    public function importCustomDeltas($database)
+    public function importCustomDeltas($database): void
     {
         if (!isset($this->config['CustomDeltas'])) {
             return;
         }
 
         $connection = $this->getConnection();
-        $connection->query("USE `{$database}`");
+        $connection->exec("USE `{$database}`");
 
         foreach ($this->config['CustomDeltas'] as $file) {
             if (!file_exists($file)) {
@@ -122,7 +121,7 @@ class PostInstall
      *
      * @param string $path
      */
-    public function runCustomScripts($path)
+    public function runCustomScripts($path): void
     {
         if (!isset($this->config['CustomScripts'])) {
             return;
@@ -135,34 +134,28 @@ class PostInstall
 
     /**
      * set the user for the shopware directory
-     *
-     * @param $directory
      */
-    private function setUser($directory)
+    private function setUser($directory): void
     {
-        if (isset($this->config['ChangeOwner'], $this->config['ChangeOwner']['user'])) {
+        if (isset($this->config['ChangeOwner']['user'])) {
             $this->owner->setUser($directory, $this->config['ChangeOwner']['user'], true);
         }
     }
 
     /**
      * set the group for the shopware directory
-     *
-     * @param $directory
      */
-    private function setGroup($directory)
+    private function setGroup($directory): void
     {
-        if (isset($this->config['ChangeOwner'], $this->config['ChangeOwner']['group'])) {
+        if (isset($this->config['ChangeOwner']['group'])) {
             $this->owner->setGroup($directory, $this->config['ChangeOwner']['group'], true);
         }
     }
 
     /**
      * Get a PDO connection
-     *
-     * @return \PDO
      */
-    private function getConnection()
+    private function getConnection(): \PDO
     {
         $username = $this->config['DatabaseConfig']['user'];
         $password = $this->config['DatabaseConfig']['pass'];

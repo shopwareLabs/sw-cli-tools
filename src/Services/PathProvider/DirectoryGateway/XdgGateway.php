@@ -17,9 +17,6 @@ class XdgGateway implements DirectoryGatewayInterface
      */
     private $xdg;
 
-    /**
-     * @param Xdg $xdg
-     */
     public function __construct(Xdg $xdg)
     {
         $this->xdg = $xdg;

@@ -21,6 +21,7 @@ class DataGenerator
      * @var RandomDataProvider
      */
     public $generator;
+
     /**
      * Type of demo data to create
      *
@@ -38,11 +39,6 @@ class DataGenerator
      */
     private $config;
 
-    /**
-     * @param RandomDataProvider $generator
-     * @param ResourceLoader     $resourceLoader
-     * @param Config             $config
-     */
     public function __construct(
         RandomDataProvider $generator,
         ResourceLoader $resourceLoader,
@@ -58,7 +54,7 @@ class DataGenerator
      *
      * For performance and memory reasons, different methods for data creation are provided
      */
-    public function run()
+    public function run(): void
     {
         $locale = $this->config->getGeneratorLocale();
         if (!empty($locale)) {
@@ -76,17 +72,15 @@ class DataGenerator
     /**
      * @param string $type
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
 
     /**
      * Init the random number generator with a specific seed.
-     *
-     * @param $seed
      */
-    protected function initSeed($seed)
+    protected function initSeed($seed): void
     {
         if (!empty($seed)) {
             mt_srand($this->config->getSeed());

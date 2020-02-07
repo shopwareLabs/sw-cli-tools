@@ -9,13 +9,12 @@
 namespace Shopware\Plugin\Services\Repositories;
 
 use ShopwareCli\Config;
+use ShopwareCli\Services\Rest\RestInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Step through the config file, lookup needed repositories and create them
- *
- * Class DefaultRepositoryFactory
  */
 class DefaultRepositoryFactory
 {
@@ -29,13 +28,10 @@ class DefaultRepositoryFactory
     private $defaultRepositories = [];
 
     /**
-     * @var \Symfony\Component\DependencyInjection\Container
+     * @var Container
      */
     private $container;
 
-    /**
-     * @param Container $container
-     */
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -44,7 +40,7 @@ class DefaultRepositoryFactory
     /**
      * @return RepositoryInterface[]
      */
-    public function getDefaultRepositories()
+    public function getDefaultRepositories(): array
     {
         if (!$this->defaultRepositories) {
             $this->setupRepositories();
@@ -56,13 +52,13 @@ class DefaultRepositoryFactory
     /**
      * Iterate all repositories in the config and set them up
      */
-    private function setupRepositories()
+    private function setupRepositories(): void
     {
         /** @var Config $config */
         $config = $this->container->get('config');
 
         foreach ($config->getRepositories() as $type => $data) {
-            if (!in_array($type, $this->supportedRepositories)) {
+            if (!\in_array($type, $this->supportedRepositories, true)) {
                 continue;
             }
 
@@ -72,11 +68,8 @@ class DefaultRepositoryFactory
 
     /**
      * Setup all sub-repositories
-     *
-     * @param $type
-     * @param $data
      */
-    private function createSubRepositories($type, $data)
+    private function createSubRepositories($type, $data): void
     {
         $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
         $username = isset($data['config']['username']) ? $data['config']['username'] : null;
@@ -95,17 +88,14 @@ class DefaultRepositoryFactory
         }
     }
 
-    /**
-     * @param $name
-     * @param $type
-     * @param $repoConfig
-     * @param $restClient
-     *
-     * @return BaseRepository
-     */
-    private function createRepository($name, $type, $repoConfig, $restClient)
-    {
+    private function createRepository(
+        string $name,
+        string $type,
+        array $repoConfig,
+        ?RestInterface $restClient
+    ): BaseRepository {
         $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
+        /** @var BaseRepository $repo */
         $repo = new $className(
             isset($repoConfig['url']) ? $repoConfig['url'] : '',
             $name,

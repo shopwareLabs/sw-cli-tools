@@ -10,16 +10,12 @@ namespace Shopware\PluginCreator\Services\IoAdapter;
 
 /**
  * Dummy IoAdapter will collect all files in memory
- *
- * Class Dummy
  */
 class Dummy implements IoAdapter
 {
     protected $files = [];
 
     /**
-     * @param $path
-     *
      * @return bool
      */
     public function exists($path)
@@ -37,10 +33,7 @@ class Dummy implements IoAdapter
         $this->files[$file] = $content;
     }
 
-    /**
-     * @return array
-     */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }

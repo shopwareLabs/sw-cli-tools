@@ -14,8 +14,6 @@ use ShopwareCli\Services\Rest\RestInterface;
 
 /**
  * Base repository class providing a constructor for injection and a convenient access to the PluginFactory
- *
- * Class BaseRepository
  */
 abstract class BaseRepository implements RepositoryInterface
 {
@@ -34,6 +32,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     protected $useHttp
     ;
+
     /**
      * @var RestInterface
      */
@@ -45,8 +44,6 @@ abstract class BaseRepository implements RepositoryInterface
     protected $color;
 
     /**
-     * @param               $repository
-     * @param               $name
      * @param RestInterface $restService
      * @param null          $color
      */
@@ -62,22 +59,17 @@ abstract class BaseRepository implements RepositoryInterface
      * @param string $sshUrl
      * @param string $httpUrl
      * @param string $name
-     *
-     * @return Plugin
      */
-    public function createPlugin($sshUrl, $httpUrl, $name)
+    public function createPlugin($sshUrl, $httpUrl, $name): Plugin
     {
-        $type = array_slice(explode('\\', get_class($this)), -1);
+        $type = \array_slice(explode('\\', \get_class($this)), -1);
         $type = $type[0];
         $name = str_replace(' ', '', $name);
 
         return PluginFactory::getPlugin($name, $sshUrl, $httpUrl, $this->name, $type);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -88,13 +80,10 @@ abstract class BaseRepository implements RepositoryInterface
      * @param string $searched
      * @param string $actual
      * @param bool   $exact
-     *
-     * @return bool
      */
-    protected function doesMatch($actual, $searched, $exact = false)
+    protected function doesMatch($actual, $searched, $exact = false): bool
     {
-        return
-            !$exact && stripos($actual, $searched) !== false
+        return !$exact && stripos($actual, $searched) !== false
             || $exact && $searched == $actual
         ;
     }

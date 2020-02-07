@@ -25,7 +25,7 @@ class RunCliCommand extends BaseCommand
         $shopwarePath = $input->getOption('shopwarePath');
         $arguments = implode(' ', $input->getArgument('sw-command'));
 
-        /** @var $ioService IoService */
+        /** @var IoService $ioService */
         $ioService = $this->container->get('io_service');
         $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
 
@@ -33,12 +33,9 @@ class RunCliCommand extends BaseCommand
     }
 
     /**
-     * @param string    $shopwarePath
-     * @param IoService $ioService
-     *
-     * @return string
+     * @param string $shopwarePath
      */
-    public function getValidShopwarePath($shopwarePath, IoService $ioService)
+    public function getValidShopwarePath($shopwarePath, IoService $ioService): string
     {
         if (!$shopwarePath) {
             $shopwarePath = realpath(getcwd());
@@ -48,7 +45,7 @@ class RunCliCommand extends BaseCommand
             if ($this->container->get('utilities')->isShopwareInstallation($shopwarePath)) {
                 return $shopwarePath;
             }
-        } while (($shopwarePath = dirname($shopwarePath)) && $shopwarePath != '/');
+        } while (($shopwarePath = \dirname($shopwarePath)) && $shopwarePath != '/');
 
         return $ioService->askAndValidate(
             'Path to your Shopware installation: ',
@@ -77,7 +74,7 @@ class RunCliCommand extends BaseCommand
                 'arguments for your shopare command'
             )
             ->setHelp(
-<<<EOF
+                <<<EOF
 The <info>%command.name%</info> command allows you to trigger shopware cli commands from any subdirectory.
 EOF
             );

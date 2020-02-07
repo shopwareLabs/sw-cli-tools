@@ -6,26 +6,31 @@
  * file that was distributed with this source code.
  */
 
-namespace ShopwareCli\Tests\Functional;
+namespace ShopwareCli\Tests\Functional\PluginCreator;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Shopware\PluginCreator\Services\Generator;
 use Shopware\PluginCreator\Services\IoAdapter\Dummy;
 use Shopware\PluginCreator\Services\NameGenerator;
 use Shopware\PluginCreator\Services\Template;
 use Shopware\PluginCreator\Services\TemplateFileProvider\FileProviderInterface;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\OutputDirectoryProviderInterface;
 use Shopware\PluginCreator\Struct\Configuration;
 
-class PluginCreateTest extends \PHPUnit_Framework_TestCase
+class PluginCreateTest extends TestCase
 {
     /**
      * Foreach file provider: Create a plugin which needs this file provider and check,
      * if all required / pre-defined files actually exists.
      */
-    public function testFileProvider()
+    public function testFileProvider(): void
     {
-        $currentOutputDirectoryProvider = $this->getMockBuilder('Shopware\PluginCreator\Services\WorkingDirectoryProvider\CurrentOutputDirectoryProvider')
+        /** @var CurrentOutputDirectoryProvider|MockObject $currentOutputDirectoryProvider */
+        $currentOutputDirectoryProvider = $this->getMockBuilder(CurrentOutputDirectoryProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -45,9 +50,10 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
     /**
      * Test each file provider with legacy files.
      */
-    public function testLegacyFileProvider()
+    public function testLegacyFileProvider(): void
     {
-        $legacyOutputDirectoryProvider = $this->getMockBuilder('Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider')
+        /** @var LegacyOutputDirectoryProvider|MockObject $legacyOutputDirectoryProvider */
+        $legacyOutputDirectoryProvider = $this->getMockBuilder(LegacyOutputDirectoryProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -70,10 +76,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
      *  * name (array key + "$FileProvider")
      *  * config flag that will trigger this file provider
      *  * array of files (key = source template, value = target file)
-     *
-     * @return array
      */
-    protected function getFileProvider()
+    protected function getFileProvider(): array
     {
         return [
             'Api' => [
@@ -181,10 +185,7 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    protected function getLegacyFileProvider()
+    protected function getLegacyFileProvider(): array
     {
         return [
             'Api' => [
@@ -283,10 +284,7 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @return Configuration
-     */
-    private function getConfigObject()
+    private function getConfigObject(): Configuration
     {
         $config = new Configuration();
 
@@ -301,18 +299,12 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         return $config;
     }
 
-    /**
-     * @param Configuration                    $config
-     * @param array                            $provider
-     * @param array                            $fileProviders
-     * @param OutputDirectoryProviderInterface $outputDirectoryProvider
-     */
     private function providerTest(
         Configuration $config,
         array $provider,
         array $fileProviders,
         OutputDirectoryProviderInterface $outputDirectoryProvider
-    ) {
+    ): void {
         $ioAdapter = new Dummy();
         $generator = new Generator(
             $ioAdapter,
@@ -327,8 +319,8 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
 
         // Test, if the file provider files, do exist
         foreach ($provider['files'] as $file) {
-            $this->assertTrue(
-                in_array($file, array_keys($ioAdapter->getFiles())),
+            static::assertTrue(
+                \array_key_exists($file, $ioAdapter->getFiles()),
                 "{$file} not found in generated files"
             );
         }
@@ -336,17 +328,19 @@ class PluginCreateTest extends \PHPUnit_Framework_TestCase
         // merge all provider files into one array
         $allProviderFiles = array_reduce(
             array_column($fileProviders, 'files'),
-            function ($a, $b) {
+            static function ($a, $b) {
                 $a = $a ?: [];
                 $b = $b ?: [];
 
                 return array_merge($a, $b);
-            });
+            }
+        );
 
         // Test, if existing files are defined by a file provider
         foreach (array_keys($ioAdapter->getFiles()) as $file) {
-            $this->assertTrue(
-                in_array($file, $allProviderFiles),
+            static::assertContains(
+                $file,
+                $allProviderFiles,
                 "{$file} is not defined by any file provider"
             );
         }

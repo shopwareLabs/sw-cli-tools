@@ -58,11 +58,10 @@ class Newsletter extends BaseResource
         );
 
         // Groups assigned to the newsletter
-        $groups = [
+        $groups = serialize([
             ['EK' => 0, 'H' => 0],
             [1 => 0],
-        ];
-        $groups = serialize($groups);
+        ]);
 
         // The actual newsletter
         $writer->write(

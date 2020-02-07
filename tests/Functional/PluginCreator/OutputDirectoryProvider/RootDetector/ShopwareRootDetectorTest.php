@@ -5,22 +5,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace ShopwareCli\Tests\Functional\PluginCreator\OutputDirectoryProvider\RootDetector;
+
+use PHPUnit\Framework\TestCase;
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 
-class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
+class ShopwareRootDetectorTest extends TestCase
 {
     /**
      * @var ShopwareRootDetector
      */
     private $SUT;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->createRootFolder();
         $this->SUT = new ShopwareRootDetector();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach (ShopwareRootDetector::getDirectories() as $directory) {
             rmdir(self::getTestRoot() . $directory);
@@ -32,24 +36,24 @@ class ShopwareRootDetectorTest extends \PHPUnit_Framework_TestCase
         rmdir(self::getTestRoot());
     }
 
-    public function testPathIsShopwareRoot()
+    public function testPathIsShopwareRoot(): void
     {
         $return = $this->SUT->isRoot(self::getTestRoot());
-        $this->assertTrue($return);
+        static::assertTrue($return);
     }
 
-    public function testPathIsNotShopwareRoot()
+    public function testPathIsNotShopwareRoot(): void
     {
         $return = $this->SUT->isRoot('/home/not_shopware');
-        $this->assertFalse($return);
+        static::assertFalse($return);
     }
 
-    private static function getTestRoot()
+    private static function getTestRoot(): string
     {
         return __DIR__ . '/testroot';
     }
 
-    private function createRootFolder()
+    private function createRootFolder(): void
     {
         mkdir(self::getTestRoot());
         foreach (ShopwareRootDetector::getDirectories() as $directory) {

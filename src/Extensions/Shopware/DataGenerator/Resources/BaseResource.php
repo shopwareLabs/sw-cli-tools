@@ -8,6 +8,7 @@
 
 namespace Shopware\DataGenerator\Resources;
 
+use Shopware\DataGenerator\DataGenerator;
 use Shopware\DataGenerator\RandomDataProvider;
 use Shopware\DataGenerator\Struct\Config;
 use Shopware\DataGenerator\Writer\WriterInterface;
@@ -35,12 +36,12 @@ abstract class BaseResource
     protected $config;
 
     /**
-     * @var \Plugin\ShopwarePluginCreator\DataGenerator
+     * @var DataGenerator
      */
     protected $generator;
 
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     protected $ioService;
 
@@ -54,12 +55,6 @@ abstract class BaseResource
      */
     protected $progressBar;
 
-    /**
-     * @param Config             $config
-     * @param RandomDataProvider $generator
-     * @param IoService          $ioService
-     * @param WriterManager      $writerManager
-     */
     public function __construct(
         Config $config,
         RandomDataProvider $generator,
@@ -75,7 +70,7 @@ abstract class BaseResource
     /**
      * @param string $field
      *
-     * @return int
+     * @return int|array
      */
     public function getIds($field = null)
     {
@@ -91,10 +86,6 @@ abstract class BaseResource
      * provided writer
      * May create additional writers using the existing WriterManager
      * All writers are automatically flushed once the data creation ends.
-     *
-     * @param WriterInterface $writer
-     *
-     * @return mixed
      */
     abstract public function create(WriterInterface $writer);
 
@@ -104,9 +95,9 @@ abstract class BaseResource
      * Flushes data at the end
      * Handles pre and pos query handling (truncating, enable/disable foreign keys).
      */
-    final public function generateData()
+    final public function generateData(): void
     {
-        $path = explode('\\', get_class($this));
+        $path = explode('\\', \get_class($this));
         $writer = $this->writerManager->createWriter(strtolower(array_pop($path)), 'sql');
         $writer->write($this->prepareTables());
 
@@ -133,7 +124,7 @@ abstract class BaseResource
             return 1;
         }
 
-        $this->ids[$type] += 1;
+        ++$this->ids[$type];
 
         return $this->ids[$type];
     }
@@ -141,7 +132,7 @@ abstract class BaseResource
     /**
      * Generic setup method which will truncate tables of a resource and disables keys for that table temporarily.
      */
-    protected function prepareTables()
+    protected function prepareTables(): array
     {
         $sql = [
             'SET autocommit = 0;',
@@ -164,7 +155,7 @@ abstract class BaseResource
      *
      * @return string[]
      */
-    protected function enableKeys()
+    protected function enableKeys(): array
     {
         $sql = [];
 
@@ -180,7 +171,7 @@ abstract class BaseResource
     /**
      * @param int $number
      */
-    protected function createProgressBar($number)
+    protected function createProgressBar($number): void
     {
         $this->progressBar = $this->ioService->createProgressBar($number);
         $this->progressBar->start();
@@ -190,7 +181,7 @@ abstract class BaseResource
     /**
      * @param int $step
      */
-    protected function advanceProgressBar($step = 1)
+    protected function advanceProgressBar($step = 1): void
     {
         if (!$this->progressBar) {
             return;
@@ -199,7 +190,7 @@ abstract class BaseResource
         $this->progressBar->advance($step);
     }
 
-    protected function finishProgressBar()
+    protected function finishProgressBar(): void
     {
         if (!$this->progressBar) {
             return;

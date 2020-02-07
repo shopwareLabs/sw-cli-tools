@@ -10,19 +10,15 @@ namespace Shopware\Install\Services;
 
 /**
  * The owner services changes the owning user and group of directories and files
- *
- * Class Owner
  */
 class Owner
 {
     /**
      * Set the user for a given directory or file
      *
-     * @param $path
-     * @param $user
      * @param bool $recursive
      */
-    public function setUser($path, $user, $recursive)
+    public function setUser($path, $user, $recursive): void
     {
         chown($path, $user);
 
@@ -38,11 +34,9 @@ class Owner
     /**
      * Set the group for a given directory or file
      *
-     * @param $path
-     * @param $group
      * @param bool $recursive
      */
-    public function setGroup($path, $group, $recursive)
+    public function setGroup($path, $group, $recursive): void
     {
         chgrp($path, $group);
 
@@ -57,15 +51,9 @@ class Owner
 
     /**
      * Returns a flat iterator for a given directory
-     *
-     * @param $path
-     *
-     * @return \RecursiveIteratorIterator
      */
-    private function getIterator($path)
+    private function getIterator($path): \RecursiveIteratorIterator
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
-
-        return $iterator;
+        return new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
     }
 }

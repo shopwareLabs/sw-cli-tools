@@ -16,12 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Zip a plugin
- *
- * Class ZipCommand
  */
 class ZipCommand extends BaseCommand
 {
     protected $utilities;
+
     protected $zipDir;
 
     public function doZip($plugin, $params)

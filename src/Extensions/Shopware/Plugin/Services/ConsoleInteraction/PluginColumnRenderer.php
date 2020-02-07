@@ -15,8 +15,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * Will render a given list of plugins in a two or three column layout, add numbers and a simple legend
- *
- * Class PluginColumnRenderer
  */
 class PluginColumnRenderer
 {
@@ -35,10 +33,6 @@ class PluginColumnRenderer
      */
     private $ioService;
 
-    /**
-     * @param IoService $ioService
-     * @param Config    $config
-     */
     public function __construct(IoService $ioService, Config $config)
     {
         $this->config = $config;
@@ -92,12 +86,10 @@ class PluginColumnRenderer
     /**
      * @param DisplayPlugin[] $plugins
      * @param int             $columns
-     *
-     * @return array
      */
     private function createPluginColumns($plugins, $columns): array
     {
-        $length = count($plugins);
+        $length = \count($plugins);
         $pluginColumns = [];
 
         $pluginsPerColumn = ceil($length / $columns);
@@ -106,7 +98,7 @@ class PluginColumnRenderer
             $sliceOffset = $pluginsPerColumn * $i;
             $sliceLength = $pluginsPerColumn * ($i + 1);
 
-            $pluginColumns[$i] = array_slice($plugins, $sliceOffset, $sliceLength);
+            $pluginColumns[$i] = \array_slice($plugins, $sliceOffset, $sliceLength);
         }
 
         return $pluginColumns;
@@ -117,8 +109,8 @@ class PluginColumnRenderer
      */
     private function printColumns($pluginColumns): void
     {
-        $columnCount = count($pluginColumns);
-        $rowCount = count($pluginColumns[0]) - 1;
+        $columnCount = \count($pluginColumns);
+        $rowCount = \count($pluginColumns[0]) - 1;
 
         foreach (range(0, $rowCount) as $row) {
             $currentRow = [];
@@ -187,10 +179,7 @@ class PluginColumnRenderer
     /**
      * Modifies the baseMask for a plugin by setting the repository colors
      *
-     * @param DisplayPlugin $plugin
-     * @param string        $baseMask
-     *
-     * @return string
+     * @param string $baseMask
      */
     private function getMaskForPlugin(DisplayPlugin $plugin, $baseMask): string
     {
@@ -205,11 +194,6 @@ class PluginColumnRenderer
         return $baseMask;
     }
 
-    /**
-     * @param DisplayPlugin $plugin
-     *
-     * @return string
-     */
     private function formatPlugin(DisplayPlugin $plugin): string
     {
         return $this->formatModuleName($plugin) . '/' . $plugin->name;

@@ -10,9 +10,6 @@ namespace Shopware\Plugin\Services\Repositories\Standard;
 
 use Shopware\Plugin\Services\Repositories\BaseRepository;
 
-/**
- * Class GitLab
- */
 class GitLab extends BaseRepository
 {
     /**

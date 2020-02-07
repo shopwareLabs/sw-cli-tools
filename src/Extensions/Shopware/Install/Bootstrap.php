@@ -11,6 +11,16 @@ namespace Shopware\Install;
 use Shopware\Install\Command\ShopwareClearCacheCommand;
 use Shopware\Install\Command\ShopwareInstallReleaseCommand;
 use Shopware\Install\Command\ShopwareInstallVcsCommand;
+use Shopware\Install\Services\Checkout;
+use Shopware\Install\Services\ConfigWriter;
+use Shopware\Install\Services\Database;
+use Shopware\Install\Services\Demodata;
+use Shopware\Install\Services\Install\Release;
+use Shopware\Install\Services\Install\Vcs;
+use Shopware\Install\Services\Owner;
+use Shopware\Install\Services\PostInstall;
+use Shopware\Install\Services\ReleaseDownloader;
+use Shopware\Install\Services\VcsGenerator;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,8 +28,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This plugin will install/setup shopware in a development version
- *
- * Class Bootstrap
  */
 class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 {
@@ -43,48 +51,44 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
         ];
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
     private function populateContainer(ContainerBuilder $container)
     {
-        $container->register('shopware_checkout_service', 'Shopware\Install\Services\Checkout')
+        $container->register('shopware_checkout_service', Checkout::class)
             ->addArgument(new Reference('git_util'))
             ->addArgument(new Reference('io_service'));
 
-        $container->register('post_install', 'Shopware\Install\Services\PostInstall')
+        $container->register('post_install', PostInstall::class)
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('shopware-install.owner'))
             ->addArgument(new Reference('config'))
             ->addArgument(new Reference('shopware_info'));
 
-        $container->register('shopware_release_download_service', 'Shopware\Install\Services\ReleaseDownloader')
+        $container->register('shopware_release_download_service', ReleaseDownloader::class)
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('file_downloader'))
             ->addArgument(new Reference('openssl_verifier'))
             ->addArgument($container->get('path_provider')->getCachePath());
 
-        $container->register('shopware-install.vcs_generator', 'Shopware\Install\Services\VcsGenerator')
+        $container->register('shopware-install.vcs_generator', VcsGenerator::class)
             ->addArgument(new Reference('io_service'));
 
-        $container->register('shopware-install.config_writer', 'Shopware\Install\Services\ConfigWriter')
+        $container->register('shopware-install.config_writer', ConfigWriter::class)
             ->addArgument(new Reference('io_service'));
 
-        $container->register('shopware-install.owner', 'Shopware\Install\Services\Owner');
+        $container->register('shopware-install.owner', Owner::class);
 
-        $container->register('shopware-install.database', 'Shopware\Install\Services\Database')
-            ->addArgument(new Reference('utilities'))
+        $container->register('shopware-install.database', Database::class)
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('process_executor'));
 
-        $container->register('shopware-install.demodata', 'Shopware\Install\Services\Demodata')
+        $container->register('shopware-install.demodata', Demodata::class)
             ->addArgument(new Reference('path_provider'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('shopware_info'))
             ->addArgument(new Reference('process_executor'));
 
-        $container->register('shopware_vcs_install_service', 'Shopware\Install\Services\Install\Vcs')
+        $container->register('shopware_vcs_install_service', Vcs::class)
             ->addArgument(new Reference('shopware_checkout_service'))
             ->addArgument(new Reference('config'))
             ->addArgument(new Reference('shopware-install.vcs_generator'))
@@ -94,13 +98,12 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('post_install'));
 
-        $container->register('shopware_release_install_service', 'Shopware\Install\Services\Install\Release')
+        $container->register('shopware_release_install_service', Release::class)
             ->addArgument(new Reference('shopware_release_download_service'))
             ->addArgument(new Reference('config'))
             ->addArgument(new Reference('shopware-install.vcs_generator'))
             ->addArgument(new Reference('shopware-install.config_writer'))
             ->addArgument(new Reference('shopware-install.database'))
-            ->addArgument(new Reference('shopware-install.demodata'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('post_install'))
             ->addArgument(new Reference('process_executor'));

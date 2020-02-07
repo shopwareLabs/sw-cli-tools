@@ -12,8 +12,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Simple config object for the config.yaml file
- *
- * Class Config
  */
 class Config implements \ArrayAccess
 {
@@ -22,14 +20,14 @@ class Config implements \ArrayAccess
      */
     protected $configArray;
 
-    /**
-     * @param ConfigFileCollector $fileCollector
-     */
     public function __construct(ConfigFileCollector $fileCollector)
     {
         $config = [];
         foreach ($fileCollector->collectConfigFiles() as $configFile) {
-            $config = array_replace_recursive($config, Yaml::parse(file_get_contents($configFile), true));
+            $config = array_replace_recursive(
+                $config,
+                Yaml::parse(file_get_contents($configFile), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE)
+            );
         }
 
         $this->configArray = $config;
@@ -37,17 +35,12 @@ class Config implements \ArrayAccess
         $this->validateConfig();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRepositories()
+    public function getRepositories(): array
     {
         return (array) $this->configArray['repositories'];
     }
 
     /**
-     * @param $offset
-     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -56,37 +49,24 @@ class Config implements \ArrayAccess
     }
 
     /**
-     * @param $offset
-     *
-     * @return mixed
+     * @return mixed|null
      */
     public function offsetGet($offset)
     {
-        if (array_key_exists($offset, $this->configArray)) {
-            return $this->configArray[$offset];
-        }
-
-        return null;
+        return $this->configArray[$offset] ?? null;
     }
 
-    /**
-     * @param $offset
-     * @param $value
-     */
     public function offsetSet($offset, $value)
     {
         $this->configArray[$offset] = $value;
     }
 
-    /**
-     * @param $offset
-     */
     public function offsetUnset($offset)
     {
         unset($this->configArray[$offset]);
     }
 
-    private function validateConfig()
+    private function validateConfig(): void
     {
         if (isset($this->configArray['ShopwareInstallConfig'])) {
             throw new \RuntimeException("The config format changed, 'ShopwareInstallConfig' is not used anymore. Its former options are now distinct options 'ShopConfig', 'DatabaseConfig' and 'ShopwareInstallRepos'. Have a look at config.yaml.dist for more info.");

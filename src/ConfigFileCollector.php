@@ -17,9 +17,6 @@ class ConfigFileCollector
      */
     private $pathProvider;
 
-    /**
-     * @param PathProvider $pathProvider
-     */
     public function __construct(PathProvider $pathProvider)
     {
         $this->pathProvider = $pathProvider;
@@ -55,7 +52,7 @@ class ConfigFileCollector
      *
      * @return string[]
      */
-    private function iterateVendors($extensionPath)
+    private function iterateVendors($extensionPath): array
     {
         $files = [];
 
@@ -84,7 +81,7 @@ class ConfigFileCollector
      *
      * @return string[]
      */
-    private function iterateExtensions($vendorPath)
+    private function iterateExtensions($vendorPath): array
     {
         $files = [];
 

@@ -29,6 +29,7 @@ class Orders extends BaseResource
      * Number of article details available
      */
     protected $numberDetails;
+
     private static $devices = [
         'desktop',
         'mobile',
@@ -40,10 +41,7 @@ class Orders extends BaseResource
      */
     private $articleResource;
 
-    /**
-     * @param Articles $articleResource
-     */
-    public function setArticleResource(Articles $articleResource)
+    public function setArticleResource(Articles $articleResource): void
     {
         $this->articleResource = $articleResource;
     }
@@ -87,10 +85,10 @@ class Orders extends BaseResource
 
             $orderNumbers[] = $orderNumber;
 
-            $currentCustomer = mt_rand(1, $totalNumberCustomers);
+            $currentCustomer = random_int(1, $totalNumberCustomers);
             $currentCustomerNumber = 20002 + $currentCustomer;
             // Create a large order for the first order
-            $numArticles = $id === 1 ? 100 : mt_rand(1, 4);
+            $numArticles = $id === 1 ? 100 : random_int(1, 4);
             $totalPrice = $numArticles * 47.90;
             $totalPricePreTax = $totalPrice / 1.19;
 
@@ -99,11 +97,11 @@ class Orders extends BaseResource
             $valueData['customerShippingValues'][] = "( {$currentCustomer}, {$id}, '', '', 'mr', '{$this->quote($faker->firstName)}', '{$this->quote($faker->lastName)}', '{$this->quote($faker->streetAddress)}', '{$this->quote($faker->postcode)}', '{$this->quote($faker->city)}', 2, 0)";
             $valueData['customerBillingAttributeValues'][] = "({$id}, {$id})";
 
-            $cleared = mt_rand(9, 21);
-            $state = mt_rand(0, 8);
-            $payment = mt_rand(2, 6);
-            $device = self::$devices[mt_rand(0, count(self::$devices) - 1)];
-            $date = $faker->dateTimeBetween('-2years', 'now');
+            $cleared = random_int(9, 21);
+            $state = random_int(0, 8);
+            $payment = random_int(2, 6);
+            $device = self::$devices[random_int(0, \count(self::$devices) - 1)];
+            $date = $faker->dateTimeBetween('-2years');
 
             $dateFormatted = $date->format('Y-m-d');
 
@@ -118,7 +116,7 @@ class Orders extends BaseResource
             for ($detailCounter = 1; $detailCounter <= $numArticles; ++$detailCounter) {
                 $detailId = $this->getUniqueId('orderDetail');
 
-                $articleId = $articleDetails[mt_rand(1, $this->articleResource->getIds('article'))];
+                $articleId = $articleDetails[random_int(1, $this->articleResource->getIds('article'))];
                 $valueData['orderDetailValues'][] = "({$detailId}, {$id}, '{$orderNumber}', '{$articleId}', 'sw-not-real', 47.90, 1, '{$this->generator->getSentence(3)}', 1, 0, 0)";
             }
         }
@@ -133,8 +131,8 @@ class Orders extends BaseResource
             $date = $dt->format('Y-m-d');
 
             $ordersOnDate = isset($orderDates[$date]) ? $orderDates[$date] : 10;
-            $pageImpressions = $ordersOnDate * mt_rand(200, 1500);
-            $uniqueVisits = $ordersOnDate * mt_rand(1, 50);
+            $pageImpressions = $ordersOnDate * random_int(200, 1500);
+            $uniqueVisits = $ordersOnDate * random_int(1, 50);
 
             $valueData['visitors'][] = "(1, \"{$date}\", {$pageImpressions}, {$uniqueVisits}, \"desktop\")";
         }
@@ -148,19 +146,17 @@ class Orders extends BaseResource
     /**
      * Constructs the actual inserts from the passed arrays
      *
-     * @param $valueData
-     *
      * @return string[]
      */
-    private function createSQL($valueData)
+    private function createSQL($valueData): array
     {
         $sql = [];
 
         $sql[] = '
             INSERT INTO `s_order` (`id`,`ordernumber`, `userID`, `invoice_amount`, `invoice_amount_net`, `invoice_shipping`, `invoice_shipping_net`, `ordertime`, `status`, `cleared`, `paymentID`, `transactionID`, `comment`,  `customercomment`, `internalcomment`, `net`, `taxfree`, `partnerID`, `temporaryID`, `referer`, `cleareddate`, `trackingcode`, `language`, `dispatchID`, `currency`, `currencyFactor`, `subshopID`, `remote_addr`, `deviceType`) VALUES ' . implode(
-                ",\n            ",
-                $valueData['orderValues']
-            ) . ';';
+            ",\n            ",
+            $valueData['orderValues']
+        ) . ';';
 
         $sql[] = '
             INSERT INTO `s_order_details` (`id`, `orderID`, `ordernumber`, `articleID`, `articleordernumber`, `price`, `quantity`, `name`, `status`, `shipped`, `shippedgroup`) VALUES
@@ -168,41 +164,36 @@ class Orders extends BaseResource
 
         $sql[] = '
             INSERT INTO `s_order_billingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `customernumber`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `phone`, `countryID`, `stateID`) VALUES ' . implode(
-                ' , ',
-                $valueData['customerBillingValues']
-            ) . ';';
+            ' , ',
+            $valueData['customerBillingValues']
+        ) . ';';
         $sql[] = '
             INSERT INTO `s_order_shippingaddress` (`userID`, `orderID`, `company`, `department`, `salutation`, `firstname`, `lastname`, `street`, `zipcode`, `city`, `countryID`, `stateID`) VALUES ' . implode(
-                ' , ',
-                $valueData['customerShippingValues']
-            ) . ';';
+            ' , ',
+            $valueData['customerShippingValues']
+        ) . ';';
 
         $sql[] = '
             INSERT INTO `s_order_shippingaddress_attributes` (`id`, `shippingID`) VALUES ' . implode(
-                ', ',
-                $valueData['customerBillingAttributeValues']
-            ) . ';';
+            ', ',
+            $valueData['customerBillingAttributeValues']
+        ) . ';';
         $sql[] = '
             INSERT INTO `s_order_billingaddress_attributes` (`id`, `billingID`) VALUES ' . implode(
-                ', ',
-                $valueData['customerBillingAttributeValues']
-            ) . ';';
+            ', ',
+            $valueData['customerBillingAttributeValues']
+        ) . ';';
 
         $sql[] = '
             INSERT INTO `s_statistics_visitors` (`shopID`, `datum`, `pageimpressions`, `uniquevisits`, `deviceType`) VALUES ' . implode(
-                ', ',
-                $valueData['visitors']
-            ) . ';';
+            ', ',
+            $valueData['visitors']
+        ) . ';';
 
         return $sql;
     }
 
-    /**
-     * @param $string
-     *
-     * @return string
-     */
-    private function quote($string)
+    private function quote($string): string
     {
         return str_replace('\'', "\'", $string);
     }

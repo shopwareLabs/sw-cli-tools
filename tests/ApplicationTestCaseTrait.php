@@ -17,10 +17,7 @@ trait ApplicationTestCaseTrait
      */
     private static $application;
 
-    /**
-     * @return Application
-     */
-    public static function getApplication()
+    public static function getApplication(): Application
     {
         if (!self::$application) {
             self::bootApplication();
@@ -29,7 +26,7 @@ trait ApplicationTestCaseTrait
         return self::$application;
     }
 
-    public static function bootApplication()
+    public static function bootApplication(): void
     {
         self::$application = new Application(\TestLoaderProvider::getLoader());
     }
@@ -37,7 +34,7 @@ trait ApplicationTestCaseTrait
     /**
      * @after
      */
-    protected function destoryApplicationAfter()
+    protected function destroyApplicationAfter(): void
     {
         self::$application = false;
     }

@@ -37,7 +37,7 @@ On your system at least the following packages needs to be available.
  * ant
  * git
  * curl
- * php5-curl
+ * php7-curl
  * If you want to use coloring you should enable php.posix in your php.ini
 
 ## Available commands

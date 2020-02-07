@@ -13,22 +13,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Clear the *internal* cache of the CLI tools (used for e.g. plugin repos)
- *
- * Class CacheCommand
  */
 class CacheCommand extends BaseCommand
 {
     protected $utilities;
+
     protected $zipDir;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cli:cache:clear')
             ->setDescription('Clear the repository cache');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->container->get('cache')->clear();
+
+        return 0;
     }
 }

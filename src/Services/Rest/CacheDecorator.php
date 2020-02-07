@@ -12,8 +12,6 @@ use ShopwareCli\Cache\CacheInterface;
 
 /**
  * Decorated a RestInterface in order to implement a simple cache layer for GET requests
- *
- * Class CacheDecorator
  */
 class CacheDecorator implements RestInterface
 {
@@ -23,7 +21,7 @@ class CacheDecorator implements RestInterface
     protected $decorate;
 
     /**
-     * @var \ShopwareCli\Cache\CacheInterface
+     * @var CacheInterface
      */
     protected $cacheProvider;
 
@@ -32,12 +30,7 @@ class CacheDecorator implements RestInterface
      */
     protected $cacheTime;
 
-    /**
-     * @param RestInterface  $restService
-     * @param CacheInterface $cacheProvider
-     * @param int            $cacheTime
-     */
-    public function __construct(RestInterface $restService, CacheInterface $cacheProvider, $cacheTime = 1)
+    public function __construct(RestInterface $restService, CacheInterface $cacheProvider, int $cacheTime = 1)
     {
         $this->decorate = $restService;
         $this->cacheProvider = $cacheProvider;
@@ -89,13 +82,13 @@ class CacheDecorator implements RestInterface
      */
     public function callCached($call, $key, $url, $parameters = [], $headers = [])
     {
-        /* @var $response ResponseInterface */
-        if (!$this->cacheProvider || $this->cacheTime == 0) {
-            $response = call_user_func([$this->decorate, $call], $url, $parameters, $headers);
+        /* @var ResponseInterface $response */
+        if (!$this->cacheProvider || $this->cacheTime === 0) {
+            $response = \call_user_func([$this->decorate, $call], $url, $parameters, $headers);
         } else {
             $response = $this->cacheProvider->read($key);
             if ($response === false) {
-                $response = call_user_func([$this->decorate, $call], $url, $parameters, $headers);
+                $response = \call_user_func([$this->decorate, $call], $url, $parameters, $headers);
                 if ($response === false) {
                     return false;
                 }

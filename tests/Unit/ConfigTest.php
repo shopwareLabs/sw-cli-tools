@@ -8,68 +8,69 @@
 
 namespace ShopwareCli\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use ShopwareCli\Config;
 use ShopwareCli\ConfigFileCollector;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
-    public function test_it_can_be_created()
+    public function test_it_can_be_created(): void
     {
         $config = new Config(new ConfigFileCollectorDummy());
-        $this->assertInstanceOf(Config::class, $config);
+        static::assertInstanceOf(Config::class, $config);
     }
 
-    public function test_it_should_create_config_from_single_file()
+    public function test_it_should_create_config_from_single_file(): void
     {
         $config = new Config(new SingleConfigFileCollectorMock());
 
-        $this->assertTrue($config->offsetExists('test'));
-        $this->assertEquals(
+        static::assertTrue($config->offsetExists('test'));
+        static::assertEquals(
             ['some_config' => 'some_value'],
             $config->offsetGet('test')
         );
     }
 
-    public function test_it_should_create_config_from_multiple_files()
+    public function test_it_should_create_config_from_multiple_files(): void
     {
         $config = new Config(new MultiConfigFileCollectorMock());
 
-        $this->assertEquals(
+        static::assertEquals(
             ['some_config1' => 'some_value1'],
             $config->offsetGet('config1')
         );
-        $this->assertEquals(
+        static::assertEquals(
             ['some_config2' => 'some_value2'],
             $config->offsetGet('config2')
         );
     }
 
-    public function test_it_should_override_first_config_file()
+    public function test_it_should_override_first_config_file(): void
     {
         $config = new Config(new OverrideConfigFileCollectorMock());
 
-        $this->assertFileExists(__DIR__ . '/_fixtures/override_config1.yml');
-        $this->assertEquals(
+        static::assertFileExists(__DIR__ . '/_fixtures/override_config1.yml');
+        static::assertEquals(
             ['some_config' => 'override'],
             $config->offsetGet('config')
         );
     }
 
-    public function test_it_should_merge_config_files()
+    public function test_it_should_merge_config_files(): void
     {
         $config = new Config(new MergeConfigFileCollectorMock());
 
-        $this->assertEquals(
+        static::assertEquals(
             ['some_config' => 'some_value', 'merged_config' => 'merged_value'],
             $config->offsetGet('config')
         );
     }
 
-    public function test_it_should_replace_and_merge_configs_recursive()
+    public function test_it_should_replace_and_merge_configs_recursive(): void
     {
         $config = new Config(new ExtendConfigFileCollectorMock());
 
-        $this->assertEquals([
+        static::assertEquals([
             'some_config' => 'override',
             'extend_config' => 'extend',
             'recursive' => [
@@ -88,7 +89,7 @@ class ConfigFileCollectorDummy extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [];
     }
@@ -100,7 +101,7 @@ class SingleConfigFileCollectorMock extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [
             __DIR__ . '/_fixtures/single_config.yml',
@@ -114,7 +115,7 @@ class MultiConfigFileCollectorMock extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [
             __DIR__ . '/_fixtures/multi_config1.yml',
@@ -129,7 +130,7 @@ class OverrideConfigFileCollectorMock extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [
             __DIR__ . '/_fixtures/override_config1.yml',
@@ -144,7 +145,7 @@ class MergeConfigFileCollectorMock extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [
             __DIR__ . '/_fixtures/merge_config1.yml',
@@ -159,7 +160,7 @@ class ExtendConfigFileCollectorMock extends ConfigFileCollector
     {
     }
 
-    public function collectConfigFiles()
+    public function collectConfigFiles(): array
     {
         return [
             __DIR__ . '/_fixtures/extend_config1.yml',

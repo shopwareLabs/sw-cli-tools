@@ -14,12 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The BaseCommand takes care of the container
- *
- * Class BaseCommand
  */
 abstract class BaseCommand extends Command implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**
@@ -29,7 +29,7 @@ abstract class BaseCommand extends Command implements ContainerAwareInterface
      *
      * @api
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

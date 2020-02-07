@@ -24,8 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * Also you can implement the interface RepositoryAwareExtension if you want to provide own repositories like
  * e.g. github
- *
- * Class ExtensionManager
  */
 class ExtensionManager
 {
@@ -39,9 +37,6 @@ class ExtensionManager
      */
     private $autoLoader;
 
-    /**
-     * @param ClassLoader $autoLoader
-     */
     public function __construct(ClassLoader $autoLoader)
     {
         $this->autoLoader = $autoLoader;
@@ -50,15 +45,13 @@ class ExtensionManager
     /**
      * Read all available plugins
      *
-     * @param $extensionDirs
-     *
      * @throws \RuntimeException
      */
-    public function discoverExtensions($extensionDirs)
+    public function discoverExtensions($extensionDirs): void
     {
         // iterate all plugin dirs (e.g. ~/.config/sw-cli-tools/extensions and 'Extensions' in the sw-cli-tools directory /src/
         foreach ($extensionDirs as $extensionDir) {
-            /** @var $vendorPath \DirectoryIterator */
+            /** @var \DirectoryIterator $vendorPath */
             foreach (new \DirectoryIterator($extensionDir) as $vendorPath) {
                 if (!$this->isValidExtensionDir($vendorPath)) {
                     continue;
@@ -74,23 +67,17 @@ class ExtensionManager
     /**
      * Instantiates a extension
      *
-     * @param $className
-     *
      * @return object
      */
     public function bootstrapExtension($className)
     {
-        $extension = new $className();
-
-        return $extension;
+        return new $className();
     }
 
     /**
      * Inject the di container into the extension
-     *
-     * @param ContainerBuilder $container
      */
-    public function injectContainer(ContainerBuilder $container)
+    public function injectContainer(ContainerBuilder $container): void
     {
         foreach ($this->extensions as $extension) {
             if ($extension instanceof ContainerAwareExtension) {
@@ -104,15 +91,13 @@ class ExtensionManager
      *
      * @return object[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->extensions;
     }
 
     /**
      * Returns the plugin queried by name
-     *
-     * @param $name
      *
      * @return object
      */
@@ -127,7 +112,7 @@ class ExtensionManager
      * @param string $name
      * @param object $class
      */
-    public function setExtension($name, $class)
+    public function setExtension($name, $class): void
     {
         $this->extensions[$name] = $class;
     }
@@ -138,9 +123,9 @@ class ExtensionManager
      *
      * @throws \RuntimeException
      */
-    private function discoverVendorFolder($vendorPath, $vendorName)
+    private function discoverVendorFolder($vendorPath, $vendorName): void
     {
-        /** @var $extensionPath \DirectoryIterator */
+        /** @var \DirectoryIterator $extensionPath */
         foreach (new \DirectoryIterator($vendorPath) as $extensionPath) {
             if (!$this->isValidExtensionDir($extensionPath) || $extensionPath->getBasename() === 'vendor') {
                 continue;
@@ -157,16 +142,11 @@ class ExtensionManager
         }
     }
 
-    /**
-     * @param \DirectoryIterator $vendorPath
-     *
-     * @return bool
-     */
-    private function isValidExtensionDir(\DirectoryIterator $vendorPath)
+    private function isValidExtensionDir(\DirectoryIterator $vendorPath): bool
     {
         return $vendorPath->isDir()
             && !$vendorPath->isDot()
-            && stripos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
+            && strpos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
     }
 
     /**
@@ -175,7 +155,7 @@ class ExtensionManager
      * @param string $path
      * @param string $namespace
      */
-    private function registerExtensionNamespace($path, $namespace)
+    private function registerExtensionNamespace($path, $namespace): void
     {
         $namespace = rtrim($namespace, '\\') . '\\';
         $this->autoLoader->addPsr4($namespace, $path);

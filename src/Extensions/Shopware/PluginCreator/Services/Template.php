@@ -23,7 +23,7 @@ class Template
      *
      * @param string $path
      */
-    public function setTemplatePath($path)
+    public function setTemplatePath($path): void
     {
         $this->_path = rtrim($path, '/') . '/';
     }
@@ -32,36 +32,29 @@ class Template
      * Assign a variable to the template.
      *
      * @param string $name
-     * @param $value
      */
-    public function assign($name, $value)
+    public function assign($name, $value): void
     {
         $this->_templateVars[$name] = $value;
     }
 
     /**
      * Render the given template and return the result
-     *
-     * @param $_template
-     *
-     * @return string
      */
-    public function fetch($_template)
+    public function fetch($_template): string
     {
         return $this->doRender($_template, true);
     }
 
     /**
      * Render the given template and return the result
-     *
-     * @param $_template
      */
-    public function display($_template)
+    public function display($_template): void
     {
         $this->doRender($_template);
     }
 
-    public function errorReporter($severity, $message, $filename, $lineno)
+    public function errorReporter($severity, $message, $filename, $lineno): void
     {
         ob_clean();
         throw new \ErrorException($message . ': ' . $filename . ', line ' . $lineno, 0, $severity, $filename, $lineno);
@@ -73,12 +66,11 @@ class Template
      * While rendering the template, any notice / warning will result in an exception, mainly to avoid the generation
      * of plugins with notices inside. So be strict here and switch back to default error reporting mode after that
      *
-     * @param $_template
      * @param bool $return
      *
      * @return string
      */
-    private function doRender($_template, $return = false)
+    private function doRender($_template, $return = false): ?string
     {
         // Extract the template vars into the current scope.
         if ($this->_templateVars) {

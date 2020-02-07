@@ -8,32 +8,35 @@
 
 namespace ShopwareCli\Tests\Functional\ConfigFileTest;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use ShopwareCli\ConfigFileCollector;
+use ShopwareCli\Services\PathProvider\PathProvider;
 
-class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
+class ConfigFileCollectorTest extends TestCase
 {
-    public function testSome()
+    public function testSome(): void
     {
         $testDir = __DIR__ . '/_fixtures';
 
-        $pathProvider = $this->getMockBuilder('ShopwareCli\Services\PathProvider\PathProvider')
+        /** @var PathProvider|MockObject $pathProvider */
+        $pathProvider = $this->getMockBuilder(PathProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $pathProvider->expects($this->once())
+        $pathProvider->expects(static::once())
             ->method('getConfigPath')
-            ->will($this->returnValue(__DIR__));
+            ->willReturn(__DIR__);
 
-        $pathProvider->expects($this->once())
+        $pathProvider->expects(static::once())
             ->method('getExtensionPath')
-            ->will($this->returnValue($testDir));
+            ->willReturn($testDir);
 
-        $pathProvider->expects($this->once())
+        $pathProvider->expects(static::once())
             ->method('getCliToolPath')
-            ->will($this->returnValue($testDir));
+            ->willReturn($testDir);
 
-        $SUT = new ConfigFileCollector($pathProvider);
-        $result = $SUT->collectConfigFiles();
+        $result = (new ConfigFileCollector($pathProvider))->collectConfigFiles();
 
         $expectedResults = [
             $testDir . '/VendorA/ExtB/config.yaml',
@@ -42,7 +45,7 @@ class ConfigFileCollectorTest extends \PHPUnit_Framework_TestCase
         ];
 
         foreach ($expectedResults as $expectedResult) {
-            $this->assertContains($expectedResult, $result);
+            static::assertContains($expectedResult, $result);
         }
     }
 }

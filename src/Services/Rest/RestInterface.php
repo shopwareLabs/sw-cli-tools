@@ -10,8 +10,6 @@ namespace ShopwareCli\Services\Rest;
 
 /**
  * General interfaces for REST classes
- *
- * Class RestInterface
  */
 interface RestInterface
 {

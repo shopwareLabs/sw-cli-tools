@@ -10,27 +10,19 @@ namespace Shopware\Install\Services;
 
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Services\ProcessExecutor;
-use ShopwareCli\Utilities;
 
 /**
  * Sets up the database by creating the database itself and running the build scripts to populate the database
- *
- * Class Database
  */
 class Database
 {
-    /**
-     * @var Utilities
-     */
-    private $utilities;
-
     /**
      * @var \PDO
      */
     private $connection;
 
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
 
@@ -39,38 +31,32 @@ class Database
      */
     private $processExecutor;
 
-    /**
-     * @param Utilities       $utilities
-     * @param IoService       $ioService
-     * @param ProcessExecutor $processExecutor
-     */
-    public function __construct(Utilities $utilities, IoService $ioService, ProcessExecutor $processExecutor)
+    public function __construct(IoService $ioService, ProcessExecutor $processExecutor)
     {
-        $this->utilities = $utilities;
         $this->ioService = $ioService;
         $this->processExecutor = $processExecutor;
     }
 
-    public function setup($user, $password, $name, $host, $port = 3306)
+    public function setup($user, $password, $name, $host, $port = 3306): void
     {
         $this->ioService->writeln("<info>Creating database $name</info>");
 
-        $this->createConnection($host, $user, $password, $port)->query("CREATE DATABASE IF NOT EXISTS `{$name}`;");
-        $this->getConnection()->query("use `{$name}`;");
+        $this->createConnection($host, $user, $password, $port)->exec("CREATE DATABASE IF NOT EXISTS `{$name}`;");
+        $this->getConnection()->exec("use `{$name}`;");
     }
 
     /**
      * Will install the deltas to setup a shop from a release file.
      *
-     * todo: The way the sql deltas are splitted should be improved
+     * todo: The way the sql deltas are split should be improved
      * todo: Support the "en" delta
      *
      * @param string $installDir
      */
-    public function importReleaseInstallDeltas($installDir)
+    public function importReleaseInstallDeltas($installDir): void
     {
         $this->getConnection()->exec(
-<<<'EOF'
+            <<<'EOF'
             SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
             SET time_zone = "+00:00";
             SET FOREIGN_KEY_CHECKS = 0;
@@ -90,7 +76,7 @@ EOF
         $this->importBaseDelta($installDir);
 
         $this->getConnection()->exec(
-<<<'EOF'
+            <<<'EOF'
            SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
            SET time_zone = "+00:00";
            SET @locale_de_DE = (SELECT id FROM s_core_locales WHERE locale = "de_DE");
@@ -101,10 +87,7 @@ EOF
         $this->importSnippetDeltas($installDir);
     }
 
-    /**
-     * @param $installDir
-     */
-    public function runBuildScripts($installDir)
+    public function runBuildScripts($installDir): void
     {
         $buildXml = $installDir . '/build/build.xml';
         if (!file_exists($buildXml)) {
@@ -131,10 +114,8 @@ EOF
      * @param string $password
      *
      * @throws \RuntimeException
-     *
-     * @return bool
      */
-    public function createAdmin($user, $name, $mail, $language, $password)
+    public function createAdmin($user, $name, $mail, $language, $password): bool
     {
         $this->ioService->writeln("<info>Creating admin user $user</info>");
 
@@ -142,8 +123,7 @@ EOF
         $fetchLanguageId->execute([$language]);
         $fetchLanguageId = $fetchLanguageId->fetchColumn();
 
-        $authTableVersion = $this->getConnection()->prepare('SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411');
-        $authTableVersion->execute();
+        $authTableVersion = $this->getConnection()->query('SELECT COUNT(*) as count FROM s_schema_version WHERE version = 411');
         $authTableVersion = $authTableVersion->fetchColumn();
 
         if (!$fetchLanguageId) {
@@ -151,7 +131,7 @@ EOF
         }
 
         // Drop previous inserted admins
-        $this->getConnection()->query('DELETE FROM s_core_auth');
+        $this->getConnection()->exec('DELETE FROM s_core_auth');
 
         // Insert new admin
         if ($authTableVersion) {
@@ -182,7 +162,7 @@ EOF;
         return true;
     }
 
-    private function createConnection($host, $username, $password, $port = 3306)
+    private function createConnection($host, $username, $password, $port = 3306): \PDO
     {
         $this->connection = new \PDO("mysql:host={$host};charset=utf8;port={$port}", $username, $password);
         $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -190,7 +170,7 @@ EOF;
         return $this->connection;
     }
 
-    private function getConnection()
+    private function getConnection(): \PDO
     {
         if (!$this->connection) {
             throw new \RuntimeException('Connection was not created');
@@ -203,10 +183,8 @@ EOF;
      * Salt password for SW backend user
      *
      * @param string $password
-     *
-     * @return string
      */
-    private function saltPassword($password)
+    private function saltPassword($password): string
     {
         return md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . md5($password));
     }
@@ -216,7 +194,7 @@ EOF;
      *
      * @throws \RuntimeException
      */
-    private function importBaseDelta($installDir)
+    private function importBaseDelta($installDir): void
     {
         $this->ioService->writeln('<info>Importing main delta</info>');
 
@@ -231,9 +209,9 @@ EOF;
 
         $path = file_exists($path42) ? $path42 : $pathLatest;
 
-        $deltas = explode(";\n", file_get_contents($path));
-        foreach ($deltas as $delta) {
-            $this->getConnection()->exec($delta);
+        $connection = $this->getConnection();
+        foreach (explode(";\n", file_get_contents($path)) as $delta) {
+            $connection->exec($delta);
         }
     }
 
@@ -242,7 +220,7 @@ EOF;
      *
      * @throws \RuntimeException
      */
-    private function importSnippetDeltas($installDir)
+    private function importSnippetDeltas($installDir): void
     {
         $this->ioService->writeln('<info>Importing snippet delta</info>');
 
@@ -255,19 +233,19 @@ EOF;
             return;
         }
 
-        $deltas = explode(";\n", file_get_contents($snippetsFilePath));
-        foreach ($deltas as $delta) {
-            $this->getConnection()->exec($delta);
+        $connection = $this->getConnection();
+        foreach (explode(";\n", file_get_contents($snippetsFilePath)) as $delta) {
+            $connection->exec($delta);
         }
     }
 
-    private function getInstallDataFolder($installDir)
+    private function getInstallDataFolder($installDir): string
     {
         $path42 = "{$installDir}/install/assets/sql";
         $pathLatest = "{$installDir}/recovery/install/data/sql";
 
         if (!file_exists($path42) && !file_exists($pathLatest)) {
-            return;
+            throw new \RuntimeException('install path not found');
         }
 
         return file_exists($path42) ? $path42 : $pathLatest;

@@ -18,17 +18,11 @@ class DirectoryFilterIterator extends \FilterIterator
         return $this->isValidDir($this->current());
     }
 
-    /**
-     * @param \DirectoryIterator $fileInfo
-     *
-     * @return bool
-     */
-    private function isValidDir(\DirectoryIterator $fileInfo)
+    private function isValidDir(\DirectoryIterator $fileInfo): bool
     {
-        return
-            $fileInfo->isDir() &&
-            !$fileInfo->isDot() &&
+        return $fileInfo->isDir()
+            && !$fileInfo->isDot()
             // skip dot directories e.g. .git
-            stripos($fileInfo->getBasename(), '.') !== 0;
+            && strpos($fileInfo->getBasename(), '.') !== 0;
     }
 }

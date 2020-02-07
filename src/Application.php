@@ -10,7 +10,10 @@ namespace ShopwareCli;
 
 use Composer\Autoload\ClassLoader;
 use ShopwareCli\Application\DependencyInjection;
+use ShopwareCli\Application\ExtensionManager;
 use ShopwareCli\Services\PathProvider\PathProvider;
+use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,16 +22,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Main application of the cli tools
- *
- * Class Application
  */
-class Application extends \Symfony\Component\Console\Application
+class Application extends SymfonyApplication
 {
-    const NAME = 'sw-cli-tools';
-    const VERSION = '@package_version@';
+    public const NAME = 'sw-cli-tools';
+    public const VERSION = '@package_version@';
 
     /**
-     * @var \Composer\Autoload\ClassLoader
+     * @var ClassLoader
      */
     private $loader;
 
@@ -37,16 +38,13 @@ class Application extends \Symfony\Component\Console\Application
      */
     private $container;
 
-    /**
-     * @param ClassLoader $loader
-     */
     public function __construct(ClassLoader $loader)
     {
         $this->loader = $loader;
 
         parent::__construct(static::NAME, static::VERSION);
 
-        $this->container = DependencyInjection::createContainer(dirname(__DIR__));
+        $this->container = DependencyInjection::createContainer(\dirname(__DIR__));
     }
 
     /**
@@ -70,10 +68,7 @@ class Application extends \Symfony\Component\Console\Application
         return parent::doRun($input, $output);
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
@@ -81,7 +76,7 @@ class Application extends \Symfony\Component\Console\Application
     /**
      * Add global "--no-extensions" option
      *
-     * @return \Symfony\Component\Console\Input\InputDefinition
+     * @return InputDefinition
      */
     protected function getDefaultInputDefinition()
     {
@@ -95,13 +90,8 @@ class Application extends \Symfony\Component\Console\Application
 
     /**
      * Creates the container and sets some services which are only synthetic in the container
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return ContainerBuilder
      */
-    protected function createContainer(InputInterface $input, OutputInterface $output)
+    protected function createContainer(InputInterface $input, OutputInterface $output): ContainerBuilder
     {
         $questionHelper = $this->getHelperSet()->get('question');
 
@@ -119,17 +109,18 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @throws \RuntimeException
      */
-    protected function checkDirectories()
+    protected function checkDirectories(): void
     {
-        /** @var $pathProvider PathProvider */
+        /** @var PathProvider $pathProvider */
         $pathProvider = $this->container->get('path_provider');
-
-        foreach ([
+        $paths = [
             $pathProvider->getAssetsPath(),
             $pathProvider->getCachePath(),
             $pathProvider->getExtensionPath(),
             $pathProvider->getConfigPath(),
-         ] as $dir) {
+        ];
+
+        foreach ($paths as $dir) {
             if (is_dir($dir)) {
                 continue;
             }
@@ -148,7 +139,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @param bool $noExtensions
      */
-    protected function loadExtensions($noExtensions)
+    protected function loadExtensions($noExtensions): void
     {
         $paths = [$this->container->get('path_provider')->getCliToolPath() . '/src/Extensions'];
 
@@ -156,7 +147,10 @@ class Application extends \Symfony\Component\Console\Application
             $paths[] = $this->container->get('path_provider')->getExtensionPath();
         }
 
-        $this->container->get('extension_manager')->discoverExtensions($paths);
-        $this->container->get('extension_manager')->injectContainer($this->container);
+        /** @var ExtensionManager $extensionManager */
+        $extensionManager = $this->container->get('extension_manager');
+
+        $extensionManager->discoverExtensions($paths);
+        $extensionManager->injectContainer($this->container);
     }
 }

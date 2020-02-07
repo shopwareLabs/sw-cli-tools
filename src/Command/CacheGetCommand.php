@@ -14,15 +14,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Read the internal CLI cache. Used for e.g. plugin repos
- *
- * Class CacheGetCommand
  */
 class CacheGetCommand extends BaseCommand
 {
     protected $utilities;
+
     protected $zipDir;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cli:cache:get')
             ->setDescription('Read the cache')
@@ -33,7 +32,7 @@ class CacheGetCommand extends BaseCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $keys = $input->getArgument('keys');
 
@@ -42,12 +41,14 @@ class CacheGetCommand extends BaseCommand
                 $output->writeln($key);
             }
 
-            return;
+            return 0;
         }
 
         foreach ($keys as $key) {
             $output->writeln("<question>{$key}</question>");
             $output->writeln($this->container->get('cache')->read($key));
         }
+
+        return 0;
     }
 }

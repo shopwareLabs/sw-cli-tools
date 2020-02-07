@@ -13,8 +13,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * The checkout service will checkout a given repo with a given branch to a given destination
- *
- * Class Checkout
  */
 class Checkout
 {
@@ -28,10 +26,6 @@ class Checkout
      */
     private $gitUtil;
 
-    /**
-     * @param GitUtil   $gitUtil
-     * @param IoService $ioService
-     */
     public function __construct(GitUtil $gitUtil, IoService $ioService)
     {
         $this->ioService = $ioService;
@@ -43,7 +37,7 @@ class Checkout
      * @param string $branch
      * @param string $destination
      */
-    public function checkout($repo, $branch, $destination)
+    public function checkout($repo, $branch, $destination): void
     {
         $this->ioService->writeln("<info>Checkout out $repo to $destination</info>");
 

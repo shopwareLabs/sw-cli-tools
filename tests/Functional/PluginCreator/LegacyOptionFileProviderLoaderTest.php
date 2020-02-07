@@ -6,30 +6,27 @@
  * file that was distributed with this source code.
  */
 
-namespace ShopwareCli\Tests\Functional\PluginCreater;
+namespace ShopwareCli\Tests\Functional\PluginCreator;
 
+use PHPUnit\Framework\TestCase;
 use Shopware\PluginCreator\Services\TemplateFileProvider\LegacyOptionFileProviderLoader;
 
-class LegacyOptionFileProviderLoaderTest extends \PHPUnit_Framework_TestCase
+class LegacyOptionFileProviderLoaderTest extends TestCase
 {
-    public function testLegacyLoad()
+    public function testLegacyLoad(): void
     {
         $expectedProviderAmount = 11;
         $isLegacy = true;
-        $loader = new LegacyOptionFileProviderLoader($isLegacy);
+        $result = (new LegacyOptionFileProviderLoader($isLegacy))->load();
 
-        $result = $loader->load();
-
-        $this->assertEquals($expectedProviderAmount, count($result));
+        static::assertCount($expectedProviderAmount, $result);
     }
 
-    public function testCurrentLoad()
+    public function testCurrentLoad(): void
     {
         $expectedProviderAmount = 11;
         $isLegacy = false;
-        $loader = new LegacyOptionFileProviderLoader($isLegacy);
-
-        $result = $loader->load();
-        $this->assertEquals($expectedProviderAmount, count($result));
+        $result = (new LegacyOptionFileProviderLoader($isLegacy))->load();
+        static::assertCount($expectedProviderAmount, $result);
     }
 }

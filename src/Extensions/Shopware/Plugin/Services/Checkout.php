@@ -15,13 +15,11 @@ use ShopwareCli\Utilities;
 
 /**
  * Checkouts a given plugin
- *
- * Class Checkout
  */
 class Checkout
 {
     /**
-     * @var \ShopwareCli\Utilities
+     * @var Utilities
      */
     protected $utilities;
 
@@ -31,15 +29,10 @@ class Checkout
     private $ioService;
 
     /**
-     * @var \ShopwareCli\Services\GitUtil
+     * @var GitUtil
      */
     private $gitUtil;
 
-    /**
-     * @param Utilities $utilities
-     * @param GitUtil   $gitUtil
-     * @param IoService $ioService
-     */
     public function __construct(Utilities $utilities, GitUtil $gitUtil, IoService $ioService)
     {
         $this->utilities = $utilities;
@@ -48,12 +41,11 @@ class Checkout
     }
 
     /**
-     * @param Plugin $plugin
      * @param string $path
      * @param string $branch
      * @param bool   $useHttp
      */
-    public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false)
+    public function checkout(Plugin $plugin, $path, $branch = null, $useHttp = false): void
     {
         if ($useHttp) {
             $cloneUrl = $plugin->cloneUrlHttp;
@@ -84,7 +76,7 @@ class Checkout
      * @param string $absPath
      * @param string $pluginName
      */
-    private function updatePlugin($branch, $absPath, $pluginName)
+    private function updatePlugin($branch, $absPath, $pluginName): void
     {
         $this->ioService->writeln('Plugin is already installed');
         $this->utilities->changeDir($absPath);
@@ -122,7 +114,7 @@ class Checkout
      * @param string $absPath
      * @param string $pluginName
      */
-    private function installPlugin($branch, $cloneUrl, $absPath, $pluginName)
+    private function installPlugin($branch, $cloneUrl, $absPath, $pluginName): void
     {
         $this->gitUtil->run("clone  --progress $cloneUrl $absPath");
         if ($branch) {

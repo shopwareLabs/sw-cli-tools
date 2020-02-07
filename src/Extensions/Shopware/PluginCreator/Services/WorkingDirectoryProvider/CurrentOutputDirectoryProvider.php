@@ -12,7 +12,7 @@ use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\RootDe
 
 class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
 {
-    const CURRENT_PLUGIN_DIR = 'custom/plugins';
+    private const CURRENT_PLUGIN_DIR = 'custom/plugins';
 
     /**
      * @var RootDetectorInterface
@@ -25,8 +25,7 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
     private $name;
 
     /**
-     * @param RootDetectorInterface $rootDetector
-     * @param string                $name
+     * @param string $name
      */
     public function __construct(RootDetectorInterface $rootDetector, $name)
     {
@@ -46,10 +45,7 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
         return $this->getCwd() . '/' . $this->name . '/';
     }
 
-    /**
-     * @return string
-     */
-    private function getCwd()
+    private function getCwd(): string
     {
         return getcwd();
     }

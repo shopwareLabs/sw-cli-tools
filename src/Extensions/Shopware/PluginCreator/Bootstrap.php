@@ -24,8 +24,6 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
 
     /**
      * Return an array with instances of your console commands here
-     *
-     * @return mixed
      */
     public function getConsoleCommands()
     {
