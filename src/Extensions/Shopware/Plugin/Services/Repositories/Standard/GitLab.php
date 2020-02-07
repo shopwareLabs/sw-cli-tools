@@ -18,7 +18,7 @@ class GitLab extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPluginByName($name, $exact = false)
+    public function getPluginByName($name, $exact = false): array
     {
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
@@ -33,7 +33,7 @@ class GitLab extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         echo "Reading Gitlab org {$this->name}\n";
 
@@ -47,7 +47,14 @@ class GitLab extends BaseRepository
 
         $plugins = [];
         foreach ($content as $repo) {
-            $plugins[] = $this->createPlugin($repo['ssh_url_to_repo'], $repo['http_url_to_repo'], $repo['name']);
+            $pluginName = $repo['name'];
+
+            $splitPath = explode('_', $repo['path']);
+            if (\count($splitPath) === 2) {
+                $pluginName = ucfirst($splitPath[0]) . '_' . $pluginName;
+            }
+
+            $plugins[] = $this->createPlugin($repo['ssh_url_to_repo'], $repo['http_url_to_repo'], $pluginName);
         }
 
         return $plugins;

@@ -14,15 +14,15 @@
         "dnoegel/php-xdg-base-dir": "~0.1",
         "shopwarelabs/plugin-info": "dev-master",
         "ramsey/array_column": "~1.1",
-        "fzaninotto/faker": "^1.7",
-        "guzzlehttp/guzzle": "^6.2.3",
+        "fzaninotto/faker": "^1.9.1",
+        "guzzlehttp/guzzle": "^6.5.2",
         "php-http/guzzle6-adapter": "^1.0",
         "piwik/ini": "^1.0",
-        "padraic/phar-updater": "^1.0"
+        "padraic/phar-updater": "^1.0.6"
     },
     "require-dev": {
         "ext-phar": "*",
-        "phpunit/phpunit": "^4.8.35",
+        "phpunit/phpunit": "^4.8.36",
         "friendsofphp/php-cs-fixer": "^2.2.20"
     },
     "scripts": {
