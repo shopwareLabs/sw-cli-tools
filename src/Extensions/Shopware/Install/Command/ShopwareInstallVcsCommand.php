@@ -8,6 +8,7 @@
 
 namespace Shopware\Install\Command;
 
+use Shopware\Install\Services\Install\Vcs;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,15 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallVcsCommand extends BaseCommand
 {
-    const MAIN_BRANCH = '5.6';
+    private const MAIN_BRANCH = '5.6';
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     public function interact(InputInterface $input, OutputInterface $output)
     {
-        /** @var $ioService IoService */
+        /** @var IoService $ioService */
         $ioService = $this->container->get('io_service');
 
         $branch = $this->askBranch($input, $ioService);
@@ -43,10 +40,8 @@ class ShopwareInstallVcsCommand extends BaseCommand
      * @param string $path
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    public function validateInstallDir($path)
+    public function validateInstallDir($path): string
     {
         if (is_dir($path)) {
             throw new \RuntimeException("Path '{$path}'' is not empty");
@@ -100,7 +95,7 @@ class ShopwareInstallVcsCommand extends BaseCommand
                 'If set, the demo data will not be installed'
             )
             ->setHelp(
-<<<EOF
+                <<<EOF
 The <info>%command.name%</info> sets up shopware
 EOF
             );
@@ -111,7 +106,7 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var \Shopware\Install\Services\Install\Vcs $installService */
+        /** @var Vcs $installService */
         $installService = $this->container->get('shopware_vcs_install_service');
 
         $installService->installShopware(
@@ -128,10 +123,8 @@ EOF
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
      *
      * @param string $branch
-     *
-     * @return string
      */
-    private function suggestNameFromBranch($branch)
+    private function suggestNameFromBranch($branch): string
     {
         $result = [];
         $pattern = '#sw-(?P<number>.+?)/(?P<target>.+?)/.*#i';
@@ -145,13 +138,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
-     *
-     * @return string
+     * @param string $suggestion
      */
-    private function askInstallationDir(InputInterface $input, IoService $ioService, $suggestion)
+    private function askInstallationDir(InputInterface $input, IoService $ioService, $suggestion): string
     {
         $installDir = $input->getOption('installDir');
         if (!$installDir) {
@@ -168,11 +157,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
+     * @param string $suggestion
      */
-    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion)
+    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion): void
     {
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
@@ -182,11 +169,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
+     * @param string $suggestion
      */
-    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion)
+    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion): void
     {
         $basePath = $input->getOption('basePath');
         if (!$basePath) {
@@ -195,13 +180,7 @@ EOF
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     *
-     * @return string
-     */
-    private function askBranch(InputInterface $input, IoService $ioService)
+    private function askBranch(InputInterface $input, IoService $ioService): string
     {
         $branch = $input->getOption('branch');
         if (!$branch) {

@@ -21,10 +21,8 @@ class ShopwareClearCacheCommand extends BaseCommand
      * @param string $path
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    public function validateShopwareDirectory($path)
+    public function validateShopwareDirectory($path): string
     {
         if (!$this->container->get('utilities')->isShopwareInstallation($path)) {
             throw new \RuntimeException("'$path' is not a valid shopware path");
@@ -61,7 +59,7 @@ class ShopwareClearCacheCommand extends BaseCommand
             $path = './' . $path;
         }
 
-        /** @var $shopwareInfo ShopwareInfo */
+        /** @var ShopwareInfo $shopwareInfo */
         $shopwareInfo = $this->container->get('shopware_info');
 
         /** @var ProcessExecutor $processExecutor */
@@ -69,12 +67,7 @@ class ShopwareClearCacheCommand extends BaseCommand
         $processExecutor->execute($shopwareInfo->getCacheDir($path) . '/clear_cache.sh');
     }
 
-    /**
-     * @param InputInterface $input
-     *
-     * @return string
-     */
-    private function checkPath(InputInterface $input)
+    private function checkPath(InputInterface $input): string
     {
         $shopwarePath = $input->getOption('installDir');
 

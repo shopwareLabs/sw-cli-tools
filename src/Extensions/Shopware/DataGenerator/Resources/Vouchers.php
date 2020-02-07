@@ -29,17 +29,12 @@ class Vouchers extends BaseResource
     ];
 
     /**
-     * @var LoadDataInfile
-     */
-    private $loadDataInfile;
-
-    /**
      * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
         $number = $this->config->getNumberVouchers();
-        $this->loadDataInfile = new LoadDataInfile();
+        $loadDataInfile = new LoadDataInfile();
 
         $voucherCsv = $this->writerManager->createWriter('vouchers', 'csv');
         $voucherCodeCsv = $this->writerManager->createWriter('voucher_code', 'csv');
@@ -60,12 +55,12 @@ class Vouchers extends BaseResource
             if ($isIndividual) {
                 $code = '';
             }
-            $value = mt_rand(5, 100);
+            $value = random_int(5, 100);
 
             $voucherCsv->write(
                 "{$id},Voucher #{$id},{$code},{$value},101,\N,\N,VOUCHER{$id},{$isIndividual},{$isPercental},{$numOrder},\N,auto"
             );
-            $voucherAttributeCsv->write("{$id}");
+            $voucherAttributeCsv->write((string) ($id));
 
             if ($isIndividual) {
                 for ($i = 0; $i < $this->numberOfIndividualVoucherCodes; ++$i) {
@@ -75,10 +70,10 @@ class Vouchers extends BaseResource
             }
         }
 
-        $writer->write($this->loadDataInfile->get('s_emarketing_vouchers', $voucherCsv->getFileName()));
+        $writer->write($loadDataInfile->get('s_emarketing_vouchers', $voucherCsv->getFileName()));
         $writer->write(
-            $this->loadDataInfile->get('s_emarketing_vouchers_attributes', $voucherAttributeCsv->getFileName())
+            $loadDataInfile->get('s_emarketing_vouchers_attributes', $voucherAttributeCsv->getFileName())
         );
-        $writer->write($this->loadDataInfile->get('s_emarketing_voucher_codes', $voucherCodeCsv->getFileName()));
+        $writer->write($loadDataInfile->get('s_emarketing_voucher_codes', $voucherCodeCsv->getFileName()));
     }
 }

@@ -10,9 +10,6 @@ namespace ShopwareCli\Services\ZipUtil;
 
 use ZipArchive;
 
-/**
- * Class Zip
- */
 class Zip extends Adapter
 {
     /**
@@ -28,14 +25,14 @@ class Zip extends Adapter
      */
     public function __construct($fileName = null, $flags = null)
     {
-        if (!extension_loaded('zip')) {
-            throw new \Exception('The PHP extension "zip" is not loaded.');
+        if (!\extension_loaded('zip')) {
+            throw new \RuntimeException('The PHP extension "zip" is not loaded.');
         }
 
         $this->stream = new ZipArchive();
 
-        if ($fileName != null) {
-            if (true !== ($retval = $this->stream->open($fileName, $flags))) {
+        if ($fileName !== null) {
+            if (($retval = $this->stream->open($fileName, $flags)) !== true) {
                 throw new \RuntimeException($this->getErrorMessage($retval, $fileName), $retval);
             }
             $this->position = 0;
@@ -64,7 +61,7 @@ class Zip extends Adapter
     /**
      * @param string $name
      *
-     * @return mixed
+     * @return false|string
      */
     public function getContents($name)
     {
@@ -72,19 +69,14 @@ class Zip extends Adapter
     }
 
     /**
-     * @param $position
-     *
-     * @return mixed
+     * @return array|false
      */
     public function getEntry($position)
     {
         return $this->stream->statIndex($position);
     }
 
-    /**
-     * @return bool
-     */
-    public function close()
+    public function close(): bool
     {
         return $this->stream->close();
     }
@@ -97,7 +89,7 @@ class Zip extends Adapter
      *
      * @return string
      */
-    protected function getErrorMessage($retval, $file)
+    protected function getErrorMessage($retval, $file): ?string
     {
         switch ($retval) {
             case ZipArchive::ER_EXISTS:

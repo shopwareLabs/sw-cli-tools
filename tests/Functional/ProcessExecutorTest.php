@@ -8,39 +8,39 @@
 
 namespace ShopwareCli\Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
 use ShopwareCli\Services\ProcessExecutor;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
-class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
+class ProcessExecutorTest extends TestCase
 {
-    public function testCliToolGateway()
+    public function testCliToolGateway(): void
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
         $exitCode = $executor->execute('true');
-        $this->assertEquals(0, $exitCode);
-        $this->assertEquals('', $output->fetch());
+        static::assertEquals(0, $exitCode);
+        static::assertEquals('', $output->fetch());
 
         $exitCode = $executor->execute('echo foo');
-        $this->assertEquals(0, $exitCode);
-        $this->assertEquals("foo\n", $output->fetch());
+        static::assertEquals(0, $exitCode);
+        static::assertEquals("foo\n", $output->fetch());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Command failed. Error Output:
-     * @expectedExceptionCode 1
-     */
-    public function testFailedCommand()
+    public function testFailedCommand(): void
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
 
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Command failed. Error Output:');
+        $this->expectExceptionCode(1);
         $executor->execute('false');
     }
 
-    public function testFailedCommand2()
+    public function testFailedCommand2(): void
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
@@ -49,17 +49,17 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
         try {
             $executor->execute('LC_ALL=C ls /no-such-file');
         } catch (\Exception $e) {
-            $this->assertEquals(2, $e->getCode());
-            $this->assertContains($expectedOutput, $e->getMessage());
-            $this->assertContains($expectedOutput, $output->fetch());
+            static::assertEquals(2, $e->getCode());
+            static::assertStringContainsString($expectedOutput, $e->getMessage());
+            static::assertStringContainsString($expectedOutput, $output->fetch());
 
             return;
         }
 
-        $this->fail('Executor should throw exception on failed command');
+        static::fail('Executor should throw exception on failed command');
     }
 
-    public function testAllowFailingCommand()
+    public function testAllowFailingCommand(): void
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 60);
@@ -68,20 +68,20 @@ class ProcessExecutorTest extends \PHPUnit_Framework_TestCase
 
         $exitCode = $executor->execute('LC_ALL=C ls /no-such-file', null, true);
 
-        $this->assertEquals(2, $exitCode);
-        $this->assertContains($expectedOutput, $output->fetch());
+        static::assertEquals(2, $exitCode);
+        static::assertStringContainsString($expectedOutput, $output->fetch());
     }
 
     /**
      * @group slow
-     * @expectedException \Symfony\Component\Process\Exception\ProcessTimedOutException
-     * @expectedExceptionMessage The process "sleep 2" exceeded the timeout of 1 seconds.
      */
-    public function testTimeout()
+    public function testTimeout(): void
     {
         $output = new BufferedOutput();
         $executor = new ProcessExecutor($output, 1);
 
+        $this->expectException(ProcessTimedOutException::class);
+        $this->expectExceptionMessage('The process "sleep 2" exceeded the timeout of 1 seconds.');
         $executor->execute('sleep 2', null, true);
     }
 }

@@ -11,7 +11,6 @@ namespace Shopware\Plugin\Command;
 use Shopware\Plugin\Services\ConsoleInteraction\PluginColumnRenderer;
 use Shopware\Plugin\Services\ConsoleInteraction\PluginOperationManager;
 use Shopware\Plugin\Services\Install;
-use Shopware\Plugin\Struct\Plugin;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\GitUtil;
 use ShopwareCli\Services\IoService;
@@ -24,8 +23,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Install a plugin
- *
- * Class InstallCommand
  */
 class InstallCommand extends BaseCommand
 {
@@ -35,10 +32,9 @@ class InstallCommand extends BaseCommand
     private $shopwarePath;
 
     /**
-     * @param $plugin
-     * @param $params
+     * @param mixed $params
      */
-    public function doInstall($plugin, &$params)
+    public function doInstall($plugin, &$params): void
     {
         if ($params['checkout']) {
             $this->checkout($plugin, $params);
@@ -135,20 +131,14 @@ class InstallCommand extends BaseCommand
         $interactionManager->operationLoop([$this, 'doInstall'], $params);
     }
 
-    /**
-     * @return string
-     */
-    private function getShopwarePath()
+    private function getShopwarePath(): string
     {
         $this->getUtilities()->changeDir($this->shopwarePath);
 
         return $this->shopwarePath;
     }
 
-    /**
-     * @return bool
-     */
-    private function askActivatePluginQuestion()
+    private function askActivatePluginQuestion(): bool
     {
         $question = new ConfirmationQuestion(
             '<question>Activate plugins after checkout?</question> <comment>[Y/n]</comment> ',
@@ -159,10 +149,9 @@ class InstallCommand extends BaseCommand
     }
 
     /**
-     * @param $plugin
-     * @param $params
+     * @param mixed $params
      */
-    private function install($plugin, &$params)
+    private function install($plugin, &$params): void
     {
         if (!isset($params['activate'])) {
             $params['activate'] = $this->askActivatePluginQuestion();
@@ -180,10 +169,10 @@ class InstallCommand extends BaseCommand
     }
 
     /**
-     * @param $plugin Plugin
-     * @param $params
+     * @param mixed $plugin Plugin
+     * @param mixed $params
      */
-    private function checkout($plugin, &$params)
+    private function checkout($plugin, &$params): void
     {
         $url = $params['useHttp'] ? $plugin->cloneUrlHttp : $plugin->cloneUrlSsh;
 
@@ -204,18 +193,12 @@ class InstallCommand extends BaseCommand
         );
     }
 
-    /**
-     * @return IoService
-     */
-    private function getIOService()
+    private function getIOService(): IoService
     {
         return $this->container->get('io_service');
     }
 
-    /**
-     * @return Utilities
-     */
-    private function getUtilities()
+    private function getUtilities(): Utilities
     {
         return $this->container->get('utilities');
     }

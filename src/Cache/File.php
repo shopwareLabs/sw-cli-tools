@@ -12,28 +12,30 @@ use ShopwareCli\Services\PathProvider\PathProvider;
 
 class File implements CacheInterface
 {
-    protected $path;
-    protected $info;
     /**
-     * @var \ShopwareCli\Services\PathProvider\PathProvider
+     * @var string
      */
-    private $pathProvider;
+    protected $path;
+
+    /**
+     * @var array|string|bool|null
+     */
+    protected $info;
 
     public function __construct(PathProvider $pathProvider)
     {
-        $this->pathProvider = $pathProvider;
         $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
 
         $this->info = $this->readTable();
     }
 
-    public function write($key, $data, $valid)
+    public function write($key, $data, $valid): bool
     {
         $file = $this->path . $key;
         $success = file_put_contents($file, $data);
 
         $this->info[$key] = ['valid' => $valid];
-        $this->writeTable($key, $valid);
+        $this->writeTable();
 
         return $success !== false;
     }
@@ -49,7 +51,7 @@ class File implements CacheInterface
         return false;
     }
 
-    public function delete($key)
+    public function delete($key): void
     {
         unlink($this->path . $key);
         $this->writeTable();
@@ -57,10 +59,8 @@ class File implements CacheInterface
 
     /**
      * @param string $key
-     *
-     * @return bool
      */
-    public function exists($key)
+    public function exists($key): bool
     {
         $file = $this->path . $key;
 
@@ -73,7 +73,7 @@ class File implements CacheInterface
         return time() - filectime($file) < $validTime;
     }
 
-    public function clear()
+    public function clear(): void
     {
         foreach ($this->getKeys() as $key) {
             unlink($this->path . $key);
@@ -82,12 +82,12 @@ class File implements CacheInterface
         $this->writeTable();
     }
 
-    public function getKeys()
+    public function getKeys(): array
     {
         return array_keys($this->info);
     }
 
-    private function getInfoFile()
+    private function getInfoFile(): string
     {
         return $this->path . 'info.json';
     }
@@ -110,7 +110,7 @@ class File implements CacheInterface
         return $content;
     }
 
-    private function writeTable()
+    private function writeTable(): void
     {
         $file = $this->getInfoFile();
 

@@ -8,21 +8,15 @@
 
 namespace ShopwareCli\Services;
 
-/**
- * Class FileDownloader
- */
 class StreamFileDownloader implements FileDownloader
 {
-    const BLOCKSIZE = 8192;
+    private const BLOCKSIZE = 8192;
 
     /**
      * @var IoService
      */
     private $ioService;
 
-    /**
-     * @param IoService $ioService
-     */
     public function __construct(IoService $ioService)
     {
         $this->ioService = $ioService;
@@ -36,11 +30,11 @@ class StreamFileDownloader implements FileDownloader
      */
     public function download($sourceUrl, $destination)
     {
-        if (false === $readHandle = fopen($sourceUrl, 'rb')) {
+        if ($readHandle = fopen($sourceUrl, 'rb') === false) {
             throw new \RuntimeException(sprintf("Could not open URL '%s'.", $sourceUrl));
         }
 
-        if (false === $writeHandle = fopen($destination, 'wb')) {
+        if ($writeHandle = fopen($destination, 'wb') === false) {
             throw new \RuntimeException(sprintf('Could not write file: %s.', $destination));
         }
 
@@ -56,7 +50,7 @@ class StreamFileDownloader implements FileDownloader
 
         while (!feof($readHandle)) {
             $currentSize += fwrite($writeHandle, fread($readHandle, self::BLOCKSIZE));
-            $progress->setCurrent($currentSize / 1024);
+            $progress->setProgress($currentSize / 1024);
         }
         $progress->finish();
 
@@ -68,17 +62,15 @@ class StreamFileDownloader implements FileDownloader
 
     /**
      * @param resource $readHandle
-     *
-     * @return int
      */
-    private function getContentLengthFromStream($readHandle)
+    private function getContentLengthFromStream($readHandle): int
     {
         $info = stream_get_meta_data($readHandle);
 
         $size = 0;
         foreach ($info['wrapper_data'] as $field) {
             if (stripos($field, 'content-length') !== false) {
-                list($header, $size) = explode(':', $field);
+                [, $size] = explode(':', $field);
             }
         }
 

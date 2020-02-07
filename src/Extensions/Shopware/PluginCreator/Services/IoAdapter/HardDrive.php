@@ -10,14 +10,10 @@ namespace Shopware\PluginCreator\Services\IoAdapter;
 
 /**
  * HardDrive IoAdapter actually performs IO on the hdd
- *
- * Class HardDrive
  */
 class HardDrive implements IoAdapter
 {
     /**
-     * @param $path
-     *
      * @return bool
      */
     public function exists($path)

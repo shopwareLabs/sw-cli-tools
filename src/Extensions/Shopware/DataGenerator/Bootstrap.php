@@ -8,6 +8,8 @@
 
 namespace Shopware\DataGenerator;
 
+use Shopware\DataGenerator\Struct\Config;
+use Shopware\DataGenerator\Writer\WriterManager;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,27 +23,25 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     {
         $this->container = $container;
 
-        $this->container->register('random_data_provider', '\Shopware\DataGenerator\RandomDataProvider');
+        $this->container->register('random_data_provider', RandomDataProvider::class);
 
-        $this->container->register('generator_config', '\Shopware\DataGenerator\Struct\Config');
+        $this->container->register('generator_config', Config::class);
 
-        $this->container->register('resource_loader', '\Shopware\DataGenerator\ResourceLoader')
+        $this->container->register('resource_loader', ResourceLoader::class)
             ->addArgument(new Reference('service_container'));
 
-        $this->container->register('data_generator', '\Shopware\DataGenerator\DataGenerator')
+        $this->container->register('data_generator', DataGenerator::class)
             ->addArgument(new Reference('random_data_provider'))
             ->addArgument(new Reference('resource_loader'))
             ->addArgument(new Reference('generator_config'));
 
-        $this->container->register('writer_manager', '\Shopware\DataGenerator\Writer\WriterManager')
+        $this->container->register('writer_manager', WriterManager::class)
             ->addArgument(new Reference('generator_config'))
             ->addArgument(new Reference('io_service'));
     }
 
     /**
      * Return an array with instances of your console commands here
-     *
-     * @return mixed
      */
     public function getConsoleCommands()
     {

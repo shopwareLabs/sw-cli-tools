@@ -13,8 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Factory for cache decorated rest services
- *
- * Class RestServiceFactory
  */
 class RestServiceFactory
 {
@@ -32,15 +30,19 @@ class RestServiceFactory
     }
 
     /**
-     * @param string $baseUrl
      * @param string $username
      * @param string $password
-     * @param int    $cacheTime
-     *
-     * @return RestInterface
      */
-    public function factory($baseUrl, $username = null, $password = null, $cacheTime = 3600)
-    {
-        return new CacheDecorator(new RestClient($baseUrl, $username, $password), $this->container->get('cache'), $cacheTime);
+    public function factory(
+        string $baseUrl,
+        ?string $username = null,
+        ?string $password = null,
+        int $cacheTime = 3600
+    ): RestInterface {
+        return new CacheDecorator(
+            new RestClient($baseUrl, $username, $password),
+            $this->container->get('cache'),
+            $cacheTime
+        );
     }
 }

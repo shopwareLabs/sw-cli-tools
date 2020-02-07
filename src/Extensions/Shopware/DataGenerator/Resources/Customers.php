@@ -28,25 +28,13 @@ class Customers extends BaseResource
     ];
 
     /**
-     * Stores the used ids for SQL inserts
-     *
-     * @var array
-     */
-    protected $ids = [];
-
-    /**
-     * @var LoadDataInfile
-     */
-    private $loadDataInfile;
-
-    /**
      * {@inheritdoc}
      */
     public function create(WriterInterface $writer)
     {
         $this->ids['customerNumber'] = 20002;
         $number = $this->config->getNumberCustomers();
-        $this->loadDataInfile = new LoadDataInfile();
+        $loadDataInfile = new LoadDataInfile();
 
         $importCustomers = $this->writerManager->createWriter('customers', 'csv');
         $importCustomersAttributes = $this->writerManager->createWriter('customers_attributes', 'csv');
@@ -72,61 +60,61 @@ class Customers extends BaseResource
 
             $birthday = '';
 
-            if (rand(1, 4) !== 4) {
+            if (random_int(1, 4) !== 4) {
                 $birthday = $faker->dateTimeThisCentury->format('Y-m-d');
             }
 
             $importCustomers->write(
                 "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,{$faker->email},1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id},{$sex},{$faker->firstName},{$faker->lastName}, {$birthday}"
             );
-            $importCustomersAttributes->write("{$id}");
-            $importCustomersBillingAttributes->write("{$id}");
-            $importCustomersBillingAttributes->write("{$id}");
+            $importCustomersAttributes->write((string) ($id));
+            $importCustomersBillingAttributes->write((string) ($id));
+            $importCustomersBillingAttributes->write((string) ($id));
 
-            $customerAttributeValues[] = "{$id}";
+            $customerAttributeValues[] = (string) ($id);
             $importCustomersBilling->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . random_int(
                     1,
                     500
-                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, " . rand(
+                ) . "' , " . random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, " . random_int(
                     9999,
                     99999
                 ) . ', 2, 0, '
             );
             $importCustomersShipping->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . rand(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . random_int(
                     1,
                     500
-                ) . "' , " . rand(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
+                ) . "' , " . random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
             );
 
-            $zip = rand(42000, 50000);
+            $zip = random_int(42000, 50000);
             $importCustomersAddresses->write(
                 "{$id}, {$id}, company, department, mr, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()}, {$zip}, {$this->generator->getRandomCity()}, 2, 0, ustid, phone,,,"
             );
         }
 
-        $writer->write($this->loadDataInfile->get('s_user', $importCustomers->getFileName()));
+        $writer->write($loadDataInfile->get('s_user', $importCustomers->getFileName()));
         $writer->write(
-            $this->loadDataInfile->get('s_user_attributes', $importCustomersAttributes->getFileName())
+            $loadDataInfile->get('s_user_attributes', $importCustomersAttributes->getFileName())
         );
         $writer->write(
-            $this->loadDataInfile->get('s_user_addresses', $importCustomersAddresses->getFileName())
+            $loadDataInfile->get('s_user_addresses', $importCustomersAddresses->getFileName())
         );
         $writer->write(
-            $this->loadDataInfile->get('s_user_billingaddress', $importCustomersBilling->getFileName())
+            $loadDataInfile->get('s_user_billingaddress', $importCustomersBilling->getFileName())
         );
         $writer->write(
-            $this->loadDataInfile->get('s_user_shippingaddress', $importCustomersShipping->getFileName())
+            $loadDataInfile->get('s_user_shippingaddress', $importCustomersShipping->getFileName())
         );
         $writer->write(
-            $this->loadDataInfile->get(
+            $loadDataInfile->get(
                 's_user_billingaddress_attributes',
                 $importCustomersBillingAttributes->getFileName()
             )
         );
         $writer->write(
-            $this->loadDataInfile->get(
+            $loadDataInfile->get(
                 's_user_shippingaddress_attributes',
                 $importCustomersShippingAttributes->getFileName()
             )

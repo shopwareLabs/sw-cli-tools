@@ -16,18 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Zip a plugin
- *
- * Class ZipCommand
  */
 class ZipLocalCommand extends BaseCommand
 {
     protected $utilities;
+
     protected $zipDir;
 
     /**
      * @param string $dir
      */
-    public function validatePluginDir($dir)
+    public function validatePluginDir($dir): void
     {
         $fileName = basename($dir);
 
@@ -39,7 +38,7 @@ class ZipLocalCommand extends BaseCommand
     /**
      * @param string $pluginDirectory
      */
-    public function doZip($pluginDirectory)
+    public function doZip($pluginDirectory): void
     {
         if (file_exists($pluginDirectory . '/Bootstrap.php')) {
             /** @var PluginBootstrap $info */

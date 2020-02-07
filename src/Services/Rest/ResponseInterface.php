@@ -14,7 +14,7 @@ interface ResponseInterface
      * If an error occurred during request, it should be available here.
      * Else null should be returned
      *
-     * @return null|string
+     * @return string|null
      */
     public function getErrorMessage();
 
@@ -34,8 +34,6 @@ interface ResponseInterface
 
     /**
      * Returns the decoded response body
-     *
-     * @return mixed
      */
     public function getResult();
 }

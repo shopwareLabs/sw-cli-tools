@@ -20,10 +20,8 @@ trait CommandTestCaseTrait
      * in a numeric indexed array.
      *
      * @param string $command
-     *
-     * @return array
      */
-    public function runCommand($command)
+    public function runCommand($command): array
     {
         $fp = tmpfile();
         $input = new StringInput($command);
@@ -36,12 +34,7 @@ trait CommandTestCaseTrait
         return explode(PHP_EOL, $consoleOutput);
     }
 
-    /**
-     * @param $fp
-     *
-     * @return string
-     */
-    private function readConsoleOutput($fp)
+    private function readConsoleOutput($fp): string
     {
         fseek($fp, 0);
         $output = '';

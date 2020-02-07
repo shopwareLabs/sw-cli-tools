@@ -10,8 +10,6 @@ namespace Shopware\DataGenerator\Writer;
 
 /**
  * Generic write interface to abstract file operations
- *
- * Interface WriterInterface
  */
 interface WriterInterface
 {
@@ -30,8 +28,6 @@ interface WriterInterface
 
     /**
      * Priority in which the writer must be flushed. Higher priority writers are flushed first
-     *
-     * @return int
      */
-    public function getPriority();
+    public function getPriority(): int;
 }

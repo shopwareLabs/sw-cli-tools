@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Provides self update capability
- *
- * Class Bootstrap
  */
 class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 {
@@ -60,10 +58,8 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
 
     /**
      * Checks if script is run as phar archive and manifestUrl is available
-     *
-     * @return bool
      */
-    public function isPharFile()
+    public function isPharFile(): bool
     {
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
 
@@ -78,19 +74,21 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         $container->set('updater', $this->createUpdater());
     }
 
-    /**
-     * @return Updater
-     */
-    private function createUpdater()
+    private function createUpdater(): Updater
     {
         $config = $this->container->get('config');
-        $pharUrl = $config['update']['pharUrl'];
-        $versionUrl = $config['update']['vesionUrl'];
-        $verifyKey = (bool) $config['update']['verifyPublicKey'];
+        $updateConfig = $config['update'];
+        $pharUrl = $updateConfig['pharUrl'];
+        $versionUrl = $updateConfig['vesionUrl'];
+        if ($versionUrl === null) {
+            $versionUrl = $updateConfig['versionUrl'];
+        }
+        $verifyKey = (bool) $updateConfig['verifyPublicKey'];
 
         $updater = new Updater(null, $verifyKey);
-        $updater->getStrategy()->setPharUrl($pharUrl);
-        $updater->getStrategy()->setVersionUrl($versionUrl);
+        $strategy = $updater->getStrategy();
+        $strategy->setPharUrl($pharUrl);
+        $strategy->setVersionUrl($versionUrl);
 
         return $updater;
     }
@@ -112,7 +110,9 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             $old = $updater->getOldVersion();
 
             exit(sprintf(
-                "Updated from SHA-1 %s to SHA-1 %s. Please run again\n", $old, $new
+                "Updated from SHA-1 %s to SHA-1 %s. Please run again\n",
+                $old,
+                $new
             ));
         } catch (\Exception $e) {
             echo "\nCheck your connection\n";
@@ -120,10 +120,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function checkUpdateOnRun()
+    private function checkUpdateOnRun(): bool
     {
         $config = $this->container->get('config');
         if (!isset($config['update']['checkOnStartup'])) {

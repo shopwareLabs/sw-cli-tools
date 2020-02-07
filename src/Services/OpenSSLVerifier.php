@@ -27,12 +27,9 @@ class OpenSSLVerifier
         $this->publicKey = $publicKey;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSystemSupported()
+    public function isSystemSupported(): bool
     {
-        return function_exists('openssl_verify');
+        return \function_exists('openssl_verify');
     }
 
     /**
@@ -40,14 +37,12 @@ class OpenSSLVerifier
      * @param string $signature
      *
      * @throws \RuntimeException
-     *
-     * @return bool
      */
-    public function isValid($message, $signature)
+    public function isValid($message, $signature): bool
     {
         $publicKey = trim(file_get_contents($this->publicKey));
 
-        if (false === $pubkeyid = openssl_pkey_get_public($publicKey)) {
+        if ($pubkeyid = openssl_pkey_get_public($publicKey) === false) {
             while ($errors[] = openssl_error_string());
             throw new \RuntimeException(sprintf("Error during public key read: \n%s", implode("\n", $errors)));
         }
@@ -55,16 +50,19 @@ class OpenSSLVerifier
         $signature = base64_decode($signature);
 
         // state whether signature is okay or not
-        $ok = openssl_verify($message, $signature, $pubkeyid);
+        $ok = (int) openssl_verify($message, $signature, $pubkeyid);
 
         // free the key from memory
         openssl_free_key($pubkeyid);
 
-        if ($ok == 1) {
+        if ($ok === 1) {
             return true;
-        } elseif ($ok == 0) {
+        }
+
+        if ($ok === 0) {
             return false;
         }
+
         while ($errors[] = openssl_error_string());
         throw new \RuntimeException(sprintf("Error during private key read: \n%s", implode("\n", $errors)));
     }

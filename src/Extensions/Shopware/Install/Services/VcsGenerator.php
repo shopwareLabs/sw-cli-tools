@@ -12,8 +12,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * creates the phpstorm vcs mapping file
- *
- * Class VcsGenerator
  */
 class VcsGenerator
 {
@@ -27,8 +25,9 @@ class VcsGenerator
 EOF;
 
     protected $templateVcsMappingDirectory = '<mapping directory="$PROJECT_DIR$%s" vcs="Git" />';
+
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
 
@@ -37,7 +36,7 @@ EOF;
         $this->ioService = $ioService;
     }
 
-    public function createVcsMapping($installDir, $paths)
+    public function createVcsMapping($installDir, $paths): void
     {
         $this->ioService->writeln('<info>Generating VCS mapping</info>');
 

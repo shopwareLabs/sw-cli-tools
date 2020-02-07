@@ -10,9 +10,6 @@ namespace ShopwareCli\Services\ZipUtil\Entry;
 
 use ZipArchive;
 
-/**
- * Class ZipArchive
- */
 class Zip
 {
     /**
@@ -49,34 +46,22 @@ class Zip
         return $this->stream->getStream($this->name);
     }
 
-    /**
-     * @return mixed
-     */
     public function getContents()
     {
         return $this->stream->getFromIndex($this->position);
     }
 
-    /**
-     * @return bool
-     */
-    public function isDir()
+    public function isDir(): bool
     {
         return substr($this->name, -1) === '/';
     }
 
-    /**
-     * @return bool
-     */
-    public function isFile()
+    public function isFile(): bool
     {
         return substr($this->name, -1) !== '/';
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         $name = $this->name;
         if (strpos($name, './') === 0) {

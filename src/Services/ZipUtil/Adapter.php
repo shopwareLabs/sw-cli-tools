@@ -11,9 +11,6 @@ namespace ShopwareCli\Services\ZipUtil;
 use Countable;
 use SeekableIterator;
 
-/**
- * Class Adapter
- */
 abstract class Adapter implements SeekableIterator, Countable
 {
     /**

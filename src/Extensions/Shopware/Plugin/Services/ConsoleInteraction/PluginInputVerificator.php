@@ -16,8 +16,6 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * Will trigger the PluginColumnRenderer until an valid answer was made. Will then return the corresponding plugin/answer
- *
- * Class PluginInputVerificator
  */
 class PluginInputVerificator
 {
@@ -41,10 +39,6 @@ class PluginInputVerificator
      */
     private $ioService;
 
-    /**
-     * @param IoService            $ioService
-     * @param PluginColumnRenderer $outputRenderer
-     */
     public function __construct(IoService $ioService, PluginColumnRenderer $outputRenderer)
     {
         $this->outputRenderer = $outputRenderer;
@@ -58,7 +52,7 @@ class PluginInputVerificator
      * @param Plugin[] $plugins
      * @param string[] $allowedAnswers
      *
-     * @return string
+     * @return string|Plugin
      */
     public function selectPlugin($plugins, array $allowedAnswers = ['all'])
     {
@@ -67,24 +61,24 @@ class PluginInputVerificator
             $this->outputRenderer->show($plugins);
 
             $question = new Question(
-                $this->formatQuestion(count($plugins), $allowedAnswers)
+                $this->formatQuestion(\count($plugins), $allowedAnswers)
             );
 
             $response = $this->ioService->ask($question);
 
-            if (in_array($response, $allowedAnswers, true)) {
+            if (\in_array($response, $allowedAnswers, true)) {
                 return $response;
             }
 
             if ($range = $this->getPluginRange($response)) {
                 return array_filter(
                     array_map(
-                        function ($number) use ($plugins) {
+                        static function ($number) use ($plugins) {
                             return isset($plugins[$number - 1]) ? $plugins[$number - 1] : null;
                         },
                         $range
                     ),
-                    function ($plugin) {
+                    static function ($plugin) {
                         return $plugin;
                     }
                 );
@@ -104,10 +98,8 @@ class PluginInputVerificator
      *
      * @param int      $count
      * @param string[] $allowedAnswers
-     *
-     * @return string
      */
-    private function formatQuestion($count, $allowedAnswers)
+    private function formatQuestion($count, $allowedAnswers): string
     {
         $template = "\n<question>Which plugin(s) do you want to install?</question> Type <comment>1-{$count}</comment> %s ";
 
@@ -115,12 +107,12 @@ class PluginInputVerificator
             return sprintf($template, '');
         }
 
-        if (count($allowedAnswers) === 1) {
+        if (\count($allowedAnswers) === 1) {
             return sprintf($template, sprintf('or "%s"', $allowedAnswers[0]));
         }
 
         $allowedAnswers = array_map(
-            function ($option) {
+            static function ($option) {
                 return sprintf('"<comment>%s</comment>"', $option);
             },
             $allowedAnswers
@@ -145,7 +137,7 @@ class PluginInputVerificator
 
         preg_match($pattern, $userInput, $matches);
 
-        if (empty($matches) || !isset($matches['from']) || !isset($matches['to'])) {
+        if (!isset($matches['from'], $matches['to']) || empty($matches)) {
             return false;
         }
 

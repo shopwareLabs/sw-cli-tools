@@ -10,8 +10,6 @@ namespace Shopware\DataGenerator\Writer;
 
 /**
  * Buffered file writer which will only write to disc every X writes
- *
- * Class BufferedFileWriter
  */
 class BufferedFileWriter implements WriterInterface
 {
@@ -42,21 +40,20 @@ class BufferedFileWriter implements WriterInterface
 
     /**
      * @param string $file
-     * @param $maxBufferSize
      */
     public function __construct($file, $maxBufferSize = 50)
     {
         $this->fileName = $file;
-        $this->fileHandle = fopen($file, 'w');
+        $this->fileHandle = fopen($file, 'wb');
         $this->maxBufferSize = $maxBufferSize;
     }
 
-    public function setWriteBuffer($writeBuffer)
+    public function setWriteBuffer($writeBuffer): void
     {
         $this->maxBufferSize = $writeBuffer;
     }
 
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -66,12 +63,12 @@ class BufferedFileWriter implements WriterInterface
      */
     public function write($content)
     {
-        if (!is_array($content)) {
+        if (!\is_array($content)) {
             $this->buffer[] = $content;
-            $this->bufferCounter += 1;
+            ++$this->bufferCounter;
         } else {
             $this->buffer = array_merge($this->buffer, $content);
-            $this->bufferCounter += count($content);
+            $this->bufferCounter += \count($content);
         }
         if ($this->bufferCounter >= $this->maxBufferSize) {
             $this->flush();
@@ -87,7 +84,7 @@ class BufferedFileWriter implements WriterInterface
             return;
         }
 
-        fputs($this->fileHandle, implode("\n", $this->buffer) . "\n");
+        fwrite($this->fileHandle, implode("\n", $this->buffer) . "\n");
         $this->buffer = [];
         $this->bufferCounter = 0;
     }
@@ -95,7 +92,7 @@ class BufferedFileWriter implements WriterInterface
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 10;
     }

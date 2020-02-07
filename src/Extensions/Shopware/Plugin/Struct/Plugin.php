@@ -12,8 +12,6 @@ use ShopwareCli\Struct;
 
 /**
  * Shopware plugin struct
- *
- * Class Plugin
  */
 class Plugin extends Struct
 {

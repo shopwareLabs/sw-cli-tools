@@ -10,9 +10,6 @@ namespace Shopware\DataGenerator\Writer;
 
 use PDO;
 
-/**
- * Class ShopwareWriter.
- */
 class DatabaseWriter implements WriterInterface
 {
     /**
@@ -25,10 +22,9 @@ class DatabaseWriter implements WriterInterface
      */
     private $data = [];
 
-    public function __construct($config, $resourceName)
+    public function __construct($config)
     {
         $this->config = $config;
-        $this->resourceName = $resourceName;
     }
 
     /**
@@ -36,7 +32,7 @@ class DatabaseWriter implements WriterInterface
      */
     public function write($content)
     {
-        if (!is_array($content)) {
+        if (!\is_array($content)) {
             $this->data[] = $content;
         } else {
             $this->data = array_merge($this->data, $content);
@@ -67,26 +63,21 @@ class DatabaseWriter implements WriterInterface
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
 
-    /**
-     * @param $config
-     *
-     * @return PDO
-     */
-    private function connectToDatabase($config)
+    private function connectToDatabase($config): PDO
     {
-        $connection = new PDO(
-            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['username'], $config['password'],
+        return new PDO(
+            'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'],
+            $config['username'],
+            $config['password'],
             [
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
                 PDO::ERRMODE_EXCEPTION => 1,
             ]
         );
-
-        return $connection;
     }
 }

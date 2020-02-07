@@ -13,8 +13,8 @@ use Shopware\DataGenerator\Writer\WriterInterface;
 
 class Articles extends BaseResource
 {
-    const GROUPS = 500;
-    const OPTIONS = 10;
+    private const GROUPS = 500;
+    private const OPTIONS = 10;
 
     /**
      * @var array
@@ -59,24 +59,26 @@ class Articles extends BaseResource
 
     protected $configuratorsGroups = [];
 
-    /**
-     * @return \SplFixedArray
-     */
-    public function getArticleDetailsFlat()
+    public function getArticleDetailsFlat(): \SplFixedArray
     {
         return $this->articleDetailsFlat;
     }
 
-    public function createConfiguratorOptions()
+    public function createConfiguratorOptions(): void
     {
         for ($group = 0; $group <= self::GROUPS; ++$group) {
-            $currentGroup = ['id' => $this->getUniqueId(
-                'conf_group'
-            ), 'name' => 'Configurator Group ' . $group, 'position' => $group, $options = []];
+            $currentGroup = [
+                'id' => $this->getUniqueId('conf_group'),
+                'name' => 'Configurator Group ' . $group,
+                'position' => $group,
+                'options' => [],
+            ];
             for ($option = 0; $option <= self::OPTIONS; ++$option) {
-                $currentGroup['options'][] = ['id' => $this->getUniqueId(
-                    'conf_option'
-                ), 'name' => 'Option' . $option, 'position' => $option];
+                $currentGroup['options'][] = [
+                    'id' => $this->getUniqueId('conf_option'),
+                    'name' => 'Option' . $option,
+                    'position' => $option,
+                ];
             }
             $this->configuratorsGroups[] = $currentGroup;
         }
@@ -129,12 +131,12 @@ class Articles extends BaseResource
         $categoriesFlat = $this->categoryResource->categoriesFlat;
         $validCategoryIds = array_filter(
             array_keys($categoriesFlat),
-            function ($item) {
+            static function ($item) {
                 return $item >= 1000000;
             }
         );
-        $categoriesPerArticle = min(count($validCategoryIds), $this->config->getCategoriesPerArticle());
-        if (count($validCategoryIds) < $this->config->getCategoriesPerArticle()) {
+        $categoriesPerArticle = min(\count($validCategoryIds), $this->config->getCategoriesPerArticle());
+        if (\count($validCategoryIds) < $this->config->getCategoriesPerArticle()) {
             $this->ioService->writeln(
                 '<comment>Number of categories per article will be lower than specified</comment>'
             );
@@ -163,18 +165,18 @@ class Articles extends BaseResource
         for ($articleCounter = 0; $articleCounter < $number; ++$articleCounter) {
             $this->advanceProgressBar();
             $id = $this->getUniqueId('article');
-            $createConfigurator = $id === 1 ? 1 : rand(0, 1); // Force the first article to be a configurator
-            // number of variants is choosen randomly
-            $numberOfVariants = $createConfigurator === 1 ? rand(
+            $createConfigurator = $id === 1 ? 1 : random_int(0, 1); // Force the first article to be a configurator
+            // number of variants is chosen randomly
+            $numberOfVariants = $createConfigurator === 1 ? random_int(
                 $this->config->getMinVariants(),
                 $this->config->getMaxVariants()
             ) : 1;
 
-            if ($numberOfVariants == 1) {
+            if ($numberOfVariants === 1) {
                 $createConfigurator = 0;
             }
 
-            $createFilter = rand(0, 3);
+            $createFilter = random_int(0, 3);
 
             $urls->write("/detail/index/sArticle/{$id}");
 
@@ -200,8 +202,8 @@ class Articles extends BaseResource
                 $options = [];
                 $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id}");
                 $randomGroups = array_rand($this->configuratorsGroups, $numberOfGroups);
-                // array_rand will not return an array if only one element was choosen
-                if (!is_array($randomGroups)) {
+                // array_rand will not return an array if only one element was chosen
+                if (!\is_array($randomGroups)) {
                     $randomGroups = [$randomGroups];
                 }
 
@@ -251,8 +253,7 @@ class Articles extends BaseResource
                 // Images
                 for ($i = 1; $i <= $numImagesPerArticle; ++$i) {
                     $mediaId = $this->getUniqueId('media');
-                    $name = $physicallyCreateEachImage ? $baseName . $id : $baseName;
-                    $images[] = $name;
+                    $images[] = $physicallyCreateEachImage ? $baseName . $id : $baseName;
                     $mediaValues[] = "({$mediaId}, -1, {$name}, media/image/{$name}.jpg, IMAGE, jpg, 2012-08-15 )";
                     $main = ($i === 1) ? 1 : 2;
                     $articlesImgValues[] = "({$id},{$name}, {$main}, jpg, {$mediaId} )";
@@ -265,10 +266,10 @@ class Articles extends BaseResource
             // Filters
             $filterGroupId = 1;
             if ($createFilter === 0) {
-                $filterGroupId = rand(1, $filterOptions);
+                $filterGroupId = random_int(1, $filterOptions);
                 for ($option = 1; $option <= $filterOptions; ++$option) {
                     $optionId = $option * $filterGroupId;
-                    $valueId = rand(1, $filterValues) * $optionId;
+                    $valueId = random_int(1, $filterValues) * $optionId;
                     $filterArticles->write("{$id}, {$valueId}");
                 }
             }
@@ -288,17 +289,15 @@ class Articles extends BaseResource
                 }
                 $kind = $i === 1 ? 1 : 2;
 
-                $purchaseUnit = rand(0, 5);
-                $referenceUnit = rand($purchaseUnit, $purchaseUnit * 4);
+                $purchaseUnit = random_int(0, 5);
+                $referenceUnit = random_int($purchaseUnit, $purchaseUnit * 4);
 
                 $details->write(
                     "{$articleDetailId}, {$id},sw-{$id}-{$i}, , {$kind}, , 0, 1, 25, 0, 0.000, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, {$purchaseUnit}, {$referenceUnit}, Flasche(n), 2012-06-13, 0, "
                 );
 
-                $index = rand(0, count($priceVariations) - 1);
-                $variantPrices = $priceVariations[$index];
-
-                foreach ($variantPrices as $price) {
+                $index = random_int(0, \count($priceVariations) - 1);
+                foreach ($priceVariations[$index] as $price) {
                     $prices->write(
                         "EK,{$price['from']},{$price['to']},{$id},{$articleDetailId},{$price['price']}, 0, 0, 0 "
                     );
@@ -330,8 +329,8 @@ class Articles extends BaseResource
             $this->copyImages(
                 $this->config->getImageDir(),
                 $images,
-                $thumbs = $this->config->getThumbnailSizes(),
-                $useSmallImage = 1
+                $this->config->getThumbnailSizes(),
+                1
             );
         }
 
@@ -379,28 +378,20 @@ class Articles extends BaseResource
         $this->finishProgressBar();
     }
 
-    /**
-     * @return Categories
-     */
-    public function getCategoryResource()
+    public function getCategoryResource(): Categories
     {
         return $this->categoryResource;
     }
 
-    /**
-     * @param Categories $categoryResource
-     */
-    public function setCategoryResource(Categories $categoryResource)
+    public function setCategoryResource(Categories $categoryResource): void
     {
         $this->categoryResource = $categoryResource;
     }
 
     /**
      * Generates SQL which creates filter groups, options and values.
-     *
-     * @param WriterInterface $importWriter
      */
-    protected function createFilterGroupSQL(WriterInterface $importWriter)
+    protected function createFilterGroupSQL(WriterInterface $importWriter): void
     {
         $filterGroupValues = [];
         $filterOptionValues = [];
@@ -412,11 +403,11 @@ class Articles extends BaseResource
         $filterValues = $this->config->getArticleFilterValues();
 
         for ($groupId = 1; $groupId <= $filterGroups; ++$groupId) {
-            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, " . rand(0, 1) . ', ' . rand(0, 1);
+            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, " . random_int(0, 1) . ', ' . random_int(0, 1);
 
             for ($o = 1; $o <= $filterOptions; ++$o) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
-                $filterOptionValues[] = "$optionId, Option #{$o},  " . rand(0, 1);
+                $filterOptionValues[] = "$optionId, Option #{$o},  " . random_int(0, 1);
                 $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
 
                 for ($v = 1; $v <= $filterValues; ++$v) {
@@ -444,24 +435,18 @@ class Articles extends BaseResource
 
     /**
      * Helper function which creates a cartesian product.
-     *
-     * @param $arrays
-     *
-     * @return array
      */
-    private function createCartesianProduct($arrays)
+    private function createCartesianProduct($arrays): array
     {
         $cartesian = [];
-        $dims = array_reverse($arrays);
-
-        foreach ($dims as $dimName => $dim) {
+        foreach (array_reverse($arrays) as $dimName => $dim) {
             $buf = [];
 
             foreach ($dim as $val) {
                 $buf[] = [$dimName => $val];
             }
 
-            if (!count($cartesian)) {
+            if (!\count($cartesian)) {
                 $cartesian = $buf;
             } else {
                 $tmp = [];
@@ -477,13 +462,7 @@ class Articles extends BaseResource
         return $cartesian;
     }
 
-    /**
-     * @param $id
-     * @param $categories
-     *
-     * @return array
-     */
-    private function getCategoryPath($id, $categories)
+    private function getCategoryPath($id, $categories): array
     {
         if (!$id) {
             return [];
@@ -508,12 +487,9 @@ class Articles extends BaseResource
     /**
      * Copies the default image for each article.
      *
-     * @param $imageDir
-     * @param $images
-     * @param $thumbs
      * @param int $useSmallImage
      */
-    private function copyImages($imageDir, $images, $thumbs, $useSmallImage)
+    private function copyImages($imageDir, $images, $thumbs, $useSmallImage): void
     {
         $assetsDir = ''; //TODO: implement real asset loading
         // Copy the images to media directory
@@ -532,7 +508,7 @@ class Articles extends BaseResource
     /**
      * @param int $number
      */
-    private function generatePriceVariations($number)
+    private function generatePriceVariations($number): array
     {
         $count = $number / 5;
 
@@ -540,18 +516,18 @@ class Articles extends BaseResource
 
         for ($v = 0; $v <= $count; ++$v) {
             // create random number of bulk prices between 1 and 5
-            $priceCount = rand(1, 5);
+            $priceCount = random_int(1, 5);
             $to = 0;
 
             // price will be something between 3 and 2000
-            $price = rand(3, 2000);
+            $price = random_int(3, 2000);
             for ($i = 1; $i <= $priceCount; ++$i) {
                 $from = $to + 1;
-                $to = $from + rand(2, 4);
+                $to = $from + random_int(2, 4);
                 if ($i == $priceCount) {
                     $to = 'beliebig';
                 }
-                $price = $price * ((100 - rand(10, 40))) / 100;
+                $price = $price * ((100 - random_int(10, 40))) / 100;
 
                 $variations[$v][] = [
                     'from' => $from,

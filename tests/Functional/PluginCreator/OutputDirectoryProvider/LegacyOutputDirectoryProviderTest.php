@@ -8,17 +8,19 @@
 
 namespace ShopwareCli\Tests\Functional\PluginCreator\OutputDirectoryProvider;
 
+use PHPUnit\Framework\TestCase;
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirectoryProvider;
+use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 
-class LegacyOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
+class LegacyOutputDirectoryProviderTest extends TestCase
 {
-    const PLUGIN_NAME = 'SwagTest';
+    private const PLUGIN_NAME = 'SwagTest';
 
-    public function testGetLegacyPath()
+    public function testGetLegacyPath(): void
     {
         $expectedPath = getcwd() . '/engine/Shopware/Plugins/Local/Frontend/' . self::PLUGIN_NAME . '/';
 
-        $shopwareRootDetectorStub = $this->getMock('Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector');
+        $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')
             ->willReturn(true);
 
@@ -30,14 +32,14 @@ class LegacyOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
 
         $path = $legacyOutputDirectoryProvider->getPath();
 
-        $this->assertEquals($expectedPath, $path);
+        static::assertEquals($expectedPath, $path);
     }
 
-    public function testGetLegacyPathIfNotExecutedFromShopwareRoot()
+    public function testGetLegacyPathIfNotExecutedFromShopwareRoot(): void
     {
         $expectedPath = getcwd() . '/' . self::PLUGIN_NAME . '/';
 
-        $shopwareRootDetectorStub = $this->getMock('Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector');
+        $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')
             ->willReturn(false);
 
@@ -49,6 +51,6 @@ class LegacyOutputDirectoryProviderTest extends \PHPUnit_Framework_TestCase
 
         $path = $legacyOutputDirectoryProvider->getPath();
 
-        $this->assertEquals($expectedPath, $path);
+        static::assertEquals($expectedPath, $path);
     }
 }

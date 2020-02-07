@@ -15,8 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * The simple list provides a "virtual repository" from multiple git repos which also might come from different
  * servers (e.g. local, github, bitbucket, stash…)
- *
- * Class SimpleList
  */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {

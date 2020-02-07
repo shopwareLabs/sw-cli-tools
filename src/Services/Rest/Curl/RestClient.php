@@ -12,17 +12,15 @@ use ShopwareCli\Services\Rest\RestInterface;
 
 /**
  * RestClient based on CURL
- *
- * Class RestClient
  */
 class RestClient implements RestInterface
 {
-    const METHOD_GET = 'GET';
-    const METHOD_PUT = 'PUT';
-    const METHOD_POST = 'POST';
-    const METHOD_DELETE = 'DELETE';
+    private const METHOD_GET = 'GET';
+    private const METHOD_PUT = 'PUT';
+    private const METHOD_POST = 'POST';
+    private const METHOD_DELETE = 'DELETE';
 
-    const USER_AGENT = 'sw-cli-tools/1.0';
+    private const USER_AGENT = 'sw-cli-tools/1.0';
 
     /**
      * @var array
@@ -55,7 +53,7 @@ class RestClient implements RestInterface
     public function __construct($apiUrl, $username = '', $apiKey = '', $curlOptions = [])
     {
         if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
-            throw new \Exception('Invalid URL given');
+            throw new \RuntimeException('Invalid URL given');
         }
 
         $this->apiUrl = rtrim($apiUrl, '/') . '/';
@@ -64,7 +62,7 @@ class RestClient implements RestInterface
         $this->cURL = curl_init();
         curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
-        if ($username != '' && $apiKey != '') {
+        if ($username !== '' && $apiKey !== '') {
             curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
         }
         curl_setopt($this->cURL, CURLOPT_USERAGENT, self::USER_AGENT);
@@ -75,19 +73,12 @@ class RestClient implements RestInterface
     /**
      * Generic call method to perform an HTTP request with the given $method
      *
-     * @param string $url
-     * @param string $method
-     * @param array  $parameters
-     * @param array  $headers
-     *
      * @throws \Exception
-     *
-     * @return Response
      */
-    public function call($url, $method = self::METHOD_GET, $parameters = [], $headers = [])
+    public function call(string $url, string $method = self::METHOD_GET, array $parameters = [], array $headers = []): Response
     {
-        if (!in_array($method, $this->validMethods)) {
-            throw new \Exception('Invalid HTTP method: ' . $method);
+        if (!\in_array($method, $this->validMethods, true)) {
+            throw new \RuntimeException('Invalid HTTP method: ' . $method);
         }
         $url = $this->apiUrl . $url;
 
@@ -96,12 +87,7 @@ class RestClient implements RestInterface
         curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
 
-        $headers = array_merge(
-            [
-                'Content-Type: application/json; charset=utf-8',
-            ],
-            $headers
-        );
+        array_unshift($headers, 'Content-Type: application/json; charset=utf-8');
 
         curl_setopt($this->cURL, CURLOPT_HTTPHEADER, $headers);
         $body = curl_exec($this->cURL);

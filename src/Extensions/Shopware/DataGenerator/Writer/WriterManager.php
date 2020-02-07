@@ -11,9 +11,6 @@ namespace Shopware\DataGenerator\Writer;
 use Shopware\DataGenerator\Struct\Config;
 use ShopwareCli\Services\IoService;
 
-/**
- * Class WriterManager
- */
 class WriterManager
 {
     /**
@@ -46,10 +43,6 @@ class WriterManager
      */
     private $ioService;
 
-    /**
-     * @param Config    $config
-     * @param IoService $ioService
-     */
     public function __construct(
         Config $config,
         IoService $ioService
@@ -62,26 +55,25 @@ class WriterManager
      * @param string $resourceKey
      * @param string $type
      * @param null   $writerType
-     *
-     * @return WriterInterface
      */
-    public function createWriter($resourceKey, $type = null, $writerType = null)
+    public function createWriter($resourceKey, $type = null, $writerType = null): WriterInterface
     {
         $writerType = $writerType ?: $this->defaultWriterType;
 
         switch ($writerType) {
             case 'database':
-                if ($type == 'sql') {
-                    $writer = new DatabaseWriter($this->writerConfig[$writerType], $resourceKey);
+                if ($type === 'sql') {
+                    $writer = new DatabaseWriter($this->writerConfig[$writerType]);
                     break;
                 }
 
+                // no break
             default:
                 $resourcePath = getcwd() . '/output/' . $this->config->getOutputName() . $resourceKey;
                 if ($type) {
                     $resourcePath .= '.' . $type;
                 }
-                if ($type == 'sql') {
+                if ($type === 'sql') {
                     $this->displayImportMessage = true;
                 }
                 $writer = new BufferedFileWriter($resourcePath);
@@ -95,12 +87,12 @@ class WriterManager
     /**
      * Flushes all known writers at once
      */
-    public function flushAll()
+    public function flushAll(): void
     {
         $this->ioService->writeln('Flushing data...');
 
-        $compare = function ($a, $b) {
-            if ($a->getPriority() == $b->getPriority()) {
+        $compare = static function (WriterInterface $a, WriterInterface $b) {
+            if ($a->getPriority() === $b->getPriority()) {
                 return 0;
             }
 
@@ -114,7 +106,7 @@ class WriterManager
             $writer->flush();
         }
 
-        if ($this->displayImportMessage == true) {
+        if ($this->displayImportMessage) {
             $this->ioService->writeln('Done. Please import SQLs using something like this:');
             $this->ioService->writeln('mysql --local-infile -uroot -proot DATABASE < FILE.sql');
         }
@@ -123,24 +115,17 @@ class WriterManager
     /**
      * Clears all writers
      */
-    public function clear()
+    public function clear(): void
     {
         $this->writers = [];
     }
 
-    /**
-     * @param $defaultWriterType
-     */
-    public function setDefaultWriterType($defaultWriterType)
+    public function setDefaultWriterType($defaultWriterType): void
     {
         $this->defaultWriterType = $defaultWriterType;
     }
 
-    /**
-     * @param $writerType
-     * @param $value
-     */
-    public function setConfig($writerType, $value)
+    public function setConfig($writerType, $value): void
     {
         $this->writerConfig[$writerType] = $value;
     }

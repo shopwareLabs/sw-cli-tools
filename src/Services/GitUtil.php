@@ -25,15 +25,14 @@ class GitUtil
      * @var OutputInterface
      */
     private $output;
+
     /**
      * @var GitIdentityEnvironment
      */
     private $gitEnv;
 
     /**
-     * @param OutputInterface        $output
-     * @param GitIdentityEnvironment $gitEnv
-     * @param int                    $timeout
+     * @param int $timeout
      */
     public function __construct(OutputInterface $output, GitIdentityEnvironment $gitEnv, $timeout)
     {
@@ -45,10 +44,8 @@ class GitUtil
     /**
      * @param string   $commandline
      * @param int|null $timeout
-     *
-     * @return string
      */
-    public function run($commandline, $timeout = null)
+    public function run($commandline, $timeout = null): string
     {
         $commandline = 'git ' . $commandline;
 
@@ -56,7 +53,7 @@ class GitUtil
         $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4
-        $process->run(function ($type, $buffer) use ($output) {
+        $process->run(static function ($type, $buffer) use ($output) {
             $output->write($buffer);
         });
 
@@ -65,5 +62,10 @@ class GitUtil
         }
 
         return $process->getOutput();
+    }
+
+    public function getTimeout(): int
+    {
+        return $this->timeout;
     }
 }

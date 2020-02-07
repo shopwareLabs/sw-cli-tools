@@ -8,6 +8,7 @@
 
 namespace Shopware\Install\Command;
 
+use Shopware\Install\Services\Install\Release;
 use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Config;
@@ -18,15 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
 {
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     public function interact(InputInterface $input, OutputInterface $output)
     {
         $this->validateInput($input);
 
-        /** @var $ioService IoService */
+        /** @var IoService $ioService */
         $ioService = $this->container->get('io_service');
 
         $this->askGenericOptions($input, $ioService);
@@ -53,10 +50,8 @@ class ShopwareInstallReleaseCommand extends BaseCommand
      * @param string $input
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    public function genericValidator($input)
+    public function genericValidator($input): string
     {
         if (empty($input)) {
             throw new \RuntimeException('Field may not be empty');
@@ -69,10 +64,8 @@ class ShopwareInstallReleaseCommand extends BaseCommand
      * @param string $path
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    public function validateInstallDir($path)
+    public function validateInstallDir($path): string
     {
         if (is_dir($path)) {
             throw new \RuntimeException("Path '{$path}'' is not empty");
@@ -81,10 +74,7 @@ class ShopwareInstallReleaseCommand extends BaseCommand
         return $path;
     }
 
-    /**
-     * @return Config
-     */
-    protected function getConfig()
+    protected function getConfig(): Config
     {
         return $this->container->get('config');
     }
@@ -139,25 +129,23 @@ EOF
             'skipAdminCreation' => $input->getOption('skip-admin-creation'),
         ]);
 
-        /** @var \Shopware\Install\Services\Install\Release $installService */
+        /** @var Release $installService */
         $installService = $this->container->get('shopware_release_install_service');
         $installService->installShopware($request);
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @throws \RuntimeException
      */
-    protected function validateInput(InputInterface $input)
+    protected function validateInput(InputInterface $input): void
     {
         $language = $input->getOption('shop-locale');
-        if (!in_array($language, ['en_GB', 'de_DE'])) {
+        if (!\in_array($language, ['en_GB', 'de_DE'])) {
             throw new \RuntimeException("Invalid locale: '$language'");
         }
     }
 
-    private function addInstallerOptions()
+    private function addInstallerOptions(): void
     {
         $this
             ->addOption('release', 'r', InputOption::VALUE_REQUIRED, 'Release version. Default: Latest')
@@ -166,7 +154,7 @@ EOF
             ->addOption('skip-download', null, InputOption::VALUE_NONE, 'Skip release downloading');
     }
 
-    private function addDbOptions()
+    private function addDbOptions(): void
     {
         $this
             ->addOption('db-host', null, InputOption::VALUE_REQUIRED, 'Database host', 'localhost')
@@ -179,7 +167,7 @@ EOF
         ;
     }
 
-    private function addShopOptions()
+    private function addShopOptions(): void
     {
         $this
             ->addOption('shop-locale', null, InputOption::VALUE_REQUIRED, 'Shop locale', 'de_DE')
@@ -191,7 +179,7 @@ EOF
         ;
     }
 
-    private function addAdminOptions()
+    private function addAdminOptions(): void
     {
         $this
             ->addOption('skip-admin-creation', null, InputOption::VALUE_NONE, 'If provided, no admin user will be created.')
@@ -205,11 +193,8 @@ EOF
 
     /**
      * Make sure, that some required fields are available
-     *
-     * @param InputInterface $input
-     * @param IoService      $ioService
      */
-    private function askGenericOptions(InputInterface $input, IoService $ioService)
+    private function askGenericOptions(InputInterface $input, IoService $ioService): void
     {
         $required = [
             'admin-username' => 'backend user name',
@@ -227,7 +212,7 @@ EOF
             }
 
             // else: check if the option is configured via config
-            if (isset($config['ShopConfig']) && isset($config['ShopConfig'][$field])) {
+            if (isset($config['ShopConfig'], $config['ShopConfig'][$field])) {
                 $input->setOption($field, $config['ShopConfig'][$field]);
                 continue;
             }
@@ -249,13 +234,7 @@ EOF
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     *
-     * @return string
-     */
-    private function askRelease(InputInterface $input, IoService $ioService)
+    private function askRelease(InputInterface $input, IoService $ioService): string
     {
         $release = $input->getOption('release');
         if (!$release) {
@@ -270,13 +249,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
-     *
-     * @return string
+     * @param string $suggestion
      */
-    private function askInstallationDirectory(InputInterface $input, IoService $ioService, $suggestion)
+    private function askInstallationDirectory(InputInterface $input, IoService $ioService, $suggestion): string
     {
         $installDir = $input->getOption('install-dir');
         if (!$installDir) {
@@ -293,11 +268,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
+     * @param string $suggestion
      */
-    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion)
+    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion): void
     {
         $databaseName = $input->getOption('db-name');
         if (!$databaseName) {
@@ -307,11 +280,9 @@ EOF
     }
 
     /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     * @param string         $suggestion
+     * @param string $suggestion
      */
-    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion)
+    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion): void
     {
         $basePath = $input->getOption('shop-path');
         if (!$basePath) {
@@ -321,11 +292,7 @@ EOF
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     */
-    private function askDatabaseUser(InputInterface $input, IoService $ioService)
+    private function askDatabaseUser(InputInterface $input, IoService $ioService): void
     {
         $databaseUser = $input->getOption('db-user');
         if (!$databaseUser) {
@@ -334,11 +301,7 @@ EOF
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @param IoService      $ioService
-     */
-    private function askDatabasePassword(InputInterface $input, IoService $ioService)
+    private function askDatabasePassword(InputInterface $input, IoService $ioService): void
     {
         $databasePassword = $input->getOption('db-password');
         if (!$databasePassword) {

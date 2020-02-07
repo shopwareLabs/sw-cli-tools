@@ -14,15 +14,14 @@ use ShopwareCli\Application\ExtensionManager;
 
 /**
  * Collect default and plugin repositories
- *
- * Class RepositoryManager
  */
 class RepositoryManager
 {
     /**
-     * @var \Shopware\Plugin\Services\Repositories\DefaultRepositoryFactory
+     * @var DefaultRepositoryFactory
      */
     private $defaultRepositoryFactory;
+
     /**
      * @var ExtensionManager
      */
@@ -36,10 +35,8 @@ class RepositoryManager
 
     /**
      * Return default and plugin repositories
-     *
-     * @return array
      */
-    public function getRepositories()
+    public function getRepositories(): array
     {
         $defaultRepositories = $this->defaultRepositoryFactory->getDefaultRepositories();
         $pluginRepositories = $this->collectPluginRepositories();
@@ -49,10 +46,8 @@ class RepositoryManager
 
     /**
      * Iterate all plugins and collect plugin repositories
-     *
-     * @return array
      */
-    private function collectPluginRepositories()
+    private function collectPluginRepositories(): array
     {
         $repositories = [];
 

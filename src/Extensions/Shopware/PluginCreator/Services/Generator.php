@@ -15,7 +15,7 @@ use Shopware\PluginCreator\Struct\Configuration;
 
 class Generator
 {
-    const TEMPLATE_DIRECTORY = 'template';
+    private const TEMPLATE_DIRECTORY = 'template';
 
     /**
      * @var Configuration
@@ -47,14 +47,6 @@ class Generator
      */
     private $outputDirectoryProvider;
 
-    /**
-     * @param IoAdapter                        $ioAdapter
-     * @param Configuration                    $configuration
-     * @param NameGenerator                    $nameGenerator
-     * @param Template                         $template
-     * @param FileProviderLoaderInterface      $fileProviderLoader
-     * @param OutputDirectoryProviderInterface $outputDirectoryProvider
-     */
     public function __construct(
         IoAdapter $ioAdapter,
         Configuration $configuration,
@@ -74,7 +66,7 @@ class Generator
     /**
      * Creates the actual plugin from template files
      */
-    public function run()
+    public function run(): void
     {
         $this->configureTemplate();
 
@@ -89,16 +81,14 @@ class Generator
 
     /**
      * Creates files from an array of template files
-     *
-     * @param $files
      */
-    private function createFilesFromTemplate($files)
+    private function createFilesFromTemplate($files): void
     {
         foreach ($files as $from => $to) {
             $fileContent = $this->template->fetch($from);
 
             $path = $this->outputDirectoryProvider->getPath();
-            $this->ioAdapter->createDirectory(dirname($path . $to));
+            $this->ioAdapter->createDirectory(\dirname($path . $to));
 
             $this->ioAdapter->createFile($path . $to, $fileContent);
         }
@@ -107,17 +97,17 @@ class Generator
     /**
      * setup the template
      */
-    private function configureTemplate()
+    private function configureTemplate(): void
     {
         $this->template->assign('configuration', $this->configuration);
         $this->template->assign('names', $this->nameGenerator);
-        $this->template->setTemplatePath(dirname(__DIR__) . '/' . self::TEMPLATE_DIRECTORY);
+        $this->template->setTemplatePath(\dirname(__DIR__) . '/' . self::TEMPLATE_DIRECTORY);
     }
 
     /**
      * Will step through all known template files, render and copy them to the configured destination
      */
-    private function processTemplateFiles()
+    private function processTemplateFiles(): void
     {
         foreach ($this->fileProviderLoader->load() as $provider) {
             $this->createFilesFromTemplate(

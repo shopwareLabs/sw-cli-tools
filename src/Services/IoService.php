@@ -16,9 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-/**
- * Class IoService
- */
 class IoService
 {
     /**
@@ -36,11 +33,6 @@ class IoService
      */
     private $questionHelper;
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
-     */
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
@@ -53,50 +45,40 @@ class IoService
 
     /**
      * Returns true if the input is interactive
-     *
-     * @return bool
      */
-    public function isInteractive()
+    public function isInteractive(): bool
     {
         return $this->input->isInteractive();
     }
 
     /**
      * Returns true if output is quiet
-     *
-     * @return bool
      */
-    public function isQuiet()
+    public function isQuiet(): bool
     {
         return $this->output->getVerbosity() === OutputInterface::VERBOSITY_QUIET;
     }
 
     /**
      * Return true if output is verbose (or more verbose)
-     *
-     * @return bool
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE;
     }
 
     /**
      * Return true if output is ver verbose (or debug)
-     *
-     * @return bool
      */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
     }
 
     /**
      * Return true if output is debug
-     *
-     * @return bool
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
     }
@@ -106,17 +88,15 @@ class IoService
      *
      * @param string $message
      */
-    public function write($message)
+    public function write($message): void
     {
         $this->output->write($message);
     }
 
     /**
      * Write a message to STDOUT with trailing newline
-     *
-     * @param $message
      */
-    public function writeln($message)
+    public function writeln($message): void
     {
         $this->output->write($message, true);
     }
@@ -126,10 +106,8 @@ class IoService
      *
      * @param string|Question $question
      * @param null            $default
-     *
-     * @return string
      */
-    public function ask($question, $default = null, $hidden = false)
+    public function ask($question, $default = null, $hidden = false): string
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
@@ -146,10 +124,8 @@ class IoService
      *
      * @param array|null $headers
      * @param array|null $results
-     *
-     * @return Table
      */
-    public function createTable($headers = null, $results = null)
+    public function createTable($headers = null, $results = null): Table
     {
         $tableObject = new Table($this->output);
 
@@ -169,10 +145,8 @@ class IoService
      *
      * @param string|Question $question
      * @param null            $default
-     *
-     * @return string
      */
-    public function askConfirmation($question, $default = null)
+    public function askConfirmation($question, $default = null): string
     {
         $question = $question instanceof ConfirmationQuestion
             ? $question
@@ -187,11 +161,9 @@ class IoService
      * @param string|Question $question
      * @param bool|callable   $validator
      * @param bool|int        $attempts
-     * @param null|string     $default
-     *
-     * @return string
+     * @param string|null     $default
      */
-    public function askAndValidate($question, $validator = false, $attempts = false, $default = null, $hidden = false)
+    public function askAndValidate($question, $validator = false, $attempts = false, $default = null, $hidden = false): string
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
@@ -213,10 +185,8 @@ class IoService
 
     /**
      * @param int $max Maximum steps (0 if unknown)
-     *
-     * @return ProgressBar
      */
-    public function createProgressBar($max = 0)
+    public function createProgressBar($max = 0): ProgressBar
     {
         return new ProgressBar($this->output, $max);
     }
@@ -224,14 +194,14 @@ class IoService
     /**
      * Clears the screen in the terminal
      */
-    public function cls()
+    public function cls(): void
     {
         if (!$this->input->isInteractive()) {
             return;
         }
 
         // http://en.wikipedia.org/wiki/ANSI_escape_code
-        $this->output->write(chr(27) . '[2J'); // ED – Erase Display
-        $this->output->write(chr(27) . '[1;1H'); // CUP – Set Cursor Position to upper left
+        $this->output->write(\chr(27) . '[2J'); // ED – Erase Display
+        $this->output->write(\chr(27) . '[1;1H'); // CUP – Set Cursor Position to upper left
     }
 }

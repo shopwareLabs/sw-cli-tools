@@ -90,18 +90,12 @@ class Config
      */
     protected $chunkSize;
 
-    /**
-     * @param $numberArticles
-     */
-    public function setNumberArticles($numberArticles)
+    public function setNumberArticles($numberArticles): void
     {
         $this->numberArticles = $numberArticles;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberArticles()
+    public function getNumberArticles(): int
     {
         return $this->numberArticles;
     }
@@ -109,7 +103,7 @@ class Config
     /**
      * @param int $numberCategories
      */
-    public function setNumberCategories($numberCategories)
+    public function setNumberCategories($numberCategories): void
     {
         $this->numberCategories = $numberCategories;
     }
@@ -117,79 +111,52 @@ class Config
     /**
      * @param int $categoriesPerArticle
      */
-    public function setNumberCategoriesPerArticle($categoriesPerArticle)
+    public function setNumberCategoriesPerArticle($categoriesPerArticle): void
     {
         $this->categoriesPerArticle = max(1, $categoriesPerArticle);
     }
 
-    /**
-     * @return int
-     */
-    public function getCategoriesPerArticle()
+    public function getCategoriesPerArticle(): int
     {
         return $this->categoriesPerArticle;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberCategories()
+    public function getNumberCategories(): int
     {
         return $this->numberCategories;
     }
 
-    /**
-     * @param $numberCustomers
-     */
-    public function setNumberCustomers($numberCustomers)
+    public function setNumberCustomers($numberCustomers): void
     {
         $this->numberCustomers = $numberCustomers;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberCustomers()
+    public function getNumberCustomers(): int
     {
         return $this->numberCustomers;
     }
 
-    /**
-     * @param $numberOrders
-     */
-    public function setNumberOrders($numberOrders)
+    public function setNumberOrders($numberOrders): void
     {
         $this->numberOrders = $numberOrders;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberOrders()
+    public function getNumberOrders(): int
     {
         return $this->numberOrders;
     }
 
-    /**
-     * @param $numberNewsletter
-     */
-    public function setNumberNewsletter($numberNewsletter)
+    public function setNumberNewsletter($numberNewsletter): void
     {
         $this->numberNewsletter = $numberNewsletter;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberNewsletter()
+    public function getNumberNewsletter(): int
     {
         return $this->numberNewsletter;
     }
 
-    /**
-     * @param $outputName
-     */
-    public function setOutputName($outputName)
+    public function setOutputName($outputName): void
     {
         $this->outputName = $outputName;
     }
@@ -197,7 +164,7 @@ class Config
     /**
      * @param int $maxVariants
      */
-    public function setMaxVariants($maxVariants)
+    public function setMaxVariants($maxVariants): void
     {
         $this->maxVariants = $maxVariants;
     }
@@ -205,23 +172,17 @@ class Config
     /**
      * @param int $minVariants
      */
-    public function setMinVariants($minVariants)
+    public function setMinVariants($minVariants): void
     {
         $this->minVariants = $minVariants;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxVariants()
+    public function getMaxVariants(): int
     {
         return $this->maxVariants;
     }
 
-    /**
-     * @return int
-     */
-    public function getMinVariants()
+    public function getMinVariants(): int
     {
         return $this->minVariants;
     }
@@ -229,28 +190,25 @@ class Config
     /**
      * @param string|array $thumbnailSizes
      */
-    public function setThumbnailSizes($thumbnailSizes)
+    public function setThumbnailSizes($thumbnailSizes): void
     {
         if (empty($thumbnailSizes)) {
             $this->thumbnailSizes = null;
 
             return;
         }
-        if (is_string($thumbnailSizes)) {
+        if (\is_string($thumbnailSizes)) {
             $thumbnailSizes = explode(',', $thumbnailSizes);
         }
         $this->thumbnailSizes = $thumbnailSizes;
     }
 
-    public function getThumbnailSizes()
+    public function getThumbnailSizes(): array
     {
         return $this->thumbnailSizes;
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberVouchers()
+    public function getNumberVouchers(): int
     {
         return $this->numberVouchers;
     }
@@ -258,15 +216,12 @@ class Config
     /**
      * @param int $numberVouchers
      */
-    public function setNumberVouchers($numberVouchers)
+    public function setNumberVouchers($numberVouchers): void
     {
         $this->numberVouchers = $numberVouchers;
     }
 
-    /**
-     * @return int
-     */
-    public function getArticleFilterGroups()
+    public function getArticleFilterGroups(): int
     {
         return $this->articleFilterGroups;
     }
@@ -274,15 +229,12 @@ class Config
     /**
      * @param int $articleFilterGroups
      */
-    public function setArticleFilterGroups($articleFilterGroups)
+    public function setArticleFilterGroups($articleFilterGroups): void
     {
         $this->articleFilterGroups = $articleFilterGroups;
     }
 
-    /**
-     * @return int
-     */
-    public function getArticleFilterOptions()
+    public function getArticleFilterOptions(): int
     {
         return $this->articleFilterOptions;
     }
@@ -290,15 +242,12 @@ class Config
     /**
      * @param int $articleFilterOptions
      */
-    public function setArticleFilterOptions($articleFilterOptions)
+    public function setArticleFilterOptions($articleFilterOptions): void
     {
         $this->articleFilterOptions = $articleFilterOptions;
     }
 
-    /**
-     * @return int
-     */
-    public function getArticleFilterValues()
+    public function getArticleFilterValues(): int
     {
         return $this->articleFilterValues;
     }
@@ -306,48 +255,36 @@ class Config
     /**
      * @param int $articleFilterValues
      */
-    public function setArticleFilterValues($articleFilterValues)
+    public function setArticleFilterValues($articleFilterValues): void
     {
         $this->articleFilterValues = $articleFilterValues;
     }
 
-    /**
-     * @param $imageDir
-     */
-    public function setImageDir($imageDir)
+    public function setImageDir($imageDir): void
     {
-        $dir = $imageDir . '/' . 'thumbnail';
+        $dir = $imageDir . '/thumbnail';
         if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
         $this->imageDir = $imageDir;
     }
 
-    /**
-     * @return string
-     */
-    public function getImageDir()
+    public function getImageDir(): string
     {
         return $this->imageDir;
     }
 
-    /**
-     * @param  $createImages
-     */
-    public function setCreateImages($createImages)
+    public function setCreateImages($createImages): void
     {
         $this->createImages = (bool) $createImages;
     }
 
-    /**
-     * @return bool
-     */
-    public function getCreateImages()
+    public function getCreateImages(): bool
     {
         return $this->createImages;
     }
 
-    public function createOutputDir()
+    public function createOutputDir(): void
     {
         $outputDir = getcwd() . '/output';
         if (!is_dir($outputDir) && !mkdir($outputDir) && !is_dir($outputDir)) {
@@ -358,15 +295,12 @@ class Config
     /**
      * @param int $chunkSize
      */
-    public function setChunkSize($chunkSize)
+    public function setChunkSize($chunkSize): void
     {
         $this->chunkSize = $chunkSize;
     }
 
-    /**
-     * @return int
-     */
-    public function getChunkSize()
+    public function getChunkSize(): int
     {
         return $this->chunkSize;
     }
@@ -374,23 +308,17 @@ class Config
     /**
      * @param int $seed
      */
-    public function setSeed($seed)
+    public function setSeed($seed): void
     {
         $this->seed = $seed;
     }
 
-    /**
-     * @return string
-     */
-    public function getOutputName()
+    public function getOutputName(): string
     {
         return $this->outputName;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSeed()
+    public function getSeed(): int
     {
         return $this->seed;
     }
@@ -398,15 +326,12 @@ class Config
     /**
      * @param string $generatorLocale
      */
-    public function setGeneratorLocale($generatorLocale)
+    public function setGeneratorLocale($generatorLocale): void
     {
         $this->generatorLocale = $generatorLocale;
     }
 
-    /**
-     * @return string
-     */
-    public function getGeneratorLocale()
+    public function getGeneratorLocale(): string
     {
         return $this->generatorLocale;
     }

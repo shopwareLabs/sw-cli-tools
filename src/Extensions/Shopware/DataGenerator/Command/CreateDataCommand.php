@@ -18,12 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateDataCommand extends BaseCommand
 {
     protected $utilities;
+
     protected $zipDir;
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     public function interact(InputInterface $input, OutputInterface $output)
     {
         $articles = $input->getOption('articles');
@@ -45,23 +42,19 @@ class CreateDataCommand extends BaseCommand
         $this->askConfigOptions($input, 'categoriesPerArticle', 'Categories per article', 3);
         $this->askConfigOptions($input, 'articleMinVariants', 'Minimum variants per article', 1);
         $this->askConfigOptions($input, 'articleMaxVariants', 'Maximum variants per article', 20);
-        $this->askConfigOptions($input, 'articleFilterGroups', 'Filter groups', 0);
-        $this->askConfigOptions($input, 'articleFilterOptions', 'Filter Options', 0);
-        $this->askConfigOptions($input, 'articleFilterValues', 'Filter Values', 0);
-        $this->askConfigOptions($input, 'orders', 'Orders', 0);
-        $this->askConfigOptions($input, 'newsletter', 'Newsletters', 0);
+        $this->askConfigOptions($input, 'articleFilterGroups', 'Filter groups');
+        $this->askConfigOptions($input, 'articleFilterOptions', 'Filter Options');
+        $this->askConfigOptions($input, 'articleFilterValues', 'Filter Values');
+        $this->askConfigOptions($input, 'orders', 'Orders');
+        $this->askConfigOptions($input, 'newsletter', 'Newsletters');
         $this->askConfigOptions($input, 'customers', 'Customers', 1000);
-        $this->askConfigOptions($input, 'vouchers', 'Vouchers', 0);
+        $this->askConfigOptions($input, 'vouchers', 'Vouchers');
     }
 
     /**
-     * @param $input
-     *
      * @throws \RuntimeException
-     *
-     * @return int
      */
-    public function validateInt($input)
+    public function validateInt($input): int
     {
         if (empty($input)) {
             return 0;
@@ -232,7 +225,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $writerManager = $this->container->get('writer_manager');
         if (is_readable($shopwarePath . '/config.php')) {
             $shopwareConfig = require $shopwarePath . '/config.php';
-            if (!array_key_exists('db', $shopwareConfig)) {
+            if (!\array_key_exists('db', $shopwareConfig)) {
                 $output->writeln('<error>Invalid Shopware configuration file.</error>');
 
                 return;
@@ -273,23 +266,6 @@ Requires \'local-infile=1\' in your MySQL installation.
         }
     }
 
-    /**
-     * @param $seed
-     * @param $articles
-     * @param $orders
-     * @param $categories
-     * @param $categoriesPerArticle
-     * @param $customers
-     * @param $newsletter
-     * @param $vouchers
-     * @param $articleFilterGroups
-     * @param $articleFilterOptions
-     * @param $articleFilterValues
-     * @param $chunkSize
-     * @param $minVariants
-     * @param $maxVariants
-     * @param $generatorLocale
-     */
     protected function configureGenerator(
         $seed,
         $articles,
@@ -306,7 +282,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $minVariants,
         $maxVariants,
         $generatorLocale
-    ) {
+    ): void {
         // Check some pre-conditions
         if ($articles > 0 && !$categories) {
             throw new \UnexpectedValueException('Articles require categories');
@@ -343,12 +319,11 @@ Requires \'local-infile=1\' in your MySQL installation.
     }
 
     /**
-     * @param InputInterface $input
-     * @param string         $optionName
-     * @param string|null    $optionHumanName
-     * @param int            $default
+     * @param string      $optionName
+     * @param string|null $optionHumanName
+     * @param int         $default
      */
-    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0)
+    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0): void
     {
         $ioService = $this->container->get('io_service');
 

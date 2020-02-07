@@ -23,7 +23,7 @@ class Zip
     protected $checkout;
 
     /**
-     * @var \ShopwareCli\Utilities
+     * @var Utilities
      */
     protected $utilities;
 
@@ -32,11 +32,6 @@ class Zip
      */
     private $processExecutor;
 
-    /**
-     * @param Checkout        $checkout
-     * @param Utilities       $utilities
-     * @param ProcessExecutor $processExecutor
-     */
     public function __construct(Checkout $checkout, Utilities $utilities, ProcessExecutor $processExecutor)
     {
         $this->checkout = $checkout;
@@ -45,15 +40,12 @@ class Zip
     }
 
     /**
-     * @param Plugin $plugin
      * @param string $path
      * @param string $zipTo
      * @param string $branch
      * @param bool   $useHttp
-     *
-     * @return string
      */
-    public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp = false)
+    public function zip(Plugin $plugin, $path, $zipTo, $branch, $useHttp = false): string
     {
         $this->checkout->checkout($plugin, $path, $branch, $useHttp);
 
@@ -92,9 +84,8 @@ class Zip
 
     /**
      * @param string $directory
-     * @param $outputFile
      */
-    public function zipDir($directory, $outputFile)
+    public function zipDir($directory, $outputFile): void
     {
         $this->processExecutor->execute("zip -r $outputFile $directory -x *.git*");
     }

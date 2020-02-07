@@ -15,9 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class CommandManager
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @var ContainerBuilder
      */
     private $container;
+
     /**
      * @var ExtensionManager
      */
@@ -31,10 +32,8 @@ class CommandManager
 
     /**
      * Returns all commands
-     *
-     * @return array
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         $commands = array_merge(
             $this->getDefaultCommands(),
@@ -52,10 +51,8 @@ class CommandManager
 
     /**
      * Returns a flat array of all plugin's console commands
-     *
-     * @return array
      */
-    public function collectPluginCommands()
+    public function collectPluginCommands(): array
     {
         $commands = [];
 
@@ -70,10 +67,7 @@ class CommandManager
         return $commands;
     }
 
-    /**
-     * @return array
-     */
-    private function getDefaultCommands()
+    private function getDefaultCommands(): array
     {
         return [
             new Command\CacheCommand(),

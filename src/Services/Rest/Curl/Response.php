@@ -14,8 +14,6 @@ use ShopwareCli\Services\Rest\ResponseInterface;
  * Response object wrapping a response body of a curl request.
  * Does provide a simple interface to access error messages and status codes
  * as well as the decoded result object
- *
- * Class Response
  */
 class Response implements ResponseInterface
 {
@@ -35,9 +33,9 @@ class Response implements ResponseInterface
     protected $code;
 
     /**
-     * @var null|string
+     * @var string|null
      */
-    protected $errorMessage = null;
+    protected $errorMessage;
 
     /**
      * @var bool
@@ -45,7 +43,6 @@ class Response implements ResponseInterface
     protected $success = false;
 
     /**
-     * @param $body
      * @param resource $curlHandle
      */
     public function __construct($body, $curlHandle)
@@ -60,7 +57,8 @@ class Response implements ResponseInterface
 
         $this->code = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
 
-        if (null === $decodedResult = json_decode($this->rawBody, true)) {
+        $decodedResult = json_decode($this->rawBody, true);
+        if ($decodedResult === null) {
             $jsonError = json_last_error_msg();
             $rawErrorBody = print_r($body, true);
 

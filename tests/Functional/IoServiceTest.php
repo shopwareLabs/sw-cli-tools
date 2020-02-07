@@ -8,12 +8,13 @@
 
 namespace ShopwareCli\Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
 use ShopwareCli\Services\IoService;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class IoServiceTest extends \PHPUnit_Framework_TestCase
+class IoServiceTest extends TestCase
 {
     /**
      * @var ArrayInput
@@ -25,7 +26,7 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
      */
     private $output;
 
-    public function testShouldClearScreenInInteractiveMode()
+    public function testShouldClearScreenInInteractiveMode(): void
     {
         $SUT = $this->createSUT();
 
@@ -33,13 +34,13 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
 
         $SUT->cls();
 
-        $this->assertEquals(
-            chr(27) . '[2J' . chr(27) . '[1;1H',
+        static::assertEquals(
+            \chr(27) . '[2J' . \chr(27) . '[1;1H',
             $this->output->fetch()
         );
     }
 
-    public function testShouldNotClearScreenInNotInteractiveMode()
+    public function testShouldNotClearScreenInNotInteractiveMode(): void
     {
         $SUT = $this->createSUT();
 
@@ -47,24 +48,21 @@ class IoServiceTest extends \PHPUnit_Framework_TestCase
 
         $SUT->cls();
 
-        $this->assertEquals(
+        static::assertEquals(
             '',
             $this->output->fetch()
         );
     }
 
-    /**
-     * @return IoService
-     */
-    private function createSUT()
+    private function createSUT(): IoService
     {
-        $this->input = $input = new ArrayInput([]);
-        $this->output = $output = new BufferedOutput();
+        $this->input = new ArrayInput([]);
+        $this->output = new BufferedOutput();
         $questionHelper = new QuestionHelper();
 
         return new IoService(
-            $input,
-            $output,
+            $this->input,
+            $this->output,
             $questionHelper
         );
     }

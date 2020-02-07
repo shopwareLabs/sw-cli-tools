@@ -12,8 +12,6 @@ use ShopwareCli\Services\IoService;
 
 /**
  * The config writer is responsible for writing build.properties and config.php configuration files
- *
- * Class ConfigWriter
  */
 class ConfigWriter
 {
@@ -41,8 +39,9 @@ db.password = %s
 db.port = %s
 
 EOF;
+
     /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
 
@@ -51,7 +50,7 @@ EOF;
         $this->ioService = $ioService;
     }
 
-    public function writeConfigPhp($installDir, $user, $password, $name, $host, $port = 3306)
+    public function writeConfigPhp($installDir, $user, $password, $name, $host, $port = 3306): void
     {
         $this->ioService->writeln('<info>Writing config.php</info>');
 
@@ -60,7 +59,7 @@ EOF;
         file_put_contents($installDir . '/config.php', $config);
     }
 
-    public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost, $port = 3306)
+    public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost, $port = 3306): void
     {
         $this->ioService->writeln('<info>Writing build.properties</info>');
 

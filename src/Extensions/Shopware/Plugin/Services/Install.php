@@ -32,11 +32,6 @@ class Install
      */
     private $processExecutor;
 
-    /**
-     * @param Checkout        $checkout
-     * @param IoService       $ioService
-     * @param ProcessExecutor $processExecutor
-     */
     public function __construct(Checkout $checkout, IoService $ioService, ProcessExecutor $processExecutor)
     {
         $this->checkout = $checkout;
@@ -45,7 +40,6 @@ class Install
     }
 
     /**
-     * @param Plugin $plugin
      * @param string $shopwarePath
      * @param bool   $inputActivate
      * @param string $branch
@@ -78,10 +72,9 @@ class Install
     }
 
     /**
-     * @param Plugin $plugin
      * @param string $shopwarePath
      */
-    private function addPluginVcsMapping(Plugin $plugin, $shopwarePath)
+    private function addPluginVcsMapping(Plugin $plugin, $shopwarePath): void
     {
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . '/' . $plugin->name;
@@ -115,12 +108,8 @@ class Install
 
     /**
      * Normalize directory strings to make them comparable
-     *
-     * @param $string
-     *
-     * @return string
      */
-    private function normalize($string)
+    private function normalize($string): string
     {
         return strtolower(str_replace(['/', '\\'], '-', $string));
     }
@@ -128,7 +117,7 @@ class Install
     /**
      * @param string $pluginPath
      */
-    private function installGitHook($pluginPath)
+    private function installGitHook($pluginPath): void
     {
         $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
 

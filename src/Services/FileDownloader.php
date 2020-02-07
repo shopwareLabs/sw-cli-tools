@@ -8,9 +8,6 @@
 
 namespace ShopwareCli\Services;
 
-/**
- * Class FileDownloader
- */
 interface FileDownloader
 {
     /**

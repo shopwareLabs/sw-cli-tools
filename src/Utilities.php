@@ -26,10 +26,8 @@ class Utilities
      * Checks if a given path is a Shopware 5 installation
      *
      * @param string $path
-     *
-     * @return bool
      */
-    public function isShopware5Installation($path)
+    public function isShopware5Installation($path): bool
     {
         return is_readable($path . '/shopware.php');
     }
@@ -38,10 +36,8 @@ class Utilities
      * Checks if a given path is a Shopware 6 installation
      *
      * @param string $path
-     *
-     * @return bool
      */
-    public function isShopware6Installation($path)
+    public function isShopware6Installation($path): bool
     {
         return is_dir($path . '/vendor/shopware/platform') || is_dir($path . '/vendor/shopware/core');
     }
@@ -50,10 +46,8 @@ class Utilities
      * Ask for a valid Shopware path until the user enters it
      *
      * @param string|null $shopwarePath
-     *
-     * @return string
      */
-    public function getValidShopwarePath($shopwarePath = null)
+    public function getValidShopwarePath($shopwarePath = null): string
     {
         if ($shopwarePath === null) {
             $shopwarePath = realpath(getcwd());
@@ -79,10 +73,8 @@ class Utilities
      * @param string $shopwarePath
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    public function validateShopwarePath($shopwarePath)
+    public function validateShopwarePath($shopwarePath): string
     {
         $shopwarePathReal = realpath($shopwarePath);
 
@@ -106,7 +98,7 @@ class Utilities
      *
      * @throws \RuntimeException
      */
-    public function changeDir($path)
+    public function changeDir($path): void
     {
         if (!chdir($path)) {
             throw new \RuntimeException("Could not cd into '$path''");

@@ -16,13 +16,13 @@ use ShopwareCli\Services\ProcessExecutor;
 
 class ReleaseDownloader
 {
-    const DOWNLOAD_URL_LATEST = 'http://install.s3.shopware.com/';
-    const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/releases/install';
+    private const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/releases/install';
 
     /**
      * @var string
      */
     private $cachePath;
+
     /**
      * @var IoService
      */
@@ -37,17 +37,14 @@ class ReleaseDownloader
      * @var FileDownloader
      */
     private $downloader;
+
     /**
      * @var OpenSSLVerifier
      */
     private $openSSLVerifier;
 
     /**
-     * @param ProcessExecutor $processExecutor
-     * @param IoService       $ioService
-     * @param FileDownloader  $downloader
-     * @param OpenSSLVerifier $openSSLVerifier
-     * @param string          $cachePath
+     * @param string $cachePath
      */
     public function __construct(
         ProcessExecutor $processExecutor,
@@ -69,7 +66,7 @@ class ReleaseDownloader
      * @param string $release
      * @param string $installDir
      */
-    public function downloadRelease($release, $installDir)
+    public function downloadRelease($release, $installDir): void
     {
         $this->ioService->writeln('<info>Downloading release</info>');
         $zipLocation = $this->downloadFromUpdateApi($release);
@@ -86,21 +83,17 @@ class ReleaseDownloader
      * New releases can be downloaded via the update api and provide a sha1 hash
      *
      * @param string $release
-     *
-     * @return string
      */
-    private function downloadFromUpdateApi($release)
+    private function downloadFromUpdateApi($release): string
     {
         $indexedReleases = $this->getIndexedReleasesList();
 
-        if (array_key_exists($release, $indexedReleases)) {
+        if (\array_key_exists($release, $indexedReleases)) {
             $content = $indexedReleases[$release];
+        } elseif ($release === 'latest') {
+            $content = array_shift($indexedReleases);
         } else {
-            if ($release == 'latest') {
-                $content = array_shift($indexedReleases);
-            } else {
-                throw new \RuntimeException(sprintf('Could not find release %s', $release));
-            }
+            throw new \RuntimeException(sprintf('Could not find release %s', $release));
         }
 
         $version = $content['version'];
@@ -127,20 +120,16 @@ class ReleaseDownloader
     /**
      * Loads a list of the latest releases from the update API
      * Returns them indexed by the Shopware version (e.g: 5.1.0)
-     *
-     * @return array
      */
-    private function getIndexedReleasesList()
+    private function getIndexedReleasesList(): array
     {
-        $client = new Client();
-
-        $response = $client->get(self::DOWNLOAD_UPDATE_API);
+        $response = (new Client())->get(self::DOWNLOAD_UPDATE_API);
         $signature = $response->getHeader('X-Shopware-Signature');
 
-        if ($this->openSSLVerifier->isSystemSupported()) {
-            if (!$this->openSSLVerifier->isValid($response->getBody(), $signature[0])) {
-                throw new \RuntimeException('API signature verification failed');
-            }
+        if ($this->openSSLVerifier->isSystemSupported()
+            && !$this->openSSLVerifier->isValid($response->getBody(), $signature[0])
+        ) {
+            throw new \RuntimeException('API signature verification failed');
         }
 
         $releases = json_decode($response->getBody(), true);
@@ -158,22 +147,16 @@ class ReleaseDownloader
 
     /**
      * Return a generic cache file name for a given release
-     *
-     * @param $release
-     *
-     * @return string
      */
-    private function getCacheFilePath($release)
+    private function getCacheFilePath($release): string
     {
         return $this->cachePath . "/{$release}.zip";
     }
 
     /**
      * Return a temp dir name
-     *
-     * @return string
      */
-    private function getTempFile()
+    private function getTempFile(): string
     {
         return sys_get_temp_dir() . '/' . uniqid('release_download', true);
     }

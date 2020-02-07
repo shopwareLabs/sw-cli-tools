@@ -17,8 +17,9 @@ class ResourceLoader
      * @var BaseResource[]
      */
     private $resources;
+
     /**
-     * @var \Symfony\Component\DependencyInjection\Container
+     * @var Container
      */
     private $container;
 
@@ -27,12 +28,7 @@ class ResourceLoader
         $this->container = $container;
     }
 
-    /**
-     * @param $type
-     *
-     * @return BaseResource
-     */
-    public function getResource($type)
+    public function getResource($type): BaseResource
     {
         if (!isset($this->resources[$type])) {
             $className = 'Shopware\DataGenerator\Resources\\' . ucfirst($type);

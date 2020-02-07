@@ -28,7 +28,7 @@ class RandomDataProvider
     /**
      * @param string|null $locale
      */
-    public function setProviderLocale($locale)
+    public function setProviderLocale($locale): void
     {
         if ($locale === null) {
             $this->faker = Factory::create();
@@ -37,52 +37,35 @@ class RandomDataProvider
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getRandomCity()
+    public function getRandomCity(): string
     {
         return $this->faker->city;
     }
 
-    /**
-     * @return string
-     */
-    public function getRandomFirstName()
+    public function getRandomFirstName(): string
     {
         return $this->faker->firstName;
     }
 
-    /**
-     * @return string
-     */
-    public function getRandomLastName()
+    public function getRandomLastName(): string
     {
         return $this->faker->lastName;
     }
 
-    /**
-     * @return string
-     */
-    public function getRandomWord()
+    public function getRandomWord(): string
     {
         return $this->faker->word;
     }
 
     /**
      * @param int $wordCount
-     *
-     * @return string
      */
-    public function getSentence($wordCount)
+    public function getSentence($wordCount): string
     {
         return $this->faker->sentence(max($wordCount, 1));
     }
 
-    /**
-     * @return string
-     */
-    public function getRandomIpv4()
+    public function getRandomIpv4(): string
     {
         return $this->faker->ipv4;
     }

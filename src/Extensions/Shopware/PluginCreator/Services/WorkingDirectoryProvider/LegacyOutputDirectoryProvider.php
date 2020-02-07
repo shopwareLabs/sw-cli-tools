@@ -12,11 +12,10 @@ use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\RootDe
 
 class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
 {
-    const LEGACY_PLUGIN_DIR = 'engine/Shopware/Plugins/Local';
-
-    const FRONTEND_NAMESPACE = 'Frontend';
-    const BACKEND_NAMESPACE = 'Backend';
-    const CORE_NAMESPACE = 'Core';
+    public const FRONTEND_NAMESPACE = 'Frontend';
+    private const LEGACY_PLUGIN_DIR = 'engine/Shopware/Plugins/Local';
+    private const BACKEND_NAMESPACE = 'Backend';
+    private const CORE_NAMESPACE = 'Core';
 
     /**
      * @var string
@@ -34,15 +33,14 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
     private $name;
 
     /**
-     * @param RootDetectorInterface $rootDetector
-     * @param string                $name
-     * @param string                $namespace
+     * @param string $name
+     * @param string $namespace
      *
      * @throws \Exception
      */
     public function __construct(RootDetectorInterface $rootDetector, $name, $namespace)
     {
-        if (!$this->isValidNamespace($namespace) && strlen($namespace)) {
+        if (!$this->isValidNamespace($namespace) && $namespace !== '') {
             throw new \Exception(
                 sprintf('Invalid namespace given: %s', $namespace)
             );
@@ -67,18 +65,13 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     /**
      * @param string $namespace
-     *
-     * @return bool
      */
-    private function isValidNamespace($namespace)
+    private function isValidNamespace($namespace): bool
     {
-        return self::FRONTEND_NAMESPACE == $namespace || self::BACKEND_NAMESPACE == $namespace || self::CORE_NAMESPACE == $namespace;
+        return \in_array($namespace, [self::FRONTEND_NAMESPACE, self::BACKEND_NAMESPACE, self::CORE_NAMESPACE], true);
     }
 
-    /**
-     * @return string
-     */
-    private function getCwd()
+    private function getCwd(): string
     {
         return getcwd();
     }

@@ -11,27 +11,27 @@ namespace ShopwareCli\Services;
 use ShopwareCli\Config;
 use ShopwareCli\Services\PathProvider\PathProvider;
 
-/**
- * Class GitIdentityEnvironment
- */
 class GitIdentityEnvironment
 {
-    protected $wrapperFileName = 'ssh-as.sh';
-    protected $keyFileName = 'ssh.key';
+    private $wrapperFileName = 'ssh-as.sh';
 
-    protected $sshAliasTemplate = <<<'EOF'
+    private $keyFileName = 'ssh.key';
+
+    private $sshAliasTemplate = <<<'EOF'
 #!/bin/bash
 set -e
 set -u
 
 ssh -i $SSH_KEYFILE $@
 EOF;
+
     /**
      * @var PathProvider
      */
     private $pathProvider;
+
     /**
-     * @var \ShopwareCli\Config
+     * @var Config
      */
     private $config;
 
@@ -44,10 +44,8 @@ EOF;
     /**
      * Will return an array of SSH_KEYFILE and GIT_SSH if a custom ssh key is configured
      * Else null will be returned
-     *
-     * @return array|null
      */
-    public function getGitEnv()
+    public function getGitEnv(): ?array
     {
         if (!$this->getCustomKey()) {
             return null;
@@ -64,10 +62,8 @@ EOF;
      * custom key is configured
      *
      * @throws \RuntimeException
-     *
-     * @return null|string
      */
-    private function getCustomKey()
+    private function getCustomKey(): ?string
     {
         if (isset($this->config['sshKey'])) {
             $keyPath = $this->config['sshKey'];
@@ -97,10 +93,8 @@ EOF;
     /**
      * @param string $dir
      * @param string $sshKeyFile
-     *
-     * @return bool
      */
-    private function writeSshKey($dir, $sshKeyFile)
+    private function writeSshKey($dir, $sshKeyFile): bool
     {
         if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
@@ -117,10 +111,8 @@ EOF;
      * Return path of the git wrapper file. If it doesn't exist, it will be created
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
-    private function getGitWrapper()
+    private function getGitWrapper(): string
     {
         $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
 
@@ -137,10 +129,8 @@ EOF;
      * Create git wrapper file
      *
      * @param string $dir
-     *
-     * @return bool
      */
-    private function writeGitSshWrapper($dir)
+    private function writeGitSshWrapper($dir): bool
     {
         if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));

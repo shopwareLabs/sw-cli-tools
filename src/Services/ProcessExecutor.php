@@ -27,8 +27,7 @@ class ProcessExecutor
     private $output;
 
     /**
-     * @param OutputInterface $output
-     * @param int             $timeout
+     * @param int $timeout
      */
     public function __construct(OutputInterface $output, $timeout)
     {
@@ -41,16 +40,14 @@ class ProcessExecutor
      * @param string   $cwd
      * @param bool     $allowFailure
      * @param int|null $timeout
-     *
-     * @return int|null
      */
-    public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null)
+    public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null): ?int
     {
         $process = new Process($commandline, $cwd);
         $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4
-        $process->run(function ($type, $buffer) use ($output) {
+        $process->run(static function ($type, $buffer) use ($output) {
             $output->write($buffer);
         });
 
@@ -59,5 +56,10 @@ class ProcessExecutor
         }
 
         return $process->getExitCode();
+    }
+
+    public function getTimeout(): int
+    {
+        return $this->timeout;
     }
 }

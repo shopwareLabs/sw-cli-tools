@@ -22,35 +22,32 @@ class PathProvider
         $this->directoryGateway = $directoryGateway;
     }
 
-    /**
-     * @return string
-     */
-    public function getCliToolPath()
+    public function getCliToolPath(): string
     {
-        return dirname(dirname(dirname(__DIR__)));
+        return \dirname(__DIR__, 3);
     }
 
-    public function getCachePath()
+    public function getCachePath(): string
     {
         return $this->directoryGateway->getCacheDir();
     }
 
-    public function getAssetsPath()
+    public function getAssetsPath(): string
     {
         return $this->directoryGateway->getAssetsDir();
     }
 
-    public function getExtensionPath()
+    public function getExtensionPath(): string
     {
         return $this->directoryGateway->getExtensionDir();
     }
 
-    public function getConfigPath()
+    public function getConfigPath(): string
     {
         return $this->directoryGateway->getConfigDir();
     }
 
-    public function getRuntimeDir()
+    public function getRuntimeDir(): string
     {
         // temporary fix: selinux seems to interfere with executables in /run/user on some systems
         return '/tmp';

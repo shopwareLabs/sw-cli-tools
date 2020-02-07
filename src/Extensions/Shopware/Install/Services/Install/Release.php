@@ -21,8 +21,6 @@ use ShopwareCli\Services\ProcessExecutor;
 
 /**
  * This install service will run all steps needed to setup shopware in the correct order
- *
- * Class Release
  */
 class Release
 {
@@ -57,16 +55,12 @@ class Release
     private $releaseDownloader;
 
     /**
-     * @var \Shopware\Install\Services\Demodata
-     */
-    private $demodata;
-
-    /**
-     * @var \ShopwareCli\Services\IoService
+     * @var IoService
      */
     private $ioService;
+
     /**
-     * @var \Shopware\Install\Services\PostInstall
+     * @var PostInstall
      */
     private $postInstall;
 
@@ -75,24 +69,12 @@ class Release
      */
     private $processExecutor;
 
-    /**
-     * @param ReleaseDownloader $releaseDownloader
-     * @param Config            $config
-     * @param VcsGenerator      $vcsGenerator
-     * @param ConfigWriter      $configWriter
-     * @param Database          $database
-     * @param Demodata          $demodata
-     * @param IoService         $ioService
-     * @param PostInstall       $postInstall
-     * @param ProcessExecutor   $processExecutor
-     */
     public function __construct(
         ReleaseDownloader $releaseDownloader,
         Config $config,
         VcsGenerator $vcsGenerator,
         ConfigWriter $configWriter,
         Database $database,
-        Demodata $demodata,
         IoService $ioService,
         PostInstall $postInstall,
         ProcessExecutor $processExecutor
@@ -102,16 +84,12 @@ class Release
         $this->vcsGenerator = $vcsGenerator;
         $this->configWriter = $configWriter;
         $this->database = $database;
-        $this->demodata = $demodata;
         $this->ioService = $ioService;
         $this->postInstall = $postInstall;
         $this->processExecutor = $processExecutor;
     }
 
-    /**
-     * @param InstallationRequest $request
-     */
-    public function installShopware(InstallationRequest $request)
+    public function installShopware(InstallationRequest $request): void
     {
         if (!$request->getSkipDownload()) {
             $this->releaseDownloader->downloadRelease($request->getRelease(), $request->getInstallDir());
@@ -141,7 +119,7 @@ class Release
         $this->ioService->writeln('<info>Install completed</info>');
     }
 
-    private function createDatabase(InstallationRequest $request)
+    private function createDatabase(InstallationRequest $request): void
     {
         $this->database->setup(
             $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
@@ -152,14 +130,12 @@ class Release
         );
     }
 
-    private function generateVcsMapping($installDir)
+    private function generateVcsMapping($installDir): void
     {
-        $this->vcsGenerator->createVcsMapping($installDir, array_map(function ($repo) {
-            return $repo['destination'];
-        }, $this->config['ShopwareInstallRepos']));
+        $this->vcsGenerator->createVcsMapping($installDir, array_column($this->config['ShopwareInstallRepos'], 'destination'));
     }
 
-    private function runInstaller(InstallationRequest $request)
+    private function runInstaller(InstallationRequest $request): void
     {
         $delegateOptions = [
             'dbHost', 'dbPort', 'dbSocket', 'dbUser', 'dbPassword', 'dbName',
@@ -169,7 +145,7 @@ class Release
 
         $arguments = [];
         foreach ($request->all() as $key => $value) {
-            if (!in_array($key, $delegateOptions) || strlen($value) === 0) {
+            if (!\in_array($key, $delegateOptions, true) || $value === '') {
                 continue;
             }
 
@@ -185,17 +161,15 @@ class Release
             $arguments[] = '--skip-admin-creation';
         }
 
-        $arguments = join(' ', $arguments);
+        $arguments = implode(' ', $arguments);
 
         $this->processExecutor->execute("php {$request->getAbsoluteInstallDir()}/recovery/install/index.php {$arguments}");
     }
 
     /**
      * Write shopware's config.php
-     *
-     * @param InstallationRequest $request
      */
-    private function createShopwareConfig(InstallationRequest $request)
+    private function createShopwareConfig(InstallationRequest $request): void
     {
         $this->configWriter->writeConfigPhp(
             $request->getAbsoluteInstallDir(),
@@ -207,15 +181,10 @@ class Release
         );
     }
 
-    private function setupDatabase(InstallationRequest $request)
+    private function setupDatabase(InstallationRequest $request): void
     {
-        $this->database->setup(
-            $request->getDbUser() ?: $this->config['DatabaseConfig']['user'],
-            $request->getDbPassword() ?: $this->config['DatabaseConfig']['pass'],
-            $request->getDbName(),
-            $request->getDbHost() ?: $this->config['DatabaseConfig']['host'],
-            $request->getDbPort() ?: $this->config['DatabaseConfig']['port'] ?: 3306
-        );
+        $this->createDatabase($request);
+
         $this->database->importReleaseInstallDeltas($request->getAbsoluteInstallDir());
 
         if ($request->getSkipAdminCreation() !== true) {
@@ -234,7 +203,7 @@ class Release
      *
      * @param string $installDir
      */
-    private function lockInstaller($installDir)
+    private function lockInstaller($installDir): void
     {
         if (file_exists($installDir . '/recovery/install/data')) {
             touch($installDir . '/recovery/install/data/install.lock');

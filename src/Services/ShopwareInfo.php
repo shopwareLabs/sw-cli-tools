@@ -12,12 +12,10 @@ namespace ShopwareCli\Services;
  * Provides general info about shopware installations.
  *
  * Will take care of version dependent things.
- *
- * Class ShopwareInfo
  */
 class ShopwareInfo
 {
-    public function getCacheDir($path)
+    public function getCacheDir($path): string
     {
         $path = $this->normalizePath($path);
 
@@ -32,7 +30,7 @@ class ShopwareInfo
         throw new \RuntimeException('Cache path not found');
     }
 
-    public function getLogDir($path)
+    public function getLogDir($path): string
     {
         $path = $this->normalizePath($path);
 
@@ -47,22 +45,17 @@ class ShopwareInfo
         throw new \RuntimeException('Log path not found');
     }
 
-    public function getMediaDir($path)
+    public function getMediaDir($path): string
     {
         return $this->normalizePath($path) . 'media';
     }
 
-    public function getFilesDir($path)
+    public function getFilesDir($path): string
     {
         return $this->normalizePath($path) . 'files';
     }
 
-    /**
-     * @param $path
-     *
-     * @return string
-     */
-    private function normalizePath($path)
+    private function normalizePath($path): string
     {
         return rtrim($path, '/\\') . '/';
     }

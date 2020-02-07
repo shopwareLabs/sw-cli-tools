@@ -81,209 +81,127 @@ class InstallationRequest extends Struct
     /** @var string */
     private $skipAdminCreation;
 
-    /**
-     * @param array $values
-     */
-    public function __construct(array $values = [])
-    {
-        foreach ($values as $name => $value) {
-            $this->$name = $value;
-        }
-    }
-
     public function all()
     {
         return get_object_vars($this);
     }
 
-    /**
-     * @return string
-     */
-    public function getRelease()
+    public function getRelease(): string
     {
         return $this->release;
     }
 
-    /**
-     * @return string
-     */
-    public function getInstallDir()
+    public function getInstallDir(): string
     {
         return $this->installDir;
     }
 
-    /**
-     * @return string
-     */
-    public function getOnlyUnpack()
+    public function getOnlyUnpack(): string
     {
         return $this->onlyUnpack;
     }
 
-    /**
-     * @return string
-     */
-    public function getSkipDownload()
+    public function getSkipDownload(): string
     {
         return $this->skipDownload;
     }
 
-    /**
-     * @return string
-     */
-    public function getAbsoluteInstallDir()
+    public function getAbsoluteInstallDir(): string
     {
         return realpath($this->installDir);
     }
 
-    /**
-     * @return string
-     */
-    public function getDbHost()
+    public function getDbHost(): string
     {
         return $this->dbHost;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbPort()
+    public function getDbPort(): string
     {
         return $this->dbPort;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbSocket()
+    public function getDbSocket(): string
     {
         return $this->dbSocket;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbUser()
+    public function getDbUser(): string
     {
         return $this->dbUser;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbPassword()
+    public function getDbPassword(): string
     {
         return $this->dbPassword;
     }
 
-    /**
-     * @return string
-     */
-    public function getDbName()
+    public function getDbName(): string
     {
         return $this->dbName;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopLocale()
+    public function getShopLocale(): string
     {
         return $this->shopLocale;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopHost()
+    public function getShopHost(): string
     {
         return $this->shopHost;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopPath()
+    public function getShopPath(): string
     {
         return $this->shopPath;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopName()
+    public function getShopName(): string
     {
         return $this->shopName;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopEmail()
+    public function getShopEmail(): string
     {
         return $this->shopEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getShopCurrency()
+    public function getShopCurrency(): string
     {
         return $this->shopCurrency;
     }
 
-    /**
-     * @return string
-     */
-    public function getAdminUsername()
+    public function getAdminUsername(): string
     {
         return $this->adminUsername;
     }
 
-    /**
-     * @return string
-     */
-    public function getAdminPassword()
+    public function getAdminPassword(): string
     {
         return $this->adminPassword;
     }
 
-    /**
-     * @return string
-     */
-    public function getAdminEmail()
+    public function getAdminEmail(): string
     {
         return $this->adminEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getAdminLocale()
+    public function getAdminLocale(): string
     {
         return $this->adminLocale;
     }
 
-    /**
-     * @return string
-     */
-    public function getAdminName()
+    public function getAdminName(): string
     {
         return $this->adminName;
     }
 
-    /**
-     * @return string
-     */
-    public function getNoSkipImport()
+    public function getNoSkipImport(): string
     {
         return $this->noSkipImport;
     }
 
-    /**
-     * @return string
-     */
-    public function getSkipAdminCreation()
+    public function getSkipAdminCreation(): string
     {
         return $this->skipAdminCreation;
     }

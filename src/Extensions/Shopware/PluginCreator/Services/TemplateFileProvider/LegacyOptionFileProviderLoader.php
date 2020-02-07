@@ -22,8 +22,8 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
      */
     public function __construct($isLegacy)
     {
-        if (!is_bool($isLegacy)) {
-            throw new \Exception('Boolean expected, got ' . gettype($isLegacy));
+        if (!\is_bool($isLegacy)) {
+            throw new \Exception('Boolean expected, got ' . \gettype($isLegacy));
         }
 
         $this->isLegacy = $isLegacy;
@@ -46,7 +46,7 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
     /**
      * @return FileProviderInterface[]
      */
-    private function getLegacyProvider()
+    private function getLegacyProvider(): array
     {
         return [
             new Legacy\ApiFileProvider(),
@@ -66,7 +66,7 @@ class LegacyOptionFileProviderLoader implements FileProviderLoaderInterface
     /**
      * @return FileProviderInterface[]
      */
-    private function getCurrentProvider()
+    private function getCurrentProvider(): array
     {
         return [
             new Current\ApiFileProvider(),

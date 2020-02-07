@@ -10,8 +10,6 @@ namespace Shopware\DataGenerator\Services;
 
 /**
  * Knows everything about our tables to create proper LOAD DATA INFILE queries
- *
- * Class LoadDataInfile
  */
 class LoadDataInfile
 {
@@ -202,13 +200,8 @@ class LoadDataInfile
 
     /**
      * Returns a loadDataInfile query for the selected table / file
-     *
-     * @param $tableName
-     * @param $file
-     *
-     * @return string
      */
-    public function get($tableName, $file)
+    public function get($tableName, $file): string
     {
         if (!$columns = $this->mappings[$tableName]) {
             throw new \RuntimeException("No definition for $tableName");
@@ -217,7 +210,7 @@ class LoadDataInfile
         $columns = implode(
             ', ',
             array_map(
-                function ($column) {
+                static function ($column) {
                     return "`$column`";
                 },
                 $columns

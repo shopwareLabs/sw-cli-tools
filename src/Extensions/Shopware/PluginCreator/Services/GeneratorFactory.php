@@ -15,17 +15,9 @@ use Shopware\PluginCreator\Services\WorkingDirectoryProvider\LegacyOutputDirecto
 use Shopware\PluginCreator\Services\WorkingDirectoryProvider\RootDetector\ShopwareRootDetector;
 use Shopware\PluginCreator\Struct\Configuration;
 
-/**
- * Class GeneratorFactory
- */
 class GeneratorFactory
 {
-    /**
-     * @param Configuration $configuration
-     *
-     * @return Generator
-     */
-    public function create(Configuration $configuration)
+    public function create(Configuration $configuration): Generator
     {
         $legacyOptionFileProvider = new LegacyOptionFileProviderLoader($configuration->isLegacyPlugin);
         $outputDirectoryProvider = $this->getOutputDirectoryProvider($configuration);
@@ -41,8 +33,6 @@ class GeneratorFactory
     }
 
     /**
-     * @param Configuration $configuration
-     *
      * @return CurrentOutputDirectoryProvider|LegacyOutputDirectoryProvider
      */
     private function getOutputDirectoryProvider(Configuration $configuration)
