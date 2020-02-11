@@ -42,7 +42,8 @@ class OpenSSLVerifier
     {
         $publicKey = trim(file_get_contents($this->publicKey));
 
-        if ($pubkeyid = openssl_pkey_get_public($publicKey) === false) {
+        $pubkeyid = openssl_pkey_get_public($publicKey);
+        if ($pubkeyid === false) {
             while ($errors[] = openssl_error_string());
             throw new \RuntimeException(sprintf("Error during public key read: \n%s", implode("\n", $errors)));
         }

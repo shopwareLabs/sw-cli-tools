@@ -30,11 +30,13 @@ class StreamFileDownloader implements FileDownloader
      */
     public function download($sourceUrl, $destination)
     {
-        if ($readHandle = fopen($sourceUrl, 'rb') === false) {
+        $readHandle = fopen($sourceUrl, 'rb');
+        if ($readHandle === false) {
             throw new \RuntimeException(sprintf("Could not open URL '%s'.", $sourceUrl));
         }
 
-        if ($writeHandle = fopen($destination, 'wb') === false) {
+        $writeHandle = fopen($destination, 'wb');
+        if ($writeHandle === false) {
             throw new \RuntimeException(sprintf('Could not write file: %s.', $destination));
         }
 
@@ -43,7 +45,7 @@ class StreamFileDownloader implements FileDownloader
         $progress = $this->ioService->createProgressBar($length / 1024);
         $progress->start();
 
-        // update every 0.5 magabytes
+        // update every 0.5 megabytes
         $progress->setRedrawFrequency(524288 / 1024);
 
         $currentSize = 0;

@@ -13,7 +13,6 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class IoService
@@ -105,9 +104,9 @@ class IoService
      * Ask a $question
      *
      * @param string|Question $question
-     * @param null            $default
+     * @param mixed|null      $default
      */
-    public function ask($question, $default = null, $hidden = false): string
+    public function ask($question, $default = null, bool $hidden = false): ?string
     {
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
@@ -141,37 +140,25 @@ class IoService
     }
 
     /**
-     * Ask for confirmation
-     *
-     * @param string|Question $question
-     * @param null            $default
-     */
-    public function askConfirmation($question, $default = null): string
-    {
-        $question = $question instanceof ConfirmationQuestion
-            ? $question
-            : new ConfirmationQuestion($question, $default);
-
-        return $this->questionHelper->ask($this->input, $this->output, $question);
-    }
-
-    /**
      * Ask a question and validate the result
      *
      * @param string|Question $question
-     * @param bool|callable   $validator
-     * @param bool|int        $attempts
-     * @param string|null     $default
+     * @param mixed|null      $default
      */
-    public function askAndValidate($question, $validator = false, $attempts = false, $default = null, $hidden = false): string
-    {
+    public function askAndValidate(
+        $question,
+        ?callable $validator = null,
+        int $attempts = 0,
+        $default = null,
+        bool $hidden = false
+    ): ?string {
         $question = $question instanceof Question ? $question : new Question($question, $default);
 
         if ($attempts) {
             $question->setMaxAttempts($attempts);
         }
 
-        if ($validator) {
+        if ($validator !== null) {
             $question->setValidator($validator);
         }
 
@@ -186,7 +173,7 @@ class IoService
     /**
      * @param int $max Maximum steps (0 if unknown)
      */
-    public function createProgressBar($max = 0): ProgressBar
+    public function createProgressBar(int $max = 0): ProgressBar
     {
         return new ProgressBar($this->output, $max);
     }

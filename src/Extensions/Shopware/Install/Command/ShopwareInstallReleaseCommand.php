@@ -61,14 +61,12 @@ class ShopwareInstallReleaseCommand extends BaseCommand
     }
 
     /**
-     * @param string $path
-     *
      * @throws \RuntimeException
      */
-    public function validateInstallDir($path): string
+    public function validateInstallDir(?string $path): ?string
     {
         if (is_dir($path)) {
-            throw new \RuntimeException("Path '{$path}'' is not empty");
+            throw new \RuntimeException("Path '{$path}' is not empty");
         }
 
         return $path;
@@ -248,10 +246,7 @@ EOF
         return $release;
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askInstallationDirectory(InputInterface $input, IoService $ioService, $suggestion): string
+    private function askInstallationDirectory(InputInterface $input, IoService $ioService, string $suggestion): ?string
     {
         $installDir = $input->getOption('install-dir');
         if (!$installDir) {
@@ -267,10 +262,7 @@ EOF
         return $installDir;
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion): void
+    private function askDatabaseName(InputInterface $input, IoService $ioService, string $suggestion): void
     {
         $databaseName = $input->getOption('db-name');
         if (!$databaseName) {
@@ -279,10 +271,7 @@ EOF
         }
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion): void
+    private function askBasePath(InputInterface $input, IoService $ioService, string $suggestion): void
     {
         $basePath = $input->getOption('shop-path');
         if (!$basePath) {

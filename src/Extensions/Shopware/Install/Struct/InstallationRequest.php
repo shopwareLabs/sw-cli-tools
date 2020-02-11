@@ -13,73 +13,73 @@ use ShopwareCli\Struct;
 class InstallationRequest extends Struct
 {
     /** @var string */
-    private $release;
+    protected $release;
 
     /** @var string */
-    private $installDir;
+    protected $installDir;
 
     /** @var string */
-    private $onlyUnpack;
+    protected $onlyUnpack;
 
     /** @var string */
-    private $skipDownload;
+    protected $skipDownload;
 
     /** @var string */
-    private $dbHost;
+    protected $dbHost;
 
     /** @var string */
-    private $dbPort;
+    protected $dbPort;
 
     /** @var string */
-    private $dbSocket;
+    protected $dbSocket;
 
     /** @var string */
-    private $dbUser;
+    protected $dbUser;
 
     /** @var string */
-    private $dbPassword;
+    protected $dbPassword;
 
     /** @var string */
-    private $dbName;
+    protected $dbName;
 
     /** @var string */
-    private $shopLocale;
+    protected $shopLocale;
 
     /** @var string */
-    private $shopHost;
+    protected $shopHost;
 
     /** @var string */
-    private $shopPath;
+    protected $shopPath;
 
     /** @var string */
-    private $shopName;
+    protected $shopName;
 
     /** @var string */
-    private $shopEmail;
+    protected $shopEmail;
 
     /** @var string */
-    private $shopCurrency;
+    protected $shopCurrency;
 
     /** @var string */
-    private $adminUsername;
+    protected $adminUsername;
 
     /** @var string */
-    private $adminPassword;
+    protected $adminPassword;
 
     /** @var string */
-    private $adminEmail;
+    protected $adminEmail;
 
     /** @var string */
-    private $adminLocale;
+    protected $adminLocale;
 
     /** @var string */
-    private $adminName;
+    protected $adminName;
 
     /** @var string */
-    private $noSkipImport;
+    protected $noSkipImport;
 
     /** @var string */
-    private $skipAdminCreation;
+    protected $skipAdminCreation;
 
     public function all()
     {
