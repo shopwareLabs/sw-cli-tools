@@ -16,7 +16,7 @@ use ShopwareCli\Services\ProcessExecutor;
 
 class ReleaseDownloader
 {
-    private const DOWNLOAD_UPDATE_API = 'http://update-api.shopware.com/v1/releases/install';
+    private const DOWNLOAD_UPDATE_API = 'https://update-api.shopware.com/v1/releases/install';
 
     /**
      * @var string
