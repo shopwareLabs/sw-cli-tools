@@ -265,7 +265,7 @@ class Articles extends BaseResource
 
             // Filters
             $filterGroupId = 1;
-            if ($createFilter === 0) {
+            if ($createFilter === 0 && $filterOptions > 0) {
                 $filterGroupId = random_int(1, $filterOptions);
                 for ($option = 1; $option <= $filterOptions; ++$option) {
                     $optionId = $option * $filterGroupId;
