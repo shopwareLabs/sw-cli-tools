@@ -83,7 +83,7 @@ class LoadDataInfile
         's_articles_categories' => ['articleID', 'categoryID'],
         's_media' => ['id', 'albumID', 'name', 'path', 'type', 'extension', 'created'],
         's_articles_img' => ['articleID', 'img', 'main', 'extension', 'media_id'],
-        's_articles_attributes' => ['articleID', 'articledetailsID'],
+        's_articles_attributes' => ['id', 'articledetailsID'],
         's_article_configurator_sets' => ['id', 'name'],
         's_article_configurator_option_relations' => ['article_id', 'option_id'],
         's_article_configurator_groups' => ['id', 'name', 'description', 'position'],
