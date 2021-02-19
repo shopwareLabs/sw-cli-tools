@@ -23,6 +23,7 @@ use Shopware\Plugin\Services\RepositoryManager;
 use Shopware\Plugin\Services\Zip;
 use ShopwareCli\Application\ConsoleAwareExtension;
 use ShopwareCli\Application\ContainerAwareExtension;
+use ShopwareCli\Extensions\Shopware\Plugin\Services\DependencyManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -76,10 +77,14 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('process_executor'));
 
+        $container->register('dependency_manager', DependencyManager::class)
+            ->addArgument(new Reference('process_executor'));
+
         $container->register('zip_service', Zip::class)
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('utilities'))
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->addArgument(new Reference('dependency_manager'));
 
         $container->register('checkout_service', Checkout::class)
             ->addArgument(new Reference('utilities'))
