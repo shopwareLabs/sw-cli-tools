@@ -9,6 +9,7 @@
 namespace Shopware\Plugin\Services;
 
 use Shopware\Plugin\Struct\Plugin;
+use ShopwareCli\Extensions\Shopware\Plugin\Services\DependencyManager;
 use ShopwareCli\Services\ProcessExecutor;
 use ShopwareCli\Utilities;
 
@@ -32,11 +33,21 @@ class Zip
      */
     private $processExecutor;
 
-    public function __construct(Checkout $checkout, Utilities $utilities, ProcessExecutor $processExecutor)
-    {
+    /**
+     * @var DependencyManager
+     */
+    private $dependencyManager;
+
+    public function __construct(
+        Checkout $checkout,
+        Utilities $utilities,
+        ProcessExecutor $processExecutor,
+        DependencyManager $dependencyManager
+    ) {
         $this->checkout = $checkout;
         $this->utilities = $utilities;
         $this->processExecutor = $processExecutor;
+        $this->dependencyManager = $dependencyManager;
     }
 
     /**
@@ -67,9 +78,7 @@ class Zip
             $this->processExecutor->execute('rm -rf ' . $blackListPath);
         }
 
-        if ($plugin->isShopware6 === false && file_exists($pluginPath . '/composer.json')) {
-            $this->processExecutor->execute('composer install --no-dev', $pluginPath);
-        }
+        $this->dependencyManager->manageDependencies($plugin, $pluginPath);
 
         $outputFile = "{$zipTo}/{$plugin->name}.zip";
 

@@ -21,7 +21,8 @@
         "ext-phar": "*",
         "phpunit/phpunit": "^8.5.2",
         "friendsofphp/php-cs-fixer": "^2.16.1",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^1.17"
+        "kubawerlos/php-cs-fixer-custom-fixers": "^1.17",
+        "symfony/var-dumper": "^4.4"
     },
     "scripts": {
         "post-install-cmd": "ln -sf ../../hooks/pre-commit .git/hooks/pre-commit",
