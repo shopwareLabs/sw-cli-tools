@@ -48,12 +48,38 @@ class DependencyManager
 
     private function manageShopware6Dependencies(string $pathToPlugin): void
     {
-        $this->processExecutor->execute('composer install --no-dev', $pathToPlugin);
-
-        if (!\file_exists(\sprintf('%s/vendor/shopware', $pathToPlugin))) {
+        $composerJson = \json_decode(\file_get_contents(\sprintf('%s/composer.json', $pathToPlugin)), true);
+        if (!\array_key_exists('require', $composerJson) ||
+            !\is_array($composerJson['require']) ||
+            \count($composerJson['require']) <= 0
+        ) {
             return;
         }
 
-        $this->processExecutor->execute('rm -rf vendor/shopware', $pathToPlugin);
+        $shopwareDependencies =  [];
+        foreach ($composerJson['require'] as $dependencyName => $version) {
+            if (\strpos($dependencyName, 'shopware/') !== 0) {
+                continue;
+            }
+
+            $shopwareDependencies[$dependencyName] = $version;
+        }
+
+        // Only Shopware dependencies skip
+        if (\count($shopwareDependencies) === \count($composerJson['require'])) {
+            return;
+        }
+
+        // Temporary remove shopware dependencies
+        foreach (\array_keys($shopwareDependencies) as $dependencyName) {
+            $this->processExecutor->execute(\sprintf('composer remove %s --update-no-dev', $dependencyName), $pathToPlugin);
+        }
+
+        $this->processExecutor->execute('composer install --no-dev', $pathToPlugin);
+
+        // Re-add shopware dependencies
+        foreach ($shopwareDependencies as $dependencyName => $version) {
+            $this->processExecutor->execute(\sprintf('composer require %s:%s --no-update', $dependencyName, $version), $pathToPlugin);
+        }
     }
 }

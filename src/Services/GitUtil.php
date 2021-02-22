@@ -58,7 +58,12 @@ class GitUtil
         });
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException("Command \"$commandline\" failed. Error Output:\n\n" . $process->getErrorOutput(), $process->getExitCode());
+            throw new \RuntimeException(\sprintf(
+                "Command \"%s\" failed. Error Output:\n\n%s%s",
+                $commandline,
+                $process->getErrorOutput(),
+                $process->getExitCode()
+            ));
         }
 
         return $process->getOutput();
