@@ -58,11 +58,11 @@ class DependencyManager
 
         $shopwareDependencies = [];
         foreach ($composerJson['require'] as $dependencyName => $version) {
-            if (\strpos($dependencyName, 'shopware/') !== 0) {
-                continue;
+            if (\strpos($dependencyName, 'shopware/') === 0
+                || \strpos($dependencyName, 'swag/') === 0
+            ) {
+                $shopwareDependencies[$dependencyName] = $version;
             }
-
-            $shopwareDependencies[$dependencyName] = $version;
         }
 
         // Only Shopware dependencies skip
