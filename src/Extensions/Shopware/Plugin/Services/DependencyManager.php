@@ -49,14 +49,14 @@ class DependencyManager
     private function manageShopware6Dependencies(string $pathToPlugin): void
     {
         $composerJson = \json_decode(\file_get_contents(\sprintf('%s/composer.json', $pathToPlugin)), true);
-        if (!\array_key_exists('require', $composerJson) ||
-            !\is_array($composerJson['require']) ||
-            \count($composerJson['require']) <= 0
+        if (!\array_key_exists('require', $composerJson)
+            || !\is_array($composerJson['require'])
+            || \count($composerJson['require']) <= 0
         ) {
             return;
         }
 
-        $shopwareDependencies =  [];
+        $shopwareDependencies = [];
         foreach ($composerJson['require'] as $dependencyName => $version) {
             if (\strpos($dependencyName, 'shopware/') !== 0) {
                 continue;
@@ -79,7 +79,7 @@ class DependencyManager
 
         // Re-add shopware dependencies
         foreach ($shopwareDependencies as $dependencyName => $version) {
-            $this->processExecutor->execute(\sprintf('composer require %s:%s --no-update', $dependencyName, $version), $pathToPlugin);
+            $this->processExecutor->execute(\sprintf('composer require %s:"%s" --no-update', $dependencyName, $version), $pathToPlugin);
         }
     }
 }
