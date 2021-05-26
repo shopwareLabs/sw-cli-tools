@@ -1,9 +1,8 @@
 <?php
 
 use PhpCsFixer\Config;
-use PhpCsFixerCustomFixers\Fixer\NoUnneededConcatenationFixer;
+use PhpCsFixerCustomFixers\Fixer\NoSuperfluousConcatenationFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
-use PhpCsFixerCustomFixers\Fixer\OperatorLinebreakFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocParamTypeFixer;
 use PhpCsFixerCustomFixers\Fixer\SingleSpaceAfterStatementFixer;
 use PhpCsFixerCustomFixers\Fixer\SingleSpaceBeforeStatementFixer;
@@ -49,11 +48,11 @@ return Config::create()
         'php_unit_test_case_static_method_calls' => true,
         'single_line_throw' => false,
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
+        'operator_linebreak' => ['only_booleans' => true],
         NoUselessCommentFixer::name() => true,
-        NoUnneededConcatenationFixer::name() => true,
+        NoSuperfluousConcatenationFixer::name() => true,
         SingleSpaceAfterStatementFixer::name() => true,
         SingleSpaceBeforeStatementFixer::name() => true,
         PhpdocParamTypeFixer::name() => true,
-        OperatorLinebreakFixer::name() => ['only_booleans' => true],
     ])
     ->setFinder($finder);

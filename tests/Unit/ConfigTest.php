@@ -14,13 +14,13 @@ use ShopwareCli\ConfigFileCollector;
 
 class ConfigTest extends TestCase
 {
-    public function test_it_can_be_created(): void
+    public function testItCanBeCreated(): void
     {
         $config = new Config(new ConfigFileCollectorDummy());
         static::assertInstanceOf(Config::class, $config);
     }
 
-    public function test_it_should_create_config_from_single_file(): void
+    public function testItShouldCreateConfigFromSingleFile(): void
     {
         $config = new Config(new SingleConfigFileCollectorMock());
 
@@ -31,7 +31,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function test_it_should_create_config_from_multiple_files(): void
+    public function testItShouldCreateConfigFromMultipleFiles(): void
     {
         $config = new Config(new MultiConfigFileCollectorMock());
 
@@ -45,7 +45,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function test_it_should_override_first_config_file(): void
+    public function testItShouldOverrideFirstConfigFile(): void
     {
         $config = new Config(new OverrideConfigFileCollectorMock());
 
@@ -56,7 +56,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function test_it_should_merge_config_files(): void
+    public function testItShouldMergeConfigFiles(): void
     {
         $config = new Config(new MergeConfigFileCollectorMock());
 
@@ -66,7 +66,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    public function test_it_should_replace_and_merge_configs_recursive(): void
+    public function testItShouldReplaceAndMergeConfigsRecursive(): void
     {
         $config = new Config(new ExtendConfigFileCollectorMock());
 

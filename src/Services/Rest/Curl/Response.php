@@ -22,9 +22,6 @@ class Response implements ResponseInterface
      */
     protected $rawBody;
 
-    /**
-     * @var mixed
-     */
     protected $body;
 
     /**

@@ -31,9 +31,6 @@ class InstallCommand extends BaseCommand
      */
     private $shopwarePath;
 
-    /**
-     * @param mixed $params
-     */
     public function doInstall($plugin, &$params): void
     {
         if ($params['checkout']) {
@@ -148,9 +145,6 @@ class InstallCommand extends BaseCommand
         return $this->getIOService()->ask($question);
     }
 
-    /**
-     * @param mixed $params
-     */
     private function install($plugin, &$params): void
     {
         if (!isset($params['activate'])) {
@@ -170,7 +164,6 @@ class InstallCommand extends BaseCommand
 
     /**
      * @param mixed $plugin Plugin
-     * @param mixed $params
      */
     private function checkout($plugin, &$params): void
     {

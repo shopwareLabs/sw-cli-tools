@@ -19,9 +19,9 @@
     },
     "require-dev": {
         "ext-phar": "*",
-        "phpunit/phpunit": "^8.5.2",
-        "friendsofphp/php-cs-fixer": "^2.16.1",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^1.17",
+        "friendsofphp/php-cs-fixer": "^2.19.0",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^2.5.0",
+        "phpunit/phpunit": "^8.5.15",
         "symfony/var-dumper": "^4.4"
     },
     "scripts": {
@@ -47,7 +47,8 @@
     "config": {
         "platform": {
             "php": "7.2"
-        }
+        },
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
