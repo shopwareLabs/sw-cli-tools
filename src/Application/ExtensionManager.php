@@ -30,7 +30,7 @@ class ExtensionManager
     /**
      * @var array
      */
-    protected $extensions;
+    protected $extensions = [];
 
     /**
      * @var ClassLoader

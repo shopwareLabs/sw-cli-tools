@@ -295,6 +295,14 @@ class PluginCreateTest extends TestCase
         $config->hasCommands = false;
         $config->hasModels = false;
         $config->name = 'SwagTest';
+        $config->pluginConfig = [
+            'namespace' => 'SwagTest',
+            'copyright' => 'shopware AG',
+            'minimumVersion' => '5.6.0',
+            'license' => 'MIT',
+            'link' => 'www.shopware.com',
+            'author' => 'shopware AG',
+        ];
 
         return $config;
     }
