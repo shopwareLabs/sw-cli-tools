@@ -57,21 +57,21 @@ class PostInstall
      */
     public function fixPermissions($directory): void
     {
-        $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getLogDir($directory));
+        $command = \sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getLogDir($directory));
         $this->processExecutor->execute($command, null, true);
 
-        $command = sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getCacheDir($directory));
+        $command = \sprintf('chmod 0777 -R "%s"', $this->shopwareInfo->getCacheDir($directory));
         $this->processExecutor->execute($command, null, true);
 
-        if (file_exists($directory . '/web')) {
-            $command = sprintf('chmod 0777 -R "%s"', $directory . '/web');
+        if (\file_exists($directory . '/web')) {
+            $command = \sprintf('chmod 0777 -R "%s"', $directory . '/web');
             $this->processExecutor->execute($command, null, true);
         }
 
-        $command = sprintf('chmod +x  "%s"', $directory . '/bin/console');
+        $command = \sprintf('chmod +x  "%s"', $directory . '/bin/console');
         $this->processExecutor->execute($command, null, true);
 
-        $command = sprintf('chmod +x  "%s"', $this->shopwareInfo->getCacheDir($directory) . '/clear_cache.sh');
+        $command = \sprintf('chmod +x  "%s"', $this->shopwareInfo->getCacheDir($directory) . '/clear_cache.sh');
         $this->processExecutor->execute($command, null, true);
 
         $this->setUser($directory);
@@ -83,14 +83,14 @@ class PostInstall
      */
     public function setupTheme($directory): void
     {
-        if (!file_exists($directory . '/themes')) {
+        if (!\file_exists($directory . '/themes')) {
             return;
         }
 
-        $command = sprintf('php bin/console sw:generate:attributes');
+        $command = \sprintf('php bin/console sw:generate:attributes');
         $this->processExecutor->execute($command, $directory, true);
 
-        $command = sprintf('php bin/console sw:theme:initialize');
+        $command = \sprintf('php bin/console sw:theme:initialize');
         $this->processExecutor->execute($command, $directory, true);
     }
 
@@ -109,10 +109,10 @@ class PostInstall
         $connection->exec("USE `{$database}`");
 
         foreach ($this->config['CustomDeltas'] as $file) {
-            if (!file_exists($file)) {
+            if (!\file_exists($file)) {
                 throw new \RuntimeException("File '{$file}' not found");
             }
-            $connection->exec(file_get_contents($file));
+            $connection->exec(\file_get_contents($file));
         }
     }
 

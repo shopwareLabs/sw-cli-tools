@@ -60,7 +60,7 @@ class Customers extends BaseResource
 
             $birthday = '';
 
-            if (random_int(1, 4) !== 4) {
+            if (\random_int(1, 4) !== 4) {
                 $birthday = $faker->dateTimeThisCentury->format('Y-m-d');
             }
 
@@ -73,22 +73,22 @@ class Customers extends BaseResource
 
             $customerAttributeValues[] = (string) ($id);
             $importCustomersBilling->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . random_int(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . \random_int(
                     1,
                     500
-                ) . "' , " . random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, " . random_int(
+                ) . "' , " . \random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, " . \random_int(
                     9999,
                     99999
                 ) . ', 2, 0, '
             );
             $importCustomersShipping->write(
-                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . random_int(
+                "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . \random_int(
                     1,
                     500
-                ) . "' , " . random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
+                ) . "' , " . \random_int(42000, 50000) . ", {$this->generator->getRandomCity()}, 2, 0"
             );
 
-            $zip = random_int(42000, 50000);
+            $zip = \random_int(42000, 50000);
             $importCustomersAddresses->write(
                 "{$id}, {$id}, company, department, mr, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()}, {$zip}, {$this->generator->getRandomCity()}, 2, 0, ustid, phone,,,"
             );

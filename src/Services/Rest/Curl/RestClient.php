@@ -52,22 +52,22 @@ class RestClient implements RestInterface
      */
     public function __construct($apiUrl, $username = '', $apiKey = '', $curlOptions = [])
     {
-        if (!filter_var($apiUrl, FILTER_VALIDATE_URL)) {
+        if (!\filter_var($apiUrl, \FILTER_VALIDATE_URL)) {
             throw new \RuntimeException('Invalid URL given');
         }
 
-        $this->apiUrl = rtrim($apiUrl, '/') . '/';
+        $this->apiUrl = \rtrim($apiUrl, '/') . '/';
 
         //Initializes the cURL instance
-        $this->cURL = curl_init();
-        curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
+        $this->cURL = \curl_init();
+        \curl_setopt($this->cURL, \CURLOPT_RETURNTRANSFER, true);
+        \curl_setopt($this->cURL, \CURLOPT_FOLLOWLOCATION, false);
         if ($username !== '' && $apiKey !== '') {
-            curl_setopt($this->cURL, CURLOPT_USERPWD, $username . ':' . $apiKey);
+            \curl_setopt($this->cURL, \CURLOPT_USERPWD, $username . ':' . $apiKey);
         }
-        curl_setopt($this->cURL, CURLOPT_USERAGENT, self::USER_AGENT);
+        \curl_setopt($this->cURL, \CURLOPT_USERAGENT, self::USER_AGENT);
 
-        curl_setopt_array($this->cURL, $curlOptions);
+        \curl_setopt_array($this->cURL, $curlOptions);
     }
 
     /**
@@ -82,15 +82,15 @@ class RestClient implements RestInterface
         }
         $url = $this->apiUrl . $url;
 
-        $dataString = json_encode($parameters);
-        curl_setopt($this->cURL, CURLOPT_URL, $url);
-        curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
+        $dataString = \json_encode($parameters);
+        \curl_setopt($this->cURL, \CURLOPT_URL, $url);
+        \curl_setopt($this->cURL, \CURLOPT_CUSTOMREQUEST, $method);
+        \curl_setopt($this->cURL, \CURLOPT_POSTFIELDS, $dataString);
 
-        array_unshift($headers, 'Content-Type: application/json; charset=utf-8');
+        \array_unshift($headers, 'Content-Type: application/json; charset=utf-8');
 
-        curl_setopt($this->cURL, CURLOPT_HTTPHEADER, $headers);
-        $body = curl_exec($this->cURL);
+        \curl_setopt($this->cURL, \CURLOPT_HTTPHEADER, $headers);
+        $body = \curl_exec($this->cURL);
 
         return new Response($body, $this->cURL);
     }

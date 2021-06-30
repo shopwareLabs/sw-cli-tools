@@ -23,7 +23,7 @@ trait CommandTestCaseTrait
      */
     public function runCommand($command): array
     {
-        $fp = tmpfile();
+        $fp = \tmpfile();
         $input = new StringInput($command);
         $output = new StreamOutput($fp);
 
@@ -31,17 +31,17 @@ trait CommandTestCaseTrait
 
         $consoleOutput = $this->readConsoleOutput($fp);
 
-        return explode(PHP_EOL, $consoleOutput);
+        return \explode(\PHP_EOL, $consoleOutput);
     }
 
     private function readConsoleOutput($fp): string
     {
-        fseek($fp, 0);
+        \fseek($fp, 0);
         $output = '';
-        while (!feof($fp)) {
-            $output = fread($fp, 4096);
+        while (!\feof($fp)) {
+            $output = \fread($fp, 4096);
         }
-        fclose($fp);
+        \fclose($fp);
 
         return $output;
     }

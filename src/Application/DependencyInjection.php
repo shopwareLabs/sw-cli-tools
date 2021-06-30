@@ -56,7 +56,7 @@ class DependencyInjection
 
         $container->register('process_executor', ProcessExecutor::class)
             ->addArgument(new Reference('output_interface'))
-            ->addArgument(getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
+            ->addArgument(\getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
 
         $container->register('git_identity_environment', GitIdentityEnvironment::class)
             ->addArgument(new Reference('path_provider'))
@@ -65,7 +65,7 @@ class DependencyInjection
         $container->register('git_util', GitUtil::class)
                 ->addArgument(new Reference('output_interface'))
                 ->addArgument(new Reference('git_identity_environment'))
-                ->addArgument(getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
+                ->addArgument(\getenv('SW_TIMEOUT') ?: self::DEFAULT_PROCESS_TIMEOUT);
 
         $container->register('utilities', Utilities::class)
             ->addArgument(new Reference('io_service'));

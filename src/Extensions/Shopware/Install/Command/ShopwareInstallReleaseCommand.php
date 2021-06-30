@@ -65,7 +65,7 @@ class ShopwareInstallReleaseCommand extends BaseCommand
      */
     public function validateInstallDir(?string $path): ?string
     {
-        if (is_dir($path)) {
+        if (\is_dir($path)) {
             throw new \RuntimeException("Path '{$path}' is not empty");
         }
 
@@ -237,7 +237,7 @@ EOF
         $release = $input->getOption('release');
         if (!$release) {
             $release = $ioService->ask('Please provide the release you want to install [latest]: ');
-            $release = trim($release) ? $release : 'latest';
+            $release = \trim($release) ? $release : 'latest';
             $input->setOption('release', $release);
 
             return $release;
@@ -254,7 +254,7 @@ EOF
                 "Please provide the install directory [{$suggestion}]: ",
                 [$this, 'validateInstallDir']
             );
-            $input->setOption('install-dir', trim($installDir) ? $installDir : $suggestion);
+            $input->setOption('install-dir', \trim($installDir) ? $installDir : $suggestion);
 
             return $installDir;
         }
@@ -267,7 +267,7 @@ EOF
         $databaseName = $input->getOption('db-name');
         if (!$databaseName) {
             $databaseName = $ioService->ask("Please provide the database name you want to use [{$suggestion}]: ");
-            $input->setOption('db-name', trim($databaseName) ? $databaseName : $suggestion);
+            $input->setOption('db-name', \trim($databaseName) ? $databaseName : $suggestion);
         }
     }
 
@@ -275,9 +275,9 @@ EOF
     {
         $basePath = $input->getOption('shop-path');
         if (!$basePath) {
-            $suggestion = '/' . ltrim($suggestion, '/');
+            $suggestion = '/' . \ltrim($suggestion, '/');
             $basePath = $ioService->ask("Please provide the shop base path you want to use [{$suggestion}]: ");
-            $input->setOption('shop-path', trim($basePath) ? $basePath : $suggestion);
+            $input->setOption('shop-path', \trim($basePath) ? $basePath : $suggestion);
         }
     }
 
@@ -286,7 +286,7 @@ EOF
         $databaseUser = $input->getOption('db-user');
         if (!$databaseUser) {
             $databaseUser = $ioService->ask('Please provide the database user: ');
-            $input->setOption('db-user', trim($databaseUser));
+            $input->setOption('db-user', \trim($databaseUser));
         }
     }
 
@@ -295,7 +295,7 @@ EOF
         $databasePassword = $input->getOption('db-password');
         if (!$databasePassword) {
             $databasePassword = $ioService->ask('Please provide the database password: ', null, true);
-            $input->setOption('db-password', trim($databasePassword));
+            $input->setOption('db-password', \trim($databasePassword));
         }
     }
 }

@@ -67,7 +67,7 @@ EOF;
     {
         if (isset($this->config['sshKey'])) {
             $keyPath = $this->config['sshKey'];
-            if (!file_exists($keyPath)) {
+            if (!\file_exists($keyPath)) {
                 throw new \RuntimeException("Could not find ssh key $keyPath");
             }
 
@@ -76,14 +76,14 @@ EOF;
 
         $packageKey = $this->pathProvider->getCliToolPath() . '/assets/ssh.key';
 
-        if (!file_exists($packageKey)) {
+        if (!\file_exists($packageKey)) {
             return false;
         }
 
         $dir = $this->pathProvider->getRuntimeDir() . '/sw-cli-tools/';
         $sshKeyFile = $dir . $this->keyFileName;
 
-        if (file_exists($sshKeyFile) || $this->writeSshKey($dir, $packageKey)) {
+        if (\file_exists($sshKeyFile) || $this->writeSshKey($dir, $packageKey)) {
             return $sshKeyFile;
         }
 
@@ -96,15 +96,15 @@ EOF;
      */
     private function writeSshKey($dir, $sshKeyFile): bool
     {
-        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+        if (!\is_dir($dir) && !\mkdir($dir, 0700, true) && !\is_dir($dir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $dir));
         }
 
         $filename = $dir . $this->keyFileName;
-        copy($sshKeyFile, $filename);
-        chmod($filename, 0700);
+        \copy($sshKeyFile, $filename);
+        \chmod($filename, 0700);
 
-        return file_exists($filename);
+        return \file_exists($filename);
     }
 
     /**
@@ -118,7 +118,7 @@ EOF;
 
         $wrapperFile = $dir . $this->wrapperFileName;
 
-        if (file_exists($wrapperFile) || $this->writeGitSshWrapper($dir)) {
+        if (\file_exists($wrapperFile) || $this->writeGitSshWrapper($dir)) {
             return $wrapperFile;
         }
 
@@ -132,14 +132,14 @@ EOF;
      */
     private function writeGitSshWrapper($dir): bool
     {
-        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+        if (!\is_dir($dir) && !\mkdir($dir, 0700, true) && !\is_dir($dir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $dir));
         }
 
         $filename = $dir . $this->wrapperFileName;
-        file_put_contents($filename, $this->sshAliasTemplate);
-        chmod($filename, 0700);
+        \file_put_contents($filename, $this->sshAliasTemplate);
+        \chmod($filename, 0700);
 
-        return file_exists($filename);
+        return \file_exists($filename);
     }
 }

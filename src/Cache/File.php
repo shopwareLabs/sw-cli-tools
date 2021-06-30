@@ -24,7 +24,7 @@ class File implements CacheInterface
 
     public function __construct(PathProvider $pathProvider)
     {
-        $this->path = $pathProvider->getCachePath() . DIRECTORY_SEPARATOR;
+        $this->path = $pathProvider->getCachePath() . \DIRECTORY_SEPARATOR;
 
         $this->info = $this->readTable();
     }
@@ -32,7 +32,7 @@ class File implements CacheInterface
     public function write($key, $data, $valid): bool
     {
         $file = $this->path . $key;
-        $success = file_put_contents($file, $data);
+        $success = \file_put_contents($file, $data);
 
         $this->info[$key] = ['valid' => $valid];
         $this->writeTable();
@@ -43,7 +43,7 @@ class File implements CacheInterface
     public function read($key)
     {
         if ($this->exists($key)) {
-            $content = file_get_contents($this->path . $key);
+            $content = \file_get_contents($this->path . $key);
 
             return $content ?: false;
         }
@@ -53,7 +53,7 @@ class File implements CacheInterface
 
     public function delete($key): void
     {
-        unlink($this->path . $key);
+        \unlink($this->path . $key);
         $this->writeTable();
     }
 
@@ -64,19 +64,19 @@ class File implements CacheInterface
     {
         $file = $this->path . $key;
 
-        if (!file_exists($file)) {
+        if (!\file_exists($file)) {
             return false;
         }
 
         $validTime = @$this->info[$key]['valid'];
 
-        return time() - filectime($file) < $validTime;
+        return \time() - \filectime($file) < $validTime;
     }
 
     public function clear(): void
     {
         foreach ($this->getKeys() as $key) {
-            unlink($this->path . $key);
+            \unlink($this->path . $key);
             unset($this->info[$key]);
         }
         $this->writeTable();
@@ -84,7 +84,7 @@ class File implements CacheInterface
 
     public function getKeys(): array
     {
-        return array_keys($this->info);
+        return \array_keys($this->info);
     }
 
     private function getInfoFile(): string
@@ -97,14 +97,14 @@ class File implements CacheInterface
         $file = $this->getInfoFile();
         $content = null;
 
-        if (file_exists($file)) {
-            $content = file_get_contents($file);
+        if (\file_exists($file)) {
+            $content = \file_get_contents($file);
         }
 
         if (!$content) {
             $content = [];
         } else {
-            $content = json_decode($content, true);
+            $content = \json_decode($content, true);
         }
 
         return $content;
@@ -114,6 +114,6 @@ class File implements CacheInterface
     {
         $file = $this->getInfoFile();
 
-        file_put_contents($file, json_encode($this->info));
+        \file_put_contents($file, \json_encode($this->info));
     }
 }

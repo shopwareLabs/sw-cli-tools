@@ -169,13 +169,13 @@ class InstallCommand extends BaseCommand
     {
         $url = $params['useHttp'] ? $plugin->cloneUrlHttp : $plugin->cloneUrlSsh;
 
-        $destination = strtolower($plugin->module . '_' . $plugin->name);
-        $path = realpath('.') . '/' . $destination;
+        $destination = \strtolower($plugin->module . '_' . $plugin->name);
+        $path = \realpath('.') . '/' . $destination;
         $this->getIOService()->writeln("<info>Checking out $plugin->name to $path</info>");
 
-        $repo = escapeshellarg($url);
-        $branch = $params['branch'] ? escapeshellarg($params['branch']) : null;
-        $destination = escapeshellarg('./' . $destination);
+        $repo = \escapeshellarg($url);
+        $branch = $params['branch'] ? \escapeshellarg($params['branch']) : null;
+        $destination = \escapeshellarg('./' . $destination);
 
         $branchArg = $branch ? "-b {$branch}" : '';
 

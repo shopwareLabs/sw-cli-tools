@@ -82,7 +82,7 @@ class Vcs
         $this->checkoutRepos($branch, $installDir, $httpUser);
 
         // after the directory is created by git we can get the realpath
-        $installDir = realpath($installDir);
+        $installDir = \realpath($installDir);
 
         $this->generateVcsMapping($installDir);
         $this->writeBuildProperties($installDir, $basePath, $database);
@@ -159,7 +159,7 @@ class Vcs
      */
     private function generateVcsMapping($installDir): void
     {
-        $this->vcsGenerator->createVcsMapping($installDir, array_column($this->config['ShopwareInstallRepos'], 'destination'));
+        $this->vcsGenerator->createVcsMapping($installDir, \array_column($this->config['ShopwareInstallRepos'], 'destination'));
     }
 
     /**

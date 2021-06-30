@@ -55,7 +55,7 @@ class Vouchers extends BaseResource
             if ($isIndividual) {
                 $code = '';
             }
-            $value = random_int(5, 100);
+            $value = \random_int(5, 100);
 
             $voucherCsv->write(
                 "{$id},Voucher #{$id},{$code},{$value},101,\N,\N,VOUCHER{$id},{$isIndividual},{$isPercental},{$numOrder},\N,auto"

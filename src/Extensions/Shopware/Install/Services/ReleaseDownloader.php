@@ -71,8 +71,8 @@ class ReleaseDownloader
         $this->ioService->writeln('<info>Downloading release</info>');
         $zipLocation = $this->downloadFromUpdateApi($release);
 
-        if (!is_dir($installDir) && !mkdir($installDir) && !is_dir($installDir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $installDir));
+        if (!\is_dir($installDir) && !\mkdir($installDir) && !\is_dir($installDir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $installDir));
         }
 
         $this->ioService->writeln('<info>Unzipping archive</info>');
@@ -91,9 +91,9 @@ class ReleaseDownloader
         if (\array_key_exists($release, $indexedReleases)) {
             $content = $indexedReleases[$release];
         } elseif ($release === 'latest') {
-            $content = array_shift($indexedReleases);
+            $content = \array_shift($indexedReleases);
         } else {
-            throw new \RuntimeException(sprintf('Could not find release %s', $release));
+            throw new \RuntimeException(\sprintf('Could not find release %s', $release));
         }
 
         $version = $content['version'];
@@ -103,16 +103,16 @@ class ReleaseDownloader
         $target = $this->getTempFile();
         $cacheFilePath = $this->getCacheFilePath($version);
 
-        if (file_exists($cacheFilePath)) {
+        if (\file_exists($cacheFilePath)) {
             return $cacheFilePath;
         }
 
         $this->downloader->download($url, $target);
-        $sha1Actual = sha1_file($target);
+        $sha1Actual = \sha1_file($target);
         if ($sha1 != $sha1Actual) {
             throw new \RuntimeException('Hash mismatch');
         }
-        copy($target, $cacheFilePath);
+        \copy($target, $cacheFilePath);
 
         return $cacheFilePath;
     }
@@ -132,7 +132,7 @@ class ReleaseDownloader
             throw new \RuntimeException('API signature verification failed');
         }
 
-        $releases = json_decode($response->getBody(), true);
+        $releases = \json_decode($response->getBody(), true);
         if (empty($releases)) {
             throw new \RuntimeException('Could not get releases list package');
         }
@@ -158,6 +158,6 @@ class ReleaseDownloader
      */
     private function getTempFile(): string
     {
-        return sys_get_temp_dir() . '/' . uniqid('release_download', true);
+        return \sys_get_temp_dir() . '/' . \uniqid('release_download', true);
     }
 }

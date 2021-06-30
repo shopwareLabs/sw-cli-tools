@@ -41,9 +41,9 @@ class Checkout
     {
         $this->ioService->writeln("<info>Checkout out $repo to $destination</info>");
 
-        $repo = escapeshellarg($repo);
-        $branch = escapeshellarg($branch);
-        $destination = escapeshellarg($destination);
+        $repo = \escapeshellarg($repo);
+        $branch = \escapeshellarg($branch);
+        $destination = \escapeshellarg($destination);
 
         $this->gitUtil->run(
             "clone --progress -b {$branch} {$repo} {$destination}"

@@ -69,7 +69,7 @@ class WriterManager
 
                 // no break
             default:
-                $resourcePath = getcwd() . '/output/' . $this->config->getOutputName() . $resourceKey;
+                $resourcePath = \getcwd() . '/output/' . $this->config->getOutputName() . $resourceKey;
                 if ($type) {
                     $resourcePath .= '.' . $type;
                 }
@@ -100,7 +100,7 @@ class WriterManager
         };
 
         $writers = $this->writers;
-        usort($writers, $compare);
+        \usort($writers, $compare);
 
         foreach ($writers as $writer) {
             $writer->flush();

@@ -58,10 +58,10 @@ class NameGenerator
         $backendModelParts = $this->upperToArray($this->getModelName());
 
         $this->backendModelAlias = $this->getBackendModelAlias();
-        $this->camelCaseModel = implode('', $backendModelParts);
-        $this->under_score_model = strtolower(implode('_', $backendModelParts));
-        $this->under_score_js = strtolower(implode('_', $parts));
-        $this->dash_js = strtolower(implode('-', $parts));
+        $this->camelCaseModel = \implode('', $backendModelParts);
+        $this->under_score_model = \strtolower(\implode('_', $backendModelParts));
+        $this->under_score_js = \strtolower(\implode('_', $parts));
+        $this->dash_js = \strtolower(\implode('-', $parts));
         $this->developerPrefix = $parts[0];
         $this->backendWidgetController = $this->configuration->name . 'Widget';
     }
@@ -74,12 +74,12 @@ class NameGenerator
     public function getModelName()
     {
         if (!$this->configuration->backendModel) {
-            return implode('', \array_slice($this->upperToArray($this->configuration->name), 1));
+            return \implode('', \array_slice($this->upperToArray($this->configuration->name), 1));
         }
 
-        $parts = explode('\\', $this->configuration->backendModel);
+        $parts = \explode('\\', $this->configuration->backendModel);
 
-        return array_pop($parts);
+        return \array_pop($parts);
     }
 
     /**
@@ -91,9 +91,9 @@ class NameGenerator
             return 'alias';
         }
 
-        $parts = explode('\\', $this->configuration->backendModel);
+        $parts = \explode('\\', $this->configuration->backendModel);
 
-        return strtolower(array_pop($parts));
+        return \strtolower(\array_pop($parts));
     }
 
     /**
@@ -101,6 +101,6 @@ class NameGenerator
      */
     public function upperToArray($input): array
     {
-        return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
+        return \preg_split('/(?=[A-Z])/', $input, -1, \PREG_SPLIT_NO_EMPTY);
     }
 }

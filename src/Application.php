@@ -121,11 +121,11 @@ class Application extends SymfonyApplication
         ];
 
         foreach ($paths as $dir) {
-            if (is_dir($dir)) {
+            if (\is_dir($dir)) {
                 continue;
             }
 
-            if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
+            if (!\is_dir($dir) && !\mkdir($dir, 0777, true) && !\is_dir($dir)) {
                 throw new \RuntimeException("Could not find / create $dir");
             }
         }

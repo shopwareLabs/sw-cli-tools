@@ -28,7 +28,7 @@ class ShopwareClearCacheCommand extends BaseCommand
             throw new \RuntimeException("'$path' is not a valid shopware path");
         }
 
-        return rtrim($path, '/');
+        return \rtrim($path, '/');
     }
 
     /**
@@ -55,7 +55,7 @@ class ShopwareClearCacheCommand extends BaseCommand
     {
         $path = $this->checkPath($input);
 
-        if (strpos($path, '/') !== 0) {
+        if (\strpos($path, '/') !== 0) {
             $path = './' . $path;
         }
 

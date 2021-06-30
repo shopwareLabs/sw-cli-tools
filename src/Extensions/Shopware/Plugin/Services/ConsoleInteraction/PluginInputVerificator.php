@@ -57,7 +57,7 @@ class PluginInputVerificator
     public function selectPlugin($plugins, array $allowedAnswers = ['all'])
     {
         while (true) {
-            system('clear');
+            \system('clear');
             $this->outputRenderer->show($plugins);
 
             $question = new Question(
@@ -71,8 +71,8 @@ class PluginInputVerificator
             }
 
             if ($range = $this->getPluginRange($response)) {
-                return array_filter(
-                    array_map(
+                return \array_filter(
+                    \array_map(
                         static function ($number) use ($plugins) {
                             return isset($plugins[$number - 1]) ? $plugins[$number - 1] : null;
                         },
@@ -104,21 +104,21 @@ class PluginInputVerificator
         $template = "\n<question>Which plugin(s) do you want to install?</question> Type <comment>1-{$count}</comment> %s ";
 
         if (empty($allowedAnswers)) {
-            return sprintf($template, '');
+            return \sprintf($template, '');
         }
 
         if (\count($allowedAnswers) === 1) {
-            return sprintf($template, sprintf('or "%s"', $allowedAnswers[0]));
+            return \sprintf($template, \sprintf('or "%s"', $allowedAnswers[0]));
         }
 
-        $allowedAnswers = array_map(
+        $allowedAnswers = \array_map(
             static function ($option) {
-                return sprintf('"<comment>%s</comment>"', $option);
+                return \sprintf('"<comment>%s</comment>"', $option);
             },
             $allowedAnswers
         );
 
-        return sprintf($template, sprintf('or one of these: %s', implode(', ', $allowedAnswers)));
+        return \sprintf($template, \sprintf('or one of these: %s', \implode(', ', $allowedAnswers)));
     }
 
     /**
@@ -135,12 +135,12 @@ class PluginInputVerificator
         $pattern = '#(?P<from>[0-9]+)-(?P<to>[0-9]+)#';
         $matches = [];
 
-        preg_match($pattern, $userInput, $matches);
+        \preg_match($pattern, $userInput, $matches);
 
         if (!isset($matches['from'], $matches['to']) || empty($matches)) {
             return false;
         }
 
-        return range($matches['from'], $matches['to']);
+        return \range($matches['from'], $matches['to']);
     }
 }

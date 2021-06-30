@@ -131,8 +131,8 @@ class ExtensionManager
                 continue;
             }
 
-            if (!file_exists($extensionPath->getPathname() . '/Bootstrap.php')) {
-                throw new \RuntimeException(sprintf('Could not find Bootstrap.php in %s', $extensionPath->getPathname()));
+            if (!\file_exists($extensionPath->getPathname() . '/Bootstrap.php')) {
+                throw new \RuntimeException(\sprintf('Could not find Bootstrap.php in %s', $extensionPath->getPathname()));
             }
 
             $extensionName = $extensionPath->getBasename();
@@ -146,7 +146,7 @@ class ExtensionManager
     {
         return $vendorPath->isDir()
             && !$vendorPath->isDot()
-            && strpos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
+            && \strpos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
     }
 
     /**
@@ -157,7 +157,7 @@ class ExtensionManager
      */
     private function registerExtensionNamespace($path, $namespace): void
     {
-        $namespace = rtrim($namespace, '\\') . '\\';
+        $namespace = \rtrim($namespace, '\\') . '\\';
         $this->autoLoader->addPsr4($namespace, $path);
     }
 }

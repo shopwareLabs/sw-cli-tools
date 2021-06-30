@@ -31,7 +31,7 @@ class ResourceLoader
     public function getResource($type): BaseResource
     {
         if (!isset($this->resources[$type])) {
-            $className = 'Shopware\DataGenerator\Resources\\' . ucfirst($type);
+            $className = 'Shopware\DataGenerator\Resources\\' . \ucfirst($type);
             $this->resources[$type] = new $className(
                 $this->container->get('generator_config'),
                 $this->container->get('random_data_provider'),
@@ -39,10 +39,10 @@ class ResourceLoader
                 $this->container->get('writer_manager')
             );
 
-            if (strtolower($type) == 'orders') {
+            if (\strtolower($type) == 'orders') {
                 $this->resources[$type]->setArticleResource($this->getResource('articles'));
             }
-            if (strtolower($type) == 'articles') {
+            if (\strtolower($type) == 'articles') {
                 $this->resources[$type]->setCategoryResource($this->getResource('categories'));
             }
         }

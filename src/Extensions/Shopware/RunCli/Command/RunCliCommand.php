@@ -23,13 +23,13 @@ class RunCliCommand extends BaseCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $shopwarePath = $input->getOption('shopwarePath');
-        $arguments = implode(' ', $input->getArgument('sw-command'));
+        $arguments = \implode(' ', $input->getArgument('sw-command'));
 
         /** @var IoService $ioService */
         $ioService = $this->container->get('io_service');
         $shopwarePath = $this->getValidShopwarePath($shopwarePath, $ioService);
 
-        system("{$shopwarePath}/bin/console {$arguments}");
+        \system("{$shopwarePath}/bin/console {$arguments}");
     }
 
     /**
@@ -38,7 +38,7 @@ class RunCliCommand extends BaseCommand
     public function getValidShopwarePath($shopwarePath, IoService $ioService): string
     {
         if (!$shopwarePath) {
-            $shopwarePath = realpath(getcwd());
+            $shopwarePath = \realpath(\getcwd());
         }
 
         do {

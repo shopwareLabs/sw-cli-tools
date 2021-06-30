@@ -20,7 +20,7 @@ class BootstrapInfo
      */
     public function analyze($bootstrapFile): PluginBootstrap
     {
-        $content = file_get_contents($bootstrapFile);
+        $content = \file_get_contents($bootstrapFile);
 
         [$namespace, $name] = $this->analyzeClass($content);
 
@@ -44,7 +44,7 @@ class BootstrapInfo
     {
         $pattern = '#.*Shopware_Plugins_(?P<namespace>[a-zA-Z0-9]+)_(?P<name>[a-zA-Z0-9]+)_Bootstrap.*#';
         $matches = [];
-        preg_match($pattern, $content, $matches);
+        \preg_match($pattern, $content, $matches);
         if (empty($matches)) {
             throw new \RuntimeException('Could not analyze bootstrap');
         }

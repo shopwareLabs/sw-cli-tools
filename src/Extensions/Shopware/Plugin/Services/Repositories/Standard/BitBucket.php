@@ -43,7 +43,7 @@ class BitBucket extends BaseRepository
                 $cloneUrls[$cloneUrl['name']] = $cloneUrl['href'];
             }
 
-            $cloneUrls['https'] = str_replace('shopwareAG@', '', $cloneUrls['https']);
+            $cloneUrls['https'] = \str_replace('shopwareAG@', '', $cloneUrls['https']);
 
             $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['https'], $repo['name']);
         }

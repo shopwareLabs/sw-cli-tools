@@ -60,7 +60,7 @@ class ZipCommand extends BaseCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->zipDir = getcwd();
+        $this->zipDir = \getcwd();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -88,10 +88,10 @@ class ZipCommand extends BaseCommand
 
     protected function getTempDir()
     {
-        $tempDirectory = sys_get_temp_dir();
-        $tempDirectory .= '/plugin-inst-' . uniqid('', true);
-        if (!is_dir($tempDirectory) && !mkdir($tempDirectory, 0777, true) && !is_dir($tempDirectory)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDirectory));
+        $tempDirectory = \sys_get_temp_dir();
+        $tempDirectory .= '/plugin-inst-' . \uniqid('', true);
+        if (!\is_dir($tempDirectory) && !\mkdir($tempDirectory, 0777, true) && !\is_dir($tempDirectory)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $tempDirectory));
         }
 
         $this->container->get('utilities')->changeDir($tempDirectory);

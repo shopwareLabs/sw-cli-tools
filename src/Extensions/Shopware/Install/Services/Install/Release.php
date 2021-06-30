@@ -99,7 +99,7 @@ class Release
             return;
         }
 
-        if ($request->getRelease() === 'latest' || version_compare($request->getRelease(), '5.1.2', '>=')) {
+        if ($request->getRelease() === 'latest' || \version_compare($request->getRelease(), '5.1.2', '>=')) {
             $this->createDatabase($request);
             $this->createShopwareConfig($request);
             $this->runInstaller($request);
@@ -132,7 +132,7 @@ class Release
 
     private function generateVcsMapping($installDir): void
     {
-        $this->vcsGenerator->createVcsMapping($installDir, array_column($this->config['ShopwareInstallRepos'], 'destination'));
+        $this->vcsGenerator->createVcsMapping($installDir, \array_column($this->config['ShopwareInstallRepos'], 'destination'));
     }
 
     private function runInstaller(InstallationRequest $request): void
@@ -149,8 +149,8 @@ class Release
                 continue;
             }
 
-            $key = strtolower(preg_replace('/[A-Z]/', '-$0', $key));
-            $arguments[] = sprintf('--%s="%s"', $key, $value);
+            $key = \strtolower(\preg_replace('/[A-Z]/', '-$0', $key));
+            $arguments[] = \sprintf('--%s="%s"', $key, $value);
         }
 
         if ($request->getNoSkipImport()) {
@@ -161,7 +161,7 @@ class Release
             $arguments[] = '--skip-admin-creation';
         }
 
-        $arguments = implode(' ', $arguments);
+        $arguments = \implode(' ', $arguments);
 
         $this->processExecutor->execute("php {$request->getAbsoluteInstallDir()}/recovery/install/index.php {$arguments}");
     }
@@ -205,8 +205,8 @@ class Release
      */
     private function lockInstaller($installDir): void
     {
-        if (file_exists($installDir . '/recovery/install/data')) {
-            touch($installDir . '/recovery/install/data/install.lock');
+        if (\file_exists($installDir . '/recovery/install/data')) {
+            \touch($installDir . '/recovery/install/data/install.lock');
         }
     }
 }

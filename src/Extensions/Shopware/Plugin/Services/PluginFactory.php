@@ -33,7 +33,7 @@ class PluginFactory
         $plugin->cloneUrlHttp = $httpUrl;
         $plugin->repository = $repoName;
         $plugin->repoType = $repoType;
-        $plugin->isShopware6 = (bool) strpos($sshUrl, 'shopware/6/services'); // could not be position 0, so this is safe
+        $plugin->isShopware6 = (bool) \strpos($sshUrl, 'shopware/6/services'); // could not be position 0, so this is safe
 
         return $plugin;
     }
@@ -43,15 +43,15 @@ class PluginFactory
      */
     private static function setPluginModuleFromName($name, Plugin $plugin): void
     {
-        if (stripos($name, 'frontend') === 0) {
+        if (\stripos($name, 'frontend') === 0) {
             $plugin->module = 'Frontend';
-            $plugin->name = substr($name, 9);
-        } elseif (stripos($name, 'backend') === 0) {
+            $plugin->name = \substr($name, 9);
+        } elseif (\stripos($name, 'backend') === 0) {
             $plugin->module = 'Backend';
-            $plugin->name = substr($name, 8);
-        } elseif (stripos($name, 'core') === 0) {
+            $plugin->name = \substr($name, 8);
+        } elseif (\stripos($name, 'core') === 0) {
             $plugin->module = 'Core';
-            $plugin->name = substr($name, 5);
+            $plugin->name = \substr($name, 5);
         }
 
         // plugin is build after new structure

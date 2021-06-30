@@ -20,14 +20,14 @@ class Owner
      */
     public function setUser($path, $user, $recursive): void
     {
-        chown($path, $user);
+        \chown($path, $user);
 
-        if (!$recursive || !is_dir($path)) {
+        if (!$recursive || !\is_dir($path)) {
             return;
         }
 
         foreach ($this->getIterator($path) as $file) {
-            chown($file, $user);
+            \chown($file, $user);
         }
     }
 
@@ -38,14 +38,14 @@ class Owner
      */
     public function setGroup($path, $group, $recursive): void
     {
-        chgrp($path, $group);
+        \chgrp($path, $group);
 
-        if (!$recursive || !is_dir($path)) {
+        if (!$recursive || !\is_dir($path)) {
             return;
         }
 
         foreach ($this->getIterator($path) as $file) {
-            chgrp($file, $group);
+            \chgrp($file, $group);
         }
     }
 

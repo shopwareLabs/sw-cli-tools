@@ -63,8 +63,8 @@ class Install
         );
 
         if ($inputActivate) {
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:refresh'));
-            $this->ioService->writeln(exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $plugin->name));
+            $this->ioService->writeln(\exec($shopwarePath . '/bin/console sw:plugin:refresh'));
+            $this->ioService->writeln(\exec($shopwarePath . '/bin/console sw:plugin:install --activate ' . $plugin->name));
         }
 
         $this->addPluginVcsMapping($plugin, $shopwarePath);
@@ -79,15 +79,15 @@ class Install
         $vcsMappingFile = $shopwarePath . '/.idea/vcs.xml';
         $pluginDestPath = $plugin->module . '/' . $plugin->name;
 
-        if (!file_exists($vcsMappingFile)) {
+        if (!\file_exists($vcsMappingFile)) {
             return;
         }
 
-        $mapping = file_get_contents($vcsMappingFile);
+        $mapping = \file_get_contents($vcsMappingFile);
         $xml = new \SimpleXMLElement($mapping);
         foreach ($xml->component->mapping as $mapping) {
             // if already mapped, return
-            if (strpos($this->normalize($mapping['directory']), $this->normalize($pluginDestPath)) !== false) {
+            if (\strpos($this->normalize($mapping['directory']), $this->normalize($pluginDestPath)) !== false) {
                 return;
             }
         }
@@ -111,7 +111,7 @@ class Install
      */
     private function normalize($string): string
     {
-        return strtolower(str_replace(['/', '\\'], '-', $string));
+        return \strtolower(\str_replace(['/', '\\'], '-', $string));
     }
 
     /**
@@ -121,11 +121,11 @@ class Install
     {
         $installShFile = $pluginPath . '/.githooks/install_hooks.sh';
 
-        if (!file_exists($installShFile)) {
+        if (!\file_exists($installShFile)) {
             $installShFile = $pluginPath . '/bin/setup.sh';
         }
 
-        if (!file_exists($installShFile)) {
+        if (!\file_exists($installShFile)) {
             return;
         }
 

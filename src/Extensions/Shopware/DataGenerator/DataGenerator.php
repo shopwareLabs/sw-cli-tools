@@ -83,7 +83,7 @@ class DataGenerator
     protected function initSeed($seed): void
     {
         if (!empty($seed)) {
-            mt_srand($this->config->getSeed());
+            \mt_srand($this->config->getSeed());
         }
     }
 }

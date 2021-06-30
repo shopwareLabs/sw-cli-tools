@@ -24,9 +24,9 @@ class Config implements \ArrayAccess
     {
         $config = [];
         foreach ($fileCollector->collectConfigFiles() as $configFile) {
-            $config = array_replace_recursive(
+            $config = \array_replace_recursive(
                 $config,
-                Yaml::parse(file_get_contents($configFile), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE)
+                Yaml::parse(\file_get_contents($configFile), Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE)
             );
         }
 

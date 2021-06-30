@@ -19,11 +19,11 @@ class ShopwareInfo
     {
         $path = $this->normalizePath($path);
 
-        if (file_exists($path . 'cache/clear_cache.sh')) {
+        if (\file_exists($path . 'cache/clear_cache.sh')) {
             return $path . 'cache';
         }
 
-        if (file_exists($path . 'var/cache/clear_cache.sh')) {
+        if (\file_exists($path . 'var/cache/clear_cache.sh')) {
             return $path . 'var/cache';
         }
 
@@ -34,11 +34,11 @@ class ShopwareInfo
     {
         $path = $this->normalizePath($path);
 
-        if (file_exists($path . 'logs/.htaccess')) {
+        if (\file_exists($path . 'logs/.htaccess')) {
             return $path . 'logs';
         }
 
-        if (file_exists($path . 'var/log/.htaccess')) {
+        if (\file_exists($path . 'var/log/.htaccess')) {
             return $path . 'var/log';
         }
 
@@ -57,6 +57,6 @@ class ShopwareInfo
 
     private function normalizePath($path): string
     {
-        return rtrim($path, '/\\') . '/';
+        return \rtrim($path, '/\\') . '/';
     }
 }

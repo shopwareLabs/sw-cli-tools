@@ -41,7 +41,7 @@ class RepositoryManager
         $defaultRepositories = $this->defaultRepositoryFactory->getDefaultRepositories();
         $pluginRepositories = $this->collectPluginRepositories();
 
-        return array_merge($defaultRepositories, $pluginRepositories);
+        return \array_merge($defaultRepositories, $pluginRepositories);
     }
 
     /**

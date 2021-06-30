@@ -30,14 +30,14 @@ class StreamFileDownloader implements FileDownloader
      */
     public function download($sourceUrl, $destination)
     {
-        $readHandle = fopen($sourceUrl, 'rb');
+        $readHandle = \fopen($sourceUrl, 'rb');
         if ($readHandle === false) {
-            throw new \RuntimeException(sprintf("Could not open URL '%s'.", $sourceUrl));
+            throw new \RuntimeException(\sprintf("Could not open URL '%s'.", $sourceUrl));
         }
 
-        $writeHandle = fopen($destination, 'wb');
+        $writeHandle = \fopen($destination, 'wb');
         if ($writeHandle === false) {
-            throw new \RuntimeException(sprintf('Could not write file: %s.', $destination));
+            throw new \RuntimeException(\sprintf('Could not write file: %s.', $destination));
         }
 
         $length = $this->getContentLengthFromStream($readHandle);
@@ -50,16 +50,16 @@ class StreamFileDownloader implements FileDownloader
 
         $currentSize = 0;
 
-        while (!feof($readHandle)) {
-            $currentSize += fwrite($writeHandle, fread($readHandle, self::BLOCKSIZE));
+        while (!\feof($readHandle)) {
+            $currentSize += \fwrite($writeHandle, \fread($readHandle, self::BLOCKSIZE));
             $progress->setProgress($currentSize / 1024);
         }
         $progress->finish();
 
         $this->ioService->writeln("\n Download finished");
 
-        fclose($readHandle);
-        fclose($writeHandle);
+        \fclose($readHandle);
+        \fclose($writeHandle);
     }
 
     /**
@@ -67,12 +67,12 @@ class StreamFileDownloader implements FileDownloader
      */
     private function getContentLengthFromStream($readHandle): int
     {
-        $info = stream_get_meta_data($readHandle);
+        $info = \stream_get_meta_data($readHandle);
 
         $size = 0;
         foreach ($info['wrapper_data'] as $field) {
-            if (stripos($field, 'content-length') !== false) {
-                [, $size] = explode(':', $field);
+            if (\stripos($field, 'content-length') !== false) {
+                [, $size] = \explode(':', $field);
             }
         }
 

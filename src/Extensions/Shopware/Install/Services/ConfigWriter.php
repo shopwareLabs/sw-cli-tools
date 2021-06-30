@@ -54,19 +54,19 @@ EOF;
     {
         $this->ioService->writeln('<info>Writing config.php</info>');
 
-        $config = sprintf($this->configTemplate, $user, $password, $name, $host, $port);
+        $config = \sprintf($this->configTemplate, $user, $password, $name, $host, $port);
 
-        file_put_contents($installDir . '/config.php', $config);
+        \file_put_contents($installDir . '/config.php', $config);
     }
 
     public function writeBuildProperties($installDir, $shopHost, $shopPath, $dbUser, $dbPassword, $dbName, $dbHost, $port = 3306): void
     {
         $this->ioService->writeln('<info>Writing build.properties</info>');
 
-        $shopPath = '/' . ltrim($shopPath, '/');
+        $shopPath = '/' . \ltrim($shopPath, '/');
 
-        $config = sprintf($this->buildPropertiesTemplate, $shopHost, $shopPath, $dbName, $dbHost, $dbUser, $dbPassword, $port);
+        $config = \sprintf($this->buildPropertiesTemplate, $shopHost, $shopPath, $dbName, $dbHost, $dbUser, $dbPassword, $port);
 
-        file_put_contents($installDir . '/build/build.properties', $config);
+        \file_put_contents($installDir . '/build/build.properties', $config);
     }
 }

@@ -47,17 +47,17 @@ class Response implements ResponseInterface
         $this->rawBody = $body;
 
         if ($body === false) {
-            $this->errorMessage = curl_error($curlHandle);
+            $this->errorMessage = \curl_error($curlHandle);
 
             return;
         }
 
-        $this->code = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        $this->code = \curl_getinfo($curlHandle, \CURLINFO_HTTP_CODE);
 
-        $decodedResult = json_decode($this->rawBody, true);
+        $decodedResult = \json_decode($this->rawBody, true);
         if ($decodedResult === null) {
-            $jsonError = json_last_error_msg();
-            $rawErrorBody = print_r($body, true);
+            $jsonError = \json_last_error_msg();
+            $rawErrorBody = \print_r($body, true);
 
             $this->errorMessage = <<<error
 <h2>Could not decode json</h2>

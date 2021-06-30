@@ -46,9 +46,9 @@ class Newsletter extends BaseResource
 
         // Recipients
         $writer->write(
-            sprintf(
+            \sprintf(
                 'INSERT IGNORE INTO `s_campaigns_mailaddresses` (`id`, `customer`, `groupID`, `email`, `lastmailing`, `lastread`) VALUES %s;',
-                implode(",\n ", $addressValues)
+                \implode(",\n ", $addressValues)
             )
         );
 
@@ -58,7 +58,7 @@ class Newsletter extends BaseResource
         );
 
         // Groups assigned to the newsletter
-        $groups = serialize([
+        $groups = \serialize([
             ['EK' => 0, 'H' => 0],
             [1 => 0],
         ]);

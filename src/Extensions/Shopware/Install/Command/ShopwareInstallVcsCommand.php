@@ -43,7 +43,7 @@ class ShopwareInstallVcsCommand extends BaseCommand
      */
     public function validateInstallDir($path): string
     {
-        if (is_dir($path)) {
+        if (\is_dir($path)) {
             throw new \RuntimeException("Path '{$path}'' is not empty");
         }
 
@@ -111,7 +111,7 @@ EOF
 
         $installService->installShopware(
             $input->getOption('branch'),
-            trim($input->getOption('installDir'), '/'),
+            \trim($input->getOption('installDir'), '/'),
             $input->getOption('basePath'),
             $input->getOption('databaseName'),
             $input->getOption('user'),
@@ -128,13 +128,13 @@ EOF
     {
         $result = [];
         $pattern = '#sw-(?P<number>.+?)/(?P<target>.+?)/.*#i';
-        preg_match($pattern, $branch, $result);
+        \preg_match($pattern, $branch, $result);
 
         if (isset($result['number'])) {
             return 'sw' . $result['number'];
         }
 
-        return str_replace('.', '', $branch);
+        return \str_replace('.', '', $branch);
     }
 
     /**
@@ -148,7 +148,7 @@ EOF
                 "Please provide the install directory <{$suggestion}>: ",
                 [$this, 'validateInstallDir']
             );
-            $input->setOption('installDir', trim($installDir) ? $installDir : $suggestion);
+            $input->setOption('installDir', \trim($installDir) ? $installDir : $suggestion);
 
             return $installDir;
         }
@@ -164,7 +164,7 @@ EOF
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
             $databaseName = $ioService->ask("Please provide the database name you want to use <{$suggestion}>: ");
-            $input->setOption('databaseName', trim($databaseName) ? $databaseName : $suggestion);
+            $input->setOption('databaseName', \trim($databaseName) ? $databaseName : $suggestion);
         }
     }
 
@@ -176,7 +176,7 @@ EOF
         $basePath = $input->getOption('basePath');
         if (!$basePath) {
             $basePath = $ioService->ask("Please provide the basepath you want to use <{$suggestion}>: ");
-            $input->setOption('basePath', trim($basePath) ? $basePath : $suggestion);
+            $input->setOption('basePath', \trim($basePath) ? $basePath : $suggestion);
         }
     }
 
@@ -186,7 +186,7 @@ EOF
         if (!$branch) {
             $branchSuggestion = self::MAIN_BRANCH;
             $branch = $ioService->ask("Please provide the branch you want to install <{$branchSuggestion}>: ");
-            $branch = trim($branch) ? $branch : self::MAIN_BRANCH;
+            $branch = \trim($branch) ? $branch : self::MAIN_BRANCH;
             $input->setOption('branch', $branch);
 
             return $branch;

@@ -83,7 +83,7 @@ class InstallationRequest extends Struct
 
     public function all()
     {
-        return get_object_vars($this);
+        return \get_object_vars($this);
     }
 
     public function getRelease(): string
@@ -108,7 +108,7 @@ class InstallationRequest extends Struct
 
     public function getAbsoluteInstallDir(): string
     {
-        return realpath($this->installDir);
+        return \realpath($this->installDir);
     }
 
     public function getDbHost(): string

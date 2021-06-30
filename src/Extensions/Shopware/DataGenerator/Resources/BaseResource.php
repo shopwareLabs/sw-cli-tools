@@ -97,8 +97,8 @@ abstract class BaseResource
      */
     final public function generateData(): void
     {
-        $path = explode('\\', \get_class($this));
-        $writer = $this->writerManager->createWriter(strtolower(array_pop($path)), 'sql');
+        $path = \explode('\\', \get_class($this));
+        $writer = $this->writerManager->createWriter(\strtolower(\array_pop($path)), 'sql');
         $writer->write($this->prepareTables());
 
         $this->create($writer);

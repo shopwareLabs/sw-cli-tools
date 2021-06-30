@@ -29,12 +29,12 @@ class CreatePluginCommand extends BaseCommand
         $helper = $this->getHelperSet()->get('question');
 
         $name = $input->getArgument('name');
-        $modelName = implode('', \array_slice($this->upperToArray($name), 1));
+        $modelName = \implode('', \array_slice($this->upperToArray($name), 1));
 
         if ($input->getOption(self::LEGACY_OPTION)) {
-            $defaultModel = sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
+            $defaultModel = \sprintf('Shopware\CustomModels\%s\%s', $name, $modelName);
         } else {
-            $defaultModel = sprintf('%s\Models\%s', $name, $modelName);
+            $defaultModel = \sprintf('%s\Models\%s', $name, $modelName);
         }
 
         $this->normalizeBooleanFields($input);
@@ -51,7 +51,7 @@ class CreatePluginCommand extends BaseCommand
 
         // a backend implicitly sets "haveModel" to true, if the backend model is not a default model
         if ($input->getOption('haveBackend')
-            && strpos($input->getOption('backendModel'), 'Shopware\Models') === false
+            && \strpos($input->getOption('backendModel'), 'Shopware\Models') === false
         ) {
             $input->setOption('haveModels', true);
         }
@@ -74,7 +74,7 @@ class CreatePluginCommand extends BaseCommand
         ];
 
         foreach ($inputOptions as $key) {
-            switch (strtolower($input->getOption($key))) {
+            switch (\strtolower($input->getOption($key))) {
                 case 'false':
                 case '0':
                     $input->setOption($key, false);
@@ -92,7 +92,7 @@ class CreatePluginCommand extends BaseCommand
      */
     public function upperToArray($input): array
     {
-        return preg_split('/(?=[A-Z])/', $input, -1, PREG_SPLIT_NO_EMPTY);
+        return \preg_split('/(?=[A-Z])/', $input, -1, \PREG_SPLIT_NO_EMPTY);
     }
 
     /**
@@ -104,7 +104,7 @@ class CreatePluginCommand extends BaseCommand
      */
     public function validateNamespace($input)
     {
-        if (!\in_array(strtolower($input), ['frontend', 'core', 'backend'])) {
+        if (!\in_array(\strtolower($input), ['frontend', 'core', 'backend'])) {
             throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
         }
 
@@ -276,8 +276,8 @@ EOF
         $configuration->isLegacyPlugin = $input->getOption(self::LEGACY_OPTION);
 
         $licenseHeader = $input->getOption('licenseHeader');
-        if (!empty($licenseHeader) && file_exists($licenseHeader)) {
-            $configuration->licenseHeaderPlain = file_get_contents($licenseHeader);
+        if (!empty($licenseHeader) && \file_exists($licenseHeader)) {
+            $configuration->licenseHeaderPlain = \file_get_contents($licenseHeader);
             $configuration->licenseHeader = $this->prepareLicenseHeader($configuration->licenseHeaderPlain);
         } else {
             $configuration->licenseHeaderPlain = null;
@@ -289,7 +289,7 @@ EOF
 
     private function prepareLicenseHeader($license): string
     {
-        $license = str_replace("\n", "\n * ", trim($license));
+        $license = \str_replace("\n", "\n * ", \trim($license));
 
         return "/**\n * " . $license . "\n */\n";
     }

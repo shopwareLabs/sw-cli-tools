@@ -18,7 +18,7 @@ class LegacyOutputDirectoryProviderTest extends TestCase
 
     public function testGetLegacyPath(): void
     {
-        $expectedPath = getcwd() . '/engine/Shopware/Plugins/Local/Frontend/' . self::PLUGIN_NAME . '/';
+        $expectedPath = \getcwd() . '/engine/Shopware/Plugins/Local/Frontend/' . self::PLUGIN_NAME . '/';
 
         $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')
@@ -37,7 +37,7 @@ class LegacyOutputDirectoryProviderTest extends TestCase
 
     public function testGetLegacyPathIfNotExecutedFromShopwareRoot(): void
     {
-        $expectedPath = getcwd() . '/' . self::PLUGIN_NAME . '/';
+        $expectedPath = \getcwd() . '/' . self::PLUGIN_NAME . '/';
 
         $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')

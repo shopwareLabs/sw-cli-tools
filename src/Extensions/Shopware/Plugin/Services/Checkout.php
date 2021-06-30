@@ -62,7 +62,7 @@ class Checkout
 
         $absPath = $path . '/' . $destPath;
 
-        if (is_dir($absPath)) {
+        if (\is_dir($absPath)) {
             $this->updatePlugin($branch, $absPath, $pluginName);
 
             return;
@@ -84,7 +84,7 @@ class Checkout
         $this->gitUtil->run('fetch --progress origin');
 
         $output = $this->gitUtil->run('log HEAD..origin/master --oneline');
-        if (trim($output) === '') {
+        if (\trim($output) === '') {
             $this->ioService->writeln("Plugin '$pluginName' is up to date");
             if ($branch) {
                 $this->gitUtil->run("checkout {$branch}");
@@ -100,7 +100,7 @@ class Checkout
         $this->gitUtil->run('pull');
         if ($branch) {
             // the CWD change is a fix for older versions of GIT which do not support the -C flag
-            $cwd = getcwd();
+            $cwd = \getcwd();
             $this->utilities->changeDir($absPath);
             $this->gitUtil->run("checkout {$branch}");
             $this->utilities->changeDir($cwd);
@@ -119,7 +119,7 @@ class Checkout
         $this->gitUtil->run("clone  --progress $cloneUrl $absPath");
         if ($branch) {
             // the CWD change is a fix for older versions of GIT which do not support the -C flag
-            $cwd = getcwd();
+            $cwd = \getcwd();
             $this->utilities->changeDir($absPath);
             $this->gitUtil->run("checkout {$branch}");
             $this->utilities->changeDir($cwd);

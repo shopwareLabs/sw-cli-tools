@@ -32,7 +32,7 @@ class TimeoutTest extends TestCase
 
     public function testProcessExecutorTimeout(): void
     {
-        putenv('SW_TIMEOUT=999');
+        \putenv('SW_TIMEOUT=999');
         /** @var ProcessExecutor $executor */
         $executor = $this->getContainer()->get('process_executor');
 
@@ -41,7 +41,7 @@ class TimeoutTest extends TestCase
 
     public function testGitUtilTimeout(): void
     {
-        putenv('SW_TIMEOUT=123');
+        \putenv('SW_TIMEOUT=123');
         /** @var GitUtil $util */
         $util = $this->getContainer()->get('git_util');
 

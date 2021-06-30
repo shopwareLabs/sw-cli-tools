@@ -207,9 +207,9 @@ class LoadDataInfile
             throw new \RuntimeException("No definition for $tableName");
         }
 
-        $columns = implode(
+        $columns = \implode(
             ', ',
-            array_map(
+            \array_map(
                 static function ($column) {
                     return "`$column`";
                 },

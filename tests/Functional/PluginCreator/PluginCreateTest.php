@@ -326,18 +326,18 @@ class PluginCreateTest extends TestCase
         }
 
         // merge all provider files into one array
-        $allProviderFiles = array_reduce(
-            array_column($fileProviders, 'files'),
+        $allProviderFiles = \array_reduce(
+            \array_column($fileProviders, 'files'),
             static function ($a, $b) {
                 $a = $a ?: [];
                 $b = $b ?: [];
 
-                return array_merge($a, $b);
+                return \array_merge($a, $b);
             }
         );
 
         // Test, if existing files are defined by a file provider
-        foreach (array_keys($ioAdapter->getFiles()) as $file) {
+        foreach (\array_keys($ioAdapter->getFiles()) as $file) {
             static::assertContains(
                 $file,
                 $allProviderFiles,

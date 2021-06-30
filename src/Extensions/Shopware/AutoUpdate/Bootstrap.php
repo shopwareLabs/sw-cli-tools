@@ -63,7 +63,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
     {
         $toolPath = $this->container->get('path_provider')->getCliToolPath();
 
-        return strpos($toolPath, 'phar:') !== false;
+        return \strpos($toolPath, 'phar:') !== false;
     }
 
     /**
@@ -109,7 +109,7 @@ class Bootstrap implements ConsoleAwareExtension, ContainerAwareExtension
             $new = $updater->getNewVersion();
             $old = $updater->getOldVersion();
 
-            exit(sprintf(
+            exit(\sprintf(
                 "Updated from SHA-1 %s to SHA-1 %s. Please run again\n",
                 $old,
                 $new

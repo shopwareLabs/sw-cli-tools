@@ -44,7 +44,7 @@ class ShopwareRootDetector implements RootDetectorInterface
     private function validateDirectories($path): bool
     {
         foreach (self::getDirectories() as $directory) {
-            if (!is_dir($path . $directory)) {
+            if (!\is_dir($path . $directory)) {
                 return false;
             }
         }
@@ -58,7 +58,7 @@ class ShopwareRootDetector implements RootDetectorInterface
     private function validateFiles($path): bool
     {
         foreach (self::getFiles() as $file) {
-            if (!file_exists($path . $file)) {
+            if (!\file_exists($path . $file)) {
                 return false;
             }
         }

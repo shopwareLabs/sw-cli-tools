@@ -18,7 +18,7 @@ class CurrentOutputDirectoryProviderTest extends TestCase
 
     public function testGetCurrentPath(): void
     {
-        $expectedPath = getcwd() . '/custom/plugins/' . self::PLUGIN_NAME . '/';
+        $expectedPath = \getcwd() . '/custom/plugins/' . self::PLUGIN_NAME . '/';
 
         $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')
@@ -32,7 +32,7 @@ class CurrentOutputDirectoryProviderTest extends TestCase
 
     public function testGetPathIfNotExecutedFromShopwareRootFolder(): void
     {
-        $expectedPath = getcwd() . '/' . self::PLUGIN_NAME . '/';
+        $expectedPath = \getcwd() . '/' . self::PLUGIN_NAME . '/';
 
         $shopwareRootDetectorStub = $this->createMock(ShopwareRootDetector::class);
         $shopwareRootDetectorStub->method('isRoot')

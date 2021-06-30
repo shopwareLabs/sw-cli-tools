@@ -44,7 +44,7 @@ class BufferedFileWriter implements WriterInterface
     public function __construct($file, $maxBufferSize = 50)
     {
         $this->fileName = $file;
-        $this->fileHandle = fopen($file, 'wb');
+        $this->fileHandle = \fopen($file, 'wb');
         $this->maxBufferSize = $maxBufferSize;
     }
 
@@ -67,7 +67,7 @@ class BufferedFileWriter implements WriterInterface
             $this->buffer[] = $content;
             ++$this->bufferCounter;
         } else {
-            $this->buffer = array_merge($this->buffer, $content);
+            $this->buffer = \array_merge($this->buffer, $content);
             $this->bufferCounter += \count($content);
         }
         if ($this->bufferCounter >= $this->maxBufferSize) {
@@ -84,7 +84,7 @@ class BufferedFileWriter implements WriterInterface
             return;
         }
 
-        fwrite($this->fileHandle, implode("\n", $this->buffer) . "\n");
+        \fwrite($this->fileHandle, \implode("\n", $this->buffer) . "\n");
         $this->buffer = [];
         $this->bufferCounter = 0;
     }

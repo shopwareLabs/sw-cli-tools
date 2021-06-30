@@ -42,9 +42,9 @@ class CacheDecorator implements RestInterface
      */
     public function get($url, $parameters = [], $headers = [])
     {
-        $cacheKey = $url . json_encode($parameters) . json_encode($headers);
+        $cacheKey = $url . \json_encode($parameters) . \json_encode($headers);
 
-        return $this->callCached('get', sha1($cacheKey), $url, $parameters = [], $headers = []);
+        return $this->callCached('get', \sha1($cacheKey), $url, $parameters = [], $headers = []);
     }
 
     /**
@@ -94,10 +94,10 @@ class CacheDecorator implements RestInterface
                 }
                 // Don't cache errors
                 if (!$response->getErrorMessage()) {
-                    $this->cacheProvider->write($key, serialize($response), $this->cacheTime);
+                    $this->cacheProvider->write($key, \serialize($response), $this->cacheTime);
                 }
             } else {
-                $response = unserialize($response);
+                $response = \unserialize($response);
             }
         }
 

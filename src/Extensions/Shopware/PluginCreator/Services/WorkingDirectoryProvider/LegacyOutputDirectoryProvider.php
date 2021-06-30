@@ -42,7 +42,7 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
     {
         if (!$this->isValidNamespace($namespace) && $namespace !== '') {
             throw new \Exception(
-                sprintf('Invalid namespace given: %s', $namespace)
+                \sprintf('Invalid namespace given: %s', $namespace)
             );
         }
 
@@ -73,6 +73,6 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     private function getCwd(): string
     {
-        return getcwd();
+        return \getcwd();
     }
 }

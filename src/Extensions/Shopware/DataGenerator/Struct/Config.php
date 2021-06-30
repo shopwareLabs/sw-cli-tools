@@ -113,7 +113,7 @@ class Config
      */
     public function setNumberCategoriesPerArticle($categoriesPerArticle): void
     {
-        $this->categoriesPerArticle = max(1, $categoriesPerArticle);
+        $this->categoriesPerArticle = \max(1, $categoriesPerArticle);
     }
 
     public function getCategoriesPerArticle(): int
@@ -198,7 +198,7 @@ class Config
             return;
         }
         if (\is_string($thumbnailSizes)) {
-            $thumbnailSizes = explode(',', $thumbnailSizes);
+            $thumbnailSizes = \explode(',', $thumbnailSizes);
         }
         $this->thumbnailSizes = $thumbnailSizes;
     }
@@ -263,8 +263,8 @@ class Config
     public function setImageDir($imageDir): void
     {
         $dir = $imageDir . '/thumbnail';
-        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+        if (!\is_dir($dir) && !\mkdir($dir, 0777, true) && !\is_dir($dir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $dir));
         }
         $this->imageDir = $imageDir;
     }
@@ -286,9 +286,9 @@ class Config
 
     public function createOutputDir(): void
     {
-        $outputDir = getcwd() . '/output';
-        if (!is_dir($outputDir) && !mkdir($outputDir) && !is_dir($outputDir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', 'output'));
+        $outputDir = \getcwd() . '/output';
+        if (!\is_dir($outputDir) && !\mkdir($outputDir) && !\is_dir($outputDir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', 'output'));
         }
     }
 

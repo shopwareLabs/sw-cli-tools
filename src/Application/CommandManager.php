@@ -35,7 +35,7 @@ class CommandManager
      */
     public function getCommands(): array
     {
-        $commands = array_merge(
+        $commands = \array_merge(
             $this->getDefaultCommands(),
             $this->collectPluginCommands()
         );

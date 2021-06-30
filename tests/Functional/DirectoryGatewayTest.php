@@ -27,10 +27,10 @@ class DirectoryGatewayTest extends TestCase
 
     public function testXdgGateway(): void
     {
-        putenv('HOME=/tmp/');
-        putenv('XDG_DATA_HOME=/tmp/xdg-data');
-        putenv('XDG_CONFIG_HOME=/tmp/xdg-config');
-        putenv('XDG_CACHE_HOME=/tmp/xdg-cache');
+        \putenv('HOME=/tmp/');
+        \putenv('XDG_DATA_HOME=/tmp/xdg-data');
+        \putenv('XDG_CONFIG_HOME=/tmp/xdg-config');
+        \putenv('XDG_CACHE_HOME=/tmp/xdg-cache');
 
         $gateway = new XdgGateway(new Xdg());
 

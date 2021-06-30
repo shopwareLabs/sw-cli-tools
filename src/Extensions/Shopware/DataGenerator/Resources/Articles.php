@@ -129,13 +129,13 @@ class Articles extends BaseResource
         }
 
         $categoriesFlat = $this->categoryResource->categoriesFlat;
-        $validCategoryIds = array_filter(
-            array_keys($categoriesFlat),
+        $validCategoryIds = \array_filter(
+            \array_keys($categoriesFlat),
             static function ($item) {
                 return $item >= 1000000;
             }
         );
-        $categoriesPerArticle = min(\count($validCategoryIds), $this->config->getCategoriesPerArticle());
+        $categoriesPerArticle = \min(\count($validCategoryIds), $this->config->getCategoriesPerArticle());
         if (\count($validCategoryIds) < $this->config->getCategoriesPerArticle()) {
             $this->ioService->writeln(
                 '<comment>Number of categories per article will be lower than specified</comment>'
@@ -165,9 +165,9 @@ class Articles extends BaseResource
         for ($articleCounter = 0; $articleCounter < $number; ++$articleCounter) {
             $this->advanceProgressBar();
             $id = $this->getUniqueId('article');
-            $createConfigurator = $id === 1 ? 1 : random_int(0, 1); // Force the first article to be a configurator
+            $createConfigurator = $id === 1 ? 1 : \random_int(0, 1); // Force the first article to be a configurator
             // number of variants is chosen randomly
-            $numberOfVariants = $createConfigurator === 1 ? random_int(
+            $numberOfVariants = $createConfigurator === 1 ? \random_int(
                 $this->config->getMinVariants(),
                 $this->config->getMaxVariants()
             ) : 1;
@@ -176,7 +176,7 @@ class Articles extends BaseResource
                 $createConfigurator = 0;
             }
 
-            $createFilter = random_int(0, 3);
+            $createFilter = \random_int(0, 3);
 
             $urls->write("/detail/index/sArticle/{$id}");
 
@@ -187,7 +187,7 @@ class Articles extends BaseResource
             $configuratorSetId = $createConfigurator === 1 ? $id : 'NULL';
 
             // number of variants determines number of groups, as number of options is static
-            $numberOfGroups = max(1, $numberOfVariants / self::OPTIONS);
+            $numberOfGroups = \max(1, $numberOfVariants / self::OPTIONS);
 
             // number of variants will be a multiple of self::OPTIONS so it is re-calculated here
             if ($createConfigurator === 1) {
@@ -201,7 +201,7 @@ class Articles extends BaseResource
                 $groups = [];
                 $options = [];
                 $configuratorSets->write("{$id}, Test-Configurator-Set Article {$id}");
-                $randomGroups = array_rand($this->configuratorsGroups, $numberOfGroups);
+                $randomGroups = \array_rand($this->configuratorsGroups, $numberOfGroups);
                 // array_rand will not return an array if only one element was chosen
                 if (!\is_array($randomGroups)) {
                     $randomGroups = [$randomGroups];
@@ -211,8 +211,8 @@ class Articles extends BaseResource
                 foreach ($randomGroups as $g) {
                     $currentGroup = $this->configuratorsGroups[$g];
                     // Create options for this group
-                    $curOptions = array_column($this->configuratorsGroups[$g]['options'], 'id');
-                    $options = array_merge($curOptions, $options);
+                    $curOptions = \array_column($this->configuratorsGroups[$g]['options'], 'id');
+                    $options = \array_merge($curOptions, $options);
                     $groups[$currentGroup['id']] = $curOptions;
                 }
 
@@ -223,7 +223,7 @@ class Articles extends BaseResource
 
                 // Create relations
                 // set-group-relations
-                foreach (array_keys($groups) as $groupId) {
+                foreach (\array_keys($groups) as $groupId) {
                     $configuratorSetGroupRelations->write("{$id}, {$groupId}");
                 }
 
@@ -233,7 +233,7 @@ class Articles extends BaseResource
                 }
             }
 
-            shuffle($validCategoryIds);
+            \shuffle($validCategoryIds);
             for ($i = 0; $i < $categoriesPerArticle; ++$i) {
                 $articleCategories->write("{$id}, {$validCategoryIds[$i]}");
 
@@ -266,10 +266,10 @@ class Articles extends BaseResource
             // Filters
             $filterGroupId = 1;
             if ($createFilter === 0 && $filterOptions > 0) {
-                $filterGroupId = random_int(1, $filterOptions);
+                $filterGroupId = \random_int(1, $filterOptions);
                 for ($option = 1; $option <= $filterOptions; ++$option) {
                     $optionId = $option * $filterGroupId;
-                    $valueId = random_int(1, $filterValues) * $optionId;
+                    $valueId = \random_int(1, $filterValues) * $optionId;
                     $filterArticles->write("{$id}, {$valueId}");
                 }
             }
@@ -277,7 +277,7 @@ class Articles extends BaseResource
             //
             // Article / -details
             //
-            $name = rtrim($this->generator->getSentence(3), '.');
+            $name = \rtrim($this->generator->getSentence(3), '.');
             $articles->write(
                 "{$id}, 2, {$name}, SHORT DESCRIPTION, LONG DESCRIPTION, NULL, 2012-08-15, 1, 1, 20, 0, , 2012-08-30 16:57:00, 1, 0, {$filterGroupId}, 0, 0, 0, , 0, {$articleDetailId}, NULL, NULL, {$configuratorSetId}"
             );
@@ -289,14 +289,14 @@ class Articles extends BaseResource
                 }
                 $kind = $i === 1 ? 1 : 2;
 
-                $purchaseUnit = random_int(0, 5);
-                $referenceUnit = random_int($purchaseUnit, $purchaseUnit * 4);
+                $purchaseUnit = \random_int(0, 5);
+                $referenceUnit = \random_int($purchaseUnit, $purchaseUnit * 4);
 
                 $details->write(
                     "{$articleDetailId}, {$id},sw-{$id}-{$i}, , {$kind}, , 0, 1, 25, 0, 0.000, 0, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, {$purchaseUnit}, {$referenceUnit}, Flasche(n), 2012-06-13, 0, "
                 );
 
-                $index = random_int(0, \count($priceVariations) - 1);
+                $index = \random_int(0, \count($priceVariations) - 1);
                 foreach ($priceVariations[$index] as $price) {
                     $prices->write(
                         "EK,{$price['from']},{$price['to']},{$id},{$articleDetailId},{$price['price']}, 0, 0, 0 "
@@ -314,7 +314,7 @@ class Articles extends BaseResource
             // Set articleDetail-option relation
             if ($createConfigurator) {
                 foreach ($detailIDs as $detailID) {
-                    $options = array_pop($allOptions);
+                    $options = \array_pop($allOptions);
                     if (empty($options)) {
                         continue;
                     }
@@ -403,11 +403,11 @@ class Articles extends BaseResource
         $filterValues = $this->config->getArticleFilterValues();
 
         for ($groupId = 1; $groupId <= $filterGroups; ++$groupId) {
-            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, " . random_int(0, 1) . ', ' . random_int(0, 1);
+            $filterGroupValues[] = "$groupId, Filtergroup #{$groupId}, {$groupId}, " . \random_int(0, 1) . ', ' . \random_int(0, 1);
 
             for ($o = 1; $o <= $filterOptions; ++$o) {
                 $optionId = $o + ($groupId - 1) * $filterOptions;
-                $filterOptionValues[] = "$optionId, Option #{$o},  " . random_int(0, 1);
+                $filterOptionValues[] = "$optionId, Option #{$o},  " . \random_int(0, 1);
                 $filterOptionGroupRelationValues[] = "$groupId, $optionId, $o";
 
                 for ($v = 1; $v <= $filterValues; ++$v) {
@@ -439,7 +439,7 @@ class Articles extends BaseResource
     private function createCartesianProduct($arrays): array
     {
         $cartesian = [];
-        foreach (array_reverse($arrays) as $dimName => $dim) {
+        foreach (\array_reverse($arrays) as $dimName => $dim) {
             $buf = [];
 
             foreach ($dim as $val) {
@@ -452,7 +452,7 @@ class Articles extends BaseResource
                 $tmp = [];
                 foreach ($buf as $elBuf) {
                     foreach ($cartesian as $elAp) {
-                        $tmp[] = array_merge($elBuf, $elAp);
+                        $tmp[] = \array_merge($elBuf, $elAp);
                     }
                 }
                 $cartesian = $tmp;
@@ -478,7 +478,7 @@ class Articles extends BaseResource
         $result[] = $id;
         if ($category['parent']) {
             $parent = $this->getCategoryPath($category['parent'], $categories);
-            $result = array_merge($result, $parent);
+            $result = \array_merge($result, $parent);
         }
 
         return $result;
@@ -496,11 +496,11 @@ class Articles extends BaseResource
         $destination = $assetsDir . ($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {
             $target = $imageDir . '/' . $imageName . '.jpg';
-            copy($destination, $target);
+            \copy($destination, $target);
 
             foreach ($thumbs as $size) {
                 $target = $imageDir . '/thumbnail/' . $imageName . '_' . $size . '.jpg';
-                copy($destination, $target);
+                \copy($destination, $target);
             }
         }
     }
@@ -516,18 +516,18 @@ class Articles extends BaseResource
 
         for ($v = 0; $v <= $count; ++$v) {
             // create random number of bulk prices between 1 and 5
-            $priceCount = random_int(1, 5);
+            $priceCount = \random_int(1, 5);
             $to = 0;
 
             // price will be something between 3 and 2000
-            $price = random_int(3, 2000);
+            $price = \random_int(3, 2000);
             for ($i = 1; $i <= $priceCount; ++$i) {
                 $from = $to + 1;
-                $to = $from + random_int(2, 4);
+                $to = $from + \random_int(2, 4);
                 if ($i == $priceCount) {
                     $to = 'beliebig';
                 }
-                $price = $price * ((100 - random_int(10, 40))) / 100;
+                $price = $price * (100 - \random_int(10, 40)) / 100;
 
                 $variations[$v][] = [
                     'from' => $from,

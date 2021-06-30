@@ -47,7 +47,7 @@ class PluginProvider
     {
         $result = [];
         foreach ($this->repositories as $repo) {
-            $result = array_merge($result, $repo->getPluginByName($name, $exact));
+            $result = \array_merge($result, $repo->getPluginByName($name, $exact));
         }
 
         return $this->sortPlugins($result);
@@ -64,8 +64,8 @@ class PluginProvider
     {
         $result = [];
         foreach ($this->repositories as $repo) {
-            if ($repo instanceof BaseRepository && stripos($repo->getName(), $name) !== false) {
-                $result = array_merge($result, $repo->getPlugins());
+            if ($repo instanceof BaseRepository && \stripos($repo->getName(), $name) !== false) {
+                $result = \array_merge($result, $repo->getPlugins());
             }
         }
 
@@ -81,7 +81,7 @@ class PluginProvider
     {
         $result = [];
         foreach ($this->repositories as $repo) {
-            $result = array_merge($result, $repo->getPlugins());
+            $result = \array_merge($result, $repo->getPlugins());
         }
 
         return $this->sortPlugins($result);
@@ -96,17 +96,17 @@ class PluginProvider
     {
         switch ($this->sortBy) {
             case 'repository':
-                usort($plugins, static function ($a, $b) {
+                \usort($plugins, static function ($a, $b) {
                     return $a->repository . $a->name > $b->repository . $b->name;
                 });
                 break;
             case 'module':
-                usort($plugins, static function ($a, $b) {
+                \usort($plugins, static function ($a, $b) {
                     return $a->module . $a->name > $b->module . $b->name;
                 });
                 break;
             default:
-                usort($plugins, static function ($a, $b) {
+                \usort($plugins, static function ($a, $b) {
                     return $a->name > $b->name;
                 });
                 break;

@@ -20,7 +20,7 @@ class CliToolGateway implements DirectoryGatewayInterface
      */
     public function __construct($basePath)
     {
-        $this->basePath = rtrim($basePath, '/');
+        $this->basePath = \rtrim($basePath, '/');
     }
 
     /**

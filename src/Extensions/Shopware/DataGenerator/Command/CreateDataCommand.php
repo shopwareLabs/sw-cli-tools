@@ -59,7 +59,7 @@ class CreateDataCommand extends BaseCommand
         if (empty($input)) {
             return 0;
         }
-        if (!is_numeric($input)) {
+        if (!\is_numeric($input)) {
             throw new \RuntimeException('Field has to be numeric');
         }
 
@@ -204,8 +204,8 @@ Requires \'local-infile=1\' in your MySQL installation.
         $articleFilterGroups = $input->getOption('articleFilterGroups');
         $articleFilterOptions = $input->getOption('articleFilterOptions');
         $articleFilterValues = $input->getOption('articleFilterValues');
-        $articleMinVariants = max($input->getOption('articleMinVariants'), 1);
-        $articleMaxVariants = max($input->getOption('articleMaxVariants'), $articleMinVariants);
+        $articleMinVariants = \max($input->getOption('articleMinVariants'), 1);
+        $articleMaxVariants = \max($input->getOption('articleMaxVariants'), $articleMinVariants);
 
         $seed = $input->getOption('seed');
         $chunkSize = $input->getOption('chunk-size');
@@ -220,10 +220,10 @@ Requires \'local-infile=1\' in your MySQL installation.
 
         $shopwarePath = $input->getOption('installDir');
         if (!$shopwarePath) {
-            $shopwarePath = realpath(getcwd());
+            $shopwarePath = \realpath(\getcwd());
         }
         $writerManager = $this->container->get('writer_manager');
-        if (is_readable($shopwarePath . '/config.php')) {
+        if (\is_readable($shopwarePath . '/config.php')) {
             $shopwareConfig = require $shopwarePath . '/config.php';
             if (!\array_key_exists('db', $shopwareConfig)) {
                 $output->writeln('<error>Invalid Shopware configuration file.</error>');
@@ -337,6 +337,6 @@ Requires \'local-infile=1\' in your MySQL installation.
             "<question>{$optionHumanName}</question> [{$default}]: ",
             [$this, 'validateInt']
         );
-        $input->setOption($optionName, trim($optionValue) ? $optionValue : $default);
+        $input->setOption($optionName, \trim($optionValue) ? $optionValue : $default);
     }
 }

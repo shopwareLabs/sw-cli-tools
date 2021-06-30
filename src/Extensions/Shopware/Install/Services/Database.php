@@ -90,7 +90,7 @@ EOF
     public function runBuildScripts($installDir): void
     {
         $buildXml = $installDir . '/build/build.xml';
-        if (!file_exists($buildXml)) {
+        if (!\file_exists($buildXml)) {
             $this->ioService->writeln("<error>Could not find {$buildXml}</error>");
             $this->ioService->writeln(
                 "<error>If you checked out an SW version < 4.1.0, you can just import {$installDir}/_sql/demo/VERSION.sql</error>"
@@ -100,7 +100,7 @@ EOF
         }
 
         $this->ioService->writeln('<info>Running build-unit</info>');
-        $command = sprintf('ant -f %s build-unit', $buildXml);
+        $command = \sprintf('ant -f %s build-unit', $buildXml);
         $this->processExecutor->execute($command);
     }
 
@@ -186,7 +186,7 @@ EOF;
      */
     private function saltPassword($password): string
     {
-        return md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . md5($password));
+        return \md5('A9ASD:_AD!_=%a8nx0asssblPlasS$' . \md5($password));
     }
 
     /**
@@ -203,14 +203,14 @@ EOF;
         $path42 = "{$installDataDir}/sw4_clean.sql";
         $pathLatest = "{$installDataDir}/install.sql";
 
-        if (!$installDataDir || (!file_exists($path42) && !file_exists($pathLatest))) {
+        if (!$installDataDir || (!\file_exists($path42) && !\file_exists($pathLatest))) {
             throw new \RuntimeException('Could not find setup delta');
         }
 
-        $path = file_exists($path42) ? $path42 : $pathLatest;
+        $path = \file_exists($path42) ? $path42 : $pathLatest;
 
         $connection = $this->getConnection();
-        foreach (explode(";\n", file_get_contents($path)) as $delta) {
+        foreach (\explode(";\n", \file_get_contents($path)) as $delta) {
             $connection->exec($delta);
         }
     }
@@ -227,14 +227,14 @@ EOF;
         $installDataDir = $this->getInstallDataFolder($installDir);
         $snippetsFilePath = "{$installDataDir}/snippets.sql";
 
-        if (!file_exists($installDataDir) || !file_exists($snippetsFilePath)) {
+        if (!\file_exists($installDataDir) || !\file_exists($snippetsFilePath)) {
             $this->ioService->writeln('<error>Could not import snippet deltas. This is only ok for shopware versions < 4.2</error>');
 
             return;
         }
 
         $connection = $this->getConnection();
-        foreach (explode(";\n", file_get_contents($snippetsFilePath)) as $delta) {
+        foreach (\explode(";\n", \file_get_contents($snippetsFilePath)) as $delta) {
             $connection->exec($delta);
         }
     }
@@ -244,10 +244,10 @@ EOF;
         $path42 = "{$installDir}/install/assets/sql";
         $pathLatest = "{$installDir}/recovery/install/data/sql";
 
-        if (!file_exists($path42) && !file_exists($pathLatest)) {
+        if (!\file_exists($path42) && !\file_exists($pathLatest)) {
             throw new \RuntimeException('install path not found');
         }
 
-        return file_exists($path42) ? $path42 : $pathLatest;
+        return \file_exists($path42) ? $path42 : $pathLatest;
     }
 }

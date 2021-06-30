@@ -23,6 +23,6 @@ class DirectoryFilterIterator extends \FilterIterator
         return $fileInfo->isDir()
             && !$fileInfo->isDot()
             // skip dot directories e.g. .git
-            && strpos($fileInfo->getBasename(), '.') !== 0;
+            && \strpos($fileInfo->getBasename(), '.') !== 0;
     }
 }

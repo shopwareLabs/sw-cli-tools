@@ -35,7 +35,7 @@ class DatabaseWriter implements WriterInterface
         if (!\is_array($content)) {
             $this->data[] = $content;
         } else {
-            $this->data = array_merge($this->data, $content);
+            $this->data = \array_merge($this->data, $content);
         }
     }
 
@@ -51,7 +51,7 @@ class DatabaseWriter implements WriterInterface
 
         foreach ($this->data as $query) {
             if (!$connection->query($query)) {
-                $info = implode(',', $connection->errorInfo());
+                $info = \implode(',', $connection->errorInfo());
                 throw new \Exception("Failed to execute $query\n\nCode: $info");
             }
         }

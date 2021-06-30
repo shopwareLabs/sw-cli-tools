@@ -62,7 +62,7 @@ class RandomDataProvider
      */
     public function getSentence($wordCount): string
     {
-        return $this->faker->sentence(max($wordCount, 1));
+        return $this->faker->sentence(\max($wordCount, 1));
     }
 
     public function getRandomIpv4(): string

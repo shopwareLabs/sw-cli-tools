@@ -47,6 +47,6 @@ class CurrentOutputDirectoryProvider implements OutputDirectoryProviderInterface
 
     private function getCwd(): string
     {
-        return getcwd();
+        return \getcwd();
     }
 }

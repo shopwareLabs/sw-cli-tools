@@ -50,7 +50,7 @@ class SelfUpdateCommand extends BaseCommand
             $new = $this->updater->getNewVersion();
             $old = $this->updater->getOldVersion();
 
-            $output->writeln(sprintf(
+            $output->writeln(\sprintf(
                 'Updated from SHA-1 %s to SHA-1 %s. Please run again',
                 $old,
                 $new
@@ -68,10 +68,10 @@ class SelfUpdateCommand extends BaseCommand
     protected function printException(OutputInterface $output, \Exception $exception): void
     {
         do {
-            $output->writeln(sprintf('(%d) %s in %s:%d:', $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine()));
+            $output->writeln(\sprintf('(%d) %s in %s:%d:', $exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine()));
             $trace = $exception->getTraceAsString();
-            $trace = preg_replace('/^/m', '    ', $trace);
-            $trace = preg_replace("/(\r?\n)/s", PHP_EOL, $trace);
+            $trace = \preg_replace('/^/m', '    ', $trace);
+            $trace = \preg_replace("/(\r?\n)/s", \PHP_EOL, $trace);
             $output->writeln($trace);
         } while ($exception = $exception->getPrevious());
     }

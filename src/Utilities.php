@@ -29,7 +29,7 @@ class Utilities
      */
     public function isShopware5Installation($path): bool
     {
-        return is_readable($path . '/shopware.php');
+        return \is_readable($path . '/shopware.php');
     }
 
     /**
@@ -39,7 +39,7 @@ class Utilities
      */
     public function isShopware6Installation($path): bool
     {
-        return is_dir($path . '/vendor/shopware/platform') || is_dir($path . '/vendor/shopware/core');
+        return \is_dir($path . '/vendor/shopware/platform') || \is_dir($path . '/vendor/shopware/core');
     }
 
     /**
@@ -50,7 +50,7 @@ class Utilities
     public function getValidShopwarePath($shopwarePath = null): string
     {
         if ($shopwarePath === null) {
-            $shopwarePath = realpath(getcwd());
+            $shopwarePath = \realpath(\getcwd());
         }
 
         if ($this->isShopware5Installation($shopwarePath)) {
@@ -76,7 +76,7 @@ class Utilities
      */
     public function validateShopwarePath($shopwarePath): string
     {
-        $shopwarePathReal = realpath($shopwarePath);
+        $shopwarePathReal = \realpath($shopwarePath);
 
         if ($this->isShopware5Installation($shopwarePathReal)) {
             return $shopwarePathReal;
@@ -100,7 +100,7 @@ class Utilities
      */
     public function changeDir($path): void
     {
-        if (!chdir($path)) {
+        if (!\chdir($path)) {
             throw new \RuntimeException("Could not cd into '$path''");
         }
     }

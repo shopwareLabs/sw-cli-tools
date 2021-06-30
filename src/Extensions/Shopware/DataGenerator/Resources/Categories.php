@@ -98,9 +98,9 @@ class Categories extends BaseResource
             $values[] = "({$category['id']}, {$category['parent']}, '{$category['path']}', '{$name}', {$id}, 1)";
         }
 
-        $categoryValues = sprintf(
+        $categoryValues = \sprintf(
             'INSERT INTO `s_categories` (`id`, `parent`, `path`, `description`, `position`, `active`) VALUES %s ;',
-            implode(",\n             ", $values)
+            \implode(",\n             ", $values)
         );
 
         $this->finishProgressBar();
@@ -117,8 +117,8 @@ class Categories extends BaseResource
      */
     private function buildNestedTree($number, $parentCategory = null, $depth = 0, $leftNeighbour = null): array
     {
-        $categoriesOnThisLevel = ($depth === 0) ? 6 : random_int(2, 10);
-        $categoriesPerChild = round($number / $categoriesOnThisLevel);
+        $categoriesOnThisLevel = ($depth === 0) ? 6 : \random_int(2, 10);
+        $categoriesPerChild = \round($number / $categoriesOnThisLevel);
 
         // Due to round and random calculation of subcategories
         // maximum number of categories is exceeded in most cases
@@ -157,7 +157,7 @@ class Categories extends BaseResource
             $this->categoriesFlat[$id] = null;
 
             $path = $this->buildPath($parentCategory['id']);
-            $path = '|' . implode('|', $path) . '|';
+            $path = '|' . \implode('|', $path) . '|';
 
             $this->categoriesFlat[$id] = [
                 'id' => $id,
@@ -209,7 +209,7 @@ class Categories extends BaseResource
 
         $parent = $this->categoriesFlat[$id];
         if (isset($parent['parent'])) {
-            $path = array_merge($path, $this->buildPath($parent['parent']));
+            $path = \array_merge($path, $this->buildPath($parent['parent']));
         }
 
         return $path;

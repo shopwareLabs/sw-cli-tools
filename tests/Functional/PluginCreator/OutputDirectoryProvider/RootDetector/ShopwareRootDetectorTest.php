@@ -27,13 +27,13 @@ class ShopwareRootDetectorTest extends TestCase
     protected function tearDown(): void
     {
         foreach (ShopwareRootDetector::getDirectories() as $directory) {
-            rmdir(self::getTestRoot() . $directory);
+            \rmdir(self::getTestRoot() . $directory);
         }
 
         foreach (ShopwareRootDetector::getFiles() as $file) {
-            unlink(self::getTestRoot() . $file);
+            \unlink(self::getTestRoot() . $file);
         }
-        rmdir(self::getTestRoot());
+        \rmdir(self::getTestRoot());
     }
 
     public function testPathIsShopwareRoot(): void
@@ -55,13 +55,13 @@ class ShopwareRootDetectorTest extends TestCase
 
     private function createRootFolder(): void
     {
-        mkdir(self::getTestRoot());
+        \mkdir(self::getTestRoot());
         foreach (ShopwareRootDetector::getDirectories() as $directory) {
-            mkdir(self::getTestRoot() . $directory);
+            \mkdir(self::getTestRoot() . $directory);
         }
 
         foreach (ShopwareRootDetector::getFiles() as $file) {
-            file_put_contents(self::getTestRoot() . $file, 'test');
+            \file_put_contents(self::getTestRoot() . $file, 'test');
         }
     }
 }

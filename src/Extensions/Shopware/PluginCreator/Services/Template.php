@@ -25,7 +25,7 @@ class Template
      */
     public function setTemplatePath($path): void
     {
-        $this->_path = rtrim($path, '/') . '/';
+        $this->_path = \rtrim($path, '/') . '/';
     }
 
     /**
@@ -56,7 +56,7 @@ class Template
 
     public function errorReporter($severity, $message, $filename, $lineno): void
     {
-        ob_clean();
+        \ob_clean();
         throw new \ErrorException($message . ': ' . $filename . ', line ' . $lineno, 0, $severity, $filename, $lineno);
     }
 
@@ -74,17 +74,17 @@ class Template
     {
         // Extract the template vars into the current scope.
         if ($this->_templateVars) {
-            extract($this->_templateVars, EXTR_SKIP);
+            \extract($this->_templateVars, \EXTR_SKIP);
         }
 
         if ($return) {
-            ob_start();
+            \ob_start();
         }
-        $old = set_error_handler([$this, 'errorReporter']);
+        $old = \set_error_handler([$this, 'errorReporter']);
         include $this->_path . $_template;
-        set_error_handler($old);
+        \set_error_handler($old);
         if ($return) {
-            return ob_get_clean();
+            return \ob_get_clean();
         }
     }
 }

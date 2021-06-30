@@ -62,9 +62,9 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function createPlugin($sshUrl, $httpUrl, $name): Plugin
     {
-        $type = \array_slice(explode('\\', \get_class($this)), -1);
+        $type = \array_slice(\explode('\\', \get_class($this)), -1);
         $type = $type[0];
-        $name = str_replace(' ', '', $name);
+        $name = \str_replace(' ', '', $name);
 
         return PluginFactory::getPlugin($name, $sshUrl, $httpUrl, $this->name, $type);
     }
@@ -83,7 +83,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     protected function doesMatch($actual, $searched, $exact = false): bool
     {
-        return !$exact && stripos($actual, $searched) !== false
+        return !$exact && \stripos($actual, $searched) !== false
             || $exact && $searched == $actual
         ;
     }

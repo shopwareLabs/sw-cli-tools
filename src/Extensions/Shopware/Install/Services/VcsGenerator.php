@@ -41,8 +41,8 @@ EOF;
         $this->ioService->writeln('<info>Generating VCS mapping</info>');
 
         $dir = $installDir . '/.idea';
-        if (!is_dir($dir) && !mkdir($dir) && !is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+        if (!\is_dir($dir) && !\mkdir($dir) && !\is_dir($dir)) {
+            throw new \RuntimeException(\sprintf('Directory "%s" was not created', $dir));
         }
 
         $mappings = [];
@@ -50,11 +50,11 @@ EOF;
             if ($path == '/') {
                 $path = '';
             }
-            $mappings[] = sprintf($this->templateVcsMappingDirectory, $path);
+            $mappings[] = \sprintf($this->templateVcsMappingDirectory, $path);
         }
 
-        $mappings = implode("\n", $mappings);
+        $mappings = \implode("\n", $mappings);
 
-        file_put_contents($dir . '/vcs.xml', sprintf($this->templateVcsMapping, $mappings));
+        \file_put_contents($dir . '/vcs.xml', \sprintf($this->templateVcsMapping, $mappings));
     }
 }

@@ -18,7 +18,7 @@ class HardDrive implements IoAdapter
      */
     public function exists($path)
     {
-        return file_exists($path);
+        return \file_exists($path);
     }
 
     public function createDirectory($path)
@@ -27,7 +27,7 @@ class HardDrive implements IoAdapter
             return;
         }
 
-        $success = mkdir($path, 0777, true);
+        $success = \mkdir($path, 0777, true);
 
         if (!$success) {
             throw new \RuntimeException("Could not create »{$path}«. Check your directory permission");
@@ -36,6 +36,6 @@ class HardDrive implements IoAdapter
 
     public function createFile($file, $content)
     {
-        file_put_contents($file, $content);
+        \file_put_contents($file, $content);
     }
 }

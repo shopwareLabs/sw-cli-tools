@@ -35,12 +35,12 @@ class ConfigFileCollector
         $files[] = $this->pathProvider->getCliToolPath() . '/config.yaml.dist';
 
         $extensionPath = $this->pathProvider->getExtensionPath();
-        $files = array_merge($files, $this->iterateVendors($extensionPath));
-        $files = array_merge($files, $this->iterateVendors(__DIR__ . '/Extensions'));
+        $files = \array_merge($files, $this->iterateVendors($extensionPath));
+        $files = \array_merge($files, $this->iterateVendors(__DIR__ . '/Extensions'));
 
         // Load user file first. Its config values cannot be overwritten
         $userConfig = $this->pathProvider->getConfigPath() . '/config.yaml';
-        if (file_exists($userConfig)) {
+        if (\file_exists($userConfig)) {
             $files[] = $userConfig;
         }
 
@@ -56,18 +56,18 @@ class ConfigFileCollector
     {
         $files = [];
 
-        if (!is_dir($extensionPath)) {
+        if (!\is_dir($extensionPath)) {
             return [];
         }
 
         $iter = new DirectoryFilterIterator(new \DirectoryIterator($extensionPath));
         foreach ($iter as $vendorFileInfo) {
             $file = $vendorFileInfo->getPathname() . '/config.yaml';
-            if (file_exists($file)) {
+            if (\file_exists($file)) {
                 $files[] = $file;
             }
 
-            $files = array_merge(
+            $files = \array_merge(
                 $files,
                 $this->iterateExtensions($vendorFileInfo->getPathname())
             );
@@ -88,7 +88,7 @@ class ConfigFileCollector
         $iter = new DirectoryFilterIterator(new \DirectoryIterator($vendorPath));
         foreach ($iter as $extensionFileInfo) {
             $file = $extensionFileInfo->getPathname() . '/config.yaml';
-            if (file_exists($file)) {
+            if (\file_exists($file)) {
                 $files[] = $file;
             }
         }

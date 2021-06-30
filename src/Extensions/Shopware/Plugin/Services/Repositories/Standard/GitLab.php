@@ -38,7 +38,7 @@ class GitLab extends BaseRepository
 
         if (isset($content['errors'])) {
             throw new \RuntimeException(
-                sprintf("Gitlab API communication error: '%s'", $content['errors'][0]['message'])
+                \sprintf("Gitlab API communication error: '%s'", $content['errors'][0]['message'])
             );
         }
 
@@ -46,9 +46,9 @@ class GitLab extends BaseRepository
         foreach ($content as $repo) {
             $pluginName = $repo['name'];
 
-            $splitPath = explode('_', $repo['path']);
+            $splitPath = \explode('_', $repo['path']);
             if (\count($splitPath) === 2) {
-                $pluginName = ucfirst($splitPath[0]) . '_' . $pluginName;
+                $pluginName = \ucfirst($splitPath[0]) . '_' . $pluginName;
             }
 
             $plugins[] = $this->createPlugin($repo['ssh_url_to_repo'], $repo['http_url_to_repo'], $pluginName);

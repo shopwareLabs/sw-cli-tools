@@ -92,7 +92,7 @@ class PluginColumnRenderer
         $length = \count($plugins);
         $pluginColumns = [];
 
-        $pluginsPerColumn = ceil($length / $columns);
+        $pluginsPerColumn = \ceil($length / $columns);
         // Build columns and prepare unshift plugin of each column
         for ($i = 0; $i < $columns; ++$i) {
             $sliceOffset = $pluginsPerColumn * $i;
@@ -112,9 +112,9 @@ class PluginColumnRenderer
         $columnCount = \count($pluginColumns);
         $rowCount = \count($pluginColumns[0]) - 1;
 
-        foreach (range(0, $rowCount) as $row) {
+        foreach (\range(0, $rowCount) as $row) {
             $currentRow = [];
-            foreach (range(0, $columnCount - 1) as $column) {
+            foreach (\range(0, $columnCount - 1) as $column) {
                 if (isset($pluginColumns[$column][$row])) {
                     $currentRow[] = $pluginColumns[$column][$row];
                 }
@@ -142,10 +142,10 @@ class PluginColumnRenderer
         foreach ($row as $plugin) {
             $mask = $this->getMaskForPlugin($plugin, $baseMask);
 
-            $columns[] = sprintf($mask, $plugin->index, $this->formatPlugin($plugin));
+            $columns[] = \sprintf($mask, $plugin->index, $this->formatPlugin($plugin));
         }
 
-        $this->ioService->write(implode($spacer, $columns));
+        $this->ioService->write(\implode($spacer, $columns));
         $this->ioService->writeln('');
     }
 
@@ -173,7 +173,7 @@ class PluginColumnRenderer
         }
 
         $this->ioService->writeln('Legend:');
-        $this->ioService->writeln(implode(', ', $output) . "\n");
+        $this->ioService->writeln(\implode(', ', $output) . "\n");
     }
 
     /**
@@ -186,9 +186,9 @@ class PluginColumnRenderer
         $color = $this->getColorForPlugin($plugin);
 
         if (!$this->config['general']['enableRepositoryColors'] || !$plugin || !$color) {
-            $baseMask = str_replace(['#COL_START#', '#COL_END#'], '', $baseMask);
+            $baseMask = \str_replace(['#COL_START#', '#COL_END#'], '', $baseMask);
         } else {
-            $baseMask = str_replace(['#COL_START#', '#COL_END#'], ["<fg={$color}>", "</fg={$color}>"], $baseMask);
+            $baseMask = \str_replace(['#COL_START#', '#COL_END#'], ["<fg={$color}>", "</fg={$color}>"], $baseMask);
         }
 
         return $baseMask;

@@ -68,9 +68,9 @@ class Zip
 
         $blackListPath = $pluginPath . '/.sw-zip-blacklist';
 
-        if (file_exists($blackListPath)) {
-            $blackList = file_get_contents($blackListPath);
-            $blackList = array_filter(explode("\n", $blackList));
+        if (\file_exists($blackListPath)) {
+            $blackList = \file_get_contents($blackListPath);
+            $blackList = \array_filter(\explode("\n", $blackList));
 
             foreach ($blackList as $item) {
                 $this->processExecutor->execute('rm -rf ' . $pluginPath . '/' . $item);
