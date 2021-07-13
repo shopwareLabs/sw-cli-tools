@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Application extends SymfonyApplication
 {
     public const NAME = 'sw-cli-tools';
-    public const VERSION = '@package_version@';
+    public const VERSION = '__VERSION__';
 
     /**
      * @var ClassLoader

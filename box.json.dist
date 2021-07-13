@@ -2,8 +2,8 @@
     "chmod": "0755",
     "alias": "sw.phar",
     "compactors": [
-        "Herrera\\Box\\Compactor\\Json",
-        "Herrera\\Box\\Compactor\\Php"
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
     ],
     "directories": ["src", "assets"],
     "files": [
@@ -24,7 +24,6 @@
             ]
         }
     ],
-    "git-version": "package_version",
     "intercept": true,
     "main": "bin/sw",
     "output": "sw.phar",
