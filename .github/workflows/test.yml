@@ -1,6 +1,10 @@
 name: Test
 
-on: [ push ]
+#on: [ push ]
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   test:
