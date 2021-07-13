@@ -23,21 +23,26 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     {
         $this->container = $container;
 
-        $this->container->register('random_data_provider', RandomDataProvider::class);
+        $this->container->register('random_data_provider', RandomDataProvider::class)
+            ->setPublic(true);
 
-        $this->container->register('generator_config', Config::class);
+        $this->container->register('generator_config', Config::class)
+            ->setPublic(true);
 
         $this->container->register('resource_loader', ResourceLoader::class)
-            ->addArgument(new Reference('service_container'));
+            ->addArgument(new Reference('service_container'))
+            ->setPublic(true);
 
         $this->container->register('data_generator', DataGenerator::class)
             ->addArgument(new Reference('random_data_provider'))
             ->addArgument(new Reference('resource_loader'))
-            ->addArgument(new Reference('generator_config'));
+            ->addArgument(new Reference('generator_config'))
+            ->setPublic(true);
 
         $this->container->register('writer_manager', WriterManager::class)
             ->addArgument(new Reference('generator_config'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
     }
 
     /**

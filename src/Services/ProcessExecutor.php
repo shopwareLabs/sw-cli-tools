@@ -35,15 +35,9 @@ class ProcessExecutor
         $this->output = $output;
     }
 
-    /**
-     * @param string   $commandline
-     * @param string   $cwd
-     * @param bool     $allowFailure
-     * @param int|null $timeout
-     */
-    public function execute($commandline, $cwd = null, $allowFailure = false, $timeout = null): ?int
+    public function execute(string $commandline, ?string $cwd = null, bool $allowFailure = false, ?int $timeout = null): ?int
     {
-        $process = new Process($commandline, $cwd);
+        $process = Process::fromShellCommandline($commandline, $cwd);
         $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4

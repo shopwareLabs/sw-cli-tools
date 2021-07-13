@@ -55,38 +55,46 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     {
         $container->register('shopware_checkout_service', Checkout::class)
             ->addArgument(new Reference('git_util'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
 
         $container->register('post_install', PostInstall::class)
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('shopware-install.owner'))
             ->addArgument(new Reference('config'))
-            ->addArgument(new Reference('shopware_info'));
+            ->addArgument(new Reference('shopware_info'))
+            ->setPublic(true);
 
         $container->register('shopware_release_download_service', ReleaseDownloader::class)
             ->addArgument(new Reference('process_executor'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('file_downloader'))
             ->addArgument(new Reference('openssl_verifier'))
-            ->addArgument($container->get('path_provider')->getCachePath());
+            ->addArgument($container->get('path_provider')->getCachePath())
+            ->setPublic(true);
 
         $container->register('shopware-install.vcs_generator', VcsGenerator::class)
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
 
         $container->register('shopware-install.config_writer', ConfigWriter::class)
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
 
-        $container->register('shopware-install.owner', Owner::class);
+        $container->register('shopware-install.owner', Owner::class)
+            ->setPublic(true);
 
         $container->register('shopware-install.database', Database::class)
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->setPublic(true);
 
         $container->register('shopware-install.demodata', Demodata::class)
             ->addArgument(new Reference('path_provider'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('shopware_info'))
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->setPublic(true);
 
         $container->register('shopware_vcs_install_service', Vcs::class)
             ->addArgument(new Reference('shopware_checkout_service'))
@@ -96,7 +104,8 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('shopware-install.database'))
             ->addArgument(new Reference('shopware-install.demodata'))
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('post_install'));
+            ->addArgument(new Reference('post_install'))
+            ->setPublic(true);
 
         $container->register('shopware_release_install_service', Release::class)
             ->addArgument(new Reference('shopware_release_download_service'))
@@ -106,6 +115,7 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
             ->addArgument(new Reference('shopware-install.database'))
             ->addArgument(new Reference('io_service'))
             ->addArgument(new Reference('post_install'))
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->setPublic(true);
     }
 }

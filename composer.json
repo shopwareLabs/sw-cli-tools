@@ -6,11 +6,11 @@
     "require": {
         "php": ">=7.2.0",
         "ext-curl": "*",
-        "symfony/console": "~3.4",
-        "symfony/config": "~3.4",
-        "symfony/yaml": "~3.4",
-        "symfony/process": "~3.4",
-        "symfony/dependency-injection": "~3.4",
+        "symfony/console": "~4.4",
+        "symfony/config": "~4.4",
+        "symfony/yaml": "~4.4",
+        "symfony/process": "~4.4",
+        "symfony/dependency-injection": "~4.4",
         "dnoegel/php-xdg-base-dir": "~0.1",
         "shopwarelabs/plugin-info": "dev-master",
         "fzaninotto/faker": "^1.9.1",
@@ -22,7 +22,7 @@
         "friendsofphp/php-cs-fixer": "^2.19.0",
         "kubawerlos/php-cs-fixer-custom-fixers": "^2.5.0",
         "phpunit/phpunit": "^8.5.15",
-        "symfony/var-dumper": "^4.4"
+        "symfony/var-dumper": "~4.4"
     },
     "scripts": {
         "post-install-cmd": "ln -sf ../../hooks/pre-commit .git/hooks/pre-commit",

@@ -59,46 +59,57 @@ class Bootstrap implements ContainerAwareExtension, ConsoleAwareExtension
     {
         $container->register('plugin_column_renderer', PluginColumnRenderer::class)
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('config'));
+            ->addArgument(new Reference('config'))
+            ->setPublic(true);
 
         $container->register('plugin_selector', PluginInputVerificator::class)
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('plugin_column_renderer'));
+            ->addArgument(new Reference('plugin_column_renderer'))
+            ->setPublic(true);
 
         $container->register('plugin_operation_manager', PluginOperationManager::class)
             ->addArgument(new Reference('plugin_provider'))
             ->addArgument(new Reference('plugin_selector'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
 
-        $container->register('bootstrap_info', BootstrapInfo::class);
+        $container->register('bootstrap_info', BootstrapInfo::class)
+            ->setPublic(true);
 
         $container->register('install_service', Install::class)
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('io_service'))
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->setPublic(true);
 
         $container->register('dependency_manager', DependencyManager::class)
-            ->addArgument(new Reference('process_executor'));
+            ->addArgument(new Reference('process_executor'))
+            ->setPublic(true);
 
         $container->register('zip_service', Zip::class)
             ->addArgument(new Reference('checkout_service'))
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('process_executor'))
-            ->addArgument(new Reference('dependency_manager'));
+            ->addArgument(new Reference('dependency_manager'))
+            ->setPublic(true);
 
         $container->register('checkout_service', Checkout::class)
             ->addArgument(new Reference('utilities'))
             ->addArgument(new Reference('git_util'))
-            ->addArgument(new Reference('io_service'));
+            ->addArgument(new Reference('io_service'))
+            ->setPublic(true);
 
         $container->register('default_repository_factory', DefaultRepositoryFactory::class)
-            ->addArgument(new Reference('service_container'));
+            ->addArgument(new Reference('service_container'))
+            ->setPublic(true);
 
         $container->register('repository_manager', RepositoryManager::class)
             ->addArgument(new Reference('extension_manager'))
-            ->addArgument(new Reference('default_repository_factory'));
+            ->addArgument(new Reference('default_repository_factory'))
+            ->setPublic(true);
 
         $container->register('plugin_provider', PluginProvider::class)
-            ->addArgument(new Reference('config'));
+            ->addArgument(new Reference('config'))
+            ->setPublic(true);
     }
 }
