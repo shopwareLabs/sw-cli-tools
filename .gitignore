@@ -16,10 +16,6 @@ sw.phar
 sw.phar.pubkey
 sw.phar.version
 
-.travis/phar-private.pem
-.travis/build-key.pem
-.travis/secrets.tar
-
 src/Extensions/
 !src/Extensions/Shopware
 output/
