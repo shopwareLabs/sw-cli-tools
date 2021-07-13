@@ -1,8 +1,9 @@
-name: Deploy
+name: Release
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - '*'
 
 jobs:
   deploy:
@@ -20,6 +21,13 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev
 
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Set version string
+        run: sed -i -e "s/__VERSION__/${{ steps.get_version.outputs.VERSION }}/g" src/Application.php
+
       - name: Build
         run: ./bin/build.sh
 
@@ -34,5 +42,16 @@ jobs:
           mv sw.phar.tmp sw.phar
           sha1sum sw.phar > sw.phar.version
           git add sw.phar sw.phar.version
-          git commit -m 'Rebuilt phar'
+          git commit -m 'Rebuilt phar; version: ${{ steps.get_version.outputs.VERSION }}'
           git push origin gh-pages:gh-pages
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: sw.phar
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          name: ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
