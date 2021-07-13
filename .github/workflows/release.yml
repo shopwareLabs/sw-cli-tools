@@ -38,7 +38,7 @@ jobs:
           git config --global user.name "shopwareBot"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git fetch origin
-          git checkout -t origin/gh-pages
+          git checkout -t origin/gh-pages -f
           mv sw.phar.tmp sw.phar
           sha1sum sw.phar > sw.phar.version
           git add sw.phar sw.phar.version
