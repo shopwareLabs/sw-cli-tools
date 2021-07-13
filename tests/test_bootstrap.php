@@ -5,6 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 use Composer\Autoload\ClassLoader;
 
 final class TestLoaderProvider
@@ -29,5 +30,5 @@ final class TestLoaderProvider
     }
 }
 
-$loader = require __DIR__ . '/vendor/autoload.php';
+$loader = require __DIR__ . '/../vendor/autoload.php';
 TestLoaderProvider::setLoader($loader);

@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.2'
+          ini-values: phar.readonly=Off
+
+      - name: Install dependencies
+        run: composer install --no-dev
+
+      - name: Build
+        run: ./bin/build.sh
+
+      - name: Deploy
+        run: |
+          mv sw.phar sw.phar.tmp
+          git config --global user.email "development@shopware.com"
+          git config --global user.name "shopwareBot"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git fetch origin
+          git checkout -t origin/gh-pages
+          mv sw.phar.tmp sw.phar
+          sha1sum sw.phar > sw.phar.version
+          git add sw.phar sw.phar.version
+          git commit -m 'Rebuilt phar'
+          git push origin gh-pages:gh-pages
