@@ -34,22 +34,16 @@
     "autoload": {
         "psr-4": {
             "ShopwareCli\\": "src/",
-            "ShopwareCli\\Tests\\": "tests/"
+            "Shopware\\": "src/Extensions/Shopware"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ShopwareCli\\": "src/",
-            "Shopware\\": "src/Extensions/Shopware"
+            "ShopwareCli\\Tests\\": "tests/"
         }
     },
     "bin": ["bin/sw"],
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
     }
 }

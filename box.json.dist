@@ -24,8 +24,6 @@
             ]
         }
     ],
-    "intercept": true,
-    "main": "bin/sw",
     "output": "sw.phar",
-    "stub": true
+    "compression": "GZ"
 }
