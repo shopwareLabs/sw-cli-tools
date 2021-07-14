@@ -12,7 +12,8 @@
         "config.yaml.dist",
         "Resources/public.key",
         "vendor/autoload.php",
-        "vendor/shopwarelabs/plugin-info/res/plugin-info-schema.json"
+        "vendor/shopwarelabs/plugin-info/res/plugin-info-schema.json",
+        "vendor/symfony/dependency-injection/Loader/schema/dic/services/services-1.0.xsd"
     ],
     "finder": [
         {

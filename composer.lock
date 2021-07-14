@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f53db5cee9d25c7c5580de2e72791aa",
+    "content-hash": "f14726087ac6024fe245425511de3725",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -722,16 +722,16 @@
         },
         {
             "name": "shopwarelabs/plugin-info",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopwareLabs/plugin-info.git",
-                "reference": "19a2101cdc19c476593d1d1c04d2363585b4fbda"
+                "reference": "c9cf78071fe7b9b06c21aab380dbf2489e7e84cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopwareLabs/plugin-info/zipball/19a2101cdc19c476593d1d1c04d2363585b4fbda",
-                "reference": "19a2101cdc19c476593d1d1c04d2363585b4fbda",
+                "url": "https://api.github.com/repos/shopwareLabs/plugin-info/zipball/c9cf78071fe7b9b06c21aab380dbf2489e7e84cc",
+                "reference": "c9cf78071fe7b9b06c21aab380dbf2489e7e84cc",
                 "shasum": ""
             },
             "require": {
@@ -745,7 +745,6 @@
                 "kubawerlos/php-cs-fixer-custom-fixers": "^2.5.0",
                 "phpunit/phpunit": "^9.5.4"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -759,9 +758,9 @@
             "description": "Read plugin metadata for shopware plugins",
             "support": {
                 "issues": "https://github.com/shopwareLabs/plugin-info/issues",
-                "source": "https://github.com/shopwareLabs/plugin-info/tree/master"
+                "source": "https://github.com/shopwareLabs/plugin-info/tree/0.1.0"
             },
-            "time": "2021-05-26T15:12:52+00:00"
+            "time": "2021-07-14T06:52:41+00:00"
         },
         {
             "name": "symfony/config",
@@ -4817,9 +4816,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "shopwarelabs/plugin-info": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

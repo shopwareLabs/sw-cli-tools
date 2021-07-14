@@ -110,7 +110,6 @@ class DependencyInjection
             ->setPublic(true);
 
         $container->register('extension_manager', ExtensionManager::class)
-            ->addArgument(new Reference('autoloader'))
             ->setPublic(true);
 
         $container->register('command_manager', CommandManager::class)

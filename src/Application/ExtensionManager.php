@@ -8,7 +8,6 @@
 
 namespace ShopwareCli\Application;
 
-use Composer\Autoload\ClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -33,16 +32,6 @@ class ExtensionManager
     protected $extensions = [];
 
     /**
-     * @var ClassLoader
-     */
-    private $autoLoader;
-
-    public function __construct(ClassLoader $autoLoader)
-    {
-        $this->autoLoader = $autoLoader;
-    }
-
-    /**
      * Read all available plugins
      *
      * @throws \RuntimeException
@@ -58,7 +47,7 @@ class ExtensionManager
                 }
 
                 $vendorName = $vendorPath->getBasename();
-                $this->registerExtensionNamespace($vendorPath->getPathname(), "{$vendorName}\\");
+                $this->registerExtensionAutoloader($vendorPath->getPathname());
                 $this->discoverVendorFolder($vendorPath->getPathname(), $vendorName);
             }
         }
@@ -118,12 +107,9 @@ class ExtensionManager
     }
 
     /**
-     * @param string $vendorPath
-     * @param string $vendorName
-     *
      * @throws \RuntimeException
      */
-    private function discoverVendorFolder($vendorPath, $vendorName): void
+    private function discoverVendorFolder(string $vendorPath, string $vendorName): void
     {
         /** @var \DirectoryIterator $extensionPath */
         foreach (new \DirectoryIterator($vendorPath) as $extensionPath) {
@@ -149,15 +135,10 @@ class ExtensionManager
             && \strpos($vendorPath->getBasename(), '.') !== 0; // skip dot directories e.g. .git
     }
 
-    /**
-     * Register a namespace for given extension path
-     *
-     * @param string $path
-     * @param string $namespace
-     */
-    private function registerExtensionNamespace($path, $namespace): void
+    private function registerExtensionAutoloader(string $path): void
     {
-        $namespace = \rtrim($namespace, '\\') . '\\';
-        $this->autoLoader->addPsr4($namespace, $path);
+        if (\is_file($path . '/vendor/autoload.php')) {
+            require_once $path . '/vendor/autoload.php';
+        }
     }
 }
