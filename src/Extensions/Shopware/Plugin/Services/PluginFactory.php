@@ -15,6 +15,11 @@ use Shopware\Plugin\Struct\Plugin;
  */
 class PluginFactory
 {
+    public const SW6_PLUGIN_PATHS = [
+        'shopware/6/services',
+        'shopware/6/enterprise',
+    ];
+
     /**
      * Input is a name like Backend_SwagBusinessEssentials
      *
@@ -33,7 +38,10 @@ class PluginFactory
         $plugin->cloneUrlHttp = $httpUrl;
         $plugin->repository = $repoName;
         $plugin->repoType = $repoType;
-        $plugin->isShopware6 = (bool) \strpos($sshUrl, 'shopware/6/services'); // could not be position 0, so this is safe
+
+        $preg = \implode('|', self::SW6_PLUGIN_PATHS);
+        $preg = '/' . \str_replace('/', '\/', $preg) . '/';
+        $plugin->isShopware6 = (bool) \preg_match($preg, $sshUrl);
 
         return $plugin;
     }
