@@ -491,7 +491,7 @@ class Articles extends BaseResource
      */
     private function copyImages($imageDir, $images, $thumbs, $useSmallImage): void
     {
-        $assetsDir = ''; //TODO: implement real asset loading
+        $assetsDir = ''; // TODO: implement real asset loading
         // Copy the images to media directory
         $destination = $assetsDir . ($useSmallImage ? '/images/beach_small.jpg' : '/images/beach.jpg');
         foreach ($images as $imageName) {

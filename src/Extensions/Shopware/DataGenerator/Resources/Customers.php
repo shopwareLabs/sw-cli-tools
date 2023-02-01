@@ -67,11 +67,11 @@ class Customers extends BaseResource
             $importCustomers->write(
                 "{$id},{$customerNumber},a256a310bc1e5db755fd392c524028a8,{$faker->email},1,0,,5,2013-01-11,2015-01-01 00:00:00,,0,,0,{$group},0,1,1,,\N,,0,\N,{$id},{$id},{$sex},{$faker->firstName},{$faker->lastName}, {$birthday}"
             );
-            $importCustomersAttributes->write((string) ($id));
-            $importCustomersBillingAttributes->write((string) ($id));
-            $importCustomersBillingAttributes->write((string) ($id));
+            $importCustomersAttributes->write((string) $id);
+            $importCustomersBillingAttributes->write((string) $id);
+            $importCustomersBillingAttributes->write((string) $id);
 
-            $customerAttributeValues[] = (string) ($id);
+            $customerAttributeValues[] = (string) $id;
             $importCustomersBilling->write(
                 "{$id}, {$id}, , , {$sex}, {$this->generator->getRandomFirstName()}, {$this->generator->getRandomLastName()}, {$this->generator->getRandomWord()} " . \random_int(
                     1,

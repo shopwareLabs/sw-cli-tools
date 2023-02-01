@@ -8,8 +8,6 @@
 
 namespace Shopware\DataGenerator\Writer;
 
-use PDO;
-
 class DatabaseWriter implements WriterInterface
 {
     /**
@@ -44,7 +42,7 @@ class DatabaseWriter implements WriterInterface
      */
     public function flush()
     {
-        /** @var PDO $connection */
+        /** @var \PDO $connection */
         $connection = $this->connectToDatabase($this->config);
 
         $connection->beginTransaction();
@@ -68,15 +66,15 @@ class DatabaseWriter implements WriterInterface
         return -10;
     }
 
-    private function connectToDatabase($config): PDO
+    private function connectToDatabase($config): \PDO
     {
-        return new PDO(
+        return new \PDO(
             'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'],
             $config['username'],
             $config['password'],
             [
-                PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
-                PDO::ERRMODE_EXCEPTION => 1,
+                \PDO::MYSQL_ATTR_LOCAL_INFILE => true, // if this still does not work, php5-mysqnd might work
+                \PDO::ERRMODE_EXCEPTION => 1,
             ]
         );
     }

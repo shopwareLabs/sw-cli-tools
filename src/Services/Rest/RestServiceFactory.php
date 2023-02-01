@@ -16,9 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RestServiceFactory
 {
-    /**
-     * @var
-     */
     protected $container;
 
     /**

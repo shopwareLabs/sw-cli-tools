@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php: [ 7.4, 8.0, 8.1, 8.2 ]
 
@@ -23,6 +24,7 @@ jobs:
 
       - name: Check code style
         run: composer cs-check
+        if: ${{ matrix.php == '8.1'}}
 
       - name: Execute tests
         run: composer test

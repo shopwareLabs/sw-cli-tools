@@ -18,9 +18,6 @@ class WriterManager
      */
     private $writers = [];
 
-    /**
-     * @var
-     */
     private $defaultWriterType;
 
     /**
