@@ -4,18 +4,18 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": "^7.4 || ^8.0",
         "ext-curl": "*",
-        "symfony/console": "~4.4",
-        "symfony/config": "~4.4",
-        "symfony/yaml": "~4.4",
-        "symfony/process": "~4.4",
-        "symfony/dependency-injection": "~4.4",
         "dnoegel/php-xdg-base-dir": "~0.1",
-        "shopwarelabs/plugin-info": "0.1.0",
-        "fzaninotto/faker": "^1.9.1",
+        "fakerphp/faker": "^1.21.0",
         "guzzlehttp/guzzle": "^6.5.2",
-        "padraic/phar-updater": "^1.0.6"
+        "laravel-zero/phar-updater": "^1.1",
+        "shopwarelabs/plugin-info": "0.1.0",
+        "symfony/config": "~4.4",
+        "symfony/console": "~4.4",
+        "symfony/dependency-injection": "~4.4",
+        "symfony/process": "~4.4",
+        "symfony/yaml": "~4.4"
     },
     "require-dev": {
         "ext-phar": "*",

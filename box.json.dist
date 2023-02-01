@@ -1,5 +1,4 @@
 {
-    "chmod": "0755",
     "alias": "sw.phar",
     "compactors": [
         "KevinGH\\Box\\Compactor\\Json",
