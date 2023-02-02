@@ -309,7 +309,7 @@ Requires \'local-infile=1\' in your MySQL installation.
 
         $config->setOutputName('');
 
-        //todo: set shopware image dir:
+        // todo: set shopware image dir:
         // $generator->setImageDir()
         $config->setCreateImages(false);
         $config->setThumbnailSizes('105x105,140x140,285x255,30x30,57x57,720x600');

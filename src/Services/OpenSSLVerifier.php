@@ -44,7 +44,8 @@ class OpenSSLVerifier
 
         $pubkeyid = \openssl_pkey_get_public($publicKey);
         if ($pubkeyid === false) {
-            while ($errors[] = \openssl_error_string());
+            while ($errors[] = \openssl_error_string()) {
+            }
             throw new \RuntimeException(\sprintf("Error during public key read: \n%s", \implode("\n", $errors)));
         }
 
@@ -64,7 +65,8 @@ class OpenSSLVerifier
             return false;
         }
 
-        while ($errors[] = \openssl_error_string());
+        while ($errors[] = \openssl_error_string()) {
+        }
         throw new \RuntimeException(\sprintf("Error during private key read: \n%s", \implode("\n", $errors)));
     }
 }

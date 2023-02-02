@@ -8,8 +8,6 @@
 
 namespace ShopwareCli\Services\ZipUtil\Entry;
 
-use ZipArchive;
-
 class Zip
 {
     /**
@@ -18,7 +16,7 @@ class Zip
     protected $position;
 
     /**
-     * @var ZipArchive
+     * @var \ZipArchive
      */
     protected $stream;
 
@@ -28,8 +26,8 @@ class Zip
     protected $name;
 
     /**
-     * @param ZipArchive $stream
-     * @param int        $position
+     * @param \ZipArchive $stream
+     * @param int         $position
      */
     public function __construct($stream, $position)
     {

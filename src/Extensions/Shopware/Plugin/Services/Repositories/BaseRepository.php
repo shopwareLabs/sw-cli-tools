@@ -22,14 +22,8 @@ abstract class BaseRepository implements RepositoryInterface
      */
     protected $name;
 
-    /**
-     * @var
-     */
     protected $repository;
 
-    /**
-     * @var
-     */
     protected $useHttp
     ;
 

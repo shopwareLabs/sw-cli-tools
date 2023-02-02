@@ -28,9 +28,6 @@ class BufferedFileWriter implements WriterInterface
      */
     protected $bufferCounter = 0;
 
-    /**
-     * @var
-     */
     protected $fileName;
 
     /**

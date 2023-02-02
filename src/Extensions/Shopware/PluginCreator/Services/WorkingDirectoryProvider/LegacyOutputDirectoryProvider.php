@@ -27,9 +27,6 @@ class LegacyOutputDirectoryProvider implements OutputDirectoryProviderInterface
      */
     private $rootDetector;
 
-    /**
-     * @var
-     */
     private $name;
 
     /**

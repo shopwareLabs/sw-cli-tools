@@ -8,10 +8,7 @@
 
 namespace ShopwareCli\Services\ZipUtil;
 
-use Countable;
-use SeekableIterator;
-
-abstract class Adapter implements SeekableIterator, Countable
+abstract class Adapter implements \SeekableIterator, \Countable
 {
     /**
      * @var int

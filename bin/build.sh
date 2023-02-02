@@ -9,4 +9,4 @@ set -o pipefail
 ./bin/download_box.sh
 
 # Build PHAR
-./box.phar build -vv
+./box.phar compile -vv

@@ -15,7 +15,7 @@ class Categories extends BaseResource
     /**
      * The array with the categories that are going to be created.
      *
-     * @var
+     * @var array
      */
     public $categoriesFlat = [];
 
@@ -27,14 +27,9 @@ class Categories extends BaseResource
     /**
      * The number of categories which have been created
      * Used in order to not create too many categories.
-     *
-     * @var
      */
     protected $categoriesSum;
 
-    /**
-     * @var
-     */
     protected $total;
 
     /**
@@ -180,7 +175,7 @@ class Categories extends BaseResource
 
         $lastChild = null;
         for ($c = 0; $c < $categoriesOnThisLevel; ++$c) {
-            $lastChild = $this->buildNestedTree($categoriesPerChild, $thisCategory, ($depth + 1), $lastChild);
+            $lastChild = $this->buildNestedTree($categoriesPerChild, $thisCategory, $depth + 1, $lastChild);
             $lastChild['position'] = $c;
             // we do not need the whole category tree
             // $thisCategory['children'][] = $lastChild;

@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 class Config implements \ArrayAccess
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $configArray;
 
@@ -40,10 +40,7 @@ class Config implements \ArrayAccess
         return (array) $this->configArray['repositories'];
     }
 
-    /**
-     * @return bool
-     */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->configArray[$offset]);
     }
@@ -51,17 +48,18 @@ class Config implements \ArrayAccess
     /**
      * @return mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->configArray[$offset] ?? null;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->configArray[$offset] = $value;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->configArray[$offset]);
     }

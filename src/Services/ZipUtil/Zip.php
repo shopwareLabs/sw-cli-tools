@@ -8,12 +8,10 @@
 
 namespace ShopwareCli\Services\ZipUtil;
 
-use ZipArchive;
-
 class Zip extends Adapter
 {
     /**
-     * @var ZipArchive
+     * @var \ZipArchive
      */
     protected $stream;
 
@@ -29,7 +27,7 @@ class Zip extends Adapter
             throw new \RuntimeException('The PHP extension "zip" is not loaded.');
         }
 
-        $this->stream = new ZipArchive();
+        $this->stream = new \ZipArchive();
 
         if ($fileName !== null) {
             if (($retval = $this->stream->open($fileName, $flags)) !== true) {
@@ -92,23 +90,23 @@ class Zip extends Adapter
     protected function getErrorMessage($retval, $file): ?string
     {
         switch ($retval) {
-            case ZipArchive::ER_EXISTS:
+            case \ZipArchive::ER_EXISTS:
                 return \sprintf("File '%s' already exists.", $file);
-            case ZipArchive::ER_INCONS:
+            case \ZipArchive::ER_INCONS:
                 return \sprintf("Zip archive '%s' is inconsistent.", $file);
-            case ZipArchive::ER_INVAL:
+            case \ZipArchive::ER_INVAL:
                 return \sprintf('Invalid argument (%s)', $file);
-            case ZipArchive::ER_MEMORY:
+            case \ZipArchive::ER_MEMORY:
                 return \sprintf('Malloc failure (%s)', $file);
-            case ZipArchive::ER_NOENT:
+            case \ZipArchive::ER_NOENT:
                 return \sprintf("No such zip file: '%s'", $file);
-            case ZipArchive::ER_NOZIP:
+            case \ZipArchive::ER_NOZIP:
                 return \sprintf("'%s' is not a zip archive.", $file);
-            case ZipArchive::ER_OPEN:
+            case \ZipArchive::ER_OPEN:
                 return \sprintf("Can't open zip file: %s", $file);
-            case ZipArchive::ER_READ:
+            case \ZipArchive::ER_READ:
                 return \sprintf('Zip read error (%s)', $file);
-            case ZipArchive::ER_SEEK:
+            case \ZipArchive::ER_SEEK:
                 return \sprintf('Zip seek error (%s)', $file);
             default:
                 return \sprintf("'%s' is not a valid zip archive, got error code: %s", $file, $retval);

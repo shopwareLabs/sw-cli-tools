@@ -12,8 +12,6 @@ class Config
 {
     /**
      * Default values.
-     *
-     * @var
      */
     protected $numberArticles = 0;
 
@@ -44,9 +42,6 @@ class Config
      */
     protected $imageDir;
 
-    /**
-     * @var
-     */
     protected $createImages;
 
     /**

@@ -60,7 +60,7 @@ class Vouchers extends BaseResource
             $voucherCsv->write(
                 "{$id},Voucher #{$id},{$code},{$value},101,\N,\N,VOUCHER{$id},{$isIndividual},{$isPercental},{$numOrder},\N,auto"
             );
-            $voucherAttributeCsv->write((string) ($id));
+            $voucherAttributeCsv->write((string) $id);
 
             if ($isIndividual) {
                 for ($i = 0; $i < $this->numberOfIndividualVoucherCodes; ++$i) {

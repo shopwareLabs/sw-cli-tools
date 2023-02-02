@@ -58,7 +58,7 @@ class RestClient implements RestInterface
 
         $this->apiUrl = \rtrim($apiUrl, '/') . '/';
 
-        //Initializes the cURL instance
+        // Initializes the cURL instance
         $this->cURL = \curl_init();
         \curl_setopt($this->cURL, \CURLOPT_RETURNTRANSFER, true);
         \curl_setopt($this->cURL, \CURLOPT_FOLLOWLOCATION, false);
