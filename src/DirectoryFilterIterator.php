@@ -13,7 +13,7 @@ class DirectoryFilterIterator extends \FilterIterator
     /**
      * {@inheritdoc}
      */
-    public function accept()
+    public function accept(): bool
     {
         return $this->isValidDir($this->current());
     }

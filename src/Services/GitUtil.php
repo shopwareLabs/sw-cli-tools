@@ -47,9 +47,10 @@ class GitUtil
      */
     public function run($commandline, $timeout = null): string
     {
-        $commandline = 'git ' . $commandline;
+        $command = array_filter(explode(' ', $commandline));
+        array_unshift($command, 'git');
 
-        $process = new Process($commandline, null, $this->gitEnv->getGitEnv());
+        $process = new Process($command, null, $this->gitEnv->getGitEnv());
         $process->setTimeout($timeout ?: $this->timeout);
 
         $output = $this->output; // tmp var needed for php < 5.4
