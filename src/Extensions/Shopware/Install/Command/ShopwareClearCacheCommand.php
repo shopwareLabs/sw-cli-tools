@@ -35,7 +35,7 @@ class ShopwareClearCacheCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('cache:clear')
