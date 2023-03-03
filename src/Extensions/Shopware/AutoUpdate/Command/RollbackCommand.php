@@ -10,6 +10,7 @@ namespace Shopware\AutoUpdate\Command;
 
 use Humbug\SelfUpdate\Updater;
 use ShopwareCli\Command\BaseCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,7 +30,7 @@ class RollbackCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('rollback');
     }
@@ -37,24 +38,24 @@ class RollbackCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $result = $this->updater->rollback();
             if (!$result) {
                 $output->writeln('Rollback failed!');
 
-                return 1;
+                return Command::FAILURE;
             }
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
             $output->writeln('Unable to rollback');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $output->writeln('Rollback successful');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

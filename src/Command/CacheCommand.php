@@ -8,6 +8,7 @@
 
 namespace ShopwareCli\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -30,6 +31,6 @@ class CacheCommand extends BaseCommand
     {
         $this->container->get('cache')->clear();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

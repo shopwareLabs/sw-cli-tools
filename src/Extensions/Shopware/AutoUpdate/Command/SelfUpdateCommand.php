@@ -10,6 +10,7 @@ namespace Shopware\AutoUpdate\Command;
 
 use Humbug\SelfUpdate\Updater;
 use ShopwareCli\Command\BaseCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,7 +30,7 @@ class SelfUpdateCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('self-update');
     }
@@ -37,14 +38,14 @@ class SelfUpdateCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $result = $this->updater->update();
             if (!$result) {
                 $output->writeln('No update needed.');
 
-                return 0;
+                return Command::SUCCESS;
             }
 
             $new = $this->updater->getNewVersion();
@@ -56,12 +57,12 @@ class SelfUpdateCommand extends BaseCommand
                 $new
             ));
 
-            return 0;
+            return Command::SUCCESS;
         } catch (\Exception $e) {
             $output->writeln('Unable to update. Please check your connection');
             $this->printException($output, $e);
 
-            return 1;
+            return Command::FAILURE;
         }
     }
 

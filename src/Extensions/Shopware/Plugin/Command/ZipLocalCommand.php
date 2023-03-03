@@ -10,6 +10,7 @@ namespace Shopware\Plugin\Command;
 
 use Shopware\Plugin\Struct\PluginBootstrap;
 use ShopwareCli\Command\BaseCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,14 +20,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ZipLocalCommand extends BaseCommand
 {
-    protected $utilities;
-
+    /**
+     * @var string
+     */
     protected $zipDir;
 
-    /**
-     * @param string $dir
-     */
-    public function validatePluginDir($dir): void
+    public function validatePluginDir(string $dir): void
     {
         $fileName = \basename($dir);
 
@@ -74,7 +73,7 @@ class ZipLocalCommand extends BaseCommand
         $this->container->get('io_service')->writeln("<info>Created file $outputFile</info>");
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('plugin:zip:dir')
@@ -86,21 +85,23 @@ class ZipLocalCommand extends BaseCommand
             );
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->zipDir = \getcwd();
+        $this->zipDir = (string) \getcwd();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $directory = $input->getArgument('dir');
         $directory = \rtrim($directory, '/');
         $this->validatePluginDir($directory);
 
         $this->doZip($directory);
+
+        return Command::SUCCESS;
     }
 
-    protected function getTempDir()
+    protected function getTempDir(): string
     {
         $tempDirectory = \sys_get_temp_dir();
         $tempDirectory .= '/plugin-inst-' . \uniqid('', true);
@@ -111,7 +112,7 @@ class ZipLocalCommand extends BaseCommand
         return $tempDirectory;
     }
 
-    protected function getZipDir()
+    protected function getZipDir(): string
     {
         return $this->zipDir;
     }

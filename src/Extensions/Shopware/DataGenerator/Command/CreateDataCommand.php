@@ -11,6 +11,7 @@ namespace Shopware\DataGenerator\Command;
 use Shopware\DataGenerator\DataGenerator;
 use Shopware\DataGenerator\Struct\Config;
 use ShopwareCli\Command\BaseCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +22,7 @@ class CreateDataCommand extends BaseCommand
 
     protected $zipDir;
 
-    public function interact(InputInterface $input, OutputInterface $output)
+    public function interact(InputInterface $input, OutputInterface $output): void
     {
         $articles = $input->getOption('articles');
         $orders = $input->getOption('orders');
@@ -66,7 +67,7 @@ class CreateDataCommand extends BaseCommand
         return (int) $input;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('generate')
@@ -189,7 +190,7 @@ Requires \'local-infile=1\' in your MySQL installation.
             ');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var DataGenerator $generator */
         $generator = $this->container->get('data_generator');
@@ -215,7 +216,7 @@ Requires \'local-infile=1\' in your MySQL installation.
                 '<error>At least one of the optional arguments should be provided. Use the --help option for more info.</error>'
             );
 
-            return;
+            return Command::FAILURE;
         }
 
         $shopwarePath = $input->getOption('installDir');
@@ -228,7 +229,7 @@ Requires \'local-infile=1\' in your MySQL installation.
             if (!\array_key_exists('db', $shopwareConfig)) {
                 $output->writeln('<error>Invalid Shopware configuration file.</error>');
 
-                return;
+                return Command::FAILURE;
             }
             $writerManager->setConfig('database', $shopwareConfig['db']);
             $writerManager->setDefaultWriterType('database');
@@ -264,6 +265,8 @@ Requires \'local-infile=1\' in your MySQL installation.
                 $generator->run();
             }
         }
+
+        return Command::SUCCESS;
     }
 
     protected function configureGenerator(
@@ -318,12 +321,7 @@ Requires \'local-infile=1\' in your MySQL installation.
         $config->setMaxVariants($maxVariants);
     }
 
-    /**
-     * @param string      $optionName
-     * @param string|null $optionHumanName
-     * @param int         $default
-     */
-    private function askConfigOptions(InputInterface $input, $optionName, $optionHumanName = null, $default = 0): void
+    private function askConfigOptions(InputInterface $input, string $optionName, ?string $optionHumanName = null, int $default = 0): void
     {
         $ioService = $this->container->get('io_service');
 

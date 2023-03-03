@@ -8,6 +8,7 @@
 
 namespace ShopwareCli\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +42,7 @@ class CacheGetCommand extends BaseCommand
                 $output->writeln($key);
             }
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         foreach ($keys as $key) {
@@ -49,6 +50,6 @@ class CacheGetCommand extends BaseCommand
             $output->writeln($this->container->get('cache')->read($key));
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

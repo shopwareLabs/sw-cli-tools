@@ -13,13 +13,14 @@ use Shopware\Install\Struct\InstallationRequest;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Config;
 use ShopwareCli\Services\IoService;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopwareInstallReleaseCommand extends BaseCommand
 {
-    public function interact(InputInterface $input, OutputInterface $output)
+    public function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->validateInput($input);
 
@@ -80,7 +81,7 @@ class ShopwareInstallReleaseCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('install:release')
             ->setDescription('Allows setting up shopware from release package.')
@@ -99,7 +100,7 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $request = new InstallationRequest([
             'release' => $input->getOption('release'),
@@ -130,6 +131,8 @@ EOF
         /** @var Release $installService */
         $installService = $this->container->get('shopware_release_install_service');
         $installService->installShopware($request);
+
+        return Command::SUCCESS;
     }
 
     /**

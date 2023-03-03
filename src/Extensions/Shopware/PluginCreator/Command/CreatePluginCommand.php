@@ -12,6 +12,7 @@ use Shopware\PluginCreator\Services\GeneratorFactory;
 use Shopware\PluginCreator\Struct\Configuration;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Config;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ class CreatePluginCommand extends BaseCommand
 {
     private const LEGACY_OPTION = 'legacy';
 
-    public function interact(InputInterface $input, OutputInterface $output)
+    public function interact(InputInterface $input, OutputInterface $output): void
     {
         /** @var QuestionHelper $helper */
         $helper = $this->getHelperSet()->get('question');
@@ -90,7 +91,7 @@ class CreatePluginCommand extends BaseCommand
     /**
      * Split "SwagTestPlugin" into array("Swag", "Test", "Plugin")
      */
-    public function upperToArray($input): array
+    public function upperToArray(string $input): array
     {
         return \preg_split('/(?=[A-Z])/', $input, -1, \PREG_SPLIT_NO_EMPTY);
     }
@@ -99,10 +100,8 @@ class CreatePluginCommand extends BaseCommand
      * Make sure the namespace is one of core, backend, frontend
      *
      * @throws \InvalidArgumentException
-     *
-     * @return $input
      */
-    public function validateNamespace($input)
+    public function validateNamespace(string $input): string
     {
         if (!\in_array(\strtolower($input), ['frontend', 'core', 'backend'])) {
             throw new \InvalidArgumentException('Namespace mus be one of FRONTEND, BACKEND or CORE');
@@ -118,7 +117,7 @@ class CreatePluginCommand extends BaseCommand
      */
     public function validateModel(): callable
     {
-        return static function ($input) {
+        return static function (string $input): string {
             if (empty($input)) {
                 throw new \InvalidArgumentException('You need to enter a model name like »Shopware\Models\Article\Article«');
             }
@@ -135,7 +134,7 @@ class CreatePluginCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('plugin:create')->setDescription('Creates a new plugin.')
             ->addArgument(
@@ -227,7 +226,7 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->validateName($input->getArgument('name'));
 
@@ -241,6 +240,8 @@ EOF
         $generator = (new GeneratorFactory())->create($configuration);
 
         $generator->run();
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -248,7 +249,7 @@ EOF
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateName($name)
+    protected function validateName(string $name): void
     {
         $parts = $this->upperToArray($name);
         if (\count($parts) <= 1) {

@@ -9,6 +9,7 @@
 namespace Shopware\Plugin\Command;
 
 use ShopwareCli\Command\BaseCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,8 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ZipCommand extends BaseCommand
 {
-    protected $utilities;
-
+    /**
+     * @var string
+     */
     protected $zipDir;
 
     public function doZip($plugin, $params)
@@ -28,7 +30,7 @@ class ZipCommand extends BaseCommand
         $this->container->get('zip_service')->zip($plugin, $this->getTempDir(), $this->getZipDir(), $params['branch'], $params['useHttp']);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('plugin:zip:vcs')
@@ -58,12 +60,12 @@ class ZipCommand extends BaseCommand
             );
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->zipDir = \getcwd();
+        $this->zipDir = (string) \getcwd();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $names = $input->getArgument('names');
         $small = $input->getOption('small');
@@ -80,13 +82,15 @@ class ZipCommand extends BaseCommand
         if (!empty($names)) {
             $interactionManager->searchAndOperate($names, [$this, 'doZip'], $params);
 
-            return;
+            return Command::SUCCESS;
         }
 
         $interactionManager->operationLoop([$this, 'doZip'], $params);
+
+        return Command::SUCCESS;
     }
 
-    protected function getTempDir()
+    protected function getTempDir(): string
     {
         $tempDirectory = \sys_get_temp_dir();
         $tempDirectory .= '/plugin-inst-' . \uniqid('', true);
@@ -99,7 +103,7 @@ class ZipCommand extends BaseCommand
         return $tempDirectory;
     }
 
-    protected function getZipDir()
+    protected function getZipDir(): string
     {
         return $this->zipDir;
     }

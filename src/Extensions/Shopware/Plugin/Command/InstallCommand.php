@@ -15,6 +15,7 @@ use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\GitUtil;
 use ShopwareCli\Services\IoService;
 use ShopwareCli\Utilities;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,7 +44,7 @@ class InstallCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('plugin:install')
@@ -88,7 +89,7 @@ class InstallCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $names = $input->getArgument('names');
         $small = $input->getOption('small');
@@ -122,10 +123,12 @@ class InstallCommand extends BaseCommand
             }
             $interactionManager->searchAndOperate($names, [$this, 'doInstall'], $params);
 
-            return;
+            return Command::SUCCESS;
         }
 
         $interactionManager->operationLoop([$this, 'doInstall'], $params);
+
+        return Command::SUCCESS;
     }
 
     private function getShopwarePath(): string

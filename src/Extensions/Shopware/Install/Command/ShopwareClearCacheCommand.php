@@ -11,6 +11,7 @@ namespace Shopware\Install\Command;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\ProcessExecutor;
 use ShopwareCli\Services\ShopwareInfo;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,7 +52,7 @@ class ShopwareClearCacheCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $path = $this->checkPath($input);
 
@@ -65,6 +66,8 @@ class ShopwareClearCacheCommand extends BaseCommand
         /** @var ProcessExecutor $processExecutor */
         $processExecutor = $this->container->get('process_executor');
         $processExecutor->execute($shopwareInfo->getCacheDir($path) . '/clear_cache.sh');
+
+        return Command::SUCCESS;
     }
 
     private function checkPath(InputInterface $input): string

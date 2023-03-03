@@ -11,6 +11,7 @@ namespace Shopware\Install\Command;
 use Shopware\Install\Services\Install\Vcs;
 use ShopwareCli\Command\BaseCommand;
 use ShopwareCli\Services\IoService;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +20,7 @@ class ShopwareInstallVcsCommand extends BaseCommand
 {
     private const MAIN_BRANCH = '5.6';
 
-    public function interact(InputInterface $input, OutputInterface $output)
+    public function interact(InputInterface $input, OutputInterface $output): void
     {
         /** @var IoService $ioService */
         $ioService = $this->container->get('io_service');
@@ -53,7 +54,7 @@ class ShopwareInstallVcsCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('install:vcs')
@@ -104,7 +105,7 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var Vcs $installService */
         $installService = $this->container->get('shopware_vcs_install_service');
@@ -117,14 +118,14 @@ EOF
             $input->getOption('user'),
             $input->getOption('noDemoData')
         );
+
+        return Command::SUCCESS;
     }
 
     /**
      * Try to guess a proper name (swTICKETNUMBER) from the branch name
-     *
-     * @param string $branch
      */
-    private function suggestNameFromBranch($branch): string
+    private function suggestNameFromBranch(string $branch): string
     {
         $result = [];
         $pattern = '#sw-(?P<number>.+?)/(?P<target>.+?)/.*#i';
@@ -137,10 +138,7 @@ EOF
         return \str_replace('.', '', $branch);
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askInstallationDir(InputInterface $input, IoService $ioService, $suggestion): string
+    private function askInstallationDir(InputInterface $input, IoService $ioService, string $suggestion): string
     {
         $installDir = $input->getOption('installDir');
         if (!$installDir) {
@@ -156,10 +154,7 @@ EOF
         return $installDir;
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askDatabaseName(InputInterface $input, IoService $ioService, $suggestion): void
+    private function askDatabaseName(InputInterface $input, IoService $ioService, string $suggestion): void
     {
         $databaseName = $input->getOption('databaseName');
         if (!$databaseName) {
@@ -168,10 +163,7 @@ EOF
         }
     }
 
-    /**
-     * @param string $suggestion
-     */
-    private function askBasePath(InputInterface $input, IoService $ioService, $suggestion): void
+    private function askBasePath(InputInterface $input, IoService $ioService, string $suggestion): void
     {
         $basePath = $input->getOption('basePath');
         if (!$basePath) {
