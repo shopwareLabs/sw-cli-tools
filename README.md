@@ -194,12 +194,44 @@ The SW cli tools make use of the XDG directory standard. Following directories a
 If you changed some of these directories via `XDG` environment variables, those directories are used instead
 
 # Configuration
-The configuration of the script is done in `~/.config/sw-cli-tools/config.yaml`. If the file does not exist on your system, it is created after the first usage of the script.
+The configuration of the script is done in `~/.config/sw-cli-tools/config.yaml`.
+If the file does not exist on your system, it is created after the first usage of the script.
+
+## Repositories
+In order to use commands like `plugin:zip:vcs` the tool needs to know where the source comes from.
+For this repositories need to be defined in the `repositories` section of the configuration file.
+For now the following repository types are supported:
+- GitHub
+- Stash
+- BitBucket
+- SimpleList
+- GitLab
+
+This is how an example config could look like:
+
+```yml
+repositories:
+  GitLab:
+    config:
+      endpoint: https://gitlab.shopware.com/api/v4/
+    repositories:
+      Services SW5:
+        cache: 86400
+        url: groups/92/projects?per_page=100&private_token=your-private-token
+        color: red
+  GitHub:
+    config:
+      endpoint: https://api.github.com/search/
+    repositories:
+      Plugins SW5:
+        cache: 86400
+        url: repositories?q=org:Shopware5+topic:shopware-plugin
+        color: blue
+```
 
 # Building sw.phar
 For building the release package (`sw.phar`) [box](http://box-project.github.io/box2/) is used.
 A new release is build automatically for every push on the master branch by Travis CI (See `bin/deploy.sh`).
-
 
 # Coding standard
 Coding standard for the project is [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
