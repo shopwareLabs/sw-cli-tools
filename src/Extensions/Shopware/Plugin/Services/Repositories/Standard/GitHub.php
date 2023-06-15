@@ -9,6 +9,7 @@
 namespace Shopware\Plugin\Services\Repositories\Standard;
 
 use Shopware\Plugin\Services\Repositories\BaseRepository;
+use function iter\rewindable\product;
 
 class GitHub extends BaseRepository
 {
@@ -34,9 +35,12 @@ class GitHub extends BaseRepository
     {
         echo "Reading Shopware repo {$this->name}\n";
         $content = $this->restService->get($this->repository)->getResult();
+        if (!array_key_exists('items', $content)) {
+            return [];
+        }
 
         $plugins = [];
-        foreach ($content as $repo) {
+        foreach ($content['items'] as $repo) {
             $plugins[] = $this->createPlugin($repo['ssh_url'], $repo['clone_url'], $repo['name']);
         }
 
