@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * (c) shopware AG <info@shopware.com>
  *
@@ -19,17 +20,14 @@ interface RepositoryInterface
      * Return available plugins named $name.
      * If $exact is true, search should be exact (==), else  stripos() or similar
      *
-     * @param string $name
-     * @param bool   $exact
-     *
      * @return Plugin[]
      */
-    public function getPluginByName($name, $exact = false);
+    public function getPluginByName(string $name, bool $exact = false): array;
 
     /**
      * Return all known plugins
      *
      * @return Plugin[]
      */
-    public function getPlugins();
+    public function getPlugins(): array;
 }

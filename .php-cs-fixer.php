@@ -24,7 +24,6 @@ EOF;
 return (new Config())
     ->registerCustomFixers(new Fixers())
     ->setRiskyAllowed(true)
-    ->setUsingCache(false)
     ->setRules([
         '@PSR12' => true,
         '@Symfony' => true,
@@ -43,6 +42,7 @@ return (new Config())
         'no_superfluous_phpdoc_tags' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
+        'nullable_type_declaration_for_default_null_value' => true,
         'operator_linebreak' => ['only_booleans' => true],
         'ordered_class_elements' => true,
         'ordered_imports' => true,

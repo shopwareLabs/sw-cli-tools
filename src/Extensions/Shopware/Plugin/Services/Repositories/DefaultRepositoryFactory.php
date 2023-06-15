@@ -20,17 +20,12 @@ class DefaultRepositoryFactory
 {
     /**
      * List of repositories the DefaultRepository will handle
-     *
-     * @var array
      */
-    private $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList', 'GitLab'];
+    private array $supportedRepositories = ['GitHub', 'Stash', 'BitBucket', 'SimpleList', 'GitLab'];
 
-    private $defaultRepositories = [];
+    private array $defaultRepositories = [];
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     public function __construct(Container $container)
     {
@@ -69,18 +64,18 @@ class DefaultRepositoryFactory
     /**
      * Setup all sub-repositories
      */
-    private function createSubRepositories($type, $data): void
+    private function createSubRepositories(string $type, ?array $data): void
     {
-        $baseUrl = isset($data['config']['endpoint']) ? $data['config']['endpoint'] : null;
-        $username = isset($data['config']['username']) ? $data['config']['username'] : null;
-        $password = isset($data['config']['password']) ? $data['config']['password'] : null;
+        $baseUrl = $data['config']['endpoint'] ?? null;
+        $username = $data['config']['username'] ?? null;
+        $password = $data['config']['password'] ?? null;
 
         if (!isset($data['repositories'])) {
             return;
         }
 
         foreach ($data['repositories'] as $name => $repoConfig) {
-            $cacheTime = isset($repoConfig['cache']) ? $repoConfig['cache'] : 3600;
+            $cacheTime = $repoConfig['cache'] ?? 3600;
 
             $restClient = $baseUrl ? $this->container->get('rest_service_factory')->factory($baseUrl, $username, $password, $cacheTime) : null;
 
@@ -97,7 +92,7 @@ class DefaultRepositoryFactory
         $className = 'Shopware\\Plugin\\Services\\Repositories\\Standard\\' . $type;
         /** @var BaseRepository $repo */
         $repo = new $className(
-            isset($repoConfig['url']) ? $repoConfig['url'] : '',
+            $repoConfig['url'] ?? '',
             $name,
             $restClient
         );

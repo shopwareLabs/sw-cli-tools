@@ -15,7 +15,7 @@ class GitHub extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPluginByName($name, $exact = false)
+    public function getPluginByName(string $name, bool $exact = false): array
     {
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
@@ -30,13 +30,16 @@ class GitHub extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         echo "Reading Shopware repo {$this->name}\n";
         $content = $this->restService->get($this->repository)->getResult();
+        if (!\array_key_exists('items', $content)) {
+            return [];
+        }
 
         $plugins = [];
-        foreach ($content as $repo) {
+        foreach ($content['items'] as $repo) {
             $plugins[] = $this->createPlugin($repo['ssh_url'], $repo['clone_url'], $repo['name']);
         }
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * (c) shopware AG <info@shopware.com>
  *
@@ -17,44 +18,20 @@ use ShopwareCli\Services\Rest\RestInterface;
  */
 abstract class BaseRepository implements RepositoryInterface
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    protected $repository;
+    protected string $repository;
 
-    protected $useHttp
-    ;
+    protected ?RestInterface $restService;
 
-    /**
-     * @var RestInterface
-     */
-    protected $restService;
-
-    /**
-     * @var null
-     */
-    protected $color;
-
-    /**
-     * @param RestInterface $restService
-     * @param null          $color
-     */
-    public function __construct($repository, $name, RestInterface $restService = null, $color = null)
+    public function __construct(string $repository, string $name, ?RestInterface $restService = null)
     {
         $this->repository = $repository;
         $this->name = $name;
         $this->restService = $restService;
-        $this->color = $color;
     }
 
-    /**
-     * @param string $sshUrl
-     * @param string $httpUrl
-     * @param string $name
-     */
-    public function createPlugin($sshUrl, $httpUrl, $name): Plugin
+    public function createPlugin(string $sshUrl, string $httpUrl, string $name): Plugin
     {
         $type = \array_slice(\explode('\\', \get_class($this)), -1);
         $type = $type[0];
@@ -70,12 +47,8 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * Very simple compare method
-     *
-     * @param string $searched
-     * @param string $actual
-     * @param bool   $exact
      */
-    protected function doesMatch($actual, $searched, $exact = false): bool
+    protected function doesMatch(string $actual, string $searched, bool $exact = false): bool
     {
         return !$exact && \stripos($actual, $searched) !== false
             || $exact && $searched == $actual

@@ -17,10 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class BaseCommand extends Command implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ?ContainerInterface $container;
 
     /**
      * Sets the Container.
@@ -29,7 +26,7 @@ abstract class BaseCommand extends Command implements ContainerAwareInterface
      *
      * @api
      */
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

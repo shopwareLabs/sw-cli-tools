@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * (c) shopware AG <info@shopware.com>
  *
@@ -18,10 +19,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SimpleList extends BaseRepository implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
-    protected $container;
+    protected ?ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -29,7 +29,7 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getPluginByName($name, $exact = false)
+    public function getPluginByName(string $name, bool $exact = false): array
     {
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
@@ -44,7 +44,7 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         $config = $this->container->get('config');
         if (!isset($config['repositories']['SimpleList'])) {
@@ -52,7 +52,7 @@ class SimpleList extends BaseRepository implements ContainerAwareInterface
         }
 
         $plugins = [];
-        foreach ($config['repositories']['SimpleList']['repositories'] as $repositoryName => $repository) {
+        foreach ($config['repositories']['SimpleList']['repositories'] as $repository) {
             foreach ($repository['plugins'] as $name => $cloneUrls) {
                 $plugins[] = $this->createPlugin($cloneUrls['ssh'], $cloneUrls['http'], $name);
             }
