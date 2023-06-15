@@ -8,7 +8,7 @@
         "ext-curl": "*",
         "dnoegel/php-xdg-base-dir": "~0.1",
         "fakerphp/faker": "^1.21.0",
-        "guzzlehttp/guzzle": "^6.5.2",
+        "guzzlehttp/guzzle": "^7.7.0",
         "laravel-zero/phar-updater": "^1.1",
         "shopwarelabs/plugin-info": "0.1.0",
         "symfony/config": "~5.4",
@@ -19,10 +19,13 @@
     },
     "require-dev": {
         "ext-phar": "*",
-        "friendsofphp/php-cs-fixer": "^3.14.3",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^v3.11.3",
+        "friendsofphp/php-cs-fixer": "^3.17.0",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^v3.14.0",
         "phpunit/phpunit": "^9.5",
         "symfony/var-dumper": "~5.4"
+    },
+    "replace": {
+        "symfony/polyfill-php73": "*"
     },
     "scripts": {
         "cs-check": "php-cs-fixer fix --dry-run -v",

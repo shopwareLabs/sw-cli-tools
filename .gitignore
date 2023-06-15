@@ -2,6 +2,7 @@ config.cfg
 *config.yaml
 !tests/**/config.yaml
 .phpunit.result.cache
+.php-cs-fixer.cache
 vendor/
 composer.phar
 php_errors.log

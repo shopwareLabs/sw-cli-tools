@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * (c) shopware AG <info@shopware.com>
  *
@@ -15,7 +16,7 @@ class Stash extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPluginByName($name, $exact = false)
+    public function getPluginByName(string $name, bool $exact = false): array
     {
         $plugins = $this->getPlugins();
         foreach ($plugins as $key => $plugin) {
@@ -30,7 +31,7 @@ class Stash extends BaseRepository
     /**
      * {@inheritdoc}
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         echo "Reading Stash repo {$this->name}\n";
 
