@@ -71,7 +71,7 @@ class DependencyManager
         }
 
         // Temporary remove shopware dependencies
-        foreach (\array_keys($shopwareDependencies) as $dependencyName) {
+        foreach ($this->getTheRightRemovingOrder(\array_keys($shopwareDependencies)) as $dependencyName) {
             $this->processExecutor->execute(\sprintf('composer remove %s --update-no-dev', $dependencyName), $pathToPlugin);
         }
 
@@ -81,5 +81,21 @@ class DependencyManager
         foreach ($shopwareDependencies as $dependencyName => $version) {
             $this->processExecutor->execute(\sprintf('composer require %s:"%s" --no-update', $dependencyName, $version), $pathToPlugin);
         }
+    }
+
+    private function getTheRightRemovingOrder(array $dependencies): array
+    {
+        usort($dependencies, function (string $a, string $b): int {
+            switch ('shopware/core') {
+                case $a:
+                    return 1;
+                case $b:
+                    return -1;
+                default:
+                    return 0;
+            }
+        });
+
+        return $dependencies;
     }
 }
