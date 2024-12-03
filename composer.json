@@ -22,7 +22,7 @@
         "friendsofphp/php-cs-fixer": "^3.17.0",
         "kubawerlos/php-cs-fixer-custom-fixers": "^v3.14.0",
         "phpunit/phpunit": "^9.5",
-        "symfony/var-dumper": "~5.4"
+        "symfony/var-dumper": "~6.4"
     },
     "replace": {
         "symfony/polyfill-php73": "*"
